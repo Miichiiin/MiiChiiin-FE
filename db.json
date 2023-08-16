@@ -1,0 +1,71 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": " Adidas A102 Đen Kẻ Trắng Phản Quang SF",
+      "price": 400000,
+      "original_price": 500000,
+      "image": "https://giayxshop.vn/wp-content/uploads/2023/03/z4159595927783_c64c2be5885dd21738773ad31d1539ba-600x600.jpg",
+      "description": "mô tả"
+    },
+    {
+      "id": 2,
+      "name": " Adidas A102 Đen Kẻ Trắng Phản Quang SF 2",
+      "price": 400000,
+      "original_price": 500000,
+      "image": "https://giayxshop.vn/wp-content/uploads/2023/03/z4159595927783_c64c2be5885dd21738773ad31d1539ba-600x600.jpg",
+      "description": "mô tả"
+    },
+    {
+      "id": 3,
+      "name": " Adidas A102 Đen Kẻ Trắng Phản Quang SF 3",
+      "price": 400000,
+      "original_price": 500000,
+      "image": "https://giayxshop.vn/wp-content/uploads/2023/03/z4159595927783_c64c2be5885dd21738773ad31d1539ba-600x600.jpg",
+      "description": "mô tả"
+    },
+    {
+      "id": 4,
+      "name": " Adidas A102 Đen Kẻ Trắng Phản Quang SF 4",
+      "price": 400000,
+      "original_price": 500000,
+      "image": "https://giayxshop.vn/wp-content/uploads/2023/03/z4159595927783_c64c2be5885dd21738773ad31d1539ba-600x600.jpg",
+      "description": "mô tả"
+    },
+    {
+      "description": "dsaascsacasdcsadccsacacsacacsa",
+      "image": "[object FileList]",
+      "orinal_price": 595626222,
+      "price": 8000000,
+      "name": "Product F",
+      "id": 5,
+      "original_price": "25625262625"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "admin",
+      "email": "admin@gmail.com",
+      "password": "123456"
+    },
+    {
+      "email": "vinh122@gmail.com",
+      "password": "$2a$10$vbQ8T4H8Rrv8kq60Q5q8NuqMDOk18Yg8qmI4qXKPSRsxo1OV4XkaO",
+      "name": "vinhh",
+      "id": 2
+    },
+    {
+      "email": "vinhkqph25485@fpt.edu.vn",
+      "password": "$2a$10$2U34brAPvoIg9.U9jrfLZ.5PY2gg0L4Wefv2UZLXdwH3.XsUm/tRO",
+      "name": "KieuQuangVinh fplhn",
+      "id": 3
+    },
+    {
+      "email": "junda@gmail.com",
+      "password": "$2a$10$OL3iVxfsSgop11VLm4zqBekGGACbdhOO7XvqkFnC70RcpqgDaWBeq",
+      "name": "Vinh11",
+      "id": 4
+    }
+  ]
+}
