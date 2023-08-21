@@ -16,12 +16,13 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['cart']
+    whitelist: ['product, booking']
 }
-const rootReducer = combineReducers({
 
+const rootReducer = combineReducers({
+    
 })
-const middleware = [productApi.middleware, authApi.middleware]
+// const middleware = [productApi.middleware, authApi.middleware]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({
@@ -31,7 +32,7 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        }).concat(...middleware),
+        })//.concat(...middleware),
 })
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

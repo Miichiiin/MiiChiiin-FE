@@ -1,4 +1,4 @@
-import { IProduct } from '@/interfaces/product';
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const productApi = createApi({
@@ -15,16 +15,16 @@ const productApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getProducts: builder.query<IProduct[], void>({
+        getProducts: builder.query({
             query: () => `/products`,
             providesTags: ['Product']
         }),
-        getProductById: builder.query<IProduct, number>({
+        getProductById: builder.query({
             query: (id) => `/products/${id}`,
             providesTags: ['Product']
         }),
         addProduct: builder.mutation({
-            query: (product: IProduct) => ({
+            query: (product) => ({
                 url: `/products`,
                 method: "POST",
                 body: product
@@ -32,7 +32,7 @@ const productApi = createApi({
             invalidatesTags: ['Product']
         }),
         updateProduct: builder.mutation({
-            query: (product: IProduct) => ({
+            query: (product) => ({
                 url: `/products/${product.id}`,
                 method: "PATCH",
                 body: product

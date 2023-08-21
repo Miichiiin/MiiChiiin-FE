@@ -1,4 +1,4 @@
-import { IAuth  } from '@/interfaces/auth';
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const authApi = createApi({
@@ -17,7 +17,7 @@ const authApi = createApi({
     endpoints: (builder) => ({
         
         Signin: builder.mutation({
-            query: (user: IAuth) => ({
+            query: (user) => ({
                 url: `/signin`,
                 method: "POST",
                 body: user
@@ -25,7 +25,7 @@ const authApi = createApi({
             invalidatesTags: ['Users']
         }),
         Signup: builder.mutation({
-            query: (user: IAuth) => ({
+            query: (user) => ({
                 url: `/signup`,
                 method: "POST",
                 body: user
@@ -33,7 +33,7 @@ const authApi = createApi({
             invalidatesTags: ['Users']
         }),
 
-        getUsers: builder.query<IAuth[], void>({
+        getUsers: builder.query({
             query: () => `/users`,
             providesTags: ['Users']
         }),
