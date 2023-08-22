@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import Login from "./features/webapp/auth/Login/login";
 
 
 
@@ -6,7 +7,7 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            <div></div>
+            <div>Layout</div>
         ),
         children: [
             {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
                 element: <Navigate to="/homepage" />,
             },
         ],
+    },
+    {
+        path: '/login',
+        element: <Login/>
     },
     {
         path: "/admin",
