@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { LayoutAdmin } from "./components/admin/LayoutAdmin";
-import { ThuTable } from "./features/admin/ThuTable";
+import { TableTHu } from "./features/admin/ThuTable";
+
 
 
 
@@ -29,7 +30,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "dashboard",
-                element: <ThuTable/>,
+                element: <TableTHu/>,
             },
         ],
     },

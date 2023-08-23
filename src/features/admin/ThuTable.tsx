@@ -3,7 +3,7 @@ import { Space, Table, Tag, Divider, Radio } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 
-export const ThuTable = () => {
+export const TableTHu = () => {
     interface DataType {
         key: string;
         name: string;
