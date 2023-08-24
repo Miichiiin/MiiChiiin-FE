@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { BsGoogle } from 'react-icons/bs'
-const Login = () => {
+const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [usernameError, setUsernameError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const handleEmailChange = (e: any) => {
         const newEmail = e.target.value;
@@ -27,18 +31,30 @@ const Login = () => {
             setPasswordError('');
         }
     };
-    const handleLogin = (e: any) => {
-        e.preventDefault();
-        if (emailError || passwordError) {
-            // Nếu có lỗi thì không thực hiện đăng nhập
-            return;
-        }
-        // Kiểm tra xem email và password có hợp lệ hay không
-        if (email === 'example@example.com' && password === 'password') {
-            // Đăng nhập thành công, thực hiện hành động tương ứng
-            // Tiến hành đăng nhập hoặc thực hiện các xử lý khác
+    const handleConfirmPasswordChange = (e:any) => {
+        const newConfirmPassword = e.target.value;
+        setConfirmPassword(newConfirmPassword);
+        // Kiểm tra trùng khớp với password
+        if (newConfirmPassword !== password) {
+            setConfirmPasswordError('Passwords do not match');
+        } else {
+            setConfirmPasswordError('');
         }
     };
+
+    const handleUsernameChange = (e:any) => {
+        const newUsername = e.target.value;
+        setUsername(newUsername);
+        // Kiểm tra username không trống
+        if (!newUsername.trim()) {
+            setUsernameError('Username is required');
+        } else {
+            setUsernameError('');
+        }
+    };
+
+    const isFormValid = emailError === '' && passwordError === '' && confirmPasswordError === '' && usernameError === '';
+
     return (
         <div className="body mx-auto items-center">
             <div className="" >
@@ -48,14 +64,21 @@ const Login = () => {
                     </div>
                     <div className="w-[768px] h-screen px-5">
                         <h1 className="text-center text-uppercase pt-10 pb-5 text-3xl ">Login</h1>
-                        <form className="" onSubmit={handleLogin}>
+                        <form className="">
                             <div className="">
                                 <label >Email address </label>
                                 <input type="text" id="email" name="email" placeholder="Email address" value={email}
                                     onChange={handleEmailChange}
-                                    className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300"/>
+                                    className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300" />
                             </div>
                             {emailError && <p className="error text-red-500 pb-2 text-sm">{emailError}</p>}
+                            <div className="">
+                                <label >Username </label>
+                                <input type="text" id="username" name="username" placeholder="Username " value={username}
+                                    onChange={handleUsernameChange}
+                                    className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300" />
+                            </div>
+                            {usernameError && <p className="error text-red-500 pb-2 text-sm">{usernameError}</p>}
                             <div className="">
                                 <label >Password</label>
                                 <input type="password" id="password" name="password" placeholder="Password" value={password}
@@ -63,6 +86,13 @@ const Login = () => {
                                     className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300" />
                             </div>
                             {passwordError && <p className="error text-red-500 text-sm">{passwordError}</p>}
+                            <div className="">
+                                <label >Confirm Password</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" value={confirmPassword}
+                                    onChange={handleConfirmPasswordChange}
+                                    className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300" />
+                            </div>
+                            {confirmPasswordError && <p className="error text-red-500 pb-2 text-sm">{confirmPasswordError}</p>}
                             <div className="py-2 flex justify-between items-center">
                                 <div>
                                     <input className="mr-2 leading-tight" type="checkbox" id="remember" name="remember" />
@@ -74,11 +104,11 @@ const Login = () => {
                                     <a href="" className="hover:text-blue-700 text-blue-500 ">Forgot your password ?</a>
                                 </div>
                             </div>
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded w-full" disabled={emailError !== '' || passwordError !== ''}>Đăng nhập / Login</button>
+                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded w-full" disabled={!isFormValid}>Đăng ký / Sign up</button>
                             <hr className="mt-5 pb-5" />
                             <div>
-                                <p className="py-4 text-center">Didn't have account ? <a href=""
-                                    className="hover:text-blue-700 text-blue-500 font-bold">Create an account</a></p>
+                                <p className="py-4 text-center">You have an account ? <a href=""
+                                    className="hover:text-blue-700 text-blue-500 font-bold">Login here</a></p>
 
                                 <div className="flex justify-center gap-6">
                                     <button className='text-white  bg-red-500 hover:bg-red-400 focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-3 text-center inline-flex items-center justify-between'><BsGoogle className='text-xl' /><span className='px-2'>Login with Google</span></button>
@@ -92,4 +122,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Register
