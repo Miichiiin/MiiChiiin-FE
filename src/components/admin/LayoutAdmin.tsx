@@ -32,10 +32,11 @@ function getItem(
 const items: MenuItem[] = [
     getItem(<Link to={"commentmanagement"}>Quản lý comment</Link>, '1', <PieChartOutlined />),
     getItem(<Link to={"service"}>Quản lý dịch vụ</Link>, '2', <PieChartOutlined />),
+    getItem(<Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>, '3', <PieChartOutlined />),
     getItem('User', 'sub1', <UserOutlined />, [
-        getItem('Tom', '3'),
-        getItem('Bill', '4'),
-        getItem('Alex', '5'),
+        getItem('Tom', ''),
+        getItem('Bill', ''),
+        getItem('Alex', ''),
     ]),
     getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     getItem('Files', '9', <FileOutlined />),

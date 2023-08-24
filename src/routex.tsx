@@ -4,6 +4,7 @@ import { CommentManagement } from "./features/admin/CommentManagement";
 import { EditComment } from "./features/admin/EditComment";
 import { ServiceManagement } from "./features/admin/ServiceManagement";
 import { AddService } from "./features/admin/AddService";
+import { BookingManagement } from "./features/admin/BookingManagement";
 
 
 
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
             {
                 path: "addservice",
                 element: <AddService/>,
+            },
+            {
+                path: "bookingmanagement",
+                element: <BookingManagement/>,
             },
         ],
     },

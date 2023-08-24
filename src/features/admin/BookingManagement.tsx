@@ -1,25 +1,29 @@
-import { Table, Divider, Radio, Button, Select, Image, Input } from 'antd';
-// import Search from 'antd/es/input/Search';
+import { Table, Divider, Radio, Button, Select, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
-export const ServiceManagement = () => {
+export const BookingManagement = () => {
     interface DataType {
         key: string;
-        name_service: string,
-        price: string;
-        image: string;
+        customer_name: string,
+        room_name: string,
+        guest_number: number;
+        total_money: number;
+        payment_methods: string,
+        extra_service: string,
         status: string,
-        description: string,
+        booking_date: string;
+        checkin_date: string;
+        checkout_date: string;
     }
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Tên dịch vụ',
-            dataIndex: 'name_service',
-            key: 'name_service',
+            title: 'Tên tên khách hàng',
+            dataIndex: 'customer_name',
+            key: 'customer_name',
             render: (text: any, item: any) => {
                 return (
                     <>
@@ -29,15 +33,24 @@ export const ServiceManagement = () => {
             }
         },
         {
-            title: 'Giá dịch vụ',
-            dataIndex: 'price',
-            key: 'price',
+            title: 'Tên phòng',
+            dataIndex: 'room_name',
+            key: 'room_name',
         },
         {
-            title: 'Hình ảnh',
-            dataIndex: 'image',
-            key: 'image',
-            render: (text) => <Image src={text} width={80} />
+            title: 'Số khách',
+            dataIndex: 'guest_number',
+            key: 'guest_number',
+        },
+        {
+            title: 'Phương thức thanh toán',
+            dataIndex: 'payment_methods',
+            key: 'payment_methods',
+        },
+        {
+            title: 'Dịch vụ thêm',
+            dataIndex: 'extra_service',
+            key: 'extra_service',
         },
         {
             title: 'Trạng thái',
@@ -45,29 +58,35 @@ export const ServiceManagement = () => {
             key: 'status',
         },
         {
-            title: 'Mô tả',
-            dataIndex: 'description',
-            key: 'description',
+            title: 'Ngày đặt phòng',
+            dataIndex: 'booking_date',
+            key: 'booking_date',
         },
-
+        {
+            title: 'Ngày nhận phòng',
+            dataIndex: 'checkin_date',
+            key: 'checkin_date',
+        },
+        {
+            title: 'Ngày trả phòng',
+            dataIndex: 'checkout_date',
+            key: 'checkout_date',
+        },
     ];
 
     const data: DataType[] = [
         {
             key: '1',
-            name_service: 'Phòng tình yêu',
-            price: "John Brown",
-            image: "https://media.istockphoto.com/id/1256768065/vi/vec-to/logo-linh-v%E1%BA%ADt-esport-h%E1%BB%95-tr%E1%BA%AFng.jpg?s=612x612&w=is&k=20&c=_kzP2cuB-s76LYATE2I9RIGp_6vFeqs08PDQKa0EaoU=",
-            status: "đã duyệt",
-            description: "...",
-        },
-        {
-            key: '2',
-            name_service: 'Phòng tình yêu',
-            price: "John Brown",
-            image: "https://media.istockphoto.com/id/1256768065/vi/vec-to/logo-linh-v%E1%BA%ADt-esport-h%E1%BB%95-tr%E1%BA%AFng.jpg?s=612x612&w=is&k=20&c=_kzP2cuB-s76LYATE2I9RIGp_6vFeqs08PDQKa0EaoU=",
-            status: "đã duyệt",
-            description: "...",
+            customer_name: "Nguyễn Văn Ad",
+            room_name: "402",
+            guest_number: 4,
+            total_money: 19000000,
+            payment_methods: "chuyển khoản",
+            extra_service: "Bữa trưa tại khách sạn",
+            status: "đã thanh toán",
+            booking_date: "19/08/2023",
+            checkin_date: "20/08/2023",
+            checkout_date: "22/08/2023"
         },
 
     ];
@@ -76,13 +95,14 @@ export const ServiceManagement = () => {
         onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         },
-    
+       
     };
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
+    // const onSearch = (value: string) => console.log(value);
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <div className="text-lg font-semibold">Quản lý dịch vụ</div>
+                <div className="text-lg font-semibold">Quản lý đơn hàng</div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} />
                     <Select
@@ -122,7 +142,7 @@ export const ServiceManagement = () => {
                         ]}
                     />
                 </div>
-                <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/addservice'}>Thêm dịch vụ</Link></button>
+                <div></div>
             </div>
             {/* Phần CSS tùy chỉnh cho bảng */}
             <style>
