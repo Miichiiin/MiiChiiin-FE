@@ -31,7 +31,7 @@ function getItem(
 
 const items: MenuItem[] = [
     getItem(<Link to={"commentmanagement"}>Quản lý comment</Link>, '1', <PieChartOutlined />),
-    getItem(<Link to={"commentmanagement"}>Quản lý dịch vụ</Link>, '2', <PieChartOutlined />),
+    getItem(<Link to={"service"}>Quản lý dịch vụ</Link>, '2', <PieChartOutlined />),
     getItem('User', 'sub1', <UserOutlined />, [
         getItem('Tom', '3'),
         getItem('Bill', '4'),
