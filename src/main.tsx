@@ -1,4 +1,3 @@
-// import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
@@ -9,8 +8,8 @@ import persistor from "./app/store";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-        <App />
-    </PersistGate>
-</Provider>
+        <PersistGate loading={null} persistor={persistor}>
+            <App />
+        </PersistGate>
+    </Provider>
 );

@@ -1,5 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-
+import { LayoutAdmin } from "./components/admin/LayoutAdmin"; 
+import { ManagerRoomType } from "./features/admin/ManageRoomType";
+import AddRoomType from "./features/admin/AddManagerRoomType";
+import UpdateRoomType from "./features/admin/UpdateRoomType";
 
 
 export const router = createBrowserRouter([
@@ -18,17 +21,27 @@ export const router = createBrowserRouter([
     {
         path: "/admin",
         element: (
-          <div></div>
+          <LayoutAdmin/>
         ),
         children: [
             {
                 index: true,
-                element: <Navigate to="dashboard" />,
+                element: <ManagerRoomType/>,
             },
             {
-                path: "dashboard",
-                element: <div>Dashboard</div>,
+                path: "manageroomtype",
+                element: <ManagerRoomType/>,
             },
+            {
+                path: "addroomtype",
+                element: <AddRoomType/>,
+            },
+            {
+                path: "updateroomtype",
+                element: <UpdateRoomType/>,
+            }
+            
+            
         ],
     },
 ]);
