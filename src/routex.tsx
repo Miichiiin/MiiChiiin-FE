@@ -7,6 +7,7 @@ import { AddService } from "./features/admin/service/AddService";
 import { BookingManagement } from "./features/admin/booking/BookingManagement";
 import { UserManagement } from "./features/admin/user/UserManagement";
 import { AddUser } from "./features/admin/user/AddUser";
+import { HotelManagement } from "./features/admin/hotel/HotelManagement";
 
 
 
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
             {
                 path: "adduser",
                 element: <AddUser/>,
+            },
+            {
+                path: "hotelmanagement",
+                element: <HotelManagement/>,
             },
         ],
     },
