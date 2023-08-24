@@ -9,7 +9,7 @@ import {
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { HeaderAdmin } from './Header';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 const { Content, Footer, Sider } = Layout;
 
@@ -30,8 +30,8 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-    getItem('Option 1', '1', <PieChartOutlined />),
-    getItem('Option 2', '2', <DesktopOutlined />),
+    getItem(<Link to={"commentmanagement"}>Quản lý comment</Link>, '1', <PieChartOutlined />),
+    getItem(<Link to={"commentmanagement"}>Quản lý dịch vụ</Link>, '2', <PieChartOutlined />),
     getItem('User', 'sub1', <UserOutlined />, [
         getItem('Tom', '3'),
         getItem('Bill', '4'),
