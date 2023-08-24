@@ -67,7 +67,7 @@ export const EditComment = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="RangePicker"
+                    label="Ngày comment"
                     name="date"
                 >
                     <DatePicker />

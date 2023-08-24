@@ -55,7 +55,7 @@ export const AddService = () => {
                     <InputNumber />
                 </Form.Item>
 
-                <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
+                <Form.Item label="Ảnh" valuePropName="image" getValueFromEvent={normFile}>
                     <Upload action="/upload.do" listType="picture-card">
                         <div>
                             <PlusOutlined />

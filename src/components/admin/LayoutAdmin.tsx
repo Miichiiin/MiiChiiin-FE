@@ -33,6 +33,7 @@ const items: MenuItem[] = [
     getItem(<Link to={"commentmanagement"}>Quản lý comment</Link>, '1', <PieChartOutlined />),
     getItem(<Link to={"service"}>Quản lý dịch vụ</Link>, '2', <PieChartOutlined />),
     getItem(<Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>, '3', <PieChartOutlined />),
+    getItem(<Link to={"usermanagement"}>Quản lý khách hàng</Link>, '4', <PieChartOutlined />),
     getItem('User', 'sub1', <UserOutlined />, [
         getItem('Tom', ''),
         getItem('Bill', ''),
