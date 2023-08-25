@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
-    DesktopOutlined,
     FileOutlined,
     PieChartOutlined,
     TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
+import { AiFillSignal} from "react-icons/ai";
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { HeaderAdmin } from './Header';
@@ -27,9 +27,10 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-    getItem(<Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>, '1', <PieChartOutlined />),
-    getItem(<Link to={"managervouchers"}>Quản lý Vouchers</Link>, '2', <PieChartOutlined />),
-    getItem(<Link to={"manageremployee"}>Quản lý Nhân Viên</Link>, '3',  <UserOutlined />),
+    getItem(<Link to={"statisticshotels"}>Thống kê theo chuỗi </Link>, '1', <AiFillSignal />),
+    getItem(<Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>, '2', <PieChartOutlined />),
+    getItem(<Link to={"managervouchers"}>Quản lý Vouchers</Link>, '3', <PieChartOutlined />),
+    getItem(<Link to={"manageremployee"}>Quản lý Nhân Viên</Link>, '4',  <UserOutlined />),
     getItem('User', 'sub1', <UserOutlined />, [
         getItem('Tom', '3'),
         getItem('Bill', '4'),

@@ -9,6 +9,7 @@ import UpdateVoucherPage from "./features/admin/ManagerVoucher/UpdateVoucher";
 import { ManagerEmployee } from "./features/admin/ManagerEmployees";
 import AddEmployeePage from "./features/admin/ManagerEmployees/AddEmployee";
 import UpdateEmployeePage from "./features/admin/ManagerEmployees/UpdateEmployee";
+import HotelChainStatistics from "./features/admin/HotelStatistics";
 
 
 export const router = createBrowserRouter([
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
             {
                 path:"updateemployee",
                 element:<UpdateEmployeePage/>
+            },
+            {
+                path:"statisticshotels",
+                element:<HotelChainStatistics/>
             },
             
             
