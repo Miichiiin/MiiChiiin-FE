@@ -1,24 +1,24 @@
 
 import { Form, Input, InputNumber, Button, Upload, message, Select} from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, ArrowLeftOutlined} from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
 
-const UpdateRoomType = () => {
-  const onFinish = (values) => {
+const AddRoomType = () => {
+  const onFinish = (values:any) => {
     console.log('Form values:', values);
     // Gửi dữ liệu lên server hoặc xử lý theo yêu cầu của bạn
     message.success('Thêm loại phòng thành công!');
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo:any) => {
     console.log('Failed:', errorInfo);
   };
 
   return (
     <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-    <div className="text-lg font-semibold">Cập Nhật Loại Phòng</div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <div className="text-lg font-semibold">Thêm Loại Phòng</div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} />
             <Select
@@ -58,12 +58,14 @@ const UpdateRoomType = () => {
         ]}
       />
         </div>
-           <button className="ml-2 px-2 py-2 bg-red-500 text-white rounded-md">
-           <Link to={`/admin/`}>Quay lại</Link>
-            </button>
-    </div>
+        <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
+              <Link to={`/admin/`}>
+                <ArrowLeftOutlined /> Quay lại
+              </Link>
+        </Button>
+      </div>
 
-    <Form
+      <Form
   name="addRoomType"
   labelCol={{ span: 4 }}
   wrapperCol={{ span: 16 }}
@@ -113,13 +115,13 @@ const UpdateRoomType = () => {
 
   <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
     <Button type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>
-      Cập Nhật Loại Phòng
+      Thêm loại phòng
     </Button>
   </Form.Item>
-    </Form>
+      </Form>
 
     </div>
   );
 };
 
-export default UpdateRoomType;
+export default AddRoomType;
