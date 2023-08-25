@@ -75,7 +75,7 @@ export const ManagerRoomType = () => {
           >
             <Button danger>Xóa</Button>
           </Popconfirm>
-          <Button type="primary" danger className="ml-2">
+          <Button type="primary" danger className="ml-2 mt-1">
             <Link to={`/admin/updateroomtype`}>Sửa</Link>
           </Button>
         </div>

@@ -6,6 +6,9 @@ import UpdateRoomType from "./features/admin/ManageRoomType/UpdateRoomType";
 import { ManagerVouchers } from "./features/admin/ManagerVoucher";
 import AddVoucherPage from "./features/admin/ManagerVoucher/AddVoucher";
 import UpdateVoucherPage from "./features/admin/ManagerVoucher/UpdateVoucher";
+import { ManagerEmployee } from "./features/admin/ManagerEmployees";
+import AddEmployeePage from "./features/admin/ManagerEmployees/AddEmployee";
+import UpdateEmployeePage from "./features/admin/ManagerEmployees/UpdateEmployee";
 
 
 export const router = createBrowserRouter([
@@ -54,6 +57,18 @@ export const router = createBrowserRouter([
             {
                 path:"updatevoucher",
                 element:<UpdateVoucherPage/>
+            },
+            {
+                path:"manageremployee",
+                element:<ManagerEmployee/>
+            },
+            {
+                path:"addemployee",
+                element:<AddEmployeePage/>
+            },
+            {
+                path:"updateemployee",
+                element:<UpdateEmployeePage/>
             },
             
             

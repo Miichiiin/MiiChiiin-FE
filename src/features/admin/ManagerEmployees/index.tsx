@@ -4,21 +4,22 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
   import { useState } from "react";
   import { Link } from "react-router-dom";
   
-  export const ManagerVouchers = () => {
+  export const ManagerEmployee = () => {
     const [messageApi, contextHolder] = message.useMessage();
     interface DataType {
       key: string;
       name: string;
       img:string;
-      code:string;
-      type:string;
-      discount:number;
-      startday:string;
-      endday:string;
-      status:string;
-      sortdesc: string;
-      longdesc:string;
-      quantity: number;
+      national:string;
+      position:string;
+      id_card:number;
+      gender:string;
+      date_of_birth:string;
+      facility:string;
+      address: string;
+      email:string;
+      phone: number;
+
     }
   
     const columns: ColumnsType<DataType> = [
@@ -29,7 +30,7 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         render: (text) => <a>{text}</a>,
       },
       {
-        title: "Tên Voucher",
+        title: "Tên nhân viên",
         dataIndex: "name",
         key: "name",
       },
@@ -39,44 +40,49 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         key: "img",
       },
       {
-        title: "Mô tả ngắn",
-        dataIndex: "sortdesc",
-        key: "sortdesc",
+        title: "Căn cước",
+        dataIndex: "id_card",
+        key: "id_card",
       },
       {
-        title: "Loại voucher",
-        dataIndex: "type",
-        key: "type",
+        title: "Quốc tịch",
+        dataIndex: "national",
+        key: "national",
       },
       {
-        title: "Mô tả dài",
-        dataIndex: "longdesc",
-        key: "longdesc",
+        title: "Giới tính",
+        dataIndex: "gender",
+        key: "gender",
       },
       {
-        title: "Giá trị giảm",
-        dataIndex: "discount",
-        key: "discount",
+        title: "Ngày sinh",
+        dataIndex: "date_of_birth",
+        key: "date_of_birth",
       },
       {
-        title: "Ngày bắt đầu",
-        dataIndex: "startday",
-        key: "startday",
+        title: "Chức vụ",
+        dataIndex: "position",
+        key: "position",
       },
       {
-        title: "Ngày kết thúc",
-        dataIndex: "endday",
-        key: "endday",
+        title: "Cơ sở",
+        dataIndex: "facility",
+        key: "facility",
       },
       {
-        title: "Số lượng",
-        dataIndex: "quantity",
-        key: "quantity",
+        title: "Địa chỉ",
+        dataIndex: "address",
+        key: "address",
       },
       {
-        title: "Trạng thái",
-        dataIndex: "status",
-        key: "status",
+        title: "Sđt",
+        dataIndex: "phone",
+        key: "phone",
+      },
+      {
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
       },
       {
         render: ({ key: id }: { key: number | string }) => (
@@ -99,8 +105,8 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
             >
               <Button danger>Xóa</Button>
             </Popconfirm>
-            <Button type="primary" danger className="mt-2 ml-1">
-              <Link to={`/admin/updatevoucher`}>Sửa</Link>
+            <Button type="primary" danger className="mt-1 ml-1">
+              <Link to={`/admin/updateemployee`}>Sửa</Link>
             </Button>
           </div>
         ),
@@ -110,17 +116,18 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
     const data: DataType[] = [
       {
         key: "1",
-        name: "voucher Da Nang",
-        img:"loi 404",
-        code:"DN123",
-        type:"voucher",
-        discount:30,
-        startday:"24/8/2023",
-        endday:"24/9/2023",
-        status:"Van con",
-        sortdesc:"Oke con de",
-        longdesc:"Oke con de",
-        quantity: 50
+        name: "Nguyen Viet Anh",
+        img:"404",
+        national:"Viet Nam",
+        position:"Nhan vien",
+        id_card:123456,
+        gender:"Nam",
+        date_of_birth:"01/09/2003",
+        facility:"Da Nang",
+        address: "Dan Nang",
+        email:"va6622@gmail.com",
+        phone:+84346505993,
+      
       },
     ];
   
@@ -148,7 +155,7 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
             marginBottom: "16px",
           }}
         >
-          <div className="text-lg font-semibold">Quản Lý Vouchers</div>
+          <div className="text-lg font-semibold">Quản Lý Nhân Viên</div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Input.Search placeholder="Tìm kiếm" style={{ marginRight: "8px" }} />
             <Select
@@ -193,7 +200,7 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
             />
           </div>
           <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-            <Link to={`/admin/addvoucher`}>Thêm Voucher</Link>
+            <Link to={`/admin/addemployee`}>Thêm Nhân Viên</Link>
           </button>
         </div>
   

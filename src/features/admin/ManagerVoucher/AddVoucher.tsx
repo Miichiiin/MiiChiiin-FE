@@ -67,7 +67,7 @@ const AddVoucherPage = () => {
       />
         </div>
         <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
-              <Link to={`/admin/`}>
+              <Link to={`/admin/managervouchers`}>
                 <ArrowLeftOutlined /> Quay lại
               </Link>
         </Button>
