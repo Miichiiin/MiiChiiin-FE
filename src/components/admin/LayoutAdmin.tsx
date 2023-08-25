@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-    DesktopOutlined,
     FileOutlined,
     PieChartOutlined,
     TeamOutlined,
@@ -10,7 +9,11 @@ import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { HeaderAdmin } from './Header';
 import { Link, Outlet } from 'react-router-dom';
-
+import { BiCommentDetail } from 'react-icons/bi';
+import {MdMedicalServices} from 'react-icons/md'
+import {TbBrandBooking} from 'react-icons/tb'
+import {AiOutlineUser} from 'react-icons/ai'
+import {FaHotel} from 'react-icons/fa'
 const { Content, Footer, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -30,11 +33,11 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-    getItem(<Link to={"commentmanagement"}>Quản lý comment</Link>, '1', <PieChartOutlined />),
-    getItem(<Link to={"service"}>Quản lý dịch vụ</Link>, '2', <PieChartOutlined />),
-    getItem(<Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>, '3', <PieChartOutlined />),
-    getItem(<Link to={"usermanagement"}>Quản lý khách hàng</Link>, '4', <PieChartOutlined />),
-    getItem(<Link to={"hotelmanagement"}>Quản lý khách sạn</Link>, '5', <PieChartOutlined />),
+    getItem(<Link to={"commentmanagement"}>Quản lý comment</Link>, '1', <BiCommentDetail />),
+    getItem(<Link to={"service"}>Quản lý dịch vụ</Link>, '2', <MdMedicalServices />),
+    getItem(<Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>, '3', <TbBrandBooking />),
+    getItem(<Link to={"usermanagement"}>Quản lý khách hàng</Link>, '4', <AiOutlineUser />),
+    getItem(<Link to={"hotelmanagement"}>Quản lý khách sạn</Link>, '5', <FaHotel />),
     getItem('User', 'sub1', <UserOutlined />, [
         getItem('Tom', ''),
         getItem('Bill', ''),

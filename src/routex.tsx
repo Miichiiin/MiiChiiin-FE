@@ -8,6 +8,7 @@ import { BookingManagement } from "./features/admin/booking/BookingManagement";
 import { UserManagement } from "./features/admin/user/UserManagement";
 import { AddUser } from "./features/admin/user/AddUser";
 import { HotelManagement } from "./features/admin/hotel/HotelManagement";
+import { AddHotel } from "./features/admin/hotel/AddHotel";
 
 
 
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
             {
                 path: "hotelmanagement",
                 element: <HotelManagement/>,
+            },
+            {
+                path: "addhotel",
+                element: <AddHotel/>,
             },
         ],
     },
