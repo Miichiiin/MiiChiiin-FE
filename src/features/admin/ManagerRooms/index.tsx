@@ -1,25 +1,31 @@
-import { nanoid } from "@reduxjs/toolkit";
-import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd";
+import {
+    Table,
+    Divider,
+    Radio,
+    Input,
+    Select,
+    Button,
+    Popconfirm,
+    message,
+  } from "antd";
   import type { ColumnsType } from "antd/es/table";
   import { useState } from "react";
   import { Link } from "react-router-dom";
   
-  export const ManagerEmployee = () => {
+  export const ManagerRoom = () => {
     const [messageApi, contextHolder] = message.useMessage();
     interface DataType {
       key: string;
       name: string;
+      room_type:string;
+      status: string;
+      capacity: string;
+      price:number;
+      price_dropped:number;
+      convenient: string;
+      sortdesc: string;
+      longdesc:string;
       img:string;
-      national:string;
-      position:string;
-      id_card:number;
-      gender:string;
-      date_of_birth:string;
-      facility:string;
-      address: string;
-      email:string;
-      phone: number;
-
     }
   
     const columns: ColumnsType<DataType> = [
@@ -30,77 +36,71 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         render: (text) => <a>{text}</a>,
       },
       {
-        title: "Tên nhân viên",
+        title: "Tên phòng",
         dataIndex: "name",
         key: "name",
       },
       {
-        title: "Hình ảnh",
-        dataIndex: "img",
-        key: "img",
+        title: "Tên loại phòng",
+        dataIndex: "room_type",
+        key: "room_type",
       },
       {
-        title: "Căn cước",
-        dataIndex: "id_card",
-        key: "id_card",
+        title: "Trang thái",
+        dataIndex: "status",
+        key: "status",
       },
       {
-        title: "Quốc tịch",
-        dataIndex: "national",
-        key: "national",
+        title: "Sức chứa",
+        dataIndex: "capacity",
+        key: "capacity",
       },
       {
-        title: "Giới tính",
-        dataIndex: "gender",
-        key: "gender",
+        title: "Tiện nghi",
+        dataIndex: "convenient",
+        key: "convenient",
       },
       {
-        title: "Ngày sinh",
-        dataIndex: "date_of_birth",
-        key: "date_of_birth",
+        title: "Giá gốc",
+        dataIndex: "price",
+        key: "price",
       },
       {
-        title: "Chức vụ",
-        dataIndex: "position",
-        key: "position",
+        title: "Giá đã giảm",
+        dataIndex: "price_dropped",
+        key: "price_dropped",
       },
       {
-        title: "Cơ sở",
-        dataIndex: "facility",
-        key: "facility",
+        title: "Mô tả ngắn",
+        dataIndex: "sortdesc",
+        key: "sortdesc",
       },
       {
-        title: "Địa chỉ",
-        dataIndex: "address",
-        key: "address",
+        title: "Mô tả dài",
+        dataIndex: "longdesc",
+        key: "longdesc",
       },
       {
-        title: "Sđt",
-        dataIndex: "phone",
-        key: "phone",
+        title: "Ngày tạo",
+        dataIndex: "date_created",
+        key: "date_created",
       },
-      {
-        title: "Email",
-        dataIndex: "email",
-        key: "email",
-      },
+      
     ];
   
     const data: DataType[] = [
       {
         key: "1",
-        name: "Nguyen Viet Anh",
+        name: "301",
+        room_type:"Phòng đôi",
+        status:"Còn phong",
+        capacity:"2 người",
+        price:300,
+        price_dropped:199,
+        convenient: "Bể bơi, Buffet sáng",
+        sortdesc: "view biển",
+        longdesc:"Có ghế tình yêu",
         img:"404",
-        national:"Viet Nam",
-        position:"Nhan vien",
-        id_card:123456,
-        gender:"Nam",
-        date_of_birth:"01/09/2003",
-        facility:"Da Nang",
-        address: "Dan Nang",
-        email:"va6622@gmail.com",
-        phone:+84346505993,
-      
       },
     ];
   
@@ -128,7 +128,7 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
             marginBottom: "16px",
           }}
         >
-          <div className="text-lg font-semibold">Quản Lý Nhân Viên</div>
+          <div className="text-lg font-semibold">Quản Lý Phòng</div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Input.Search placeholder="Tìm kiếm" style={{ marginRight: "8px" }} />
             <Select
@@ -173,10 +173,10 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
             />
           </div>
           <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-            <Link to={`/admin/addemployee`}>Thêm Nhân Viên</Link>
+            <Link to={`/admin/addroom`}>Thêm phòng</Link>
           </button>
         </div>
-          <div>
+        <div>
             <Popconfirm
               title="Xóa sản phẩm"
               description="Bạn có muốn xóa không??"
@@ -195,11 +195,10 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
             >
               <Button danger>Xóa</Button>
             </Popconfirm>
-            <Button type="primary" danger className="mt-1 ml-1">
-              <Link to={`/admin/updateemployee`}>Sửa</Link>
+            <Button type="primary" danger className="ml-2 mt-1">
+              <Link to={`/admin/updateroom`}>Sửa</Link>
             </Button>
           </div>
-        
   
         <Radio.Group
           onChange={({ target: { value } }) => {
@@ -220,3 +219,4 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       </div>
     );
   };
+  

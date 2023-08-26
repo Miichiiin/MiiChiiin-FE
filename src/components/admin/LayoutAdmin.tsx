@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
     FileOutlined,
-    PieChartOutlined,
     TeamOutlined,
     UserOutlined,
+
 } from '@ant-design/icons';
-import { AiFillSignal} from "react-icons/ai";
+import { AiFillSignal,AiOutlineCreditCard} from "react-icons/ai";
+import { BiSolidBed,BiHotel } from "react-icons/bi";
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { HeaderAdmin } from './Header';
@@ -28,14 +29,12 @@ function getItem(
 
 const items: MenuItem[] = [
     getItem(<Link to={"statisticshotels"}>Thống kê theo chuỗi </Link>, '1', <AiFillSignal />),
-    getItem(<Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>, '2', <PieChartOutlined />),
-    getItem(<Link to={"managervouchers"}>Quản lý Vouchers</Link>, '3', <PieChartOutlined />),
+    getItem(<Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>, '2', <BiSolidBed />),
+    getItem(<Link to={"managervouchers"}>Quản lý Vouchers</Link>, '3', <AiOutlineCreditCard />),
     getItem(<Link to={"manageremployee"}>Quản lý Nhân Viên</Link>, '4',  <UserOutlined />),
-    getItem('User', 'sub1', <UserOutlined />, [
-        getItem('Tom', '3'),
-        getItem('Bill', '4'),
-        getItem('Alex', '5'),
-    ]),
+    getItem(<Link to={"managerroom"}>Quản lý Phòng</Link>, '5',  <BiHotel />),
+    getItem(<Link to={"manageremployee"}>Quản lý Feedbacks</Link>, '6',  <UserOutlined />),
+    
     getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     getItem('Files', '9', <FileOutlined />),
 ];

@@ -1,5 +1,5 @@
 
-import { Form, Input, InputNumber, Button, Upload, message, Select} from 'antd';
+import { Form, Input, InputNumber, Button, Upload, message} from 'antd';
 import { UploadOutlined, ArrowLeftOutlined} from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
@@ -19,45 +19,7 @@ const AddRoomType = () => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
       <div className="text-lg font-semibold">Thêm Loại Phòng</div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} />
-            <Select
-        showSearch
-        style={{ width: 200 }}
-        placeholder="Search to Select"
-        optionFilterProp="children"
-        filterOption={(input, option) => (option?.label ?? '').includes(input)}
-        filterSort={(optionA, optionB) =>
-          (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-        }
-        options={[
-          {
-            value: '1',
-            label: 'Not Identified',
-          },
-          {
-            value: '2',
-            label: 'Closed',
-          },
-          {
-            value: '3',
-            label: 'Communicated',
-          },
-          {
-            value: '4',
-            label: 'Identified',
-          },
-          {
-            value: '5',
-            label: 'Resolved',
-          },
-          {
-            value: '6',
-            label: 'Cancelled',
-          },
-        ]}
-      />
-        </div>
+        
         <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
               <Link to={`/admin/manageroomtype`}>
                 <ArrowLeftOutlined /> Quay lại

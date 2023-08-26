@@ -1,15 +1,18 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { LayoutAdmin } from "./components/admin/LayoutAdmin"; 
 import { ManagerRoomType } from "./features/admin/ManageRoomType";
-import AddRoomType from "./features/admin/ManageRoomType/AddManagerRoomType";
+import AddRoomType from "./features/admin/ManageRoomType/AddRoomType";
 import UpdateRoomType from "./features/admin/ManageRoomType/UpdateRoomType";
-import { ManagerVouchers } from "./features/admin/ManagerVoucher";
+import { ManagerVouchers} from "./features/admin/ManagerVoucher";
 import AddVoucherPage from "./features/admin/ManagerVoucher/AddVoucher";
 import UpdateVoucherPage from "./features/admin/ManagerVoucher/UpdateVoucher";
 import { ManagerEmployee } from "./features/admin/ManagerEmployees";
 import AddEmployeePage from "./features/admin/ManagerEmployees/AddEmployee";
 import UpdateEmployeePage from "./features/admin/ManagerEmployees/UpdateEmployee";
 import HotelChainStatistics from "./features/admin/HotelStatistics";
+import { ManagerRoom } from "./features/admin/ManagerRooms";
+import UpdateRoomPage from "./features/admin/ManagerRooms/UpdateRoom";
+import AddRoomPage from "./features/admin/ManagerRooms/AddRoom";
 
 
 export const router = createBrowserRouter([
@@ -33,7 +36,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <ManagerRoomType/>,
+                element: <HotelChainStatistics/>,
             },
             {
                 path: "manageroomtype",
@@ -74,6 +77,18 @@ export const router = createBrowserRouter([
             {
                 path:"statisticshotels",
                 element:<HotelChainStatistics/>
+            },
+            {
+                path:"managerroom",
+                element:<ManagerRoom/>
+            },
+            {
+                path:"addroom",
+                element:<AddRoomPage/>
+            },
+            {
+                path:"updateroom",
+                element:<UpdateRoomPage/>
             },
             
             

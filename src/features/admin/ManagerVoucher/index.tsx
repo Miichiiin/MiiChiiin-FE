@@ -1,4 +1,4 @@
-import { nanoid } from "@reduxjs/toolkit";
+
 import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd";
   import type { ColumnsType } from "antd/es/table";
   import { useState } from "react";
@@ -78,33 +78,7 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         dataIndex: "status",
         key: "status",
       },
-      {
-        render: ({ key: id }: { key: number | string }) => (
-          <div>
-            <Popconfirm
-              title="Xóa sản phẩm"
-              description="Bạn có muốn xóa không??"
-              onConfirm={() => {
-                // removeProduct(id)
-                //   .unwrap()
-                //   .then(() => {
-                //     messageApi.open({
-                //       type: "success",
-                //       content: "Xóa sản phẩm thành công",
-                //     });
-                //   });
-              }}
-              okText="Có"
-              cancelText="Không"
-            >
-              <Button danger>Xóa</Button>
-            </Popconfirm>
-            <Button type="primary" danger className="mt-2 ml-1">
-              <Link to={`/admin/updatevoucher`}>Sửa</Link>
-            </Button>
-          </div>
-        ),
-      },
+    
     ];
   
     const data: DataType[] = [
@@ -196,6 +170,29 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
             <Link to={`/admin/addvoucher`}>Thêm Voucher</Link>
           </button>
         </div>
+        <div>
+            <Popconfirm
+              title="Xóa sản phẩm"
+              description="Bạn có muốn xóa không??"
+              onConfirm={() => {
+                // removeProduct(id)
+                //   .unwrap()
+                //   .then(() => {
+                //     messageApi.open({
+                //       type: "success",
+                //       content: "Xóa sản phẩm thành công",
+                //     });
+                //   });
+              }}
+              okText="Có"
+              cancelText="Không"
+            >
+              <Button danger>Xóa</Button>
+            </Popconfirm>
+            <Button type="primary" danger className="mt-2 ml-1">
+              <Link to={`/admin/updatevoucher`}>Sửa</Link>
+            </Button>
+          </div>
   
         <Radio.Group
           onChange={({ target: { value } }) => {
