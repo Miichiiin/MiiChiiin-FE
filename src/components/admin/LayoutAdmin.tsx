@@ -33,7 +33,7 @@ const items: MenuItem[] = [
     getItem(<Link to={"managervouchers"}>Quản lý Vouchers</Link>, '3', <AiOutlineCreditCard />),
     getItem(<Link to={"manageremployee"}>Quản lý Nhân Viên</Link>, '4',  <UserOutlined />),
     getItem(<Link to={"managerroom"}>Quản lý Phòng</Link>, '5',  <BiHotel />),
-    getItem(<Link to={"manageremployee"}>Quản lý Feedbacks</Link>, '6',  <UserOutlined />),
+    getItem(<Link to={"managerfeedback"}>Quản lý Feedbacks</Link>, '6',  <UserOutlined />),
     
     getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     getItem('Files', '9', <FileOutlined />),
