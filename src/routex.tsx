@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { LayoutAdmin } from "./components/admin/LayoutAdmin"; 
-import { ManagerRoomType } from "./features/admin/ManageRoomType";
-import AddRoomType from "./features/admin/ManageRoomType/AddRoomType";
-import UpdateRoomType from "./features/admin/ManageRoomType/UpdateRoomType";
+import { ManagerRoomType } from "./features/admin/ManagerRoomType";
+import AddRoomType from "./features/admin/ManagerRoomType/AddRoomType";
+import UpdateRoomType from "./features/admin/ManagerRoomType/UpdateRoomType";
 import { ManagerVouchers} from "./features/admin/ManagerVoucher";
 import AddVoucherPage from "./features/admin/ManagerVoucher/AddVoucher";
 import UpdateVoucherPage from "./features/admin/ManagerVoucher/UpdateVoucher";
