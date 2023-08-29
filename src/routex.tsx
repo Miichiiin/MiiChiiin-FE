@@ -4,6 +4,7 @@ import LayoutWebsite from "./components/LayoutPage";
 import New from "./features/webapp/New";
 import HotelIntroduction from "./features/webapp/HotelIntroduction";
 import BookingInformation from "./features/webapp/BookingInformation";
+import HotelType from "./features/webapp/HotelType";
 
 
 
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
             {
                 path:"/hotel",
                 element:<HotelIntroduction/>
+            },
+            {
+                path:"/hoteltype",
+                element:<HotelType/>
             },
             {
                 path:"/new",
