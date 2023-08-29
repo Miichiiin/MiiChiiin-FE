@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "./features/webapp/auth/Login/login";
 import ChooseRoom from "./features/webapp/booking/choose-room";
+import ChooseService from "./features/webapp/booking/choose-service";
 
 
 
@@ -22,8 +23,8 @@ export const router = createBrowserRouter([
         element: <Login/>
     },
     {
-        path: "/choose-room",
-        element: <ChooseRoom/>
+        path: "/choose-service",
+        element: <ChooseService/>
     },
 
     {
