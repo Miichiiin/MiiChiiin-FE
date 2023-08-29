@@ -1,18 +1,26 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import Index from "./components/Index";
+import LayoutWebsite from "./components/LayoutPage";
 
 
 
 export const router = createBrowserRouter([
     {
-        path: "/",
+        path: "/", 
         element: (
-            <div></div>
+            <div>
+                <LayoutWebsite/>
+            </div>
         ),
         children: [
             {
                 index: true,
-                element: <Navigate to="/homepage" />,
+                element: <Navigate to="/homepage" /> ,
             },
+            {
+                path:"/homepage",
+                element:<Index/>
+            }
         ],
     },
     {
