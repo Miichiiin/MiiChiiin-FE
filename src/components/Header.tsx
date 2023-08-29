@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineEnvironment} from "react-icons/ai";
 import video from '../video/vdeo.mp4'
-import "../page/css/index.css"
+import "../components/Css/index.css"
 const Header = () => {
     /*Hàm Dropdow*/ 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
