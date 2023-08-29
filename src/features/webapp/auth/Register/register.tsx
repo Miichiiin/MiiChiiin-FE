@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BsGoogle } from 'react-icons/bs'
+import { Link } from 'react-router-dom';
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -56,41 +57,34 @@ const Register = () => {
     const isFormValid = emailError === '' && passwordError === '' && confirmPasswordError === '' && usernameError === '';
 
     return (
-        <div className="body mx-auto items-center">
+        <div className="mx-auto items-center h-screen bg-[url('https://res.cloudinary.com/chuoi2taps/image/upload/v1692668816/wallpaperflare.com_wallpaper_jsnfw2.jpg')] bg-no-repeat bg-fixed bg-cover brightness-[100%]">
             <div className="" >
                 <div className="flex justify-center items-center ">
-                    <div className="">
-                        <img src="https://decofuni.vn/Upload/images/tin-tuc/miniresort-dep.jpg" alt="" className="h-screen" />
-                    </div>
-                    <div className="w-[768px] h-screen px-5">
-                        <h1 className="text-center text-uppercase pt-10 pb-5 text-3xl ">Login</h1>
-                        <form className="">
+                    <div className="w-[768px] px-5 mt-[135px] bg-blue-300 opacity-90 shadow-lg rounded-lg pb-3">
+                        <h1 className="text-center uppercase pt-10 pb-5 text-3xl font-bold italic ">Register</h1>
+                        <form>
                             <div className="">
-                                <label >Email address </label>
                                 <input type="text" id="email" name="email" placeholder="Email address" value={email}
                                     onChange={handleEmailChange}
-                                    className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300" />
+                                    className="border-b-2 rounded w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none focus:text-white focus:border-blue-300 outline-none bg-blue-300 placeholder:italic placeholder:font-bold text-white placeholder:text-blue-700" />
                             </div>
                             {emailError && <p className="error text-red-500 pb-2 text-sm">{emailError}</p>}
                             <div className="">
-                                <label >Username </label>
                                 <input type="text" id="username" name="username" placeholder="Username " value={username}
                                     onChange={handleUsernameChange}
-                                    className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300" />
+                                    className="border-b-2 rounded w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none focus:text-white focus:border-blue-300 outline-none bg-blue-300 placeholder:italic placeholder:font-bold text-white placeholder:text-blue-700" />
                             </div>
                             {usernameError && <p className="error text-red-500 pb-2 text-sm">{usernameError}</p>}
                             <div className="">
-                                <label >Password</label>
                                 <input type="password" id="password" name="password" placeholder="Password" value={password}
                                     onChange={handlePasswordChange}
-                                    className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300" />
+                                    className="border-b-2 rounded w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none focus:text-white focus:border-blue-300 outline-none bg-blue-300 placeholder:italic placeholder:font-bold text-white placeholder:text-blue-700" />
                             </div>
                             {passwordError && <p className="error text-red-500 text-sm">{passwordError}</p>}
                             <div className="">
-                                <label >Confirm Password</label>
                                 <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" value={confirmPassword}
                                     onChange={handleConfirmPasswordChange}
-                                    className="border-2 w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none px-2 focus:border-blue-300" />
+                                    className="border-b-2 rounded w-full py-2 my-2 transition ease-in-out m-0 focus:outline-none focus:text-white focus:border-blue-300 outline-none bg-blue-300 placeholder:italic placeholder:font-bold text-white placeholder:text-blue-700" />
                             </div>
                             {confirmPasswordError && <p className="error text-red-500 pb-2 text-sm">{confirmPasswordError}</p>}
                             <div className="py-2 flex justify-between items-center">
@@ -107,8 +101,7 @@ const Register = () => {
                             <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded w-full" disabled={!isFormValid}>Đăng ký / Sign up</button>
                             <hr className="mt-5 pb-5" />
                             <div>
-                                <p className="py-4 text-center">You have an account ? <a href=""
-                                    className="hover:text-blue-700 text-blue-500 font-bold">Login here</a></p>
+                                <p className="py-4 text-center">You have an account ? <Link className="hover:text-blue-700 text-blue-500 font-bold" to={"/login"}>Login here</Link> </p>
 
                                 <div className="flex justify-center gap-6">
                                     <button className='text-white  bg-red-500 hover:bg-red-400 focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-3 text-center inline-flex items-center justify-between'><BsGoogle className='text-xl' /><span className='px-2'>Login with Google</span></button>

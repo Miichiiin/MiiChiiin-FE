@@ -1,6 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "./features/webapp/auth/Login/login";
 import Register from "./features/webapp/auth/Register/register";
+import RoomDetail from "./features/webapp/rooms/room-detail";
+import ChooseRoom from "./features/webapp/booking/choose-room";
 
 
 
@@ -26,9 +28,13 @@ export const router = createBrowserRouter([
         element: <Register/>
     },
     {
+        path: '/choose-room',
+        element: <ChooseRoom/>
+    },
+    {
         path: "/admin",
         element: (
-          <div></div>
+          <div>Admin</div>
         ),
         children: [
             {
