@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Index from "./components/Index";
 import LayoutWebsite from "./components/LayoutPage";
 import New from "./features/webapp/New";
+import HotelIntroduction from "./features/webapp/HotelIntroduction";
 
 
 
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
             {
                 path:"/homepage",
                 element:<Index/>
+            },
+            {
+                path:"/hotel",
+                element:<HotelIntroduction/>
             },
             {
                 path:"/new",

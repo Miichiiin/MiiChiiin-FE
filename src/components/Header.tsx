@@ -69,7 +69,7 @@ const Header = () => {
                                             <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000">
                                                 <div className="leading-[45px]">
                                                     <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]"><AiOutlineEnvironment/> <span>Phú Quốc</span></span>
-                                                    <p className="text-[12px] hover:text-[#f2ba50]"><a href="">VinHolidays Fiesta Phú Quốc</a></p>
+                                                    <p className="text-[12px] hover:text-[#f2ba50]"><a href="/hotel">VinHolidays Fiesta Phú Quốc</a></p>
                                                     <p className="text-[12px] hover:text-[#f2ba50]"><a href="">Vinpearl Wonderworld Phú Quốc</a></p>
                                                     <p className="text-[12px] hover:text-[#f2ba50]"><a href="">Vinpearl Resort & Spa Phú Quốc</a></p>
                                                 </div>
