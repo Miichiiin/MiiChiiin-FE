@@ -3,6 +3,7 @@ import Index from "./components/Index";
 import LayoutWebsite from "./components/LayoutPage";
 import New from "./features/webapp/New";
 import HotelIntroduction from "./features/webapp/HotelIntroduction";
+import BookingInformation from "./features/webapp/BookingInformation";
 
 
 
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
             {
                 path:"/new",
                 element:<New/>
+            },
+            {
+                path:"/booking",
+                element:<BookingInformation/>
             }
         ],
     },
