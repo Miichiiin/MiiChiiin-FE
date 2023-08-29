@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Index from "./components/Index";
 import LayoutWebsite from "./components/LayoutPage";
+import New from "./features/webapp/New";
 
 
 
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
             {
                 path:"/homepage",
                 element:<Index/>
+            },
+            {
+                path:"/new",
+                element:<New/>
             }
         ],
     },

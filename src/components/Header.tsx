@@ -125,7 +125,7 @@ const Header = () => {
                                     </li>
                                     <li className="h-[40px] after-3"><a href="">Ưu đãi khuyến mãi</a></li>
                                     <li className="h-[40px] after-3">
-                                        <a href="">New</a>
+                                        <a href="/new">New</a>
                                     </li>
                                 </ul>
                                 <button className="h-[40px] pb-3 lg:hidden ml-5"><AiOutlineMenu/></button>
