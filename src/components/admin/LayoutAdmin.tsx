@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import {
-    DesktopOutlined,
     FileOutlined,
-    PieChartOutlined,
     TeamOutlined,
     UserOutlined,
+
 } from '@ant-design/icons';
+import { AiFillSignal,AiOutlineCreditCard} from "react-icons/ai";
+import { BiSolidBed,BiHotel } from "react-icons/bi";
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { HeaderAdmin } from './Header';
-import { Outlet } from 'react-router-dom';
-
+import { Link, Outlet } from 'react-router-dom';
 const { Content, Footer, Sider } = Layout;
-
 type MenuItem = Required<MenuProps>['items'][number];
-
 function getItem(
     label: React.ReactNode,
     key: React.Key,
@@ -30,17 +28,16 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-    getItem('Option 1', '1', <PieChartOutlined />),
-    getItem('Option 2', '2', <DesktopOutlined />),
-    getItem('User', 'sub1', <UserOutlined />, [
-        getItem('Tom', '3'),
-        getItem('Bill', '4'),
-        getItem('Alex', '5'),
-    ]),
+    getItem(<Link to={"statisticshotels"}>Thống kê theo chuỗi </Link>, '1', <AiFillSignal />),
+    getItem(<Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>, '2', <BiSolidBed />),
+    getItem(<Link to={"managervouchers"}>Quản lý Vouchers</Link>, '3', <AiOutlineCreditCard />),
+    getItem(<Link to={"manageremployee"}>Quản lý Nhân Viên</Link>, '4',  <UserOutlined />),
+    getItem(<Link to={"managerroom"}>Quản lý Phòng</Link>, '5',  <BiHotel />),
+    getItem(<Link to={"managerfeedback"}>Quản lý Feedbacks</Link>, '6',  <UserOutlined />),
+    
     getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     getItem('Files', '9', <FileOutlined />),
 ];
-
 export const LayoutAdmin = () => {
     const [collapsed, setCollapsed] = useState(false);
     const {
@@ -59,8 +56,11 @@ export const LayoutAdmin = () => {
               <HeaderAdmin/>
                 <Content style={{ margin: '0 16px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>User</Breadcrumb.Item>
-                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        <Link to="/admin">Thống kê</Link>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item></Breadcrumb.Item>
+                        <Breadcrumb.Item></Breadcrumb.Item>
                     </Breadcrumb>
                     <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
                        <Outlet/>
