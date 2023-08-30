@@ -15,7 +15,6 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       id_card:number;
       gender:string;
       date_of_birth:string;
-      facility:string;
       address: string;
       email:string;
       phone: number;
@@ -65,11 +64,6 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         key: "position",
       },
       {
-        title: "Cơ sở",
-        dataIndex: "facility",
-        key: "facility",
-      },
-      {
         title: "Địa chỉ",
         dataIndex: "address",
         key: "address",
@@ -96,7 +90,6 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         id_card:123456,
         gender:"Nam",
         date_of_birth:"01/09/2003",
-        facility:"Da Nang",
         address: "Dan Nang",
         email:"va6622@gmail.com",
         phone:+84346505993,

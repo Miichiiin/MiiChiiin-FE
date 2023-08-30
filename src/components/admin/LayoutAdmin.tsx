@@ -56,8 +56,11 @@ export const LayoutAdmin = () => {
               <HeaderAdmin/>
                 <Content style={{ margin: '0 16px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>User</Breadcrumb.Item>
-                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        <Link to="/admin">Thống kê</Link>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item></Breadcrumb.Item>
+                        <Breadcrumb.Item></Breadcrumb.Item>
                     </Breadcrumb>
                     <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
                        <Outlet/>

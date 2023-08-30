@@ -15,6 +15,7 @@ import UpdateRoomPage from "./features/admin/ManagerRooms/UpdateRoom";
 import AddRoomPage from "./features/admin/ManagerRooms/AddRoom";
 import { ManagerRoom } from "./features/admin/ManagerRooms";
 import { ManagerFeedBack } from "./features/admin/ManagerFeedBacks";
+import UpdateFeedBackPage from "./features/admin/ManagerFeedBacks/UpdateFeedBack";
 
 
 
@@ -96,6 +97,10 @@ export const router = createBrowserRouter([
             {
                 path:"managerfeedback",
                 element:<ManagerFeedBack/>
+            },
+            {
+                path:"updatefeedback",
+                element:<UpdateFeedBackPage/>
             },
             
             

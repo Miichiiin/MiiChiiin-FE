@@ -107,7 +107,7 @@ import {
             marginBottom: "16px",
           }}
         >
-          <div className="text-lg font-semibold">Quản FeedBack</div>
+          <div className="text-lg font-semibold">Quản Lý FeedBack</div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Input.Search placeholder="Tìm kiếm" style={{ marginRight: "8px" }} />
             <Select
@@ -173,7 +173,7 @@ import {
               <Button danger>Xóa</Button>
             </Popconfirm>
             <Button type="primary" danger className="ml-2 mt-1">
-              <Link to={`/admin/updateroom`}>Sửa</Link>
+              <Link to={`/admin/updatefeedback`}>Sửa</Link>
             </Button>
           </div>
   

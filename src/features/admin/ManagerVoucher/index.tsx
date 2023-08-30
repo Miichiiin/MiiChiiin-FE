@@ -10,7 +10,6 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       key: string;
       name: string;
       img:string;
-      code:string;
       type:string;
       discount:number;
       startday:string;
@@ -86,7 +85,6 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         key: "1",
         name: "voucher Da Nang",
         img:"loi 404",
-        code:"DN123",
         type:"voucher",
         discount:30,
         startday:"24/8/2023",
