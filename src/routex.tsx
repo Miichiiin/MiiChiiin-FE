@@ -26,6 +26,12 @@ import { AddUser } from "./features/admin/user/AddUser";
 import { HotelManagement } from "./features/admin/hotel/HotelManagement";
 import { AddHotel } from "./features/admin/hotel/AddHotel";
 
+import ChooseRoom from "./features/webapp/booking/choose-room";
+import RoomTypes from "./features/webapp/hotels/rooms/typeofroom";
+import ChooseService from "./features/webapp/booking/choose-service";
+import Login from "./features/webapp/auth/Login/login";
+import Register from "./features/webapp/auth/Register/register";
+import DetailTypeofRoom from "./features/webapp/hotels/rooms/detail-typeofroom";
 
 
 
@@ -33,7 +39,7 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            <div></div>
+            <div>Layout</div>
         ),
         children: [
             {
@@ -43,6 +49,33 @@ export const router = createBrowserRouter([
            
         ],
     },
+    {
+        path: '/hotels/rooms/roomtypes',
+        element: <RoomTypes/>
+    },
+    {
+        path: '/hotels/rooms/detail',
+        element: <DetailTypeofRoom/>
+    },
+    {
+        path: "/choose-service",
+        element: <ChooseService/>
+    },
+    {
+        path: "/choose-room",
+        element: <ChooseRoom/>
+    },
+    {
+        path: '/register',
+        element: <Register/>
+    },
+    {
+        path: '/login',
+        element: <Login/>
+    },
+
+
+    
     {
         path: "/admin",
         element: (
