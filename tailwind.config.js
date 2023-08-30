@@ -5,4 +5,7 @@ export default {
         extend: {},
     },
     plugins: [],
+    options: {
+        whitelist: ['antd'], // Giữ các lớp CSS của Antd không bị xóa
+      },
 };

@@ -11,6 +11,11 @@ import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { HeaderAdmin } from './Header';
 import { Link, Outlet } from 'react-router-dom';
+import { BiCommentDetail } from 'react-icons/bi';
+import {MdMedicalServices} from 'react-icons/md'
+import {TbBrandBooking} from 'react-icons/tb'
+import {AiOutlineUser} from 'react-icons/ai'
+import {FaHotel} from 'react-icons/fa'
 const { Content, Footer, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
@@ -35,8 +40,18 @@ const items: MenuItem[] = [
     getItem(<Link to={"managerroom"}>Quản lý Phòng</Link>, '5',  <BiHotel />),
     getItem(<Link to={"managerfeedback"}>Quản lý Feedbacks</Link>, '6',  <UserOutlined />),
     
-    getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-    getItem('Files', '9', <FileOutlined />),
+    getItem(<Link to={"commentmanagement"}>Quản lý comment</Link>, '7', <BiCommentDetail />),
+    getItem(<Link to={"service"}>Quản lý dịch vụ</Link>, '8', <MdMedicalServices />),
+    getItem(<Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>, '9', <TbBrandBooking />),
+    getItem(<Link to={"usermanagement"}>Quản lý khách hàng</Link>, '10', <AiOutlineUser />),
+    getItem(<Link to={"hotelmanagement"}>Quản lý khách sạn</Link>, '11', <FaHotel />),
+    // getItem('User', 'sub1', <UserOutlined />, [
+    //     getItem('Tom', ''),
+    //     getItem('Bill', ''),
+    //     getItem('Alex', ''),
+    // ]),
+    // getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+    // getItem('Files', '9', <FileOutlined />),
 ];
 export const LayoutAdmin = () => {
     const [collapsed, setCollapsed] = useState(false);
