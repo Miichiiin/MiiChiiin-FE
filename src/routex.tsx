@@ -1,9 +1,10 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ChooseRoom from "./features/webapp/booking/choose-room";
-import RoomTypes from "./features/webapp/hotels/rooms/roomtypes";
+import RoomTypes from "./features/webapp/hotels/rooms/typeofroom";
 import ChooseService from "./features/webapp/booking/choose-service";
 import Login from "./features/webapp/auth/Login/login";
 import Register from "./features/webapp/auth/Register/register";
+import DetailTypeofRoom from "./features/webapp/hotels/rooms/detail-typeofroom";
 
 
 
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
     {
         path: '/hotels/rooms/roomtypes',
         element: <RoomTypes/>
+    },
+    {
+        path: '/hotels/rooms/detail',
+        element: <DetailTypeofRoom/>
     },
     {
         path: "/choose-service",
