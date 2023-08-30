@@ -132,7 +132,7 @@ const AddEmployeePage = () => {
           </Upload>
         </Form.Item>
     <Form.Item>
-      <Button type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>Add Voucher</Button>
+      <Button type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>Thêm nhân viên</Button>
     </Form.Item>
   </div>
 </Form>
