@@ -1,9 +1,9 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { LayoutAdmin } from "./components/admin/LayoutAdmin"; 
+import { LayoutAdmin } from "./components/admin/LayoutAdmin";
 import { ManagerRoomType } from "./features/admin/ManagerRoomType";
 import AddRoomType from "./features/admin/ManagerRoomType/AddRoomType";
 import UpdateRoomType from "./features/admin/ManagerRoomType/UpdateRoomType";
-import { ManagerVouchers} from "./features/admin/ManagerVoucher";
+import { ManagerVouchers } from "./features/admin/ManagerVoucher";
 import AddVoucherPage from "./features/admin/ManagerVoucher/AddVoucher";
 import UpdateVoucherPage from "./features/admin/ManagerVoucher/UpdateVoucher";
 import { ManagerEmployee } from "./features/admin/ManagerEmployees";
@@ -32,6 +32,12 @@ import ChooseService from "./features/webapp/booking/choose-service";
 import Login from "./features/webapp/auth/Login/login";
 import Register from "./features/webapp/auth/Register/register";
 import DetailTypeofRoom from "./features/webapp/hotels/rooms/detail-typeofroom";
+import Index from "./components/Index";
+import LayoutWebsite from "./components/LayoutPage";
+import New from "./features/webapp/New";
+import HotelIntroduction from "./features/webapp/HotelIntroduction";
+import BookingInformation from "./features/webapp/BookingInformation";
+import HotelType from "./features/webapp/HotelType";
 
 
 
@@ -39,43 +45,65 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            <div>Layout</div>
+            <div>
+                <LayoutWebsite />
+            </div>
         ),
         children: [
             {
                 index: true,
                 element: <Navigate to="/homepage" />,
-            }, 
-           
+            },
+            {
+                path: "/homepage",
+                element: <Index />
+            },
+            {
+                path: "/hotel",
+                element: <HotelIntroduction />
+            },
+            {
+                path: "/hoteltype",
+                element: <HotelType />
+            },
+            {
+                path: "/new",
+                element: <New />
+            },
+            {
+                path: "/booking",
+                element: <BookingInformation />
+            },
+            {
+                path: '/hotels/rooms/roomtypes',
+                element: <RoomTypes />
+            },
+            {
+                path: '/hotels/rooms/detail',
+                element: <DetailTypeofRoom />
+            },
+            {
+                path: "/choose-service",
+                element: <ChooseService />
+            },
+            {
+                path: "/choose-room",
+                element: <ChooseRoom />
+            },
+            {
+                path: '/register',
+                element: <Register />
+            },
+            {
+                path: '/login',
+                element: <Login />
+            },
+
         ],
     },
-    {
-        path: '/hotels/rooms/roomtypes',
-        element: <RoomTypes/>
-    },
-    {
-        path: '/hotels/rooms/detail',
-        element: <DetailTypeofRoom/>
-    },
-    {
-        path: "/choose-service",
-        element: <ChooseService/>
-    },
-    {
-        path: "/choose-room",
-        element: <ChooseRoom/>
-    },
-    {
-        path: '/register',
-        element: <Register/>
-    },
-    {
-        path: '/login',
-        element: <Login/>
-    },
 
 
-    
+
     {
         path: "/admin",
         element: (
@@ -84,11 +112,11 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <HotelChainStatistics/>,
+                element: <HotelChainStatistics />,
             },
             {
                 path: "manageroomtype",
-                element: <ManagerRoomType/>,
+                element: <ManagerRoomType />,
             },
             {
                 path: "commentmanagement",
@@ -96,95 +124,95 @@ export const router = createBrowserRouter([
             },
             {
                 path: "editcomment",
-                element: <EditComment/>,
+                element: <EditComment />,
             },
             {
                 path: "service",
-                element: <ServiceManagement/>,
+                element: <ServiceManagement />,
             },
             {
                 path: "addservice",
-                element: <AddService/>,
+                element: <AddService />,
             },
             {
                 path: "bookingmanagement",
-                element: <BookingManagement/>,
+                element: <BookingManagement />,
             },
             {
                 path: "usermanagement",
-                element: <UserManagement/>,
+                element: <UserManagement />,
             },
             {
                 path: "adduser",
-                element: <AddUser/>,
+                element: <AddUser />,
             },
             {
                 path: "hotelmanagement",
-                element: <HotelManagement/>,
+                element: <HotelManagement />,
             },
             {
                 path: "addhotel",
-                element: <AddHotel/>,
+                element: <AddHotel />,
             },
             {
                 path: "addroomtype",
-                element: <AddRoomType/>,
+                element: <AddRoomType />,
             },
             {
                 path: "updateroomtype",
-                element: <UpdateRoomType/>,
+                element: <UpdateRoomType />,
             },
             {
-                path:"managervouchers",
-                element:<ManagerVouchers/>,
+                path: "managervouchers",
+                element: <ManagerVouchers />,
             },
             {
-                path:"addvoucher",
-                element:<AddVoucherPage/>
+                path: "addvoucher",
+                element: <AddVoucherPage />
             },
             {
-                path:"updatevoucher",
-                element:<UpdateVoucherPage/>
+                path: "updatevoucher",
+                element: <UpdateVoucherPage />
             },
             {
-                path:"manageremployee",
-                element:<ManagerEmployee/>
+                path: "manageremployee",
+                element: <ManagerEmployee />
             },
             {
-                path:"addemployee",
-                element:<AddEmployeePage/>
+                path: "addemployee",
+                element: <AddEmployeePage />
             },
             {
-                path:"updateemployee",
-                element:<UpdateEmployeePage/>
+                path: "updateemployee",
+                element: <UpdateEmployeePage />
             },
             {
-                path:"statisticshotels",
-                element:<HotelChainStatistics/>
+                path: "statisticshotels",
+                element: <HotelChainStatistics />
             },
             {
-                path:"managerroom",
-                element:<ManagerRoom/>
+                path: "managerroom",
+                element: <ManagerRoom />
             },
             {
-                path:"addroom",
-                element:<AddRoomPage/>
+                path: "addroom",
+                element: <AddRoomPage />
             },
             {
-                path:"updateroom",
-                element:<UpdateRoomPage/>
+                path: "updateroom",
+                element: <UpdateRoomPage />
             },
             {
-                path:"managerfeedback",
-                element:<ManagerFeedBack/>
+                path: "managerfeedback",
+                element: <ManagerFeedBack />
             },
             {
-                path:"updatefeedback",
-                element:<UpdateFeedBackPage/>
+                path: "updatefeedback",
+                element: <UpdateFeedBackPage />
             },
-            
-            
-            
+
+
+
         ],
     },
 ]);
