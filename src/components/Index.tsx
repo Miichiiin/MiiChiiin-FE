@@ -4,6 +4,8 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import React from "react";
 import { TextTruncate} from "../components/TextTruncate"
+import Header from "./Header";
+import Search from "./Search";
 const Index = () => {
     let settings = {
         dots: false,
@@ -28,6 +30,8 @@ const Index = () => {
       };
   return (
     <div>
+        <Header/>
+        <Search/>
         <div className="mt-7 bg-[#fbf8f2] w-full pb-8">
             <div className="w-[1280px] mx-auto">
                 <h1 className="text-[30px] pt-10 pb-6">Trải nghiệm hệ sinh thái Vinpearl</h1>

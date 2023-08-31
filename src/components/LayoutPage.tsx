@@ -7,8 +7,8 @@ import Footer from "./Footer";
 
 const LayoutWebsite = () => {
     return <div>
-        <Header/>
-        <Search/>
+        {/* <Header/> */}
+        {/* <Search/> */}
         <Outlet/>
         <Footer/>
     </div>;

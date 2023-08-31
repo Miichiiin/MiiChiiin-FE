@@ -28,3 +28,8 @@
     after:bottom-2 after:left-0 after:bg-white after:h-0.5 after:w-0 hover:after:w-full after:transition-all
     after:ease-in-out after:duration-300;
 }
+.after-4 {
+    @apply cursor-pointer py-1  relative after:absolute
+    after:bottom-2 after:left-0 after:bg-[#e8952f] after:h-0.5 after:w-0 hover:after:w-full after:transition-all
+    after:ease-in-out after:duration-300;
+}
