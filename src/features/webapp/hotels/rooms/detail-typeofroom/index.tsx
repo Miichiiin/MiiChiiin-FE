@@ -1,5 +1,5 @@
-import { AiOutlineHeart,AiOutlineClose } from 'react-icons/ai'
-import { BsPeople,BsChevronCompactRight,BsChevronCompactLeft } from 'react-icons/bs'
+import { AiOutlineHeart, AiOutlineClose, AiOutlineInfoCircle, AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import { BsPeople, BsChevronCompactRight, BsChevronCompactLeft } from 'react-icons/bs'
 import { MdOutlineBed } from 'react-icons/md'
 import React, { useState } from 'react';
 import Modal from 'react-modal';
@@ -83,13 +83,13 @@ const DetailTypeofRoom = () => {
                   className='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded'
                   onClick={showPreviousImage}
                 >
-                  <BsChevronCompactLeft/>
+                  <BsChevronCompactLeft />
                 </button>
                 <button
                   className='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded'
                   onClick={showNextImage}
                 >
-                  <BsChevronCompactRight/>
+                  <BsChevronCompactRight />
                 </button>
               </div>
             </div>
@@ -101,13 +101,62 @@ const DetailTypeofRoom = () => {
         <h1 className='text-xl font-semibold pb-2'>Biệt thự 2 phòng ngủ</h1>
         <p className='text-md pb-2'>Với diện tích từ 261 m², Biệt thự 2 phòng ngủ là biệt thự thiết kế thông minh, tích hợp đầy đủ tiện nghi cho kỳ lưu trú của bạn. Biệt thự có khoảng sân vườn rộng rãi với thiên nhiên xanh mát bên ngoài cửa sổ. Với 2 phòng ngủ, biệt thự phù hợp với nhiều đối tượng khách hàng, từ các cặp vợ chồng đi hưởng tuần trăng mật, tới những nhóm bạn trẻ năng động, hay những gia đình yêu thích khám phá, những doanh nhân kết hợp giữa đi sự kiện và cùng gia đình tận hưởng.</p>
         <h1 className='text-xl font-semibold pb-2'>Tiện nghi</h1>
-        <div className='grid grid-cols-5 gap-2'>
+        <div className='grid grid-cols-5 gap-2 pb-2'>
           <h1 className='flex items-center text-md'><BsPeople /><span className='px-2'>8 người</span></h1>
           <h1 className='flex items-center text-md'><MdOutlineBed /><span className='px-2'>Giường lớn</span></h1>
           <h1 className='flex items-center text-md'><BsPeople /><span className='px-2'>8 người</span></h1>
           <h1 className='flex items-center text-md'><MdOutlineBed /><span className='px-2'>Giường lớn</span></h1>
           <h1 className='flex items-center text-md'><BsPeople /><span className='px-2'>8 người</span></h1>
           <h1 className='flex items-center text-md'><MdOutlineBed /><span className='px-2'>Giường lớn</span></h1>
+        </div>
+        <div className='pb-2'>
+          <h1 className='text-xl font-semibold pb-4'>Đánh giá</h1>
+          {/*Show ra đánh giá*/}
+          <div className='comment-list grid grid-cols-2 gap-4 pb-5'>
+            <div className='comment column'>
+              <div className="small-column py-2 flex items-center">
+                <div className="border rounded-full bg-blue-300 w-16 h-16 flex justify-center items-center">
+                  <span className="text-xl">Q</span>
+                </div>
+                <h1 className="text-xl px-3">31/08/2023
+                  <br />
+                  Khách Hàng : <span className="font-bold ">T****n</span>
+                </h1>
+                <h1 className="text-xl px-3"><span className='font-semibold italic'>Biệt thự 2 phòng ngủ</span>
+                  <br />
+                </h1>
+              </div>
+              <h1>Phòng thoáng mát sạch sẽ, tiện nghi đầy đủ máy sấy, bọc che tóc khi tắm, tủ lạnh lạnh sẵn, free 2 nước khoáng. Quá tuyệt vời với giá này</h1>
+            </div>
+          </div>
+
+          {/*Form đánh giá */}
+          <div className="flex items-center justify-start shadow-lg mb-4 w-full pb-5">
+            <form className="bg-white rounded-lg pt-2 w-full">
+              <div className="flex flex-wrap mx-3 mb-6">
+                <h2 className="px-4 pt-3 pb-2 text-gray-800 text-lg font-semibold">Thêm đánh giá mới </h2>
+                <div className="md:w-full px-3 mb-2 mt-2">
+                  <textarea className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 placeholder-gray-700 focus:outline-none focus:bg-white" name="body" placeholder='Viết một đánh giá mới' required></textarea>
+                </div>
+                <div className="w-full md:w-full flex items-start px-3">
+                  <div className="flex items-center text-gray-700 mr-auto">
+                    <AiOutlineInfoCircle />
+                    <p className="text-xs md:text-sm pt-px px-2">Hãy đánh giá lịch sự.</p>
+                  </div>
+                  <div className="-mr-1">
+                    <button type='submit' className="text-blue-700 font-semibold py-2 px-4 border border-blue-400 rounded-lg tracking-wide mx-1 hover:bg-blue-500 hover:text-white text-lg" >Đăng bình luận</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div className='pb-5'>
+            <h1 className='text-xl font-semibold pb-4'>Bạn cảm thấy ưng ý chưa ?</h1>
+            <div className='flex justify-center space-x-8'>
+            <button className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded w-full my-2'>Đặt phòng ngay</button>
+            <button className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded w-full my-2'>Thêm vào booking</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
