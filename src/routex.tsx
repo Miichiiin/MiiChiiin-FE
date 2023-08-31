@@ -38,6 +38,7 @@ import New from "./features/webapp/New";
 import HotelIntroduction from "./features/webapp/HotelIntroduction";
 import BookingInformation from "./features/webapp/BookingInformation";
 import HotelType from "./features/webapp/HotelType";
+import AdminInfoPage from "./features/admin/ManagerInformationAdmin";
 
 
 
@@ -209,6 +210,10 @@ export const router = createBrowserRouter([
             {
                 path: "updatefeedback",
                 element: <UpdateFeedBackPage />
+            },
+            {
+                path: "admininfo",
+                element:<AdminInfoPage/>
             },
 
 

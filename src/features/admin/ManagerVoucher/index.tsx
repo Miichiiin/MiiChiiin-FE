@@ -7,24 +7,24 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
   export const ManagerVouchers = () => {
     const [messageApi, contextHolder] = message.useMessage();
     interface DataType {
-      key: string;
+      id: string;
       name: string;
-      img:string;
-      type:string;
+      slug:string;
+      image:string;
       discount:number;
-      startday:string;
-      endday:string;
+      start_at:string;
+      expire_at:string;
       status:string;
-      sortdesc: string;
-      longdesc:string;
+      meta: string;
+      description:string;
       quantity: number;
     }
   
     const columns: ColumnsType<DataType> = [
       {
         title: "#Stt",
-        dataIndex: "key",
-        key: "key",
+        dataIndex: "id",
+        key: "id",
         render: (text) => <a>{text}</a>,
       },
       {
@@ -33,24 +33,24 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         key: "name",
       },
       {
+        title: "slug",
+        dataIndex: "slug",
+        key: "slug",
+      },
+      {
         title: "Hình ảnh",
-        dataIndex: "img",
-        key: "img",
+        dataIndex: "image",
+        key: "image",
       },
       {
         title: "Mô tả ngắn",
-        dataIndex: "sortdesc",
-        key: "sortdesc",
-      },
-      {
-        title: "Loại voucher",
-        dataIndex: "type",
-        key: "type",
+        dataIndex: "meta",
+        key: "meta",
       },
       {
         title: "Mô tả dài",
-        dataIndex: "longdesc",
-        key: "longdesc",
+        dataIndex: "description",
+        key: "description",
       },
       {
         title: "Giá trị giảm",
@@ -59,13 +59,13 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       },
       {
         title: "Ngày bắt đầu",
-        dataIndex: "startday",
-        key: "startday",
+        dataIndex: "start_at",
+        key: "start_at",
       },
       {
         title: "Ngày kết thúc",
-        dataIndex: "endday",
-        key: "endday",
+        dataIndex: "expire_at",
+        key: "expire_at",
       },
       {
         title: "Số lượng",
@@ -82,16 +82,16 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
   
     const data: DataType[] = [
       {
-        key: "1",
+        id: "1",
         name: "voucher Da Nang",
-        img:"loi 404",
-        type:"voucher",
+        slug:"Quiz.",
+        image:"loi 404",
         discount:30,
-        startday:"24/8/2023",
-        endday:"24/9/2023",
+        start_at:"24/8/2023",
+        expire_at:"24/9/2023",
         status:"Van con",
-        sortdesc:"Oke con de",
-        longdesc:"Oke con de",
+        meta:"Oke con de",
+        description:"Oke con de",
         quantity: 50
       },
     ];
