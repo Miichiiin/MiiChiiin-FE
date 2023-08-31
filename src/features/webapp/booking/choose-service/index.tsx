@@ -1,5 +1,5 @@
-import { GrLocation } from 'react-icons/gr'
-import { HiOutlineUser } from 'react-icons/hi'
+// import { GrLocation } from 'react-icons/gr'
+// import { HiOutlineUser } from 'react-icons/hi'
 import { AiOutlineExpandAlt, AiOutlineInfoCircle, AiFillCheckCircle, AiOutlineCheckCircle, AiOutlineDown, AiOutlineUp, AiOutlineArrowRight } from 'react-icons/ai'
 
 import { Link } from 'react-router-dom'
