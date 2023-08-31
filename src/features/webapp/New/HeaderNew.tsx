@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineEnvironment} from "react-icons/ai";
-import video from '../video/vdeo.mp4'
-import "../components/Css/index.css"
-const Header = () => {
+import "../../../components/Css/index.css"
+const HeaderNew = () => {
     /*Hàm Dropdow*/ 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -21,27 +20,17 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-    /*run video*/
-    // const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-
-    // const handleMouseEnterVideo = () => {
-    //   setIsVideoPlaying(true);
-    // };
-  
-    // const handleMouseLeaveVideo = () => {
-    //   setIsVideoPlaying(false);
-    // };
+   
   return (
     <div>
         <header className=" ">
-            <div>
-                <video className="w-full relative mb-5 " src={video} autoPlay muted loop />
+            <div className="bg-white w-full ">
                 <div className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${isFixed ? 'fixed top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]' : 'duration-500 '}`}>
                     <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 
                         lg:text-[15px] lg:mr-10 
                         sm:mr-10
                         ">
-                        <div className="flex items-center justify-end space-x-2 mt-6 text-white 
+                        <div className="flex items-center justify-end space-x-2 mt-6 text-black 
                          lg:text-[15px] 
                         ">
                             <span className="text-[28px] "> < AiOutlineSearch/></span> <a href="" className="hover:">Đăng nhập</a><AiOutlineRight/>
@@ -66,13 +55,13 @@ const Header = () => {
                                 lg:ml-10
 
                             ">
-                                <ul className="flex items-center space-x-[30px] text-[12px] text-white 
+                                <ul className="flex items-center space-x-[30px] text-[12px] text-black 
                                     xl:space-x-[80px] xl:text-[17px]
                                     lg:space-x-[60px] lg:text-[15px] lg:block lg:flex
                                     sm:hidden
                                 ">
                                     <button className="h-[40px] pb-3 "><AiOutlineMenu/></button>
-                                    <li className="group  h-[40px]  after-3 ">
+                                    <li className="group  h-[40px]  after-4 ">
                                         <div className="">
                                             <a href="" >Khách sạn</a>
                                             <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000">
@@ -107,7 +96,7 @@ const Header = () => {
                                             </div>
                                         </div>
                                     </li>
-                                    <li className="h-[40px] group after-3 ">
+                                    <li className="h-[40px] group after-4 ">
                                     <div className="">
                                             <a href="" >Trải nghiệm</a>
                                             <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[750px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000">
@@ -132,8 +121,8 @@ const Header = () => {
                                             </div>
                                         </div>
                                     </li>
-                                    <li className="h-[40px] after-3"><a href="">Ưu đãi khuyến mãi</a></li>
-                                    <li className="h-[40px] after-3">
+                                    <li className="h-[40px] after-4"><a href="">Ưu đãi khuyến mãi</a></li>
+                                    <li className="h-[40px] after-4">
                                         <a href="">New</a>
                                     </li>
                                 </ul>
@@ -143,16 +132,15 @@ const Header = () => {
                                 
                             </div>
                         </div>
-                        <div className={` transition-opacity z-0 lg:ml-10 absolute top-[300px] sm:ml-5 ${isFixed ? 'absolute top-[-400px] opacity-0 ' : ''}`}>
-                            <h1 className="lg:text-[35px] text-white mb-5 sm:text-[30px] ">Chào mừng đến với Vinpearl</h1>
-                            <p className="text-white sm:text-[11px] lg:text-[16px]">Đánh thức mọi giác quan với hệ sinh thái nghỉ dưỡng ven biển đẳng cấp của Vinpearl</p>
-                        </div>
+                        
                     </div>
                 </div>
+                <img className="w-full mt-5" src="https://statics.vinpearl.com/styles/1440x380/public/2022_06/cam-nang-du-lich_1656401788.JPG.webp?itok=qVf4dZYN" alt="" />
+
             </div>
         </header>
     </div>
   )
 }
 
-export default Header
+export default HeaderNew
