@@ -131,7 +131,7 @@ const DetailTypeofRoom = () => {
           </div>
 
           {/*Form đánh giá */}
-          <div className="flex items-center justify-start shadow-lg mb-4 w-full pb-5">
+          <div className="flex items-center justify-start shadow-lg mb-4 w-full">
             <form className="bg-white rounded-lg pt-2 w-full">
               <div className="flex flex-wrap mx-3 mb-6">
                 <h2 className="px-4 pt-3 pb-2 text-gray-800 text-lg font-semibold">Thêm đánh giá mới </h2>
@@ -143,8 +143,8 @@ const DetailTypeofRoom = () => {
                     <AiOutlineInfoCircle />
                     <p className="text-xs md:text-sm pt-px px-2">Hãy đánh giá lịch sự.</p>
                   </div>
-                  <div className="-mr-1">
-                    <button type='submit' className="text-blue-700 font-semibold py-2 px-4 border border-blue-400 rounded-lg tracking-wide mx-1 hover:bg-blue-500 hover:text-white text-lg" >Đăng bình luận</button>
+                  <div className="flex justify-end">
+                    <button type='submit' className="text-blue-700 font-semibold py-2 px-4 border border-blue-400 rounded-lg tracking-wide hover:bg-blue-500 hover:text-white text-lg" >Đăng bình luận</button>
                   </div>
                 </div>
               </div>

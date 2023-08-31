@@ -1,15 +1,13 @@
+import React from 'react'
 import { BsPeople } from 'react-icons/bs'
 import { MdOutlineBed } from 'react-icons/md'
 const RoomTypes = () => {
     return (
         <div className='max-w-7xl mx-auto my-5'>
-            <section className='grid grid-cols-5 gap-8'>
-                {/* Left sidebar -- Filter  */}
-                <div className='border-2'>
-
-                </div>
+            <section className=''>
+                <h1 className='text-2xl flex justify-center items-center font-semibold pb-5 up'>Các hạng phòng</h1>
                 {/* Right sidebar -- Room types */}
-                <div className='col-span-4'>
+                <div className=''>
                     <section className='grid grid-cols-5 gap-4 px-2 py-3'>
                         <div className='col-span-2 flex items-center'>
                             <img src='https://booking-static.vinpearl.com/room_types/d76f7196be2e4dc48052b4216cf5d3b6_3630-024.jpg' alt='' className=' h-full rounded-md' />
@@ -28,9 +26,9 @@ const RoomTypes = () => {
                                 <h1 className='font-semibold'>Giá công bố</h1>
                                 <h1 className='text-sm'><span className='font-semibold text-lg'>7.000.000</span> VNĐ</h1>
                             </div>
-                            <div>
-                                <button className='border-2 border-blue-500 bg-blue-500 hover:border-blue-700 hover:bg-blue-700 text-white px-4 py-3 rounded mx-2 mt-6'>Đặt ngay</button>
-                                <button className='border-2 border-blue-500 hover:bg-blue-500 text-blue-700 hover:text-white px-4 py-3 rounded ml-5'>Xem thêm</button>
+                            <div className='flex justify-center items-center mt-6'>
+                                <button className='border-2 border-blue-500 bg-blue-500 hover:border-blue-700 hover:bg-blue-700 text-white px-4 py-3 rounded mx-2 w-full'>Đặt ngay</button>
+                                <button className='border-2 border-blue-500 hover:bg-blue-500 text-blue-700 hover:text-white px-4 py-3 rounded w-full'>Xem thêm</button>
                             </div>
                         </div>
                     </section>
