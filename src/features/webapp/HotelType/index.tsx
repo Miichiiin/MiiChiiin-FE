@@ -4,7 +4,7 @@ import Search from "@/components/Search";
 const HotelType = () => {
   return (
     <div>
-        <HeaderHotelType/><br /><br /><br /><br /><br />
+        <HeaderHotelType/><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
         <Search/>
         <div>
             <div className="w-[1280px] mx-auto mt-10 leading-[80px]">
