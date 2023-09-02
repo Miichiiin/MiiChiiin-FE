@@ -27,7 +27,7 @@ const Order = () => {
                 </div>
                 <div className="flex items-center mt-3 space-x-5 mb-10">
                     <div className="relative">
-                        <span className="absolute top-3 start-1"><AiOutlineSearch/></span><input className="border rounded-md py-2 text-[13px] pl-6" type="text" placeholder="Nhập đơn hàng..."/>
+                        <span className="absolute top-3 start-1 text-[#a5a3af]"><AiOutlineSearch/></span><input className="border rounded-md py-2 text-[13px] pl-6" type="text" placeholder="Nhập đơn hàng..."/>
                     </div>
                     <select className="border py-1 px-3 rounded-md outline-none text-[#a5a3af]">
                         <option selected>Thời gian đặt</option>
@@ -64,7 +64,7 @@ const Order = () => {
                         <div className="ml-[420px]">
                         <span className="text-[30px] "><AiOutlineShoppingCart/></span>
                         </div>
-                        <p className="text-[20px]">Hiện tại chưa có sản phẩm nào trong giỏ hàng</p>
+                        <p className="text-[20px]">Hiện tại chưa có sản phẩm nào trong giỏ hàng!</p>
                         <a className="rounded-2xl bg-red-500 text-white px-5 py-2 font-medium" href="">Đặt hàng ngay</a>
                     </div>
                      )}
