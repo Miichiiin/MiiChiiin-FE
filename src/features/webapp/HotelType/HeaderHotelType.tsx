@@ -34,7 +34,7 @@ const HeaderHotelType = () => {
                             ">
                             <div className="text-[25px] pt-6"><AiOutlineMenu/></div>
                             <img src="https://booking.vinpearl.com/static/media/vinpearl-logo@2x.cc2b881d.svg" alt="" />
-                            <div className="flex items-center justify-end space-x-2 mt-6 text-white lg:text-[15px]">
+                            <div className="flex items-center justify-end space-x-2 mt-6 text-black lg:text-[15px]">
                                 <a href="" className=" font-medium">Đăng nhập</a><AiOutlineRight/>
                                 <span className="pl-2 pr-1 text-[14px]">/</span>
                                 <button type="submit" onClick={toggleDropdown} className="flex items-center border-white space-x-1 ">
