@@ -28,6 +28,25 @@ const HotelIntroduction = () => {
           sliderRef.current.slickPrev();
         }
       };
+    /*Slider 2*/
+    var settings1 = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+      };
+    
+      const sliderRef1 = React.useRef<Slider>(null);
+    
+      const handleNext1 = () => {
+        if (sliderRef1.current) {
+          sliderRef1.current.slickNext();
+        }
+      };
+    
+       
+
   return (
    
    <div>
@@ -111,12 +130,13 @@ const HotelIntroduction = () => {
                 
             </div>
             <div className="bg-[#fbf8f2] w-full mt-10 px-5 py-3 ">
-            <div className="w-[1440px] mx-auto pb-10 relative">
+            <div className="w-[1560px] mx-auto pb-10 relative">
                     <div className="flex items-center justify-between w-[1280px] mx-auto mt-[80px] mb-10">
                         <h1 className="text-[30px]">Ẩm Thực</h1>
                         <span className="flex items-center space-x-2 text-[#f2ba50]"><a href="">Xem tất cả </a><AiOutlineArrowRight/></span>
                     </div>
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="">
+                    <Slider {...settings1} ref={sliderRef1} className="space-x-4">
                         <div className="relative ">
                             <img className="h-[400px] w-[380px] rounded-md" src="https://statics.vinpearl.com/styles/368x540/public/2023_03/Nh%C3%A0%20h%C3%A0ng%20Ol%C3%A1%20Costa_1679990016.jpeg.webp?itok=l5R_1-tR" alt="" />
                             <span className="absolute bottom-3 start-5 text-white leading-7">
@@ -139,14 +159,22 @@ const HotelIntroduction = () => {
                             </span>
                         </div>
                         <div className="relative ">
-                            <img className="h-[400px] w-[380px] rounded-md" src="https://statics.vinpearl.com/styles/368x540/public/2023_03/Scorpio%20Bar%202_1679990017.jpg.webp?itok=yeIqPgWH" alt="" />
+                            <img className="h-[400px] w-[380px] rounded-md " src="https://statics.vinpearl.com/styles/368x540/public/2023_03/Scorpio%20Bar%202_1679990017.jpg.webp?itok=yeIqPgWH" alt="" />
                             <span className="absolute bottom-3 start-5 text-white leading-7">
                                 <p >Ẩm thực</p>
                                 <span className="flex items-center space-x-4"><p className="text-[23px]">Nhà Hàng Ola Costa</p><span className="mt-1"><AiOutlineArrowRight/></span></span>
                             </span>
                         </div>
+                        <div className="relative ">
+                            <img className="h-[400px] w-[380px] rounded-md " src="https://statics.vinpearl.com/styles/368x540/public/2023_03/Scorpio%20Bar%202_1679990017.jpg.webp?itok=yeIqPgWH" alt="" />
+                            <span className="absolute bottom-3 start-5 text-white leading-7">
+                                <p >Ẩm thực</p>
+                                <span className="flex items-center space-x-4"><p className="text-[23px]">Nhà Hàng Ola Costa</p><span className="mt-1"><AiOutlineArrowRight/></span></span>
+                            </span>
+                        </div>
+                    </Slider>
                     </div>
-                    <button className="bg-white absolute top-[280px] end-[410px] w-8 hover:bg-gray-500 hover:text-white h-12 text-[22px] pl-1"><AiOutlineRight/></button>
+                    <button onClick={handleNext1} className="bg-white absolute top-[280px] end-[410px] w-8 hover:bg-gray-500 hover:text-white h-12 text-[22px] pl-1"><AiOutlineRight/></button>
             </div>
             </div>
             <div className="w-[1280px] mx-auto mt-10 relative">
@@ -163,15 +191,30 @@ const HotelIntroduction = () => {
                 </div>
                 <div className="mt-10 w-[1280px] grid grid-cols-3 mx-auto gap-4  ">
                     <div className="">
-                        <img className="mb-5 w-[400px] h-300px rounded-md" src="https://statics.vinpearl.com/styles/378x250/public/2023_08/season-of-smile-banner_1693304230.jpg.webp?itok=9OPICet9" alt="" />
+                        <div className="relative overflow-hidden mb-4">
+                            <img className="w-full h-[240px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                                src="https://statics.vinpearl.com/styles/378x250/public/2023_01/tong-hop-uu-dai-early-bird-banner_1673341683.jpg.webp?itok=YNNs_fjY"
+                                alt=""
+                            />
+                        </div>
                         <p className="text-[#8e9399] text-[14px] mb-3">Đặt phòng sớm, ưu đãi lớn: tổng hợp ưu đãi early bird không thể bỏ lỡ</p>
                     </div>
                     <div >
-                        <img className="mb-5 w-[400px] h-300px rounded-md" src="https://statics.vinpearl.com/styles/378x250/public/2022_01/Vinfast-thumb_1641955450.jpg.webp?itok=o1zhtnOK" alt="" />
+                        <div className="relative overflow-hidden mb-4">
+                            <img className="w-full h-[240px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                                src="https://statics.vinpearl.com/styles/378x250/public/2023_05/combo-cam-hung-bat-tan-banner_1685342465.jpg.webp?itok=Bh7dfsY4"
+                                alt=""
+                            />
+                        </div>
                         <p className="text-[#8e9399] text-[14px] mb-3">VinFast - Người tiên phong tri ân người tiên phong</p>
                     </div>
                     <div >
-                        <img className="mb-5 w-[400px] h-300px rounded-md" src="https://statics.vinpearl.com/styles/378x250/public/2023_01/tong-hop-uu-dai-early-bird-banner_1673341683.jpg.webp?itok=YNNs_fjY" alt="" />
+                        <div className="relative overflow-hidden mb-4">
+                            <img className="w-full h-[240px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                                src="https://statics.vinpearl.com/styles/378x250/public/2023_05/vinpearl_1684721297.jpg.webp?itok=hYT97ZUH"
+                                alt=""
+                            />
+                        </div>
                         <p className="text-[#8e9399] text-[14px] mb-3">Đón hè rực rỡ tại Vinpearl cùng trọn bộ cẩm nang ưu đãi hè 2023</p>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineEnvironment} from "react-icons/ai";
+import React,{ useEffect, useRef, useState } from "react";
+import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineEnvironment,AiOutlineDown} from "react-icons/ai";
 import "../../../components/Css/index.css"
 const HeaderNew = () => {
     /*Hàm Dropdow*/ 
@@ -8,24 +8,71 @@ const HeaderNew = () => {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
   };
-  /*cố định menu*/ 
-  const [isFixed, setIsFixed] = useState(false);
-  const handleScroll = () => {
-    setIsFixed(window.scrollY > 800);
+  /*Slider*/
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null); 
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    setIsScrollLocked(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    setIsScrollLocked(false); // Đặt giá trị trạng thái cuộn trang
+
+  };
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const handleClickOutside = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        closeMenu();
+      }
+
+      if (isDropdownOpen && !target?.closest(".dropdown-button")) {
+        setIsDropdownOpen(false);
+      }
     };
-  }, []);
+
+    window.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+  
+  
+  useEffect(() => {
+    const handleClickOutside = (event:any) => {
+      if (menuRef.current && !menuRef.current.contains(event.target )) {
+        closeMenu();
+      }
+    };
+
+    window.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []); 
+ /*Khóa cuộn trang*/
+ const [isScrollLocked, setIsScrollLocked] = useState(false);
+
+ useEffect(() => {
+   if (isScrollLocked) {
+     document.documentElement.style.overflow = 'hidden'; // Khóa cuộn trang
+   } else {
    
+     document.documentElement.style.overflow = 'auto'; // Cho phép cuộn trang
+   }
+
+   return () => {
+     document.documentElement.style.overflow = 'auto'; // Đảm bảo rằng cuộn trang đã được kích hoạt trở lại khi component bị unmount
+   };
+ }, [isScrollLocked]);
   return (
     <div>
-        <header className=" ">
-            <div className="bg-white w-full ">
-                <div className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${isFixed ? 'fixed top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]' : 'duration-500 '}`}>
+        <header className="">
+            <div className="fixed top-0 left-0 w-full  z-20 bg-white">
+                <div className="">
                     <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 
                         lg:text-[15px] lg:mr-10 
                         sm:mr-10
@@ -41,11 +88,11 @@ const HeaderNew = () => {
                             </button>
                             {isDropdownOpen && (
                                 <div className="absolute mt-[220px] bg-white border border-gray-300 shadow-lg ">
-                                    <ul className="py-3 px-6 leading-9 text-black" >
-                                        <li>Vietnamese</li>
-                                        <li>English</li>
-                                        <li>China</li>
-                                        <li>Korea</li>
+                                    <ul className="leading-9 text-black" >
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-10 ">Tiếng việt</li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-10">English</li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-10">China</li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-10">Korea</li>
                                     </ul>
                                 </div>
                             )}
@@ -60,7 +107,7 @@ const HeaderNew = () => {
                                     lg:space-x-[60px] lg:text-[15px] lg:block lg:flex
                                     sm:hidden
                                 ">
-                                    <button className="h-[40px] pb-3 "><AiOutlineMenu/></button>
+                                    <button onClick={toggleMenu} className="h-[40px] pb-3 "><AiOutlineMenu/></button>
                                     <li className="group  h-[40px]  after-4 ">
                                         <div className="">
                                             <a href="" >Khách sạn</a>
@@ -134,11 +181,32 @@ const HeaderNew = () => {
                         </div>
                         
                     </div>
-                </div>
-                <img className="w-full mt-5" src="https://statics.vinpearl.com/styles/1440x380/public/2022_06/cam-nang-du-lich_1656401788.JPG.webp?itok=qVf4dZYN" alt="" />
-
+                </div><br /><br /><br /><br /><br /><br /><br />
             </div>
+            <img className="w-full mt-[180pxc]" src="https://statics.vinpearl.com/styles/1440x380/public/2022_06/cam-nang-du-lich_1656401788.JPG.webp?itok=qVf4dZYN" alt="" />
+
         </header>
+        {isMenuOpen && (
+        <div
+            ref={menuRef}
+            className={`fixed top-0 z-30 box-shadow left-0 w-[400px] h-full bg-white text-white  transition-transform duration-300 ease-in-out transform 
+            ${isMenuOpen ? 'translate-x-0 fixed top-0  left-0 duration-800  text-white ' 
+            : '-translate-x-full opacity-0 duration-800'}`}
+        >
+          <div className="h-[130px] bg-gray-800">
+            <button onClick={closeMenu} className="absolute top-4 right-4 text-white text-2xl ">
+                <span >&times;</span>
+            </button>
+          </div>
+          <div  className="text-gray-800 text-[21px] leading-[50px] px-10 py-10 font-medium">
+            <div  className="flex items-center justify-between"><a href="">Khách sạn</a> <span className="mt-1 text-[12px] "><AiOutlineDown/></span></div>
+            <p className="flex items-center justify-between"><a href="">Trải nghiện</a> <span className="mt-1 text-[12px] "><AiOutlineDown/></span></p>
+            <p><a href="">Ưu đãi khuyến mãi</a></p>
+            <p><a href="">New</a></p>
+          </div>
+        </div>
+        
+      )}
     </div>
   )
 }
