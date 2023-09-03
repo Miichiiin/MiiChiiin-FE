@@ -1,9 +1,13 @@
 import { GrLocation } from 'react-icons/gr'
 import { HiOutlineUser } from 'react-icons/hi'
 import { AiOutlineExpandAlt, AiOutlineInfoCircle,AiOutlineArrowRight } from 'react-icons/ai'
+import Search from "src/components/Search";
 const ChooseRoom = () => {
+
   return (
+    <div>
     <div className='max-w-7xl mx-auto'>
+    <Search/>
       <div className='max-w-5xl mx-auto my-5'>
         <section className='border grid grid-cols-3 gap-4 px-2 py-3'>
           <div className=''>
@@ -100,6 +104,7 @@ const ChooseRoom = () => {
                     </div>
         </section>
       </div>
+    </div>
     </div>
   )
 }
