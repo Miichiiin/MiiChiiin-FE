@@ -95,11 +95,20 @@ console.log(booking);
                 </div>
                 <img className="w-full bg-[#585c5b]" src="https://statics.vinpearl.com/styles/1920x860/public/2023_01/About%20Pearl%20Club_1673079019.jpg.webp?itok=f-G5FUpc" alt="" />
             </div>
-            <div className="bg-[#fbf8f2] w-full py-10 ">
-                <div className="w-[1280px] mx-auto mt-10 ">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-[30px] mb-7">Ưu đãi khuyến mãi</h2>
-                        <span className="flex items-center space-x-6 text-[#f2ba50]"><a href="">Xem thêm</a> <AiOutlineArrowRight /></span>
+            <div className="w-[1280px] mx-auto mt-10 ">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-[30px] mb-7">Ưu đãi khuyến mãi</h2>
+                    <span className="flex items-center space-x-6 text-[#f2ba50]"><a href="">Xem thêm</a> <AiOutlineArrowRight /></span>
+                </div>
+                <div className="grid grid-cols-3">
+                    <div className="w-[400px] ">
+                        <div className="relative overflow-hidden mb-4">
+                            <img className="w-full h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                                src="https://statics.vinpearl.com/styles/378x250/public/2023_05/vinpearl_1684721297.jpg.webp?itok=hYT97ZUH"
+                                alt=""
+                            />
+                        </div>
+                        <a className="hover:text-[#f2ba50]" href="">Wonder Summer 2023: Miễn phí kỳ nghỉ tuyệt hơn mơ cho bé yêu</a>
                     </div>
                     <div className="grid grid-cols-3 flex  ">
                         <div className="w-[400px] ">
