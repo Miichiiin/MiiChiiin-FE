@@ -100,7 +100,7 @@ console.log(booking);
                     <h2 className="text-[30px] mb-7">Ưu đãi khuyến mãi</h2>
                     <span className="flex items-center space-x-6 text-[#f2ba50]"><a href="">Xem thêm</a> <AiOutlineArrowRight /></span>
                 </div>
-                <div className="grid grid-cols-3 flex  ">
+                <div className="grid grid-cols-3">
                     <div className="w-[400px] ">
                         <div className="relative overflow-hidden mb-4">
                             <img className="w-full h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
