@@ -13,6 +13,46 @@
   .box-shadow{
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   }
+  .box-full{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
   .back-white{
     background-color: white;
   }
+  
+  @media screen and (max-width: 768px) {
+    .date-range {
+      width: 320px;
+      height: 200px;
+      
+    }
+    .date-picker-container {
+      width: 80%; /* Adjust container width as needed */
+    }
+    .text {
+      font-size: 2px;
+    }
+  }
+  
+  /* Medium screens */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    .date-range {
+      width: 320px;
+      height: 200px;
+    }
+  }
+  
+  /* Large screens */
+  @media screen and (min-width: 1025px) {
+    .date-range {
+      width: 450px;
+      height: 290px;
+    }
+  }
+
+
+
+
+
+
+

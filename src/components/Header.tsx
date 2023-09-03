@@ -105,7 +105,7 @@ const Header = () => {
         <header className=" ">
             <div>
                 <video className="w-full relative mb-5 " src={video} autoPlay muted loop />
-                <div className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${isFixed ? 'fixed top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]' : 'duration-500 '}`}>
+                <div className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${isFixed ? 'fixed  top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]' : 'duration-500 '}`}>
                     <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 
                         lg:text-[15px] lg:mr-10 
                         sm:mr-10
