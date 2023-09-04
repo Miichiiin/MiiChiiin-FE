@@ -46,10 +46,6 @@ const SearchDay = () => {
       setDivClicked(false); // Đặt lại trạng thái khi bấm ngoài div
     };
   
-    const handleDropdownClick = (event: MouseEvent) => {
-      event.stopPropagation(); // Ngăn chặn sự kiện click từ việc lan toả lên ngoài dropdown
-    };
-  
     useEffect(() => {
       document.addEventListener("click", handleClickOutside);
   
@@ -59,9 +55,9 @@ const SearchDay = () => {
     }, [divClicked]); // Theo dõi biến divClicked trong dependencies
   return (
     <div>
-      <div ref={refCalen} onClick={handleDivClick}  className=" flex items-center border border-[#e0e0e0] px-5 py-2 text-[#b0b4b8]">
+      <div  onClick={handleDivClick}  className=" flex items-center border border-[#e0e0e0] px-5 py-2 text-[#b0b4b8]">
         <span className="xl:text-[22px] mr-4 lg:text-[22px] sm:text-[12px] "><AiOutlineCalendar /></span>
-          <div onClick={toggleDropdown}>
+          <div >
             <div className="xl:text-[12px]  lg:space-x-8 sm:space-x-5 sm:text-[9px] sm:font-medium">
               <label htmlFor="">Ngày đến</label>
               <label htmlFor="">Ngày đi</label>
@@ -72,13 +68,13 @@ const SearchDay = () => {
                   calendar[0].endDate,
                   "dd-MM-yyyy"
                 )}`}
-               
+                onClick={toggleDropdown}
               />
             </div>
         </div>
       </div>
       {isDropdownOpen && (
-            <div onClick={() =>handleDropdownClick} className="absolute ">
+            <div ref={refCalen}  className="absolute ">
                 <DateRange
                 className="date-range lg:text-[12px] sm:text-[8px] "
                 onChange={handleDateChange}
