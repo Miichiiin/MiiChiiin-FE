@@ -1,9 +1,18 @@
 import { GrLocation } from 'react-icons/gr'
 import { HiOutlineUser } from 'react-icons/hi'
 import { AiOutlineExpandAlt, AiOutlineInfoCircle,AiOutlineArrowRight } from 'react-icons/ai'
+import HeaderHotelType from "src/features/webapp/HotelType/HeaderHotelType";
+import Search from '@/components/Search'
 const ChooseRoom = () => {
   return (
-    <div className='max-w-7xl mx-auto'>
+    <div>
+      <div className='mb-24'>
+
+        <HeaderHotelType/>
+      </div>
+        <Search/>
+    <div className='max-w-7xl  mx-auto'>
+
       <div className='max-w-5xl mx-auto my-5'>
         <section className='border grid grid-cols-3 gap-4 px-2 py-3'>
           <div className=''>
@@ -100,6 +109,7 @@ const ChooseRoom = () => {
                     </div>
         </section>
       </div>
+    </div>
     </div>
   )
 }
