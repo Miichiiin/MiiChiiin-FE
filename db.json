@@ -730,7 +730,7 @@
             "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil]"
         },
         {
-            "id": 3,
+            "id": 2,
             "name": "Khách sạn Miichi- Hội An",
             "description": "Khách sạn sạn Miichi- Hội An là một trong những khách sạn nổi tiếng nhất hiện nay thu hút hàng nghìn người đến",
             "quantity_of_room": 30,
@@ -752,7 +752,7 @@
             "image_urls": null
         },
         {
-            "id": 1,
+            "id": 3,
             "name": "Khách sạn Miichi- Nha Trang",
             "description": "Khách sạn sạn Miichi- Nha Trang là một trong những khách sạn nổi tiếng hiện nay thu hút rất nhiều người đến nghỉ dưỡng",
             "quantity_of_room": 50,
