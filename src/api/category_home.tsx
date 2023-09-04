@@ -15,7 +15,7 @@ const category_HomeApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getCategory_home: builder.query({
+        getCategory_home: builder.query<any, void>({
             query: () => `/category_home`,
             providesTags: ['Category_home']
         }),
