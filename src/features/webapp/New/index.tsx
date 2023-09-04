@@ -1,6 +1,28 @@
 import { AiOutlineRight ,AiOutlineLeft,AiFillWechat,AiOutlineCalendar,AiOutlineEye,AiOutlineSearch} from "react-icons/ai";
 import HeaderNew from "./HeaderNew";
+import Slider from "react-slick";
+import React from "react";
 const New = () => {
+    let settings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 2,
+    };
+    const sliderRef = React.useRef<Slider>(null);
+    
+    const handleNext = () => {
+        if (sliderRef.current) {
+            sliderRef.current.slickNext();
+        }
+    };
+    
+    const handlePrev = () => {
+        if (sliderRef.current) {
+            sliderRef.current.slickPrev();
+        }
+    };
   return (
     <div>
         <HeaderNew/>
@@ -10,14 +32,15 @@ const New = () => {
                         {/* Nội dung box chát */}
                         <span className="text-[50px] text-white"><AiFillWechat/></span>
                     </div>
-                    <button className="absolute top-[100px] end-[-20px] z-10 bg-white px-3 py-3 border border-[#e8952f] rounded-full text-[#e8952f]"><AiOutlineRight/></button>
-                    <button className="absolute top-[100px] start-[-20px] z-10 bg-white px-3 py-3 border border-[#e8952f] rounded-full text-[#e8952f] "><AiOutlineLeft/></button>
-                    <div className="grid-cols-5 grid gap-4">
+                    <button onClick={handlePrev} className="absolute top-[100px] end-[-20px] z-10 bg-white px-3 py-3 border border-[#e8952f] rounded-full text-[#e8952f]"><AiOutlineRight/></button>
+                    <button onClick={handleNext} className="absolute top-[100px] start-[-20px] z-10 bg-white px-3 py-3 border border-[#e8952f] rounded-full text-[#e8952f] "><AiOutlineLeft/></button>
+                    <div className="">
+                    <Slider {...settings} ref={sliderRef} className="w-[1280px] mx-auto ">
                         <div className="relative w-60 h-60 overflow-hidden ">
                             <img
                                 src="https://statics.vinpearl.com/styles/215x226/public/2020_11/Hinh-anh-Vinpearl-Resort-&-Golf-Nam-Hoi-An-Banner-16x9-so-1_0.png.webp?itok=mxhdez2Z"
                                 alt="Image"
-                                className="w-full h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-125 "
+                                className="w-[245px] h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-105 "
                             />
                             <span className="absolute inset-0 top-[200px] text-center text-white font-bold">Hội An</span>
                         </div>
@@ -25,7 +48,7 @@ const New = () => {
                             <img
                                 src="https://statics.vinpearl.com/styles/215x226/public/2023_05/Tin-golf_1684465590.jpg.webp?itok=wyFduBSZ"
                                 alt="Image"
-                                className="w-full h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-125"
+                                className="w-[245px] h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-105"
                             />
                             <span className="absolute inset-0 top-[200px] text-center text-white font-bold">Tin Golf</span>
                         </div>
@@ -33,7 +56,7 @@ const New = () => {
                             <img
                                 src="https://statics.vinpearl.com/styles/215x226/public/2020_11/deakZKN9-reason-1-1.png.webp?itok=kv4bn1m5"
                                 alt="Image"
-                                className="w-full h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-125"
+                                className="w-[245px] h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-105"
                             />
                             <span className="absolute inset-0 top-[200px] text-center text-white font-bold">Đà Nẵng</span>
                         </div>
@@ -41,7 +64,7 @@ const New = () => {
                             <img
                                 src="https://statics.vinpearl.com/styles/215x226/public/2020_11/1015998_15120409390038243694.jpg.webp?itok=0Ro6sFXd"
                                 alt="Image"
-                                className="w-full h-full rounded-md object-cover transition-transform transform  scale-100 hover:scale-125"
+                                className="w-[245px] h-full rounded-md object-cover transition-transform transform  scale-100 hover:scale-105"
                             />
                             <span className="absolute inset-0 top-[200px] text-center text-white font-bold">Quảng Ninh</span>
                         </div>
@@ -49,10 +72,19 @@ const New = () => {
                             <img
                                 src="https://statics.vinpearl.com/styles/215x226/public/2021_05/hinh-anh-hai-phong.jpg.webp?itok=AKJuVHxR"
                                 alt="Image"
-                                className="w-full h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-125 "
+                                className="w-[245px] h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-105 "
                             />
                             <span className="absolute inset-0 top-[200px] text-center text-white font-bold">Hải Phòng</span>
                         </div>
+                        <div className="relative w-60 h-60 overflow-hidden ">
+                            <img
+                                src="https://statics.vinpearl.com/styles/215x226/public/2021_05/hinh-anh-hai-phong.jpg.webp?itok=AKJuVHxR"
+                                alt="Image"
+                                className="w-[245px] h-full rounded-md object-cover transition-transform transform scale-100 hover:scale-105 "
+                            />
+                            <span className="absolute inset-0 top-[200px] text-center text-white font-bold">Hải Phòng</span>
+                        </div>
+                        </Slider>
                     </div>
             </div>
             <div className="w-[1280px] mx-auto mt-[70px] relative">

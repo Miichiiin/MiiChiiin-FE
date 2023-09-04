@@ -39,6 +39,7 @@ import HotelIntroduction from "./features/webapp/HotelIntroduction";
 import BookingInformation from "./features/webapp/BookingInformation";
 import HotelType from "./features/webapp/HotelType";
 import AdminInfoPage from "./features/admin/ManagerInformationAdmin";
+import Order from "./features/webapp/order";
 
 
 
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
             {
                 path: "/booking",
                 element: <BookingInformation />
+            },
+            {
+                path:"order",
+                element:<Order/>
             },
             {
                 path: '/hotels/rooms/roomtypes',
