@@ -16,6 +16,7 @@ const images = [
 ];
 
 const DetailTypeofRoom = () => {
+
   const { id: idRoom } = useParams()
   const { data } = useGetCategory_homeByIdQuery(idRoom);
   console.log(data);
@@ -110,7 +111,7 @@ const DetailTypeofRoom = () => {
       <div className='pb-5'>
         <div className='flex space-x-3 items-center'>
           <h1 className='text-xl font-semibold pb-4'>Giá: </h1>
-          <h1 className='text-red-500 text-xl font-semibold pb-4'>{data.price} VND</h1>
+          <h1 className='text-red-500 text-xl font-semibold pb-4'>{data?.price} VND</h1>
         </div>
         <div className='flex space-x-1 '>
           <FaUser /><FaUser /><FaUser /><FaUser /><FaUser />
@@ -125,7 +126,7 @@ const DetailTypeofRoom = () => {
       </div>
       <div className='py-5'>
         <h1 className='text-xl font-semibold pb-2'>{data?.name}</h1>
-        <p className='text-md pb-2'>{data.description}</p>
+        <p className='text-md pb-2'>{data?.description}</p>
         <h1 className='text-xl font-semibold pb-2'>Tiện nghi</h1>
         <div className='grid grid-cols-5 gap-2 pb-2'>
           <h1 className='flex items-center text-md'><BsPeople /><span className='px-2'>8 người</span></h1>
