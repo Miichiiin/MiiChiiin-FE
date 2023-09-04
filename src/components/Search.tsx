@@ -7,6 +7,7 @@ import {  AiOutlineCalendar, AiOutlineUser, AiOutlineIdcard, AiOutlinePlus, AiOu
 import "../components/Css/index.css"
 import SearchInput from "./SearchInput";
 import SearchDay from "./SearchDay";
+import { Link } from "react-router-dom";
 const Search = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -94,7 +95,6 @@ const Search = () => {
    
   return (
     <div>
-      aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       <div className="flex items-center xl:space-x-2 lg:justify-center xl:w-[1280px] xl:mx-auto mt-[-120px] lg:space-x-4 lg:justify-center
           sm:justify-center sm:space-x-1">
         <SearchInput/>
@@ -212,7 +212,7 @@ const Search = () => {
           <span className="xl:text-[23px] lg:text-[16px] sm:text-[12px] mr-4"><AiOutlineIdcard /></span>
           <span className="xl:text-[14px] lg:text-[13px] sm:text-[8px] font-medium text-[#353c46]">Ưu đãi</span>
         </div>
-        <button className="text-white bg-[#e8952f] px-6 py-[17.5px] font-medium xl:text-[13px] lg:text-[13px] sm:text-[7px]">Tìm Kiếm</button>
+        <Link to={'/choose-room'}><button className="text-white bg-[#e8952f] px-6 py-[17.5px] font-medium xl:text-[13px] lg:text-[13px] sm:text-[7px]">Tìm Kiếm</button></Link>
       </div>
 
     </div>
