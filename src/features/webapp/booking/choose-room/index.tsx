@@ -12,7 +12,6 @@ const ChooseRoom = () => {
         <HeaderHotelType/>
       </div>
 
-
         <Search/>
       <div className='mb-20'>
 
