@@ -2,7 +2,7 @@ import { useGetService_hotelQuery } from '@/api/service_hotel';
 import { useAppDispatch, useAppSelector } from '@/app/hook';
 import { useState } from 'react';
 import { AiOutlineInfoCircle, AiFillCheckCircle, AiOutlineCheckCircle, AiOutlineDown, AiOutlineUp, AiOutlineArrowRight } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { differenceInDays, parseISO } from 'date-fns';
 const ChooseService = () => {
 
@@ -27,9 +27,13 @@ const ChooseService = () => {
     const { data: serviceData, isLoading } = useGetService_hotelQuery({})
     const carts = useAppSelector((state: any) => state.cart?.items);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate()
 
    const sumPrice = carts?.reduce((total: any, item: any) => total + item.price * (differenceInDays((parseISO(item?.check_out)), parseISO(item?.check_in))), 0) + totalPrice
 
+   const onhanldeSubmit = () => {
+    navigate(`/booking`)
+   }
     return (
         <div className='max-w-7xl mx-auto '>
             {/*Content*/}
@@ -156,7 +160,7 @@ const ChooseService = () => {
                                             <h1>{sumPrice}</h1>
                                         </div>
                                     </div>
-                                    <button className='bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full'>Tiếp tục</button>
+                                    <button onClick={() => onhanldeSubmit } className='bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full'>Tiếp tục</button>
                                 </div>
                             </>
                         })}
