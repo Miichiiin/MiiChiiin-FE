@@ -69,7 +69,7 @@ const BookingInformation = () => {
                         <span className="flex mt-4 items-center space-x-3 px-5"><span className="bg-[#e8952f] px-1 py-1 rounded-full text-white text-[10px]"><AiOutlineCheck/></span><a className="text-[15px] text-[#e8952f]" href="">Tôi là khách lưu trú</a></span>
                     </div>
                     <div className="border boder-black  rounded-md w-[800px] pb-10 mt-4">
-                        <div className="border border-b-[#bg-[#f9f9f9]] px-4 py-4 bg-[#f5f6fa] px-5 py-5">
+                        <div className="border border-b-[#bg-[#f9f9f9]]  bg-[#f5f6fa] px-5 py-5">
                             <span className="font-medium text-[18px]">Phương thức thanh toán</span>
                         </div>
                         <a href="" className="text-[15px] px-5 text-left">Khi nhấp vào "Thanh toán", bạn đồng ý cung cấp các thông tin trên và đồng ý với các 
