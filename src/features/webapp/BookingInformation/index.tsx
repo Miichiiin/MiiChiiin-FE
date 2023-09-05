@@ -81,7 +81,7 @@ const BookingInformation = () => {
                     </div>
                 </div>
                 <div className="border boder-black  rounded-md w-[460px] pb-10 h-[400px]">
-                    <div className="border border-b-[#bg-[#f9f9f9]] px-4 py-4 bg-[#f5f6fa] px-5 py-5">
+                    <div className="border border-b-[#bg-[#f9f9f9]]  bg-[#f5f6fa] px-5 py-5">
                         <span className="font-medium text-[18px]">Chuyến đi</span>
                         
                     </div>
