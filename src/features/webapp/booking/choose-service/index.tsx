@@ -1,8 +1,11 @@
 import { useGetService_hotelQuery } from '@/api/service_hotel';
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import { useState } from 'react';
 import { AiOutlineInfoCircle, AiFillCheckCircle, AiOutlineCheckCircle, AiOutlineDown, AiOutlineUp, AiOutlineArrowRight } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
+import { differenceInDays, parseISO } from 'date-fns';
 const ChooseService = () => {
+
     const toggleShowService = () => {
         setIsServiceOpen(!isServiceOpen);
     };
@@ -10,7 +13,7 @@ const ChooseService = () => {
     const [selectedServices, setSelectedServices] = useState<any[]>([]);
     const [totalPrice, setTotalPrice] = useState(0); // Tổng tiền
     // Hàm để thêm hoặc bỏ chọn dịch vụ
-    const toggleServiceSelection = (serviceId: number, servicePrice:number) => {
+    const toggleServiceSelection = (serviceId: number, servicePrice: number) => {
         if (selectedServices.includes(serviceId)) {
             // Nếu dịch vụ đã được chọn, loại bỏ nó khỏi danh sách
             setSelectedServices(selectedServices.filter((id) => id !== serviceId));
@@ -22,6 +25,10 @@ const ChooseService = () => {
         }
     };
     const { data: serviceData, isLoading } = useGetService_hotelQuery({})
+    const carts = useAppSelector((state: any) => state.cart?.items);
+    const dispatch = useAppDispatch();
+
+   const sumPrice = carts?.reduce((total: any, item: any) => total + item.price * (differenceInDays((parseISO(item?.check_out)), parseISO(item?.check_in))), 0) + totalPrice
 
     return (
         <div className='max-w-7xl mx-auto '>
@@ -87,66 +94,72 @@ const ChooseService = () => {
                             <h1 className='text-lg font-bold text-yellow-900'>Chuyến đi</h1>
                         </div>
                         {/*Thông tin khách sạn*/}
-                        <div className='border rounded px-2 py-4'>
-                            <div>
-                                <div className='flex items-center justify-between'>
-                                    <h1 className='font-semibold'>
-                                        Vinpearl WonderWorld Phú Quốc
-                                    </h1>
-                                    <button className='text-sm'>Chỉnh sửa</button>
-                                </div>
-                                <p className='text-sm pt-3 items-center flex'>Chủ Nhật, Th08 27, 2023
-                                    <AiOutlineArrowRight className='inline-block mx-1' />
-                                    Thứ Ba, Th08 29, 2023</p>
-                                <p className='text-sm pb-3'>02 Đêm</p>
-                            </div>
-                            <hr className='my-2' />
-                            {/*Thông tin phòng đã đặt*/}
-                            <div>
-                                <div className='flex items-center justify-between'>
-                                    <h1 className='font-semibold'>
-                                        Phòng 1
-                                    </h1>
-                                    <button className='text-lg font-semibold italic'>21.000.000</button>
-                                </div>
-                                <p className='text-sm pt-3 items-center flex'><span className='pr-1'>x1</span> Biệt Thự 2 Phòng Ngủ</p>
-                                <p className='text-sm pb-3'>2 Người lớn, 2 Trẻ em</p>
-                                {/*Dịch vụ đã chọn*/}
-                                <div className='border-gray-100 bg-gray-100 px-2 rounded'>
-                                    <p className='text-sm pb-3 font-semibold'>Dịch vụ mua thêm</p>
 
-                                    <ul className='list-disc px-3'>
-                                        {selectedServices.map((selectedServiceId) => {
-                                            const selectedService = serviceData.find((item:any) => item.id === selectedServiceId);
-                                            if (selectedService) {
-                                                return (
-                                                    <li className='text-sm pb-2' key={selectedService.id}>
-                                                        <div className='flex justify-between items-center'>
-                                                            <p>{selectedService.name}</p>
-                                                            <p>{selectedService.price} vnđ</p>
-                                                        </div>
-                                                    </li>
-                                                );
-                                            }
-                                            return null;
-                                        })}
-                                    </ul>
+                        {carts?.map((item: any) => {
+                            return <>
+                                <div className='border rounded px-2 py-4'>
+                                    <div>
+                                        <div className='flex items-center justify-between'>
+                                            <h1 className='font-semibold'>
+                                                {item.nameHotel}
+                                            </h1>
+                                            <button className='text-sm'>Chỉnh sửa</button>
+                                        </div>
+                                        <p className='text-sm pt-3 items-center flex'>{item?.check_in}
+                                            <AiOutlineArrowRight className='inline-block mx-1' />
+                                            {item?.check_out}</p>
+                                        <p className='text-sm pb-3'>{differenceInDays((parseISO(item?.check_out)), parseISO(item?.check_in))} Đêm</p>
+                                    </div>
+                                    <hr className='my-2' />
+                                    {/*Thông tin phòng đã đặt*/}
+                                    <div>
+                                        <div className='flex items-center justify-between'>
+                                            <h1 className='font-semibold'>
+                                                Phòng 1
+                                            </h1>
+                                            <button className='text-lg font-semibold italic'>{item?.price}</button>
+                                        </div>
+                                        <p className='text-sm pt-3 items-center flex'><span className='pr-1'>x1</span> {item?.name}</p>
+                                        <p className='text-sm pb-3'>2 Người lớn, 2 Trẻ em</p>
+                                        {/*Dịch vụ đã chọn*/}
+                                        <div className='border-gray-100 bg-gray-100 px-2 rounded'>
+                                            <p className='text-sm pb-3 font-semibold'>Dịch vụ mua thêm</p>
+
+                                            <ul className='list-disc px-3'>
+                                                {selectedServices?.map((selectedServiceId) => {
+                                                    const selectedService = serviceData.find((item: any) => item?.id === selectedServiceId);
+                                                    if (selectedService) {
+                                                        return (
+                                                            <li className='text-sm pb-2' key={selectedService.id}>
+                                                                <div className='flex justify-between items-center'>
+                                                                    <p>{selectedService?.name}</p>
+                                                                    <p>{selectedService?.price} vnđ</p>
+                                                                </div>
+                                                            </li>
+                                                        );
+                                                    }
+                                                    return null;
+                                                })}
+                                            </ul>
 
 
+                                        </div>
+                                    </div>
+                                    <hr className='my-4' />
+                                    <div className='pb-6'>
+                                        {/*tổng cộng*/}
+                                        <div className='flex items-center justify-between'>
+                                            <h1 className='font-semibold'>
+                                                Tổng cộng:
+                                            </h1>
+                                            {/* <h1 className='text-xl font-bold text-yellow-500'>{totalPrice} vnđ</h1> */}
+                                            <h1>{sumPrice}</h1>
+                                        </div>
+                                    </div>
+                                    <button className='bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full'>Tiếp tục</button>
                                 </div>
-                            </div>
-                            <hr className='my-4' />
-                            <div className='pb-6'>
-                                {/*tổng cộng*/}
-                                <div className='flex items-center justify-between'>
-                                    <h1 className='font-semibold'>
-                                        Tổng cộng:
-                                    </h1>
-                                    <h1 className='text-xl font-bold text-yellow-500'>{totalPrice} vnđ</h1>
-                                </div>
-                            </div>
-                            <button className='bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full'>Tiếp tục</button>
-                        </div>
+                            </>
+                        })}
                     </div>
                 </section>
             </div>
