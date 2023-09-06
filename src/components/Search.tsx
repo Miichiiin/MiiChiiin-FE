@@ -95,7 +95,7 @@ const Search = () => {
    
   return (
     <div>
-      <div className="flex items-center xl:space-x-2 lg:justify-center xl:w-[1280px] xl:mx-auto mt-[-120px] lg:space-x-4 lg:justify-center
+      <div className="flex items-center xl:space-x-2 lg:justify-center xl:w-[1280px] xl:mx-auto mt-[-120px] lg:space-x-4 
           sm:justify-center sm:space-x-1">
         <SearchInput/>
         <SearchDay/>

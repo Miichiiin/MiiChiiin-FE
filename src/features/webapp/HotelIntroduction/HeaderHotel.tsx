@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineEnvironment,AiOutlineDown} from "react-icons/ai";
+import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineDown} from "react-icons/ai";
 import "../../../components/Css/index.css"
 const HeaderHotel = () => {
     /*Hàm Dropdow*/ 

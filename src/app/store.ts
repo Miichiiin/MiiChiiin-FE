@@ -50,6 +50,8 @@ const rootReducer = combineReducers({
     category_home: category_HomeReducer,
     hotel_home: hotel_HomeReducer,
     cart: cartReducer,
+    searchSlice: service_Reducer
+
 })
 const middleware = [
     room_adminApi.middleware, 
