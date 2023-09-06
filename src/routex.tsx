@@ -85,7 +85,7 @@ export const router = createBrowserRouter([
                 element: <RoomTypes />
             },
             {
-                path: '/hotels/rooms/detail',
+                path: '/hotels/rooms/detail/:id',
                 element: <DetailTypeofRoom />
             },
             {

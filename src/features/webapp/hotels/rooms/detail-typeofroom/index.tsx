@@ -3,6 +3,10 @@ import { BsPeople, BsChevronCompactRight, BsChevronCompactLeft } from 'react-ico
 import { MdOutlineBed } from 'react-icons/md'
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { useParams } from 'react-router-dom';
+import { useGetCategory_homeByIdQuery } from '@/api/category_home';
+import { Link } from 'react-router-dom';
+import { FaUser } from 'react-icons/fa';
 
 const images = [
   'https://booking-static.vinpearl.com/room_types/d76f7196be2e4dc48052b4216cf5d3b6_3630-024.jpg',
@@ -12,6 +16,13 @@ const images = [
 ];
 
 const DetailTypeofRoom = () => {
+
+  const { id: idRoom } = useParams()
+  const { data } = useGetCategory_homeByIdQuery(idRoom);
+  console.log(data);
+  console.log("id", idRoom);
+
+
   // State để bật tắt modal và lưu index của ảnh hiện tại
   const [showModal, setShowModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -40,7 +51,7 @@ const DetailTypeofRoom = () => {
   return (
     <div className='max-w-7xl mx-auto my-5'>
       <div className="flex justify-between pb-5">
-        <h1 className='text-2xl uppercase font-bold'>Vinpearl WonderWorld Phú Quốc</h1>
+        <h1 className='text-2xl uppercase font-bold'>{data?.nameHotel}</h1>
         <button className='flex items-center text-red-500 font-semibold hover:text-red-700'><AiOutlineHeart className='mx-2' /> Yêu thích</button>
       </div>
       <div className='grid grid-cols-5 gap-8'>
@@ -97,9 +108,25 @@ const DetailTypeofRoom = () => {
         </Modal>
 
       </div>
+      <div className='pb-5'>
+        <div className='flex space-x-3 items-center'>
+          <h1 className='text-xl font-semibold pb-4'>Giá: </h1>
+          <h1 className='text-red-500 text-xl font-semibold pb-4'>{data?.price} VND</h1>
+        </div>
+        <div className='flex space-x-1 '>
+          <FaUser /><FaUser /><FaUser /><FaUser /><FaUser />
+        </div>
+      </div>
+      <div className='pb-5'>
+        <h1 className='text-xl font-semibold pb-4'>Bạn cảm thấy ưng ý chưa ?</h1>
+        <div className=' flex justify-end space-x-8 '>
+          <Link to={`/choose-service`} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</Link>
+          <Link to={`/hotel`} className='bg-red-300 hover:bg-red-700 py-4 text-white  px-2 rounded  my-2'>Quay lại</Link>
+        </div>
+      </div>
       <div className='py-5'>
-        <h1 className='text-xl font-semibold pb-2'>Biệt thự 2 phòng ngủ</h1>
-        <p className='text-md pb-2'>Với diện tích từ 261 m², Biệt thự 2 phòng ngủ là biệt thự thiết kế thông minh, tích hợp đầy đủ tiện nghi cho kỳ lưu trú của bạn. Biệt thự có khoảng sân vườn rộng rãi với thiên nhiên xanh mát bên ngoài cửa sổ. Với 2 phòng ngủ, biệt thự phù hợp với nhiều đối tượng khách hàng, từ các cặp vợ chồng đi hưởng tuần trăng mật, tới những nhóm bạn trẻ năng động, hay những gia đình yêu thích khám phá, những doanh nhân kết hợp giữa đi sự kiện và cùng gia đình tận hưởng.</p>
+        <h1 className='text-xl font-semibold pb-2'>{data?.name}</h1>
+        <p className='text-md pb-2'>{data?.description}</p>
         <h1 className='text-xl font-semibold pb-2'>Tiện nghi</h1>
         <div className='grid grid-cols-5 gap-2 pb-2'>
           <h1 className='flex items-center text-md'><BsPeople /><span className='px-2'>8 người</span></h1>
@@ -150,13 +177,7 @@ const DetailTypeofRoom = () => {
               </div>
             </form>
           </div>
-          <div className='pb-5'>
-            <h1 className='text-xl font-semibold pb-4'>Bạn cảm thấy ưng ý chưa ?</h1>
-            <div className='flex justify-center space-x-8'>
-            <button className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded w-full my-2'>Đặt phòng ngay</button>
-            <button className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded w-full my-2'>Thêm vào booking</button>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
