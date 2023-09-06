@@ -1,12 +1,13 @@
-import axios from 'axios';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { AiOutlineEnvironment } from "react-icons/ai";
+import { useGetHotel_homesQuery } from '@/api/hotel_home';
 
 const SearchInput = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(""); // Sử dụng để lưu tên khách sạn đã chọn
   const [divClicked, setDivClicked] = useState(false); // Sử dụng để theo dõi việc bấm vào div
-  const [hotelData, setHotelData] = useState([]); // Sử dụng state để lưu trữ dữ liệu từ API
+ 
 
   const refCalen = useRef<HTMLDivElement>(null);
 
@@ -40,16 +41,7 @@ const SearchInput = () => {
     };
   }, [divClicked]); // Theo dõi biến divClicked trong dependencies
 
-  useEffect(() => {
-    // Gọi API để lấy dữ liệu tên khách sạn
-    axios.get('http://localhost:3000/hotel_home')
-      .then((response) => {
-        setHotelData(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }, []); 
+
 
   return (
     <div>

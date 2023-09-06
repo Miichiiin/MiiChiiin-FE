@@ -1,57 +1,40 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-interface Product {
-    id: number;
-    name: string;
-    price: number,
-    quantity: number;
-    size?: number
+// interface Product {
+//     id: number;
+//     name: string;
+//     price: number,
+//     quantity: number;
+//     size?: number
+// }
+
+interface searchSlice {
+    items: any[];
 }
 
-interface CartState {
-    items: Product[];
-}
-
-const initialState: CartState = {
+const initialState: searchSlice = {
     items: [],
 };
 
-const cartSlice = createSlice({
-    name: "cart",
+const searchSlice = createSlice({
+    name: "searchSlice",
     initialState,
     reducers: {
-        add: (state, action: PayloadAction<any>) => {
+        addSearch: (state, action: PayloadAction<any>) => {
             const newProduct = action.payload;
-            const existProductIndex = state.items.findIndex(item => item.id === newProduct.id  && item.size === newProduct.size );
-            console.log(existProductIndex);
-            if (existProductIndex === -1 ) {
-                state.items.push(newProduct);
-            } else {
-                state.items[existProductIndex].quantity += newProduct.quantity;
-            }
+            state.items.push(newProduct)
+            // const existProductIndex = state.items.findIndex(item => item.id === newProduct.id  && item.size === newProduct.size );
+            // console.log(existProductIndex);
+            // if (existProductIndex === -1 ) {
+            //     state.items.push(newProduct);
+            // } else {
+            //     state.items[existProductIndex].quantity += newProduct.quantity;
+            // }
         },
-        increase: (state, action: PayloadAction<number>) => {
-            const product = state.items.find(item => item.id === action.payload);
-            if (product) {
-                product.quantity++;
-            }
-        },
-        decrease: (state, action: PayloadAction<number>) => {
-            const product = state.items.find(item => item.id === action.payload);
-            if (product) {
-                product.quantity--;
-                if (product.quantity < 1) {
-                    const confirmDelete = window.confirm('Bạn có muốn xoá sản phẩm này không?');
-                    if (confirmDelete) {
-                        state.items = state.items.filter(item => item.id !== product.id);
-                    } else {
-                        product.quantity = 1;
-                    }
-                }
-            }
+      
         }
-    },
+    
 });
 
-export const { add, increase, decrease } = cartSlice.actions;
+export const { addSearch } = searchSlice.actions;
 
-export const cartReducer = cartSlice.reducer;
+export const cartReducer = searchSlice.reducer;
