@@ -40,6 +40,7 @@ import BookingInformation from "./features/webapp/BookingInformation";
 import HotelType from "./features/webapp/HotelType";
 import AdminInfoPage from "./features/admin/ManagerInformationAdmin";
 import Order from "./features/webapp/order";
+import { UpdateService } from "./features/admin/service/updateService";
 
 
 
@@ -139,6 +140,10 @@ export const router = createBrowserRouter([
             {
                 path: "addservice",
                 element: <AddService />,
+            },
+            {
+                path: "updateservice/:id",
+                element: <UpdateService/>,
             },
             {
                 path: "bookingmanagement",

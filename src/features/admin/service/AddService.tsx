@@ -1,19 +1,20 @@
-import React from 'react';
+
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Nhập useNavigate từ react-router-dom
+import { useNavigate } from 'react-router-dom';
+import { useAddServices_AdminMutation } from '@/api/service_admin';
 
 export const AddService = () => {
-  const navigate = useNavigate(); // Sử dụng hook useNavigate để chuyển hướng
+  
+  const navigate = useNavigate();
+  const [addServiceAdmin] = useAddServices_AdminMutation();
 
   const onFinish = (values:any) => {
-    axios
-      .post('http://localhost:3000/services_admin', values)
-      .then((response) => {
-        console.log('Success:', response.data);
+    addServiceAdmin(values).unwrap()
+      .then(() => {
+        
         message.success('Thêm dịch vụ thành công');
-        navigate('/admin/service'); // Chuyển hướng về trang chính sau khi thêm thành công
+        navigate('/admin/service');
       })
       .catch((error) => {
         console.error('Failed:', error);
@@ -35,7 +36,7 @@ export const AddService = () => {
   return (
     <div>
       <header className="flex justify-between items-center my-5 mx-3">
-        <h2 className="text-2xl  text-blue-700">Thêm dịch vụ</h2>
+        <h2 className="text-2xl text-blue-700">Thêm dịch vụ</h2>
       </header>
       <Form
         name="basic"
@@ -63,7 +64,7 @@ export const AddService = () => {
           <InputNumber />
         </Form.Item>
 
-        <Form.Item label="Ảnh" valuePropName="image" getValueFromEvent={normFile}>
+        <Form.Item label="Ảnh" name="image" valuePropName="image" getValueFromEvent={normFile}>
           <Upload action="/upload.do" listType="picture-card">
             <div>
               <PlusOutlined />
@@ -97,4 +98,3 @@ export const AddService = () => {
     </div>
   );
 };
-

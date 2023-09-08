@@ -88,6 +88,19 @@ export const BookingManagement = () => {
             checkin_date: "20/08/2023",
             checkout_date: "22/08/2023"
         },
+        {
+            key: '2',
+            customer_name: "Nguyễn Văn Ad",
+            room_name: "402",
+            guest_number: 4,
+            total_money: 19000000,
+            payment_methods: "chuyển khoản",
+            extra_service: "Bữa trưa tại khách sạn",
+            status: "đã thanh toán",
+            booking_date: "19/08/2023",
+            checkin_date: "20/08/2023",
+            checkout_date: "22/08/2023"
+        },
 
     ];
 

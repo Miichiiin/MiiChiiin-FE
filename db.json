@@ -1,19 +1,8 @@
 {
   "services_admin": [
     {
-      "id": 41,
-      "name": "Dịch vụ hấp dẫn",
-      "description": "Dành cho các dự án kiến trúc",
-      "quantity": 934,
-      "price": 306,
-      "status": 2,
-      "image": "https://www.tgroup.vn/uploads/images/Dalat-hotel/tea_resort_bao_loc_tgroup_travel_2.jpg",
-      "created_at": "2023-08-31T14:00:58.000000Z",
-      "updated_at": "2023-08-31T14:00:58.000000Z"
-    },
-    {
-      "id": 42,
-      "name": "Dịch vụ Tắm Bùn",
+      "id": 1,
+      "name": "Dịch vụ Tắm Bùn Vip",
       "description": "Dành cho các dự án kiến trúc",
       "quantity": 689,
       "price": 300,
@@ -23,86 +12,42 @@
       "updated_at": "2023-08-31T14:00:58.000000Z"
     },
     {
-      "id": 43,
-      "name": "Dịch vụ Matxa",
+      "name": "Tour Câu Mực Đêm",
+      "price": 399,
+      "quantity": 15,
+      "status": "available",
       "description": "Dành cho các dự án kiến trúc",
-      "quantity": 934,
-      "price": 306,
-      "image": "https://www.tgroup.vn/uploads/images/Dalat-hotel/tea_resort_bao_loc_tgroup_travel_2.jpg",
-      "status": 2,
-      "created_at": "2023-08-31T14:00:58.000000Z",
-      "updated_at": "2023-08-31T14:00:58.000000Z"
+      "id": 2
     },
     {
-      "name_service": "aaa",
+      "name": "Dịch vụ Xyzkaka33",
+      "price": 1234,
+      "quantity": 111,
+      "status": "available",
+      "description": "Oke lắm nha",
+      "id": 3
+    },
+    {
+      "name": "Tour Vịnh Lan Hạ",
       "price": 200,
+      "quantity": 4,
       "status": "available",
-      "description": "1111111",
-      "id": 44
+      "description": "Là một trải nghiệm vô cùng tuyệt vời",
+      "id": 4
     },
     {
-      "name": "qqqq",
-      "price": 2000,
+      "name": "Tour Lặn Ngắm Biển",
+      "price": 222,
       "status": "available",
-      "description": "111111",
-      "id": 45
-    }
-  ],
-  "room_admin": [
-    {
-      "id": 1,
-      "name": "101",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng Đơn"
+      "description": "1111",
+      "id": 5
     },
     {
-      "id": 2,
-      "name": "102",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng Đôi"
-    },
-    {
-      "id": 3,
-      "name": "103",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 2,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng Đôi"
-    },
-    {
-      "id": 4,
-      "name": "104",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 3,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng Đơn"
-    },
-    {
-      "id": 5,
-      "name": "105",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng Đơn"
+      "name": "Combo Chăm sóc da",
+      "price": 199,
+      "status": "available",
+      "description": "Làn da mịn như da em bé",
+      "id": 6
     }
   ],
   "roles_admin": [
