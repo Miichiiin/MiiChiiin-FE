@@ -20,7 +20,7 @@
       "id": 2
     },
     {
-      "name": "Dịch vụ Xyzkaka33",
+      "name": "Dịch vụ Mlem33",
       "price": 1234,
       "quantity": 111,
       "status": "available",
@@ -48,6 +48,13 @@
       "status": "available",
       "description": "Làn da mịn như da em bé",
       "id": 6
+    },
+    {
+      "name": "1111",
+      "price": 111,
+      "status": "available",
+      "description": "1111",
+      "id": 7
     }
   ],
   "roles_admin": [

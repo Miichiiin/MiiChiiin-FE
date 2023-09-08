@@ -44,7 +44,7 @@ export const ServiceManagement = () => {
       dataIndex: "name",
       key: "name",
       render: (text: any, item: any) => (
-        <Link to={`/admin/updateservice/${item.key}`}>{text}</Link>
+        <Link to={`/admin/updateservice/${item.id}`}>{text}</Link>
       ),
     },
     {
