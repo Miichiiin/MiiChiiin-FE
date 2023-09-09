@@ -48,19 +48,20 @@ const DetailTypeofRoom = () => {
           <img src="https://booking-static.vinpearl.com/room_types/d76f7196be2e4dc48052b4216cf5d3b6_3630-024.jpg" alt="" className='w-full rounded' />
         </div>
         <div className='col-span-1'>
-          <div className='pb-2'>
+          <div className='pb-6'>
             <img src="https://booking-static.vinpearl.com/room_types/3b32d17cdfd144e395addd747f481a6f_3630-004.jpg" alt="" className='w-full rounded' />
           </div>
-          <div className='pb-2'>
+          <div className='pb-6'>
             <img src="https://booking-static.vinpearl.com/room_types/cd1aa854eb3f4a65aa2087cca3e30ce6_3630-008.jpg" alt="" className='w-full rounded' />
           </div>
-          <div className='pb-2'>
+          <div className='pb-6'>
             <img src="https://booking-static.vinpearl.com/room_types/58dbe43d1302477fbaf0c10782bcca91_3630-039.jpg" alt="" className='w-full rounded' />
           </div>
           <div className=''>
-            <img src="https://booking-static.vinpearl.com/room_types/d76f7196be2e4dc48052b4216cf5d3b6_3630-024.jpg" alt="" className='w-full rounded' />
+            <img src="https://booking-static.vinpearl.com/room_types/d76f7196be2e4dc48052b4216cf5d3b6_3630-024.jpg" alt="" className='w-full rounded' onClick={toggleModal}/>
+            
           </div>
-          <button className='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded w-full my-2' onClick={toggleModal}>Xem thêm ảnh</button>
+          {/*  */}
         </div>
         {/* Cửa sổ popup */}
         <Modal

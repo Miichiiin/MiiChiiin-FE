@@ -14,8 +14,8 @@ import HotelChainStatistics from "./features/admin/HotelStatistics";
 import UpdateRoomPage from "./features/admin/ManagerRooms/UpdateRoom";
 import AddRoomPage from "./features/admin/ManagerRooms/AddRoom";
 import { ManagerRoom } from "./features/admin/ManagerRooms";
-import { ManagerFeedBack } from "./features/admin/ManagerFeedBacks";
-import UpdateFeedBackPage from "./features/admin/ManagerFeedBacks/UpdateFeedBack";
+import { ManagerUtilities } from "./features/admin/ManagerUtilities";
+import UpdateFeedBackPage from "./features/admin/ManagerUtilities/UpdateUtilities";
 import { CommentManagement } from "./features/admin/comment/CommentManagement";
 import { EditComment } from "./features/admin/comment/EditComment";
 import { ServiceManagement } from "./features/admin/service/ServiceManagement";
@@ -204,11 +204,11 @@ export const router = createBrowserRouter([
                 element: <UpdateRoomPage />
             },
             {
-                path: "managerfeedback",
-                element: <ManagerFeedBack />
+                path: "managerutilities",
+                element: <ManagerUtilities />
             },
             {
-                path: "updatefeedback",
+                path: "updateUtilities",
                 element: <UpdateFeedBackPage />
             },
             {

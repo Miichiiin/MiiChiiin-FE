@@ -12,7 +12,7 @@ import {
   import { useState } from "react";
   import { Link } from "react-router-dom";
   
-  export const ManagerFeedBack = () => {
+  export const ManagerUtilities = () => {
     const [messageApi, contextHolder] = message.useMessage();
     interface DataType {
       key: string;
@@ -107,7 +107,7 @@ import {
             marginBottom: "16px",
           }}
         >
-          <div className="text-lg font-semibold">Quản Lý FeedBack</div>
+          <div className="text-lg font-semibold">Quản Lý Utilities</div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Input.Search placeholder="Tìm kiếm" style={{ marginRight: "8px" }} />
             <Select
@@ -151,7 +151,9 @@ import {
               ]}
             />
           </div>
-          \
+          <Button type="primary" className="ml-2 mt-1 bg-gray-500">
+              <Link to={`/admin/addUtilities`}>Thêm</Link>
+            </Button>
         </div>
         <div>
             <Popconfirm
@@ -173,7 +175,7 @@ import {
               <Button danger>Xóa</Button>
             </Popconfirm>
             <Button type="primary" danger className="ml-2 mt-1">
-              <Link to={`/admin/updatefeedback`}>Sửa</Link>
+              <Link to={`/admin/updateUtilities`}>Sửa</Link>
             </Button>
           </div>
   
