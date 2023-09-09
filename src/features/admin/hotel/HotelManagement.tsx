@@ -9,11 +9,10 @@ export const HotelManagement = () => {
     const { data: HotelData } = useGetHotel_adminsQuery({})
     const [removeHotel] = useRemoveHotel_adminMutation({})
 
-    const data = HotelData?.map(({ id, name, email, room_number, description, quantity_of_room, star, phone, quantity_floor, created_at, updated_at, status, id_city, name_cities, image_urls }: DataType) => ({
+    const data = HotelData?.map(({ id, name, email, description, quantity_of_room, star, phone, quantity_floor, created_at, updated_at, status, id_city, name_cities, image_urls }: DataType) => ({
         key: id,
         name,
         email,
-        room_number,
         description,
         quantity_of_room,
         star,
@@ -31,7 +30,6 @@ export const HotelManagement = () => {
         id: string | number;
         name: string,
         email: string,
-        room_number: number,
         description: string,
         quantity_of_room: number,
         phone: string,
