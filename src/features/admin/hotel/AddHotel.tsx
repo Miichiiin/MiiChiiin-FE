@@ -1,14 +1,23 @@
 import { useAddHotel_adminMutation } from '@/api/hotel_admin';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 export const AddHotel = () => {
     const navigate = useNavigate()
-    const [addHotel] = useAddHotel_adminMutation()
+    const [addHotel, {isLoading}] = useAddHotel_adminMutation()
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Add product successfully',
+        });
+    };
     const onFinish = (values: FieldType) => {
         addHotel(values).unwrap().then(() => navigate('/admin/hotelManagement'));
-        
+
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -42,6 +51,7 @@ export const AddHotel = () => {
             <header className="flex justify-between items-center my-5 mx-3">
                 <h2 className="text-2xl  text-blue-700">Thêm khách sạn</h2>
             </header>
+            {contextHolder}
             <Form
                 name="basic"
                 labelCol={{ span: 8 }}
@@ -153,8 +163,12 @@ export const AddHotel = () => {
 
 
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" className='bg-blue-500 text-white' htmlType="submit">
-                        Submit
+                    <Button type="primary" className='bg-blue-500 text-white' htmlType="submit" onClick={() => success()}>
+                        {isLoading ? (
+                            <AiOutlineLoading3Quarters className="animate-spin" />
+                        ) : (
+                            "Add new product"
+                        )}
                     </Button>
                 </Form.Item>
             </Form>

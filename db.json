@@ -257,6 +257,30 @@
       "id_city": "1",
       "description": "áđâsd",
       "id": 3
+    },
+    {
+      "name": "adu được vl anh ơi",
+      "name_cities": "adu",
+      "email": "adu@gmail.com",
+      "quantity_of_room": 12,
+      "quantity_floor": 3,
+      "phone": "12341241",
+      "star": 3,
+      "id_city": "2",
+      "description": "adu ngon quá anh zai",
+      "id": 4
+    },
+    {
+      "name": "adu được vl anh zai",
+      "name_cities": "adu vip",
+      "email": "ngon@gmail.com",
+      "quantity_of_room": 12,
+      "quantity_floor": 3,
+      "phone": "1234124",
+      "star": 3,
+      "id_city": "2",
+      "description": "adu anh zai",
+      "id": 5
     }
   ],
   "banner_admin": [
