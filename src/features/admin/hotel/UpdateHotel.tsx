@@ -15,13 +15,13 @@ const UpdateHotel = () => {
     };
 
     const navigate = useNavigate()
-    const [updateHotel] = useUpdateHotel_adminMutation()
+    const [updateHotel, {isLoading}] = useUpdateHotel_adminMutation()
 
     const onFinish = (values: FieldType) => {
         updateHotel({ ...values, id: id }).unwrap().then(() => navigate('/admin/hotelManagement'));
     };
     const { id } = useParams<{ id: string }>()
-    const { data: hotelData, isLoading } = useGetHotel_adminByIdQuery(id || "")
+    const { data: hotelData } = useGetHotel_adminByIdQuery(id || "")
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);

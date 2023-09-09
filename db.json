@@ -245,18 +245,6 @@
       "updated_at": "2023-08-29T17:15:52.000000Z",
       "name_cities": "Dr. Cletus Stehr DDS",
       "image_urls": null
-    },
-    {
-      "name": "aduvip 12345",
-      "name_cities": "aduvipppp vl",
-      "email": "aduvip@hotmail.com",
-      "quantity_of_room": 12,
-      "quantity_floor": 3,
-      "phone": "23123142314",
-      "star": 3,
-      "id_city": "2",
-      "description": "quá vip luôn anh zai 123",
-      "id": 3
     }
   ],
   "banner_admin": [
