@@ -39,6 +39,7 @@ import HotelIntroduction from "./features/webapp/HotelIntroduction";
 import BookingInformation from "./features/webapp/BookingInformation";
 import HotelType from "./features/webapp/HotelType";
 import AdminInfoPage from "./features/admin/ManagerInformationAdmin";
+import UpdateHotel from "./features/admin/hotel/UpdateHotel";
 
 
 
@@ -154,6 +155,10 @@ export const router = createBrowserRouter([
             {
                 path: "addhotel",
                 element: <AddHotel />,
+            },
+            {
+                path: "updatehotel/:id",
+                element: <UpdateHotel/>
             },
             {
                 path: "addroomtype",

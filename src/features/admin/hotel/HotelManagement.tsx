@@ -55,7 +55,7 @@ export const HotelManagement = () => {
             render: (text: any, item: any) => {
                 return (
                     <>
-                        <Link to={`/admin/${item.key}/updateHotel`}>{text}</Link>
+                        <Link to={`/admin/updateHotel/${item.key}`}>{text}</Link>
                     </>
                 )
             }
