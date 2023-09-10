@@ -24,7 +24,7 @@ export const ManagerRoomType = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "#Stt",
+      title: "#",
       dataIndex: "key",
       key: "key",
       render: (text) => <a>{text}</a>,

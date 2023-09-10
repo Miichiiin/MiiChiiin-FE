@@ -1,4 +1,4 @@
-import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/hotel_admin';
+import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/admin/hotel_admin';
 import { Table, Divider, Radio, Button, Select, Input, Image } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
@@ -55,7 +55,7 @@ export const HotelManagement = () => {
             render: (text: any, item: any) => {
                 return (
                     <>
-                        <Link to={`/admin/updateHotel/${item.key}`}>{text}</Link>
+                        <Link to={`/admin/updatehotel/${item.key}`}>{text}</Link>
                     </>
                 )
             }
@@ -149,7 +149,7 @@ export const HotelManagement = () => {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <div className='flex justify-between items-center mb-4'>
                 <div className="text-lg font-semibold">Quản lý khách sạn</div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} />

@@ -125,7 +125,7 @@ export const router = createBrowserRouter([
                 element: <CommentManagement />,
             },
             {
-                path: "editcomment",
+                path: "editcomment/:id",
                 element: <EditComment />,
             },
             {
@@ -165,7 +165,7 @@ export const router = createBrowserRouter([
                 element: <AddRoomType />,
             },
             {
-                path: "updateroomtype",
+                path: "updateroomtype/:id",
                 element: <UpdateRoomType />,
             },
             {

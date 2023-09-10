@@ -1,4 +1,4 @@
-import { useAddHotel_adminMutation } from '@/api/hotel_admin';
+import { useAddHotel_adminMutation } from '@/api/admin/hotel_admin';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';

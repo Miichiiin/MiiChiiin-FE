@@ -1,4 +1,4 @@
-import { useGetHotel_adminByIdQuery, useUpdateHotel_adminMutation } from '@/api/hotel_admin';
+import { useGetHotel_adminByIdQuery, useUpdateHotel_adminMutation } from '@/api/admin/hotel_admin';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Spin, Upload, message } from 'antd';
 import { useEffect } from 'react';
@@ -160,7 +160,7 @@ const UpdateHotel = () => {
                 >
                     <Select defaultValue="0" style={{ width: '150px' }}>
                         <Select.Option value="1">Đang dùng</Select.Option>
-                        <Select.Option value="0">Có sẵn</Select.Option>
+                        <Select.Option value="2">Có sẵn</Select.Option>
                     </Select>
                 </Form.Item>
                 <Form.Item<FieldType>
