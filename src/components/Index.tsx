@@ -8,6 +8,7 @@ import Header from "./Header";
 import Search from "./Search";
 import { useGetHotel_homesQuery } from "@/api/hotel_home";
 import { Link } from "react-router-dom";
+import { SearchQuickHotel } from "./SearchQuickHotel";
 const Index = () => {
     let settings = {
         dots: false,
@@ -35,7 +36,7 @@ console.log(booking);
     return (
         <div>
             <Header />
-            <Search />
+            <SearchQuickHotel/>
             <div className="mt-7 bg-[#fbf8f2] w-full pb-8">
                 <div className="xl:w-[1280px] xl:mx-auto ">
                    <div className="flex items-center  lg:w-[1280px]">

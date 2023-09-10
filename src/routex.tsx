@@ -40,6 +40,8 @@ import BookingInformation from "./features/webapp/BookingInformation";
 import HotelType from "./features/webapp/HotelType";
 import AdminInfoPage from "./features/admin/ManagerInformationAdmin";
 import Order from "./features/webapp/order";
+import { SearchQuickHotel } from "./components/SearchQuickHotel";
+import { SearchHotel } from "./features/webapp/booking/choose-room/searchHotel";
 
 
 
@@ -104,6 +106,15 @@ export const router = createBrowserRouter([
                 path: '/login',
                 element: <Login />
             },
+            {
+                path: '/search',
+                element: <SearchQuickHotel/>
+            },
+            {
+                path: '/searchHotel',
+                element: <SearchHotel/>
+            },
+
 
         ],
     },

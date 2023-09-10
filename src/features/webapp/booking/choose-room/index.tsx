@@ -7,8 +7,9 @@ import {
   AiOutlineArrowRight,
 } from "react-icons/ai";
 import HeaderHotelType from "src/features/webapp/HotelType/HeaderHotelType";
-import Search from "@/components/Search";
 import { useGetCategory_homeQuery } from "@/api/category_home";
+import { SearchQuickHotel } from "@/components/SearchQuickHotel";
+import { SearchHotel } from "./searchHotel";
 
 const ChooseRoom = () => {
   const { data: hotels } = useGetCategory_homeQuery();
@@ -25,11 +26,11 @@ const ChooseRoom = () => {
 
   return (
     <div>
-      <div className="mb-[250px]">
+      <div className="mb-[150px]">
         <HeaderHotelType />
       </div>
+       <SearchHotel/>
       <div className="max-w-7xl mx-auto">
-        <Search />
         <div className="max-w-5xl mx-auto my-5">
           <section className="border grid grid-cols-3 gap-4 px-2 py-3">
             <div className=''>
@@ -132,6 +133,8 @@ const ChooseRoom = () => {
                   </div>
                 </div>
                 <button className='bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full'>Tiếp tục</button>
+                
+
               </div>
             </div>
           </section>

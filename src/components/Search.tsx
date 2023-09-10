@@ -1,18 +1,19 @@
 import { useEffect, useState, useRef } from "react";
-import { format, addDays, isBefore, startOfDay } from "date-fns";
-import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import {  AiOutlineCalendar, AiOutlineUser, AiOutlineIdcard, AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineIdcard, AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import "../components/Css/index.css"
 import SearchInput from "./SearchInput";
 import SearchDay from "./SearchDay";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "@/app/hook";
 const Search = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [divClicked, setDivClicked] = useState(false); // Sử dụng để theo dõi việc bấm vào div
   const refCalen = useRef<HTMLDivElement>(null);
+  const searchHotel = useAppSelector((state: any) => state.searchSlice?.items);
+  console.log("Ten ks new:", searchHotel)
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -29,6 +30,20 @@ const Search = () => {
     }
     setDivClicked(false); // Đặt lại trạng thái khi bấm ngoài div
   };
+
+  // const handleSearchChange = () => {
+  //   // Lấy thông tin địa điểm, số phòng và số người từ state của bạn
+  //   const searchDetails = {
+  //     location: , // Thay yourLocationState bằng biến state thực tế
+  //     checkInDate: , // Sử dụng ngày check-in từ state
+  //     checkOutDate: , // Sử dụng ngày check-out từ state
+  //     numberOfRooms: ,
+  //     numberOfGuests: roomDetails.reduce((total, room) => total + room.adults + room.children, 0),
+  //   };
+
+  //   // Gửi thông tin này vào Redux store
+  //   dispatch(addSearch(searchDetails));
+  // };
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -98,7 +113,12 @@ const Search = () => {
       <div className="flex items-center xl:space-x-2 lg:justify-center xl:w-[1280px] xl:mx-auto mt-[-120px] lg:space-x-4 
           sm:justify-center sm:space-x-1">
         <SearchInput/>
-        <SearchDay/>
+        <SearchDay
+        // checkInDate={checkInDate}
+        // setCheckInDate={setCheckInDate}
+        // checkOutDate={checkOutDate}
+        // setCheckOutDate={setCheckOutDate}
+      />
         <button>
           <div className="flex items-center border border-[#e0e0e0] px-5 py-2 relative text-[#b0b4b8]">
             <span className="xl:text-[22px] lg:text-[19px] mr-4"><AiOutlineUser /></span>
