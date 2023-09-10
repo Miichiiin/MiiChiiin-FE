@@ -5,11 +5,30 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 export const EditComment = () => {
 
-    
+    const [form] = Form.useForm();
+    const {id} = useParams<{ id: string }>();
+    const {data: commentData} = useGetRatingByIdQuery(id||"");
+
+    const [updateComment] = useUpdateRatingMutation();
+    const navigate = useNavigate()
+    useEffect(() => {
+        form.setFieldsValue({
+            id: commentData?.id,
+            id_user: commentData?.id_user,
+            id_category: commentData?.id_category,
+            user_name: commentData?.user_name,
+            name_category: commentData?.name_category,
+            content: commentData?.content,
+            rating: commentData?.rating,
+            created_at: commentData?.created_at,
+            updated_at: commentData?.updated_at,
+            deleted_at: commentData?.deleted_at,
+            status: commentData?.status
+        })
+    }, [commentData])
     
     const onFinish = (values: FieldType) => {
-       console.log(values);
-       
+       updateComment({...values, id: id}).unwrap().then(() => navigate('/admin/commentmanagement'))
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -32,7 +51,7 @@ export const EditComment = () => {
     return (
         <div>
             <header className="flex justify-between items-center my-5 mx-3">
-                <h2 className="text-2xl  text-blue-700">Sửa Comment:  </h2>
+                <h2 className="text-2xl  text-blue-700">Sửa Comment:  {commentData?.user_name}</h2>
             </header>
             <Form
                 name="basic"
@@ -43,7 +62,7 @@ export const EditComment = () => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
-                
+                form={form}
             >
                 <Form.Item<FieldType>
                     label="Tên khách hàng"
