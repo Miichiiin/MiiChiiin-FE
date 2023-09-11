@@ -2,7 +2,8 @@
 import { Form, Input, InputNumber, Button, Upload, message} from 'antd';
 import { UploadOutlined, ArrowLeftOutlined} from '@ant-design/icons';
 import { Link ,useNavigate} from "react-router-dom";
-import { useAddCategory_adminMutation } from '@/api/category_admin';
+import { useAddCategory_adminMutation } from '@/api/admin/category_admin';
+
 
 
 const AddRoomType = () => {
@@ -15,7 +16,7 @@ const AddRoomType = () => {
         navigate("admin/manageroomtype");
         message.success('Thêm loại phòng thành công!');
       })
-    .catch  ((error) =>{
+    .catch  ((error: any) =>{
       message.error('Đã sảy ra lỗi khi thêm loại phòng');
       console.log("Error",error);
       

@@ -2,7 +2,8 @@ import  { useEffect, useState } from 'react';
 import { Input, DatePicker, InputNumber, Select, Button, Upload, Form ,message} from 'antd';
 import { CloudUploadOutlined, ArrowLeftOutlined, PlusOutlined} from '@ant-design/icons';
 import { Link ,useNavigate,useParams} from 'react-router-dom';
-import { useGetCategory_adminByIdQuery, useUpdateCategory_adminMutation } from '@/api/category_admin';
+import { useGetCategory_adminByIdQuery, useUpdateCategory_adminMutation } from '@/api/admin/category_admin';
+
 
 const { Option } = Select;
 

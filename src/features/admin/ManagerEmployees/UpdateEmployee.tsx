@@ -2,7 +2,8 @@ import  { useEffect, useState } from 'react';
 import { Input, DatePicker,  Select, Button, Upload, Form, Radio ,message} from 'antd';
 import {  ArrowLeftOutlined} from '@ant-design/icons';
 import { Link ,useParams,useNavigate} from 'react-router-dom';
-import { useGetAdmin_AdminByIdQuery, useUpdateAdmin_AdminMutation } from '@/api/admin_admin';
+import { useGetAdmin_AdminByIdQuery, useUpdateAdmin_AdminMutation } from '@/api/admin/admin_admin';
+
 
 
 

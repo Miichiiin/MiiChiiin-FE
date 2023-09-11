@@ -183,11 +183,7 @@ const HeaderNew = () => {
                     </div>
                 </div><br /><br /><br /><br /><br />
             </div>
-<<<<<<< HEAD
-            <img className="w-full mt-[130px]" src="https://statics.vinpearl.com/styles/1440x380/public/2022_06/cam-nang-du-lich_1656401788.JPG.webp?itok=qVf4dZYN" alt="" />
-=======
             <img className="w-full mt-[200px]" src="https://statics.vinpearl.com/styles/1440x380/public/2022_06/cam-nang-du-lich_1656401788.JPG.webp?itok=qVf4dZYN" alt="" />
->>>>>>> origin/HM-124-fe-admin-crud-manage-room-types
 
         </header>
         {isMenuOpen && (

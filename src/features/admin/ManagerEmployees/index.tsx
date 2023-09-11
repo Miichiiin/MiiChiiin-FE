@@ -1,4 +1,5 @@
-import { useGetAdmin_AdminQuery, useRemoveAdmin_AdminMutation } from "@/api/admin_admin";
+
+import { useGetAdmin_AdminQuery, useRemoveAdmin_AdminMutation } from "@/api/admin/admin_admin";
 import { nanoid } from "@reduxjs/toolkit";
 import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd";
   import type { ColumnsType } from "antd/es/table";
