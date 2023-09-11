@@ -29,6 +29,9 @@ const ChooseService = () => {
     const carts = useAppSelector((state: any) => state.cart?.items);
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
+    
+    
+    
 
    const sumPrice = carts?.reduce((total: any, item: any) => total + item.price * (differenceInDays((parseISO(item?.check_out)), parseISO(item?.check_in))), 0) + totalPrice
 
