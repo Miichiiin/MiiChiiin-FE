@@ -1,4 +1,5 @@
-import category_AdminApi, { useGetCategory_adminQuery, useRemoveCategory_adminMutation } from "@/api/category_admin";
+
+import { useGetCategory_adminQuery, useRemoveCategory_adminMutation } from "@/api/admin/category_admin";
 import {
   Table,
   Divider,
