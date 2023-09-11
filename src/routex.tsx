@@ -44,6 +44,7 @@ import { UpdateService } from "./features/admin/service/updateService";
 import UpdateHotel from "./features/admin/hotel/UpdateHotel";
 import { SearchQuickHotel } from "./components/SearchQuickHotel";
 import { SearchHotel } from "./features/webapp/booking/choose-room/searchHotel";
+import UpdateUserPage from "./features/admin/user/UpdateUser";
 
 
 
@@ -170,6 +171,10 @@ export const router = createBrowserRouter([
                 element: <AddUser />,
             },
             
+            {
+                path: "updateuser/:id",
+                element: <UpdateUserPage />,
+            },
             {
                 path: "hotelmanagement",
                 element: <HotelManagement />,
