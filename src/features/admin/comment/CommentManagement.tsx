@@ -1,3 +1,4 @@
+import { useGetRatingQuery, useRemoveRatingMutation } from '@/api/admin/rates_admin';
 import { Table, Divider, Radio, Button, Select, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
@@ -5,33 +6,58 @@ import { Link } from 'react-router-dom';
 
 
 export const CommentManagement = () => {
+    const { data: commentData } = useGetRatingQuery({});
+    const [removeComment] = useRemoveRatingMutation();
+    const data = commentData?.map(({ id, id_user, id_category, content, rating, status, deleted_at, created_at, updated_at, user_name, name_category }: DataType) => ({
+        key: id,
+        name_category,
+        content,
+        id_user,
+        created_at,
+        updated_at,
+        user_name,
+        status,
+        rating,
+        deleted_at,
+        id_category,
+    }));
+
     interface DataType {
-        key: string;
-        room_name: string,
-        name: string;
+        key: number;
+        id: string | number;
+        id_user: string;
+        id_category: string;
         content: string;
-        email: string;
-        date_comment: string;
-        status: string,
+        rating: string;
+        status: string;
+        deleted_at: string;
+        created_at: string;
+        updated_at: string;
+        user_name: string;
+        name_category: string;
     }
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Tên phòng',
-            dataIndex: 'room_name',
-            key: 'room_name',
+            title: 'ID',
+            dataIndex: 'key',
+        },
+        {
+            title: 'Tên người dùng',
+            dataIndex: 'user_name',
+            key: 'user_name',
             render: (text: any, item: any) => {
                 return (
                     <>
-                        <Link to={`/admin/editcomment/`}>{text}</Link>
+                        <Link to={`/admin/editcomment/${item.key}`}>{text}</Link>
                     </>
                 )
             }
         },
         {
-            title: 'Tên khách hàng',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Tên loại phòng',
+            dataIndex: 'name_category',
+            key: 'name_category',
         },
         {
             title: 'Nội dung',
@@ -39,14 +65,19 @@ export const CommentManagement = () => {
             key: 'content',
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
+            title: 'Đánh giá',
+            dataIndex: 'rating',
+            key: 'rating',
         },
         {
-            title: 'Ngày comment',
-            dataIndex: 'date_comment',
-            key: 'date_comment',
+            title: 'Ngày đánh giá',
+            dataIndex: 'created_at',
+            key: 'created_at',
+        },
+        {
+            title: 'Ngày cập nhật',
+            dataIndex: 'updated_at',
+            key: 'updated_at',
         },
         {
             title: 'Trạng thái',
@@ -55,44 +86,27 @@ export const CommentManagement = () => {
         },
     ];
 
-    const data: DataType[] = [
-        {
-            key: '1',
-            room_name: 'Phòng tình yêu',
-            name: "John Brown",
-            content: 'New York No. 1 Lake Park',
-            email: "dsasgmail.com",
-            date_comment: "15/08/2023",
-            status: "đã duyệt"
-        },
-        {
-            key: '3',
-            room_name: 'Phòng tình yêu',
-            name: "John Brown",
-            content: 'New York No. 1 Lake Park',
-            email: "dsasgmail.com",
-            date_comment: "15/08/2023",
-            status: "đã duyệt"
-        },
-
-    ];
-
+    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+    const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const rowSelection = {
         onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         },
-        getCheckboxProps: (record: DataType) => ({
-            disabled: record.name === 'Disabled User', // Column configuration not to be checked
-            name: record.name,
-        }),
     };
-    const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
-    // const onSearch = (value: string) => console.log(value);
+    const confirmDelete = (id: number) => {
+        const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa comment này?');
+        if (isConfirmed) {
+            removeComment(id).unwrap().then(() => {
+                setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
+            });
+        }
+    };
+
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <div className='flex justify-between items-center mb-4'>
                 <div className="text-lg font-semibold">Quản lý Comment</div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div className='flex items-center'>
                     <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} />
                     <Select
                         showSearch
@@ -131,7 +145,7 @@ export const CommentManagement = () => {
                         ]}
                     />
                 </div>
-               <div></div>
+                <div></div>
             </div>
             {/* Phần CSS tùy chỉnh cho bảng */}
             <style>
@@ -143,7 +157,12 @@ export const CommentManagement = () => {
                     }
                     `}
             </style>
-            <Button type="primary" className='mx-5' danger>Xóa</Button>
+            <Button type="primary" className='mx-5' danger
+                onClick={() => {
+                    selectedRows.forEach((row) => confirmDelete(row.key));
+                }}
+                disabled={selectedRows.length === 0}
+            >Xóa</Button>
             <Radio.Group
                 onChange={({ target: { value } }) => {
                     setSelectionType(value);
@@ -157,7 +176,11 @@ export const CommentManagement = () => {
                 <Table
                     rowSelection={{
                         type: selectionType,
-                        ...rowSelection,
+                        selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
+                        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+                            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                            setSelectedRows(selectedRows);
+                        },
                     }}
                     columns={columns}
                     dataSource={data}

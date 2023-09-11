@@ -12,59 +12,75 @@ import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export const ManagerRoomType = () => {
+export const ManagerUtilities = () => {
   const [messageApi, contextHolder] = message.useMessage();
   interface DataType {
     key: string;
     name: string;
-    description: string;
-    capacity: string;
-    convenient: string;
+    name_room: string;
+    email: string;
+    phone: number;
+    date_comment: string;
+    content: string;
+    status: string;
   }
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "#",
+      title: "#Stt",
       dataIndex: "key",
       key: "key",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Tên loại phòng",
+      title: "Tên khách hàng",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Hình ảnh",
-      dataIndex: "description",
-      key: "description",
+      title: "Tên Phòng",
+      dataIndex: "name_room",
+      key: "name_room",
     },
     {
-      title: "Mô tả",
-      dataIndex: "description",
-      key: "description",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
     },
     {
-      title: "Sức chứa",
-      dataIndex: "capacity",
-      key: "capacity",
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
     },
     {
-      title: "Tiện nghi",
-      dataIndex: "convenient",
-      key: "convenient",
+      title: "Ngày comment",
+      dataIndex: "date_comment",
+      key: "date_comment",
     },
-    
+    {
+      title: "Nội dung",
+      dataIndex: "content",
+      key: "content",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+    },
   ];
 
   const data: DataType[] = [
     {
       key: "1",
-      name: "John Brown",
-      description: "oke con de",
-      capacity: "Oke con de",
-      convenient: "New York No. 1 Lake Park",
+      name: "Viet Anh",
+      name_room: "Phòng đôi",
+      email: "va66221199@gmail.com",
+      phone: 84346505992,
+      date_comment: "12/3/2023",
+      content: "abcxyz",
+      status: "abcxyz",
     },
+
   ];
 
   const rowSelection = {
@@ -91,7 +107,7 @@ export const ManagerRoomType = () => {
           marginBottom: "16px",
         }}
       >
-        <div className="text-lg font-semibold">Quản Lý Loại Phòng</div>
+        <div className="text-lg font-semibold">Quản Lý Utilities</div>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Input.Search placeholder="Tìm kiếm" style={{ marginRight: "8px" }} />
           <Select
@@ -135,33 +151,33 @@ export const ManagerRoomType = () => {
             ]}
           />
         </div>
-        <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-          <Link to={`/admin/addroomtype`}>Thêm loại phòng</Link>
-        </button>
+        <Button type="primary" className="ml-2 mt-1 bg-gray-500">
+          <Link to={`/admin/addUtilities`}>Thêm</Link>
+        </Button>
       </div>
       <div>
-          <Popconfirm
-            title="Xóa sản phẩm"
-            description="Bạn có muốn xóa không??"
-            onConfirm={() => {
-              // removeProduct(id)
-              //   .unwrap()
-              //   .then(() => {
-              //     messageApi.open({
-              //       type: "success",
-              //       content: "Xóa sản phẩm thành công",
-              //     });
-              //   });
-            }}
-            okText="Có"
-            cancelText="Không"
-          >
-            <Button danger>Xóa</Button>
-          </Popconfirm>
-          <Button type="primary" danger className="ml-2 mt-1">
-            <Link to={`/admin/updateroomtype`}>Sửa</Link>
-          </Button>
-        </div>
+        <Popconfirm
+          title="Xóa sản phẩm"
+          description="Bạn có muốn xóa không??"
+          onConfirm={() => {
+            // removeProduct(id)
+            //   .unwrap()
+            //   .then(() => {
+            //     messageApi.open({
+            //       type: "success",
+            //       content: "Xóa sản phẩm thành công",
+            //     });
+            //   });
+          }}
+          okText="Có"
+          cancelText="Không"
+        >
+          <Button danger>Xóa</Button>
+        </Popconfirm>
+        <Button type="primary" danger className="ml-2 mt-1">
+          <Link to={`/admin/updateUtilities`}>Sửa</Link>
+        </Button>
+      </div>
 
       <Radio.Group
         onChange={({ target: { value } }) => {

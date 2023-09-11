@@ -14,8 +14,8 @@ import HotelChainStatistics from "./features/admin/HotelStatistics";
 import UpdateRoomPage from "./features/admin/ManagerRooms/UpdateRoom";
 import AddRoomPage from "./features/admin/ManagerRooms/AddRoom";
 import { ManagerRoom } from "./features/admin/ManagerRooms";
-import { ManagerFeedBack } from "./features/admin/ManagerFeedBacks";
-import UpdateFeedBackPage from "./features/admin/ManagerFeedBacks/UpdateFeedBack";
+import { ManagerUtilities } from "./features/admin/ManagerUtilities";
+import UpdateFeedBackPage from "./features/admin/ManagerUtilities/UpdateUtilities";
 import { CommentManagement } from "./features/admin/comment/CommentManagement";
 import { EditComment } from "./features/admin/comment/EditComment";
 import { ServiceManagement } from "./features/admin/service/ServiceManagement";
@@ -41,6 +41,7 @@ import HotelType from "./features/webapp/HotelType";
 import AdminInfoPage from "./features/admin/ManagerInformationAdmin";
 import Order from "./features/webapp/order";
 import { UpdateService } from "./features/admin/service/updateService";
+import UpdateHotel from "./features/admin/hotel/UpdateHotel";
 
 
 
@@ -130,7 +131,7 @@ export const router = createBrowserRouter([
                 element: <CommentManagement />,
             },
             {
-                path: "editcomment",
+                path: "editcomment/:id",
                 element: <EditComment />,
             },
             {
@@ -166,11 +167,15 @@ export const router = createBrowserRouter([
                 element: <AddHotel />,
             },
             {
+                path: "updatehotel/:id",
+                element: <UpdateHotel/>
+            },
+            {
                 path: "addroomtype",
                 element: <AddRoomType />,
             },
             {
-                path: "updateroomtype",
+                path: "updateroomtype/:id",
                 element: <UpdateRoomType />,
             },
             {
@@ -214,11 +219,11 @@ export const router = createBrowserRouter([
                 element: <UpdateRoomPage />
             },
             {
-                path: "managerfeedback",
-                element: <ManagerFeedBack />
+                path: "managerutilities",
+                element: <ManagerUtilities />
             },
             {
-                path: "updatefeedback",
+                path: "updateUtilities",
                 element: <UpdateFeedBackPage />
             },
             {

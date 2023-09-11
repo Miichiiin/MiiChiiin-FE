@@ -50,7 +50,7 @@ const items: MenuItem[] = [
   ),
   getItem(<Link to={"managerroom"}>Quản lý Phòng</Link>, "5", <BiHotel />),
   getItem(
-    <Link to={"managerfeedback"}>Quản lý Feedbacks</Link>,
+    <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
     "6",
     <UserOutlined />
   ),

@@ -1,30 +1,51 @@
-import { useAddHotel_adminMutation } from '@/api/admin/hotel_admin';
+import { useGetHotel_adminByIdQuery, useUpdateHotel_adminMutation } from '@/api/admin/hotel_admin';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { Button, Form, Input, InputNumber, Select, Spin, Upload, message } from 'antd';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export const AddHotel = () => {
-    const navigate = useNavigate()
-    const [addHotel, { isLoading }] = useAddHotel_adminMutation()
+const UpdateHotel = () => {
     const [messageApi, contextHolder] = message.useMessage();
 
     const success = () => {
         messageApi.open({
             type: 'success',
-            content: 'Add product successfully',
+            content: 'Update product successfully',
         });
     };
-    const onFinish = (values: FieldType) => {
-        addHotel(values).unwrap().then(() => navigate('/admin/hotelManagement'));
 
+    const navigate = useNavigate()
+    const [updateHotel, {isLoading}] = useUpdateHotel_adminMutation()
+
+    const onFinish = (values: FieldType) => {
+        updateHotel({ ...values, id: id }).unwrap().then(() => navigate('/admin/hotelManagement'));
     };
+    const { id } = useParams<{ id: string }>()
+    const { data: hotelData } = useGetHotel_adminByIdQuery(id || "")
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-
+    const [form] = Form.useForm();
+    useEffect(() => {
+        form.setFieldsValue({
+            name: hotelData?.name,
+            email: hotelData?.email,
+            description: hotelData?.description,
+            quantity_of_room: hotelData?.quantity_of_room,
+            phone: hotelData?.phone,
+            star: hotelData?.star,
+            quantity_floor: hotelData?.quantity_floor,
+            created_at: hotelData?.created_at,
+            updated_at: hotelData?.updated_at,
+            status: hotelData?.status,
+            id_city: hotelData?.id_city,
+            name_cities: hotelData?.name_cities,
+            image_urls: hotelData?.image_urls,
+        })
+    }, [hotelData])
     type FieldType = {
+        id: string | number,
         name: string,
         email: string,
         description: string,
@@ -49,7 +70,7 @@ export const AddHotel = () => {
         <div>
 
             <header className="flex justify-between items-center my-5 mx-3">
-                <h2 className="text-2xl  text-blue-700">Thêm khách sạn</h2>
+                <h2 className="text-2xl  text-blue-700">Sửa khách sạn : {hotelData?.name}</h2>
             </header>
             {contextHolder}
             <Form
@@ -61,6 +82,7 @@ export const AddHotel = () => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                form={form}
             >
                 <Form.Item<FieldType>
                     label="Tên Khách sạn"
@@ -138,7 +160,7 @@ export const AddHotel = () => {
                 >
                     <Select defaultValue="0" style={{ width: '150px' }}>
                         <Select.Option value="1">Đang dùng</Select.Option>
-                        <Select.Option value="0">Có sẵn</Select.Option>
+                        <Select.Option value="2">Có sẵn</Select.Option>
                     </Select>
                 </Form.Item>
                 <Form.Item<FieldType>
@@ -165,9 +187,9 @@ export const AddHotel = () => {
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" className='bg-blue-500 text-white' htmlType="submit" onClick={() => success()}>
                         {isLoading ? (
-                            <AiOutlineLoading3Quarters className="animate-spin" />
+                            <Spin />
                         ) : (
-                            "Add new product"
+                            "Update"
                         )}
                     </Button>
                 </Form.Item>
@@ -175,3 +197,5 @@ export const AddHotel = () => {
         </div>
     )
 }
+
+export default UpdateHotel

@@ -13,7 +13,7 @@ const { Option } = Select;
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
-const UpdateFeedBackPage = () => {
+const UpdateUtilitiesPage = () => {
   const onFinish = (values: any) => {
     console.log("Form values:", values);
     // Gửi dữ liệu lên server hoặc xử lý theo yêu cầu của bạn
@@ -29,10 +29,10 @@ const UpdateFeedBackPage = () => {
           marginBottom: "16px",
         }}
       >
-        <div className="text-lg font-semibold">Cập Nhật FeedBack</div>
+        <div className="text-lg font-semibold">Cập Nhật Tiện ích</div>
 
         <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
-          <Link to={`/admin/managerfeedback`}>
+          <Link to={`/admin/managerutilities`}>
             <ArrowLeftOutlined /> Quay lại
           </Link>
         </Button>
@@ -71,10 +71,10 @@ const UpdateFeedBackPage = () => {
           </div>
           <div className="w-1/2 p-4 bg-white pr-2">
             <Form.Item
-              label="Ngày feedback"
-              name="feedbackDate"
+              label="Ngày utilities"
+              name="utilitiesDate"
               rules={[
-                { required: true, message: "Vui lòng chọn ngày feedback" },
+                { required: true, message: "Vui lòng chọn ngày utilities" },
               ]}
             >
               <DatePicker />
@@ -120,4 +120,4 @@ const UpdateFeedBackPage = () => {
   );
 };
 
-export default UpdateFeedBackPage;
+export default UpdateUtilitiesPage;
