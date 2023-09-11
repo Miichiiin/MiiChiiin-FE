@@ -15,7 +15,7 @@ const services_adminApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getServices_Admin: builder.query({
+        getServices_Admin: builder.query<any, void>({
             query: () => `/services_admin`,
             providesTags: ['Services_admin']
         }),

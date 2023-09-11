@@ -1,8 +1,9 @@
 
+import { useAddServices_AdminMutation } from '@/api/admin/service_admin';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useAddServices_AdminMutation } from '@/api/service_admin';
+
 
 export const AddService = () => {
   
@@ -16,7 +17,7 @@ export const AddService = () => {
         message.success('Thêm dịch vụ thành công');
         navigate('/admin/service');
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error('Failed:', error);
         message.error('Thêm dịch vụ thất bại');
       });

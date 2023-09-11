@@ -1,6 +1,7 @@
+import { useGetServices_AdminByIdQuery, useUpdateServices_AdminMutation } from '@/api/admin/service_admin';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetServices_AdminByIdQuery, useUpdateServices_AdminMutation } from '@/api/service_admin';
+
 
 export const UpdateService = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export const UpdateService = () => {
         message.success('Cập nhật dịch vụ thành công');
         navigate('/admin/service');
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error('Failed:', error);
         message.error('Cập nhật dịch vụ thất bại');
       });

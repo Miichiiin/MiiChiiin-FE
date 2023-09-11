@@ -1,4 +1,5 @@
-import { useGetServices_AdminQuery } from "@/api/service_admin";
+
+import { useGetServices_AdminQuery } from "@/api/admin/service_admin";
 import {
   Table,
   Divider,

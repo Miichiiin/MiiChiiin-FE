@@ -1,10 +1,11 @@
 import { AiOutlineEnvironment, AiOutlinePhone, AiOutlineReconciliation, AiFillWechat } from "react-icons/ai";
 import HeaderHotelType from "./HeaderHotelType";
 import Search from "@/components/Search";
-import { useGetHotel_homesQuery } from "@/api/hotel_home";
+
 import { Rate } from 'antd';
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
 
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 

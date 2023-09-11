@@ -8,7 +8,8 @@ import {
 } from "react-icons/ai";
 import HeaderHotelType from "src/features/webapp/HotelType/HeaderHotelType";
 import Search from "@/components/Search";
-import { useGetCategory_homeQuery } from "@/api/category_home";
+import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
+
 
 const ChooseRoom = () => {
   const { data: hotels } = useGetCategory_homeQuery();
