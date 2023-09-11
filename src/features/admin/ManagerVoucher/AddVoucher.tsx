@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
-import { Input, DatePicker, InputNumber, Select, Button, Upload, Form } from 'antd';
+import { Input, DatePicker, InputNumber, Select, Button, Upload, Form ,message} from 'antd';
 import { CloudUploadOutlined, ArrowLeftOutlined} from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
+import { useAddVoucherMutation } from '@/api/voucher';
 
 
 
 const { Option } = Select;
 
 const AddVoucherPage = () => {
+  const [addvoucher] = useAddVoucherMutation()
+  const navigate = useNavigate()
   const [form] = Form.useForm();
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleSubmit = (values:any) => {
+    addvoucher(values).unwrap().then(() =>{
+      navigate("/admin/managervouchers")
+      message.success("Thêm thành công voucher!")
+    })
     console.log('Form values:', values);
   };
 
@@ -42,41 +49,63 @@ const AddVoucherPage = () => {
 >
   {/* Form fields on the left */}
   <div className="w-1/2 p-4 bg-white">
-    <Form.Item label="Mã Voucher " name="" rules={[{ required: true, message: 'Please enter voucher code' }]}>
+    <Form.Item 
+      label="Mã Voucher " 
+      name="slug" 
+      rules={[{ required: true, message: 'Vui lòng nhập mã voucher' }]}>
       <Input />
     </Form.Item>
-    <Form.Item label="Tên Voucher " name="" rules={[{ required: true, message: 'Please enter voucher name' }]}>
+    <Form.Item label="Tên Voucher "
+     name="name" 
+     rules={[{ required: true, message: 'Vui lòng nhập tên của bạn!' }]}>
       <Input />
     </Form.Item>
-    <Form.Item label="Loại Type" name="" rules={[{ required: true, message: 'Please select voucher type' }]}>
+    <Form.Item 
+      label="Loại Type" 
+      name="discount" 
+      rules={[{ required: true, message: 'Vui lòng nhập loại!' }]}>
       <Select>
         <Option value="discount">30</Option>
         <Option value="freebie">10</Option>
       </Select>
     </Form.Item>
-    <Form.Item label="Short Description" name="shortDescription">
+    <Form.Item 
+      label="Short Description" 
+      name="meta"
+      rules={[{ required: true, message: 'Vui lòng nhập mô tả ngắn!' }]}
+      >
       <Input.TextArea rows={2} />
     </Form.Item>
-    <Form.Item label="Long Description" name="longDescription">
+    <Form.Item 
+      label="Long Description" 
+      name="description"
+      rules={[{ required: true, message: 'Vui lòng nhập mô tả dài!' }]}
+      >
       <Input.TextArea rows={4} />
-    </Form.Item>
-    <Form.Item label="Discount Value" name="discountValue" rules={[{ required: true, message: 'Please enter discount value' }]}>
-      <InputNumber min={0} />
     </Form.Item>
   </div>
 
   {/* Form fields on the right */}
   <div className="w-1/2 p-4">
-    <Form.Item label="Start Date" name="startDate" rules={[{ required: true, message: 'Please select start date' }]}>
+    <Form.Item 
+      label="Start Date" 
+      name="start_at" 
+      rules={[{ required: true, message: 'Vui lòng nhập ngày bắt đầu!' }]}>
       <DatePicker />
     </Form.Item>
-    <Form.Item label="End Date" name="endDate" rules={[{ required: true, message: 'Please select end date' }]}>
+    <Form.Item 
+      label="End Date" 
+      name="expire_at" 
+      rules={[{ required: true, message: 'Vui lòng nhập ngày kết thúci!' }]}>
       <DatePicker />
     </Form.Item>
-    <Form.Item label="Quantity" name="quantity" rules={[{ required: true, message: 'Please enter quantity' }]}>
+    <Form.Item 
+      label="Quantity" 
+      name="quantity" 
+      rules={[{ required: true, message: 'Vui lòng nhập số lượng' }]}>
       <InputNumber min={1} />
     </Form.Item>
-    <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Please select status' }]}>
+    <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Vui lòng nhập trạng thái' }]}>
       <Select>
         <Option value="active">Active</Option>
         <Option value="inactive">Inactive</Option>

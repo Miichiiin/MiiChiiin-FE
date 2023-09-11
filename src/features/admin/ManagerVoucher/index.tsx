@@ -1,12 +1,32 @@
 
-import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd";
+import { useGetVoucherQuery, useRemoveVoucherMutation } from "@/api/voucher";
+import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,Pagination} from "antd";
   import type { ColumnsType } from "antd/es/table";
   import { useState } from "react";
   import { Link } from "react-router-dom";
   
   export const ManagerVouchers = () => {
+    const [removeVoucher] = useRemoveVoucherMutation()
+    const {data:voucherData} = useGetVoucherQuery({})
+
+    const data = voucherData?.map(({id,name,slug,image,discount,start_at,expire_at,status,meta,description,quantity,created_at,updated_at} :DataType) =>({
+      key:id,
+      name:name,
+      slug:slug,
+      image:image,
+      discount:discount,
+      start_at:start_at,
+      expire_at:expire_at,
+      status:status,
+      meta:meta,
+      description:description,
+      quantity:quantity,
+      created_at:created_at,
+      updated_at:updated_at
+    }))
     const [messageApi, contextHolder] = message.useMessage();
     interface DataType {
+      key:number,
       id: string;
       name: string;
       slug:string;
@@ -18,20 +38,29 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       meta: string;
       description:string;
       quantity: number;
+      created_at:string;
+      updated_at:string;
     }
   
     const columns: ColumnsType<DataType> = [
       {
         title: "#Stt",
-        dataIndex: "id",
+        dataIndex: "key",
         key: "id",
-        render: (text) => <a>{text}</a>,
+        render: (_, record, index) => <span>{index + 1}</span>,
       },
       {
         title: "Tên Voucher",
         dataIndex: "name",
         key: "name",
-      },
+        render: (text:any,item:any) =>{
+          return (
+              <>
+                <Link to={`/admin/updatevoucher/${item.key}`}>{text}</Link>
+              </>
+            )
+          }
+        },
       {
         title: "slug",
         dataIndex: "slug",
@@ -41,6 +70,7 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         title: "Hình ảnh",
         dataIndex: "image",
         key: "image",
+        render: (image) => <img src={image} alt="Hình ảnh" width="100" />,
       },
       {
         title: "Mô tả ngắn",
@@ -77,25 +107,18 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         dataIndex: "status",
         key: "status",
       },
+      {
+        title: "created_at",
+        dataIndex: "created_at",
+        key: "created_at",
+      },
+      {
+        title: "updated_at",
+        dataIndex: "updated_at",
+        key: "updated_at",
+      },
     
     ];
-  
-    const data: DataType[] = [
-      {
-        id: "1",
-        name: "voucher Da Nang",
-        slug:"Quiz.",
-        image:"loi 404",
-        discount:30,
-        start_at:"24/8/2023",
-        expire_at:"24/9/2023",
-        status:"Van con",
-        meta:"Oke con de",
-        description:"Oke con de",
-        quantity: 50
-      },
-    ];
-  
     const rowSelection = {
       onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
         console.log(
@@ -110,6 +133,22 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       }),
     };
     const [selectionType, setSelectionType] = useState<"checkbox">("checkbox");
+    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+    const [addressFilter, setAddressFilter] = useState<string | undefined>(undefined);
+
+    const confirmDelete = (id: number) => {
+      const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
+      if (isConfirmed) {
+          removeVoucher(id).unwrap().then(() => {
+              setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
+          });
+      }
+  };
+  const handleAddressFilterChange = (value: string) => {
+    setAddressFilter(value);
+};
+  const filteredData = addressFilter ? data.filter((item: any) => item.name_cities.includes(addressFilter)) : data;
+    console.log(filteredData);
     return (
       <div>
         <div
@@ -128,6 +167,8 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
               style={{ width: 200 }}
               placeholder="Search to Select"
               optionFilterProp="children"
+              onChange={handleAddressFilterChange}
+              value={addressFilter}
               filterOption={(input, option) =>
                 (option?.label ?? "").includes(input)
               }
@@ -168,27 +209,17 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
             <Link to={`/admin/addvoucher`}>Thêm Voucher</Link>
           </button>
         </div>
-        <div>
-            <Popconfirm
-              title="Xóa sản phẩm"
-              description="Bạn có muốn xóa không??"
-              onConfirm={() => {
-                // removeProduct(id)
-                //   .unwrap()
-                //   .then(() => {
-                //     messageApi.open({
-                //       type: "success",
-                //       content: "Xóa sản phẩm thành công",
-                //     });
-                //   });
-              }}
-              okText="Có"
-              cancelText="Không"
-            >
-              <Button danger>Xóa</Button>
-            </Popconfirm>
+
+         <div>
+          
+         <Button type="primary" className='mx-5' danger
+                onClick={() => {
+                    selectedRows.forEach((row) => confirmDelete(row.key));
+                }}
+                disabled={selectedRows.length === 0}
+            >Xóa</Button>
             <Button type="primary" danger className="mt-2 ml-1">
-              <Link to={`/admin/updatevoucher`}>Sửa</Link>
+              <Link to={`/admin/updatevoucher}`}>Sửa</Link>
             </Button>
           </div>
   
@@ -204,10 +235,17 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
           rowSelection={{
             type: selectionType,
             ...rowSelection,
+            selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
+            onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+              console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+              setSelectedRows(selectedRows);
+          },
           }}
           columns={columns}
           dataSource={data}
+          scroll={{ x: 2000 }}
         />
+        
       </div>
     );
   };
