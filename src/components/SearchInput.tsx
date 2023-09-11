@@ -71,15 +71,10 @@ const SearchInput = () => {
           <div
             className="border z-0 border-[#e0e0e0] xl:w-[400px] xl:h-[55px] xl:pl-[55px] 
                         lg:w-[200px] lg:h-[55px] xl:text-[16px] lg:text-[11px] lg:pl-[40px] 
-                        sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px]"
-          >
-            <span className="text-[#b0b4b8] absolute top-4">
-              {selectedHotel || "Bạn nhập nơi muốn đến..."}
-            </span>
+                        sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px]">
+            <span className='text-[#353c46] absolute top-4'>{selectedHotel || 'Bạn nhập nơi muốn đến...'}</span>
           </div>
-          <span className="absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4">
-            <AiOutlineEnvironment />
-          </span>
+          <span className="absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#353c46] sm:start-4"><AiOutlineEnvironment /></span>
         </div>
         {isDropdownOpen && (
           <div className="absolute">
