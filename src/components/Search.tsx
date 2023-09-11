@@ -118,20 +118,20 @@ const Search = () => {
               {isDropdownOpen && (
                 <div className="absolute  lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 ">
                   <div className="flex items-center justify-between cursor-pointer text-[15px]">
-                    <span className="font-medium">Số phòng</span>
+                    <span className="font-medium text-[#353c46]">Số phòng</span>
                     <div className="flex items-center space-x-4">
                       {numberOfRooms > 1 && (
                         <button
                           onClick={() => handleRoomChange(numberOfRooms - 1)}
-                          className="border border-gray-400 text-gray-400 px-1 py-1 rounded-full"
+                          className="border border-gray-600 text-gray-600 px-1 py-1 rounded-full"
                         >
                           <AiOutlineMinus />
                         </button>
                       )}
-                      <a href="">{numberOfRooms}</a>
+                      <a className="text-[#353c46] font-medium" href="">{numberOfRooms}</a>
                       <button
                         onClick={() => handleRoomChange(numberOfRooms + 1)}
-                        className="border border-gray-400 text-gray-400 px-1 py-1 rounded-full"
+                        className="border border-gray-600 text-gray-600 px-1 py-1 rounded-full"
                       >
                         <AiOutlinePlus />
                       </button>
@@ -141,59 +141,59 @@ const Search = () => {
                   <div className={`max-h-[230px] w-auto  ${shouldShowScroll ? 'overflow-y-scroll overflow-hidden' : ''}`}>
                     {roomDetails.map((room, index) => (
                       <div key={index} className="mt-3 ">
-                        <p className="mb-2 mr-[260px] text-[14px] font-medium">Phòng {index + 1}</p>
+                        <p className="mb-2 mr-[260px] text-[14px] font-medium text-[#353c46]">Phòng {index + 1}</p>
                         <div className="flex items-center space-x-[42px] border-b-[1px] pb-5">
                           <span>
-                            <h2 className="ml-3 mb-2 text-[12px] text-gray-400">Người lớn</h2>
+                            <h2 className="ml-3 mb-2 text-[12px] text-gray-600 font-medium">Người lớn</h2>
                             <div className="flex items-center space-x-3">
-                              <button
-                                onClick={() => handleAdultChange(index, room.adults + 1)}
-                                className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                              >
-                                <AiOutlinePlus />
-                              </button>
-                              <a href="">{room.adults}</a>
                               <button
                                 onClick={() => handleAdultChange(index, room.adults - 1)}
-                                className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
                               >
                                 <AiOutlineMinus />
+                              </button>
+                              <a className="text-[#353c46] font-medium" href="">{room.adults}</a>
+                              <button
+                                onClick={() => handleAdultChange(index, room.adults + 1)}
+                                className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
+                              >
+                                <AiOutlinePlus />
                               </button>
                             </div>
                           </span>
                           <span>
-                            <h2 className="ml-3 mb-2 text-[13px] text-gray-400">Trẻ em</h2>
+                            <h2 className="ml-3 mb-2 text-[13px] text-gray-600 font-medium" >Trẻ em</h2>
                             <div className="flex items-center space-x-3">
-                              <button
-                                onClick={() => handleChildrenChange(index, room.children + 1)}
-                                className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                              >
-                                <AiOutlinePlus />
-                              </button>
-                              <a href="">{room.children}</a>
                               <button
                                 onClick={() => handleChildrenChange(index, room.children - 1)}
-                                className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
                               >
                                 <AiOutlineMinus />
+                              </button>
+                              <a className="text-[#353c46] font-medium" href="">{room.children}</a>
+                              <button
+                                onClick={() => handleChildrenChange(index, room.children + 1)}
+                                className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
+                              >
+                                <AiOutlinePlus />
                               </button>
                             </div>
                           </span>
                           <span>
-                            <h2 className="ml-3 mb-2 text-[13px] text-gray-400">Em bé</h2>
+                            <h2 className="ml-3 mb-2 text-[13px] text-gray-600 font-medium">Em bé</h2>
                             <div className="flex items-center space-x-3">
                               <button
-                                onClick={() => handleInfantChange(index, room.infants + 1)}
-                                className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                              >
-                                <AiOutlinePlus />
-                              </button>
-                              <a href="">{room.infants}</a>
-                              <button
                                 onClick={() => handleInfantChange(index, room.infants - 1)}
-                                className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
                               >
                                 <AiOutlineMinus />
+                              </button>
+                              <a className="text-[#353c46] font-medium" href="">{room.infants}</a>
+                              <button
+                                onClick={() => handleInfantChange(index, room.infants + 1)}
+                                className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
+                              >
+                                <AiOutlinePlus />
                               </button>
                             </div>
                           </span>
