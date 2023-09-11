@@ -7,7 +7,8 @@ import { TextTruncate } from "../../../components/TextTruncate"
 import Search from "../../../components/Search";
 import HeaderHotel from "./HeaderHotel";
 import { Link } from "react-router-dom";
-import { useGetCategory_homeQuery } from "@/api/category_home";
+import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
+
 const HotelIntroduction = () => {
     const { data, error, isLoading } = useGetCategory_homeQuery();
     let settings = {

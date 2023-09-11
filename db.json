@@ -346,6 +346,20 @@
             "views": 800,
             "created_at": "2023-08-29T09:15:00Z",
             "updated_at": "2023-08-31T12:20:00Z"
+          },
+          {
+            "name": "Tên khách sạn 2",
+            "description": "Mô tả khách sạn 2",
+            "image": "link hình ảnh khách sạn 2",
+            "quantity_of_people": 50,
+            "price": 200,
+            "acreage": 150,
+            "floor": 5,
+            "status": "unavailable",
+            "likes": 200,
+            "views": 800,
+            "created_at": "2023-08-29T09:15:00Z",
+            "updated_at": "2023-08-31T12:20:00Z"
           }
     ],
     "booking_admin": [
@@ -386,7 +400,7 @@
             "name_user": null
         },
         {
-            "id": 2,
+            "id": 3,
             "check_in": "2023-09-05 23:27:26",
             "check_out": "2023-09-09 13:23:53",
             "people_quantity": 510,
@@ -543,7 +557,7 @@
             "updated_at": "2023-08-27T17:59:41.000000Z"
         }
     ],
-    "users": [
+    "khachhang": [
         {
             "id": 1,
             "name": "Dr. Geovany Gaylord",

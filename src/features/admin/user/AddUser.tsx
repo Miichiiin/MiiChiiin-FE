@@ -1,9 +1,44 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, DatePicker, Form, Input, InputNumber, Select, Upload } from 'antd';
-
+import { useAddUserMutation } from '@/api/users';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { Button, DatePicker, Form, Input, InputNumber, Select, Upload ,message} from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 export const AddUser = () => {
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
+    const [addUser, {isLoading}] = useAddUserMutation()
+    const navigate = useNavigate()
+    const [image, setImage] = useState("");
+    const [selectedRange, setSelectedRange] = useState<any>();
+
+    const handleRangeChange = (dates: any) => {
+      setSelectedRange(dates?.toDate() || null);
+    };
+   
+    const onFinish =  (values: any) => {
+        const newValue = {
+            ...values,
+            date: selectedRange.toISOString().slice(0, 10)
+        }
+        // console.log(values);
+        
+        addUser(newValue).unwrap().then(() => {
+            console.log("thanh cong", newValue);
+            navigate("/admin/usermanagement")
+            message.success('Thêm khách hàng thành công!');
+            
+        })
+        // try {
+        //     const resultAction = await addUser(values);
+        //     if ('error' in resultAction) {
+        //       console.error('Error:', resultAction.error);
+        //     } else {
+        //       const data = resultAction.data;
+        //       navigate("/admin/usermanagement"); 
+        //       console.log('Form values:', data);
+        //     }
+        //   } catch (error) {
+        //     console.error('Error:', error);
+        //   }
+      
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -12,22 +47,26 @@ export const AddUser = () => {
 
     type FieldType = {
         name: string,
-        email: string,
-        image?: string,
-        order?: string;
-        sex?: string,
-        birht_day?: string;
-        address?: string;
-        phone_number?: string,
-        id_number?: string,
-        nationality?: string;
+        email:string,
+        image:string,
+        description:string,
+        email_verified_at:string,
+        phone: number
+        address:string,
+        status: number,
+        gender:number,
+        date: string,
+        nationality:string,
+        cccd: string
     };
     const normFile = (e: any) => {
         if (Array.isArray(e)) {
             return e;
         }
-        return e?.fileList;
+        return setImage(e?.fileList)
     };
+    console.log("anh",image);
+    
     return (
         <div>
 
@@ -61,52 +100,58 @@ export const AddUser = () => {
                 >
                     <Input allowClear />
                 </Form.Item>
-
-                <Form.Item label="Ảnh" valuePropName="image" getValueFromEvent={normFile}>
-                    <Upload action="/upload.do" listType="picture-card">
-                        <div>
-                            <PlusOutlined />
-                            <div style={{ marginTop: 8 }}>Upload</div>
-                        </div>
+                <Form.Item label="Tải lên tệp" name="file" valuePropName="fileList" getValueFromEvent={normFile}>
+                    <Upload
+                        action="/upload.do" // Đặt endpoint tải lên của bạn
+                        listType="text" // Hiển thị tên tệp thay vì hình ảnh
+                        maxCount={1} // Số lượng tệp tối đa
+                    >
+                        <Button icon={<UploadOutlined />}>Chọn tệp</Button>
                     </Upload>
                 </Form.Item>
 
 
                 <Form.Item<FieldType>
                     label="Giới tính"
-                    name="birht_day"
+                    name="gender"
+                    rules={[{ required: true, message: 'Hãy nhập tên dịch Giới tính!' }]}
                 >
                     <Select defaultValue="all" style={{ width: '150px' }}>
-                        <Select.Option value="all">Nam</Select.Option>
-                        <Select.Option value="available">Nữ</Select.Option>
-                        <Select.Option value="occupied">Khác</Select.Option>
+                        <Select.Option value="male">Nam</Select.Option>
+                        <Select.Option value="famele">Nữ</Select.Option>
+                        <Select.Option value="other">Khác</Select.Option>
                     </Select>
+                    
                 </Form.Item>
 
                 <Form.Item
                     label="Ngày sinh"
                     name="date"
+                    rules={[{ required: true, message: 'Hãy nhập  ngày sinh!' }]}
                 >
-                    <DatePicker />
+                    <DatePicker onChange={handleRangeChange} />
                 </Form.Item>
 
                 <Form.Item<FieldType>
                     label="Địa chỉ"
                     name="address"
+                    rules={[{ required: true, message: 'Hãy nhập  địa chỉ!' }]}
                 >
                     <Input allowClear/>
                 </Form.Item>
 
                 <Form.Item<FieldType>
                     label="Sdt"
-                    name="phone_number"
+                    name="phone"
+                    rules={[{ required: true, message: 'Hãy nhập số điện thoại !' }]}
                 >
                     <Input allowClear/>
                 </Form.Item>
 
                 <Form.Item<FieldType>
                     label="CCCD"
-                    name="id_number"
+                    name="cccd"
+                    rules={[{ required: true, message: 'Hãy nhập căn cước công dân!' }]}
                 >
                     <Input allowClear/>
                 </Form.Item>
@@ -114,6 +159,7 @@ export const AddUser = () => {
                 <Form.Item<FieldType>
                     label="Quốc tịch"
                     name="nationality"
+                    rules={[{ required: true, message: 'Hãy nhập quốc tịch!' }]}
                 >
                     <Input allowClear/>
                 </Form.Item>
@@ -127,3 +173,4 @@ export const AddUser = () => {
         </div>
     )
 }
+// 

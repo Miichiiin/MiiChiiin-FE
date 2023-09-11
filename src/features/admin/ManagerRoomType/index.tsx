@@ -1,3 +1,5 @@
+
+import { useGetCategory_adminQuery, useRemoveCategory_adminMutation } from "@/api/admin/category_admin";
 import {
   Table,
   Divider,
@@ -5,66 +7,132 @@ import {
   Input,
   Select,
   Button,
-  Popconfirm,
   message,
+  
+  
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const ManagerRoomType = () => {
+  const {data: categoryData} = useGetCategory_adminQuery([]);
+  const [removeCategory_admin] = useRemoveCategory_adminMutation();
+  
+  
+
   const [messageApi, contextHolder] = message.useMessage();
+  const dataSource = categoryData?.map(({id,name,price,image,description,capacity,convenient,quantity_of_people,acreage,floor,status,likes,views,
+    created_at,updated_at
+  }: DataType) =>({
+    key:id,
+    name:name,
+    price:price,
+    image:image,
+    description:description,
+    capacity: capacity,
+    convenient:convenient,
+    quantity_of_people:quantity_of_people,
+    acreage:acreage,
+    floor:floor,
+    status:status,
+    likes:likes,
+    views:views,
+    created_at:created_at,
+    updated_at:updated_at
+  }))
   interface DataType {
-    key: string;
+    key:number
+    id: string | number;
     name: string;
     description: string;
     capacity: string;
     convenient: string;
+    image:string;
+    quantity_of_people:number;
+    price:number;
+    acreage:number;
+    floor:number;
+    status:string;
+    likes:number;
+    views:number;
+    created_at:string;
+    updated_at:string;
   }
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "#Stt",
+      title: "#",
       dataIndex: "key",
       key: "key",
-      render: (text) => <a>{text}</a>,
+      render: (_, record, index) => <span>{index + 1}</span>,
     },
     {
       title: "Tên loại phòng",
       dataIndex: "name",
       key: "name",
+      
+      render: (text:any,item:any) =>{
+        return (
+            <>
+              <Link to={`/admin/updateroomtype/${item.key}`}>{text}</Link>
+            </>
+          )
+        }
     },
     {
       title: "Hình ảnh",
-      dataIndex: "description",
-      key: "description",
+      dataIndex: "image",
+      key: "image",
+      // render: (image) => <img src={image} alt="Hình ảnh" width="100" />,
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
+      width:200,
     },
     {
       title: "Sức chứa",
-      dataIndex: "capacity",
-      key: "capacity",
+      dataIndex: "quantity_of_people",
+      key: "quantity_of_people",
     },
     {
-      title: "Tiện nghi",
-      dataIndex: "convenient",
-      key: "convenient",
+      title: "Giá",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Diện tích",
+      dataIndex: "acreage",
+      key: "acreage",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: "Lượt thích",
+      dataIndex: "likes",
+      key: "likes",
+    },
+    {
+      title: "Lượt xem",
+      dataIndex: "views",
+      key: "views",
+    },
+    {
+      title: "Ngày tạo",
+      dataIndex: "created_at",
+      key: "created_at",
+    },
+    {
+      title: "Ngày cập nhập",
+      dataIndex: "updated_at",
+      key: "updated_at",
     },
     
-  ];
-
-  const data: DataType[] = [
-    {
-      key: "1",
-      name: "John Brown",
-      description: "oke con de",
-      capacity: "Oke con de",
-      convenient: "New York No. 1 Lake Park",
-    },
   ];
 
   const rowSelection = {
@@ -81,6 +149,16 @@ export const ManagerRoomType = () => {
     }),
   };
   const [selectionType, setSelectionType] = useState<"checkbox">("checkbox");
+  const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+
+  const confirmDelete = (id: number) => {
+    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa phòng này?');
+    if (isConfirmed) {
+        removeCategory_admin(id).unwrap().then(() => {
+            setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
+        });
+    }
+};
   return (
     <div>
       <div
@@ -140,24 +218,13 @@ export const ManagerRoomType = () => {
         </button>
       </div>
       <div>
-          <Popconfirm
-            title="Xóa sản phẩm"
-            description="Bạn có muốn xóa không??"
-            onConfirm={() => {
-              // removeProduct(id)
-              //   .unwrap()
-              //   .then(() => {
-              //     messageApi.open({
-              //       type: "success",
-              //       content: "Xóa sản phẩm thành công",
-              //     });
-              //   });
-            }}
-            okText="Có"
-            cancelText="Không"
-          >
-            <Button danger>Xóa</Button>
-          </Popconfirm>
+          
+             <Button type="primary" className='mx-5' danger
+                onClick={() => {
+                    selectedRows.forEach((row) => confirmDelete(row.key));
+                }}
+                disabled={selectedRows.length === 0}
+            >Xóa</Button>
           <Button type="primary" danger className="ml-2 mt-1">
             <Link to={`/admin/updateroomtype`}>Sửa</Link>
           </Button>
@@ -175,10 +242,18 @@ export const ManagerRoomType = () => {
         rowSelection={{
           type: selectionType,
           ...rowSelection,
+          selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
+          onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            setSelectedRows(selectedRows);
+        },
         }}
         columns={columns}
-        dataSource={data}
+        dataSource={dataSource}
+        scroll={{ x: 2000 }}
+       
       />
+      
     </div>
   );
 };

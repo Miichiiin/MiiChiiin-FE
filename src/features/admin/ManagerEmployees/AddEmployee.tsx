@@ -1,17 +1,34 @@
 import  { useState } from 'react';
-import { Input, DatePicker, Select, Button, Upload, Form, Radio } from 'antd';
+import { Input, DatePicker, Select, Button, Upload, Form, Radio ,message} from 'antd';
 import {  ArrowLeftOutlined} from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
+import { useAddAdmin_AdminMutation } from '@/api/admin/admin_admin';
+
 
 
 
 const { Option } = Select;
 
 const AddEmployeePage = () => {
+  const navigate = useNavigate()
+  const [selectedRange, setSelectedRange] = useState<any>();
+
+  const handleRangeChange = (dates: any) => {
+    setSelectedRange(dates?.toDate() || null);
+  };
+  const [addEmployee] = useAddAdmin_AdminMutation()
   const [form] = Form.useForm();
 //   const [imageUrl, setImageUrl] = useState(null);
 
   const handleSubmit = (values:any) => {
+    const newValue = {
+      ...values,
+      date: selectedRange.toISOString().slice(0, 10)
+  }
+    addEmployee(newValue).unwrap().then(() =>{
+      navigate("/admin/manageremployee")
+      message.success("Thêm nhân viên thành công!")
+    })
     console.log('Form values:', values);
   };
 
@@ -80,53 +97,41 @@ const AddEmployeePage = () => {
 >
   {/* Form fields on the left */}
   <div className="w-1/2 p-4 bg-white">
-        <Form.Item label="Tên Nhân Viên" name="" rules={[{ required: true, message: 'Please enter name' }]}>
+        <Form.Item label="Tên Nhân Viên" name="name" rules={[{ required: true, message: 'Vui lòng nhâp tên nhân viên!' }]}>
           <Input />
         </Form.Item>
-
-        <Form.Item label="Căn Cước" name="" rules={[{ required: true, message: 'Please enter ' }]}>
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="Quốc Tịch" name="" rules={[{ required: true, message: 'Please enter ' }]}>
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="Giới Tính" name="" rules={[{ required: true }]}>
+        <Form.Item label="Giới Tính" name="gender" rules={[{ required: true }]}>
           <Radio.Group>
             <Radio value="male">Nam</Radio>
             <Radio value="female">Nữ</Radio>
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item label="Ngày Sinh" name="" rules={[{ required: true, message: 'Please enter ' }]}>
-          <DatePicker />
+        <Form.Item label="Ngày Sinh" name="date" rules={[{ required: true, message: 'Vui lòng nhập ngày sinh nhân viên! ' }]}>
+        <DatePicker onChange={handleRangeChange} />
         </Form.Item>
 
-        <Form.Item label="Chức Vụ" name="" rules={[{ required: true, message: 'Please enter ' }]}>
-          <Input />
-        </Form.Item>
   </div>
 
   {/* Form fields on the right */}
   <div className="w-1/2 p-4">
-  <Form.Item label="Cơ Sở" name="" rules={[{ required: true, message: 'Please enter ' }]}>
+  {/* <Form.Item label="Cơ Sở" name="" rules={[{ required: true, message: 'Please enter ' }]}>
           <Input />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item label="Địa Chỉ" name="" rules={[{ required: true, message: 'Please enter ' }]}>
+        <Form.Item label="Địa Chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ nhân viên !' }]}>
           <Input.TextArea />
         </Form.Item>
 
-        <Form.Item label="Số Điện Thoại"name="" rules={[{ required: true, message: 'Please enter ' }]}>
+        <Form.Item label="Số Điện Thoại"name="phone" rules={[{ required: true, message: 'Vui lòng nhập số điện thoại nhân viên!' }]}>
           <Input />
         </Form.Item>
 
-        <Form.Item label="Email" name="" rules={[{ required: true, message: 'Please enter ' }]}>
+        <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Vui lòng nhập email! ' }]}>
           <Input />
         </Form.Item>
 
-        <Form.Item label="Hình ảnh" name="" rules={[{ required: true, message: 'Please enter ' }]}>
+        <Form.Item label="Hình ảnh" name="image" rules={[{ required: true, message: 'Bạn chưa cập nhập file ảnh! ' }]}>
           <Upload>
             <Button>Tải lên</Button>
           </Upload>

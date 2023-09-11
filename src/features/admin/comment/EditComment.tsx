@@ -1,8 +1,34 @@
-import { Button, DatePicker, Form, Input } from 'antd';
+import { useGetRatingByIdQuery, useUpdateRatingMutation } from '@/api/admin/rates_admin';
+import { Button, DatePicker, Form, Input, Select } from 'antd';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const EditComment = () => {
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
+
+    const [form] = Form.useForm();
+    const {id} = useParams<{ id: string }>();
+    const {data: commentData} = useGetRatingByIdQuery(id||"");
+
+    const [updateComment] = useUpdateRatingMutation();
+    const navigate = useNavigate()
+    useEffect(() => {
+        form.setFieldsValue({
+            id: commentData?.id,
+            id_user: commentData?.id_user,
+            id_category: commentData?.id_category,
+            user_name: commentData?.user_name,
+            name_category: commentData?.name_category,
+            content: commentData?.content,
+            rating: commentData?.rating,
+            created_at: commentData?.created_at,
+            updated_at: commentData?.updated_at,
+            deleted_at: commentData?.deleted_at,
+            status: commentData?.status
+        })
+    }, [commentData])
+    
+    const onFinish = (values: FieldType) => {
+       updateComment({...values, id: id}).unwrap().then(() => navigate('/admin/commentmanagement'))
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -10,19 +36,22 @@ export const EditComment = () => {
     };
 
     type FieldType = {
-        name?: string;
-        room_name?: string;
-        email?: string;
-        sdt: string,
-        date: string,
-        content: string,
-        status: string
+        id: string | number;
+        id_user: string;
+        id_category: string;
+        content: string;
+        rating: string;
+        status: string;
+        deleted_at: string;
+        created_at: string;
+        updated_at: string;
+        user_name: string;
+        name_category: string;
     };
     return (
         <div>
-         
             <header className="flex justify-between items-center my-5 mx-3">
-                <h2 className="text-2xl  text-blue-700">Sửa Comment</h2>
+                <h2 className="text-2xl  text-blue-700">Sửa Comment:  {commentData?.user_name}</h2>
             </header>
             <Form
                 name="basic"
@@ -33,44 +62,39 @@ export const EditComment = () => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                form={form}
             >
                 <Form.Item<FieldType>
                     label="Tên khách hàng"
-                    name="name"
+                    name="user_name"
                     rules={[{ required: true, message: 'Hãy nhập tên khách hàng!' }]}
                 >
-                    <Input allowClear/>
+                    <Input allowClear />
                 </Form.Item>
 
                 <Form.Item<FieldType>
-                    label="Tên phòng"
-                    name="room_name"
+                    label="Tên loại phòng"
+                    name="name_category"
                     rules={[{ required: true, message: 'Hãy nhập tên phòng!' }]}
                 >
-                    <Input allowClear/>
+                    <Input allowClear />
                 </Form.Item>
 
                 <Form.Item<FieldType>
-                    label="Email"
-                    name="email"
-                    rules={[{ required: true, message: 'Hãy nhập Email!' }]}
-                >
-                    <Input allowClear/>
-                </Form.Item>
-
-                <Form.Item<FieldType>
-                    label="SDT"
-                    name="sdt"
+                    label="Điểm đánh giá"
+                    name="rating"
                     rules={[{ required: true, message: 'Hãy nhập Số điện thoại!' }]}
                 >
                     <Input />
                 </Form.Item>
-
                 <Form.Item
-                    label="Ngày comment"
-                    name="date"
+                    label="Trạng thái"
+                    name="status"
                 >
-                    <DatePicker />
+                    <Select defaultValue="0" style={{ width: '150px' }}>
+                        <Select.Option value="1">Không hiển thi</Select.Option>
+                        <Select.Option value="2">Hiển thị</Select.Option>
+                    </Select>
                 </Form.Item>
 
                 <Form.Item
@@ -79,6 +103,7 @@ export const EditComment = () => {
                 >
                     <Input.TextArea placeholder="Nội dung" allowClear />
                 </Form.Item>
+
 
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" className='bg-blue-500 text-white' htmlType="submit">

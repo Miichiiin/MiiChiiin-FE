@@ -25,7 +25,7 @@ const New = () => {
     };
   return (
     <div>
-        <HeaderNew/>
+        <HeaderNew/> 
         <div className="">
             <div className="w-[1280px] mx-auto mt-10 relative ">
                     <div className="fixed bottom-4 z-10 right-4 w-20 h-20  bg-[#f2ba50] border border-gray-300 rounded-full shadow-md p-4 ">

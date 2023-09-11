@@ -16,16 +16,16 @@ const userApi = createApi({
     }),
     endpoints: (builder) => ({
         getUsers: builder.query({
-            query: () => `/users`,
+            query: () => `/khachhang`,
             providesTags: ['Users']
         }),
         getUserId: builder.query({
-            query: (id) => `/users/${id}`,
+            query: (id) => `/khachhang/${id}`,
             providesTags: ['Users']
         }),
-        addUser: builder.mutation({
+        addUser: builder.mutation<any,any>({
             query: (product) => ({
-                url: `/users`,
+                url: `/khachhang`,
                 method: "POST",
                 body: product
             }),
@@ -33,7 +33,7 @@ const userApi = createApi({
         }),
         updateUser: builder.mutation({
             query: (product) => ({
-                url: `/users/${product.id}`,
+                url: `/khachhang/${product.id}`,
                 method: "PATCH",
                 body: product
             }),
@@ -41,7 +41,7 @@ const userApi = createApi({
         }),
         removeUser: builder.mutation<void, number | string>({
             query: (id: number) => ({
-                url: `/users/${id}`,
+                url: `/khachhang/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Users']

@@ -6,8 +6,9 @@ import React from "react";
 import { TextTruncate } from "../components/TextTruncate"
 import Header from "./Header";
 import Search from "./Search";
-import { useGetHotel_homesQuery } from "@/api/hotel_home";
+
 import { Link } from "react-router-dom";
+import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
 import { SearchQuickHotel } from "./SearchQuickHotel";
 const Index = () => {
     let settings = {

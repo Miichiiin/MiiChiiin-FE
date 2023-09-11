@@ -22,13 +22,15 @@ const cartSlice = createSlice({
     reducers: {
         add: (state, action: PayloadAction<any>) => {
             const newProduct = action.payload;
-            const existProductIndex = state.items.findIndex(item => item.id === newProduct.id );
-            console.log(existProductIndex);
-            if (existProductIndex === -1 ) {
-                state.items.push(newProduct);
-            } else {
-                state.items[existProductIndex].quantity += newProduct.quantity;
-            }
+            state.items.push(newProduct);
+
+            // const existProductIndex = state.items.findIndex(item => item.id === newProduct.id );
+            // console.log(existProductIndex);
+            // if (existProductIndex === -1 ) {
+            //     state.items.push(newProduct);
+            // } else {
+            //     state.items[existProductIndex].quantity += newProduct.quantity;
+            // }
         },
         increase: (state, action: PayloadAction<number>) => {
             const product = state.items.find(item => item.id === action.payload);

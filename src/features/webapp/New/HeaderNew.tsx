@@ -181,9 +181,9 @@ const HeaderNew = () => {
                         </div>
                         
                     </div>
-                </div><br /><br /><br /><br /><br /><br /><br />
+                </div><br /><br /><br /><br /><br />
             </div>
-            <img className="w-full mt-[180pxc]" src="https://statics.vinpearl.com/styles/1440x380/public/2022_06/cam-nang-du-lich_1656401788.JPG.webp?itok=qVf4dZYN" alt="" />
+            <img className="w-full mt-[200px]" src="https://statics.vinpearl.com/styles/1440x380/public/2022_06/cam-nang-du-lich_1656401788.JPG.webp?itok=qVf4dZYN" alt="" />
 
         </header>
         {isMenuOpen && (
