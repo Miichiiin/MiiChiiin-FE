@@ -1,132 +1,118 @@
-import { useAddComfortMutation, useGetComfortByIdQuery, useUpdateComfortMutation } from '@/api/comfort';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
-import { useEffect } from 'react';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useNavigate, useParams } from 'react-router-dom';
+import {
+  Form,
+  Input,
+  Select,
+  Radio,
+  InputNumber,
+  DatePicker,
+  Button,
+  Upload,
+} from "antd";
 
 const { Option } = Select;
+import { Link } from "react-router-dom";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const UpdateUtilitiesPage = () => {
-  const navigate = useNavigate()
-  const [updateUtil, { isLoading }] = useUpdateComfortMutation()
-  const [messageApi, contextHolder] = message.useMessage();
-   
-  const [form] = Form.useForm();
-  const {id} = useParams<{id:string}>();
-  const { data: Ultilities } = useGetComfortByIdQuery(id||"");
-
-  useEffect(() => {
-    form.setFieldsValue({
-      name: Ultilities?.name,
-      description: Ultilities?.description,
-      deleted_at: Ultilities?.deleted_at,
-      created_at: Ultilities?.created_at,
-      updated_at: Ultilities?.updated_at,
-      status: Ultilities?.status,
-    })
-  }, [Ultilities])
-
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'Update product successfully',
-    });
+  const onFinish = (values: any) => {
+    console.log("Form values:", values);
+    // Gửi dữ liệu lên server hoặc xử lý theo yêu cầu của bạn
   };
-
-  type FieldType = {
-    key: number;
-    id: string | number;
-    name: string;
-    description: string;
-    deleted_at: string;
-    created_at: string;
-    updated_at: string;
-    status: string;
-    alt: string;
-  }
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-  const onFinish = (values: FieldType) => {
-    updateUtil({...values, id:id}).unwrap().then(() => navigate('/admin/managerutilities'));
-  }
 
   return (
     <div>
-      <header className="flex justify-between items-center my-5 mx-3">
-        <h2 className="text-2xl  text-blue-700">Sửa tiện ích</h2>
-      </header>
-      {contextHolder}
-      <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-        form = {form}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "16px",
+        }}
       >
-        <Form.Item<FieldType>
-          label="Tên tiện ích"
-          name="name"
-          rules={[{ required: true, message: 'Hãy nhập tên tiện ích!' },
-          { whitespace: true, message: 'Không được để trống!' }]}
-        >
-          <Input allowClear />
-        </Form.Item>
+        <div className="text-lg font-semibold">Cập Nhật Tiện ích</div>
 
-        <Form.Item<FieldType>
-          label="deleted_at"
-          name="deleted_at"
-          rules={[]}>
-          <Input disabled/>
-        </Form.Item>
+        <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
+          <Link to={`/admin/managerutilities`}>
+            <ArrowLeftOutlined /> Quay lại
+          </Link>
+        </Button>
+      </div>
 
-        <Form.Item<FieldType>
-          label="created_at"
-          name="created_at"
-          rules={[]}
-        >
-          <Input disabled/>
-        </Form.Item>
+      <Form name="addRoom" onFinish={onFinish}>
+        <div className="flex">
+          <div className="w-1/2 p-4 bg-white pr-2">
+            <Form.Item label="id" name="">
+              <Input />
+            </Form.Item>
 
-        <Form.Item<FieldType>
-          label="updated_at"
-          name="updated_at"
-          rules={[]}
-        >
-          <Input disabled/>
-        </Form.Item>
-        <Form.Item<FieldType>
-          label="Trạng thái"
-          name="status"
-        >
-          <Select defaultValue="0" style={{ width: '150px' }}>
-            <Select.Option value="1">Đang dùng</Select.Option>
-            <Select.Option value="2">Có sẵn</Select.Option>
-          </Select>
-        </Form.Item>
+            <Form.Item
+              label="Tên Khách Hàng"
+              name=""
+              rules={[{ required: true, message: "Please enter " }]}
+            >
+              <Input />
+            </Form.Item>
 
-        <Form.Item
-          label="Mô tả"
-          name="description"
-          rules={[{ required: true, message: 'Hãy nhập mô tả!' },
-          { whitespace: true, message: 'Không được để trống!' }]}
-        >
-          <Input.TextArea placeholder="Nội dung" allowClear />
+            <Form.Item
+              label="Email"
+              name=""
+              rules={[{ required: true, message: "Please enter " }]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+
+            <Form.Item
+              label="Sđt"
+              name=""
+              rules={[{ required: true, message: "Please enter " }]}
+            >
+              <Input />
+            </Form.Item>
+          </div>
+          <div className="w-1/2 p-4 bg-white pr-2">
+            <Form.Item
+              label="Ngày utilities"
+              name="utilitiesDate"
+              rules={[
+                { required: true, message: "Vui lòng chọn ngày utilities" },
+              ]}
+            >
+              <DatePicker />
+            </Form.Item>
+            <Form.Item
+              label="Nội dung"
+              name="content"
+              rules={[{ required: true, message: "Vui lòng nhập nội dung" }]}
+            >
+              <Input.TextArea rows={4} />
+            </Form.Item>
+
+            <Form.Item
+              label="Mô Tả Dài"
+              name=""
+              rules={[{ required: true, message: "Please enter " }]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+        <Form.Item label="Trạng Thái" name="" rules={[{ required: true, message: 'Please enter ' }]}>
+                <Select>
+                  <Option value="">Đã Duyệt</Option>
+                  <Option value="">Đang Duyệt</Option>
+                  <Option value="">Chưa Duyệt</Option>
+                  
+                </Select>
         </Form.Item>
+          </div>
+        </div>
 
+        <Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" className='bg-blue-500 text-white' htmlType="submit" onClick={() => success()}>
-            {isLoading ? (
-              <AiOutlineLoading3Quarters className="animate-spin" />
-            ) : (
-              "Update product"
-            )}
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="bg-blue-600 text-white rounded-md"
+          >
+            Cập Nhật Phòng
           </Button>
         </Form.Item>
       </Form>
