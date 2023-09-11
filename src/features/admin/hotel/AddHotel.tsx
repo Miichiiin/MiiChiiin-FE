@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const AddHotel = () => {
     const navigate = useNavigate()
-    const [addHotel, { isLoading }] = useAddHotel_adminMutation()
+    const [addHotel, {isLoading}] = useAddHotel_adminMutation()
     const [messageApi, contextHolder] = message.useMessage();
 
     const success = () => {
