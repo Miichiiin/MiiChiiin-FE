@@ -1,3 +1,4 @@
+import { useGetAdmin_AdminQuery, useRemoveAdmin_AdminMutation } from "@/api/admin_admin";
 import { nanoid } from "@reduxjs/toolkit";
 import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd";
   import type { ColumnsType } from "antd/es/table";
@@ -5,20 +6,39 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
   import { Link } from "react-router-dom";
   
   export const ManagerEmployee = () => {
+    const {data: emploData} = useGetAdmin_AdminQuery({})
+    const [removeEployee] = useRemoveAdmin_AdminMutation()
+    const dataSource = emploData?.map(({id,name,id_role,email,password,image,description,gender,date,address,status,phone}:DataType) => ({
+      key:id,
+      id_role,
+      name,
+      email,
+      password,
+      image,
+      description,
+      gender,
+      date,
+      address,
+      status,
+      phone
+    }))
     const [messageApi, contextHolder] = message.useMessage();
     interface DataType {
-      key: string;
+      key: number;
+      id: string | number;
+      id_role: number;
       name: string;
-      img:string;
-      national:string;
-      position:string;
-      id_card:number;
-      gender:string;
-      date_of_birth:string;
-      address: string;
       email:string;
+      password:number | string;
+      image:string;
+      description: string;
+      // national:string;
+      // position:string;
+      gender:string;
+      date:string;
+      address: string;
       phone: number;
-
+      status:number;
     }
   
     const columns: ColumnsType<DataType> = [
@@ -32,22 +52,21 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
         title: "Tên nhân viên",
         dataIndex: "name",
         key: "name",
+        render: (text:any,item:any) =>{
+          return (
+              <>
+                <Link to={`/admin/updateemployee/${item.key}`}>{text}</Link>
+              </>
+            )
+          }
       },
       {
         title: "Hình ảnh",
-        dataIndex: "img",
-        key: "img",
+        dataIndex: "image",
+        key: "image",
+        render: (image) => <img src={image} alt="Hình ảnh" width="100" />,
       },
-      {
-        title: "Căn cước",
-        dataIndex: "id_card",
-        key: "id_card",
-      },
-      {
-        title: "Quốc tịch",
-        dataIndex: "national",
-        key: "national",
-      },
+     
       {
         title: "Giới tính",
         dataIndex: "gender",
@@ -55,13 +74,8 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       },
       {
         title: "Ngày sinh",
-        dataIndex: "date_of_birth",
-        key: "date_of_birth",
-      },
-      {
-        title: "Chức vụ",
-        dataIndex: "position",
-        key: "position",
+        dataIndex: "date",
+        key: "date",
       },
       {
         title: "Địa chỉ",
@@ -80,23 +94,6 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       },
     ];
   
-    const data: DataType[] = [
-      {
-        key: "1",
-        name: "Nguyen Viet Anh",
-        img:"404",
-        national:"Viet Nam",
-        position:"Nhan vien",
-        id_card:123456,
-        gender:"Nam",
-        date_of_birth:"01/09/2003",
-        address: "Dan Nang",
-        email:"va6622@gmail.com",
-        phone:+84346505993,
-      
-      },
-    ];
-  
     const rowSelection = {
       onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
         console.log(
@@ -111,6 +108,15 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
       }),
     };
     const [selectionType, setSelectionType] = useState<"checkbox">("checkbox");
+    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+    const confirmDelete = (id: number) => {
+      const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
+      if (isConfirmed) {
+          removeEployee(id).unwrap().then(() => {
+              setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
+          });
+      }
+  };
     return (
       <div>
         <div
@@ -170,24 +176,14 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
           </button>
         </div>
           <div>
-            <Popconfirm
-              title="Xóa sản phẩm"
-              description="Bạn có muốn xóa không??"
-              onConfirm={() => {
-                // removeProduct(id)
-                //   .unwrap()
-                //   .then(() => {
-                //     messageApi.open({
-                //       type: "success",
-                //       content: "Xóa sản phẩm thành công",
-                //     });
-                //   });
-              }}
-              okText="Có"
-              cancelText="Không"
-            >
-              <Button danger>Xóa</Button>
-            </Popconfirm>
+            
+              <Button type="primary" className='mx-5' danger
+                onClick={() => {
+                    selectedRows.forEach((row) => confirmDelete(row.key));
+                }}
+                disabled={selectedRows.length === 0}
+            >Xóa</Button>
+            
             <Button type="primary" danger className="mt-1 ml-1">
               <Link to={`/admin/updateemployee`}>Sửa</Link>
             </Button>
@@ -206,9 +202,15 @@ import {Table,Divider,Radio,Input,Select,Button,Popconfirm,message,} from "antd"
           rowSelection={{
             type: selectionType,
             ...rowSelection,
+            selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
+            onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+              console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+              setSelectedRows(selectedRows);
+          },
           }}
           columns={columns}
-          dataSource={data}
+          dataSource={dataSource}
+          scroll={{ x: 1500 }}
         />
       </div>
     );
