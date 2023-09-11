@@ -1,3 +1,4 @@
+import { useGetComfortQuery, useRemoveComfortMutation } from "@/api/comfort";
 import {
   Table,
   Divider,
@@ -7,6 +8,7 @@ import {
   Button,
   Popconfirm,
   message,
+  Image,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
@@ -14,73 +16,73 @@ import { Link } from "react-router-dom";
 
 export const ManagerUtilities = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const { data: Ultilities } = useGetComfortQuery({});
+  const [removeUltil] = useRemoveComfortMutation();
   interface DataType {
-    key: string;
+    key: number;
+    id: string | number;
     name: string;
-    name_room: string;
-    email: string;
-    phone: number;
-    date_comment: string;
-    content: string;
+    description: string;
+    deleted_at: string;
+    created_at: string;
+    updated_at: string;
     status: string;
+    alt: string;
   }
+
+  const data = Ultilities?.map(({ id, name, description, deleted_at, created_at, updated_at, status, alt }: DataType) => ({
+    key: id,
+    name,
+    description,
+    deleted_at,
+    created_at,
+    updated_at,
+    status,
+    alt
+  }))
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "#Stt",
+      title: "#",
       dataIndex: "key",
-      key: "key",
-      render: (text) => <a>{text}</a>,
     },
     {
-      title: "Tên khách hàng",
+      title: "Tên tiện ích",
       dataIndex: "name",
       key: "name",
+      render: (text, item) => <Link to={`/admin/updateUtilities/${item.key}`}>{text}</Link>
     },
     {
-      title: "Tên Phòng",
-      dataIndex: "name_room",
-      key: "name_room",
+      title: "Mô tả",
+      dataIndex: "description",
+      key: "description",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Ngày tạo",
+      dataIndex: "created_at",
+      key: "created_at",
     },
     {
-      title: "Số điện thoại",
-      dataIndex: "phone",
-      key: "phone",
+      title: "Ngày cập nhật",
+      dataIndex: "updated_at",
+      key: "updated_at",
     },
     {
-      title: "Ngày comment",
-      dataIndex: "date_comment",
-      key: "date_comment",
+      title: "Ngày xóa",
+      dataIndex: "deleted_at",
+      key: "deleted_at",
     },
     {
-      title: "Nội dung",
-      dataIndex: "content",
-      key: "content",
-    },
-    {
-      title: "Trạng thái",
+      title: "Trang thái",
       dataIndex: "status",
       key: "status",
     },
-  ];
-
-  const data: DataType[] = [
     {
-      key: "1",
-      name: "Viet Anh",
-      name_room: "Phòng đôi",
-      email: "va66221199@gmail.com",
-      phone: 84346505992,
-      date_comment: "12/3/2023",
-      content: "abcxyz",
-      status: "abcxyz",
+      title: "Icon",
+      dataIndex: "alt",
+      key: "alt",
+      render: (text) => <Image src={text} alt="" width="50px" height="50px" />
     },
-
   ];
 
   const rowSelection = {
@@ -91,24 +93,25 @@ export const ManagerUtilities = () => {
         selectedRows
       );
     },
-    getCheckboxProps: (record: DataType) => ({
-      disabled: record.name === "Disabled User", // Column configuration not to be checked
-      name: record.name,
-    }),
   };
-  const [selectionType, setSelectionType] = useState<"checkbox">("checkbox");
+  const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+  const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
+
+  const confirmDelete = (id: number) => {
+    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa comment này?');
+    if (isConfirmed) {
+      removeUltil(id).unwrap().then(() => {
+        setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
+      });
+    }
+  };
   return (
     <div>
       <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "16px",
-        }}
+        className='flex justify-between items-center mb-4'
       >
         <div className="text-lg font-semibold">Quản Lý Utilities</div>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className="flex items-center">
           <Input.Search placeholder="Tìm kiếm" style={{ marginRight: "8px" }} />
           <Select
             showSearch
@@ -156,27 +159,12 @@ export const ManagerUtilities = () => {
         </Button>
       </div>
       <div>
-        <Popconfirm
-          title="Xóa sản phẩm"
-          description="Bạn có muốn xóa không??"
-          onConfirm={() => {
-            // removeProduct(id)
-            //   .unwrap()
-            //   .then(() => {
-            //     messageApi.open({
-            //       type: "success",
-            //       content: "Xóa sản phẩm thành công",
-            //     });
-            //   });
+        <Button type="primary" className='' danger
+          onClick={() => {
+            selectedRows.forEach((row) => confirmDelete(row.key));
           }}
-          okText="Có"
-          cancelText="Không"
-        >
-          <Button danger>Xóa</Button>
-        </Popconfirm>
-        <Button type="primary" danger className="ml-2 mt-1">
-          <Link to={`/admin/updateUtilities`}>Sửa</Link>
-        </Button>
+          disabled={selectedRows.length === 0}
+        >Xóa</Button>
       </div>
 
       <Radio.Group
@@ -190,7 +178,11 @@ export const ManagerUtilities = () => {
       <Table
         rowSelection={{
           type: selectionType,
-          ...rowSelection,
+          selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
+          onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            setSelectedRows(selectedRows);
+          },
         }}
         columns={columns}
         dataSource={data}

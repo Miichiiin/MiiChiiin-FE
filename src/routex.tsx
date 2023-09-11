@@ -40,6 +40,7 @@ import BookingInformation from "./features/webapp/BookingInformation";
 import HotelType from "./features/webapp/HotelType";
 import AdminInfoPage from "./features/admin/ManagerInformationAdmin";
 import UpdateHotel from "./features/admin/hotel/UpdateHotel";
+import AddUtilities from "./features/admin/ManagerUtilities/AddUtilities";
 
 
 
@@ -213,8 +214,12 @@ export const router = createBrowserRouter([
                 element: <ManagerUtilities />
             },
             {
-                path: "updateUtilities",
+                path: "updateUtilities/:id",
                 element: <UpdateFeedBackPage />
+            },
+            {
+                path: "addUtilities",
+                element: <AddUtilities/>
             },
             {
                 path: "admininfo",

@@ -1,4 +1,4 @@
-import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/admin/hotel_admin';
+import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/hotel_admin';
 import { Table, Divider, Radio, Button, Select, Input, Image } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
