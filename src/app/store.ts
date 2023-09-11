@@ -9,6 +9,7 @@ import districtApi, { districtReducer } from '@/api/district';
 import hotel_AdminApi, { hotel_AdminReducer } from '@/api/hotel_admin';
 import hotel_HomeApi, { hotel_HomeReducer } from '@/api/hotel_home';
 import room_adminApi, { room_AdminReducer } from '@/api/room_admin';
+import { sliceReducer } from '@/api/searchSlice';
 import services_adminApi, { services_AdminReducer } from '@/api/service_admin';
 import service_HotelApi, { service_Reducer } from '@/api/service_hotel';
 import userApi, { useReducer } from '@/api/users';
@@ -48,7 +49,7 @@ const rootReducer = combineReducers({
     service_hotel: service_Reducer,
     category_home: category_HomeReducer,
     hotel_home: hotel_HomeReducer,
-    searchSlice: service_Reducer
+    searchSlice: sliceReducer
 
 })
 const middleware = [

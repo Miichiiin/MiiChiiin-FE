@@ -26,20 +26,36 @@ export const SearchQuickHotel = () => {
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
   const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
+  // const onFinish = (values: any) => {
+  //   const newValue = {
+  //     ...values,
+  //     nameHotel: selectedHotel,
+  //     // check_in: selectedRange[0]?.toISOString().slice(0, 10),
+  //     // check_out: selectedRange[1]?.toISOString().slice(0, 10),
+  //     date: selectedRange,
+  //     numberRoom: numberOfRooms1,
+  //     numberPeople: roomDetails1,
+  //   };
+  //   console.log("valuenew",newValue)
+  //   dispatch(addSearch(newValue));
+  //   // navigate("/choose-room")
+  //   console.log("Giatri:",values)
+  // };
+
+  const onHandSubmit = () =>{
     const newValue = {
-      ...values,
       nameHotel: selectedHotel,
-      // check_in: selectedRange[0]?.toISOString().slice(0, 10),
-      // check_out: selectedRange[1]?.toISOString().slice(0, 10),
-      date: selectedRange,
+      check_in: selectedRange[0]?.toISOString().slice(0, 10),
+      check_out: selectedRange[1]?.toISOString().slice(0, 10),
+      // date: selectedRange,
       numberRoom: numberOfRooms1,
       numberPeople: roomDetails1,
     };
     console.log("valuenew",newValue)
     dispatch(addSearch(newValue));
     navigate("/choose-room")
-  };
+
+  }
 
   type FieldType = {
     nameHotel?: string;
@@ -209,7 +225,7 @@ export const SearchQuickHotel = () => {
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
         initialValues={{ remember: true, nameHotel: selectedHotel }}
-        onFinish={onFinish}
+        // onFinish={onFinish}
         autoComplete="off"
       >
         <div className="flex items-center w-full">
@@ -464,6 +480,7 @@ export const SearchQuickHotel = () => {
                 justifyContent: "center",
                 borderRadius: "0", // Áp dụng borderRadius thành 0
               }}
+              onClick={onHandSubmit}
             >
               Tìm kiếm
             </Button>
