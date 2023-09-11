@@ -169,6 +169,7 @@ export const router = createBrowserRouter([
                 path: "adduser",
                 element: <AddUser />,
             },
+            
             {
                 path: "hotelmanagement",
                 element: <HotelManagement />,
@@ -198,7 +199,7 @@ export const router = createBrowserRouter([
                 element: <AddVoucherPage />
             },
             {
-                path: "updatevoucher",
+                path: "updatevoucher/:id",
                 element: <UpdateVoucherPage />
             },
             {
@@ -210,7 +211,7 @@ export const router = createBrowserRouter([
                 element: <AddEmployeePage />
             },
             {
-                path: "updateemployee",
+                path: "updateemployee/:id",
                 element: <UpdateEmployeePage />
             },
             {

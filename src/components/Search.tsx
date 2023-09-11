@@ -10,7 +10,7 @@ import { useAppSelector } from "@/app/hook";
 const Search = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [divClicked, setDivClicked] = useState(false); // Sử dụng để theo dõi việc bấm vào div
+  const [divClicked, setDivClicked] = useState(false); 
   const refCalen = useRef<HTMLDivElement>(null);
   const searchHotel = useAppSelector((state: any) => state.searchSlice?.items);
   console.log("Ten ks new:", searchHotel)
@@ -20,7 +20,7 @@ const Search = () => {
   };
 
   const handleDivClick = () => {
-    setDivClicked(true); // Khi bấm vào div, đánh dấu rằng div đã được bấm
+    setDivClicked(true); 
     setIsDropdownOpen(!isDropdownOpen);
   };
 
@@ -28,7 +28,7 @@ const Search = () => {
     if (!divClicked && refCalen.current && !refCalen.current.contains(event.target as Node)) {
       setIsDropdownOpen(false);
     }
-    setDivClicked(false); // Đặt lại trạng thái khi bấm ngoài div
+    setDivClicked(false); 
   };
 
   // const handleSearchChange = () => {
@@ -129,7 +129,7 @@ const Search = () => {
               </div>
               <div onClick={toggleDropdown} className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46]">
                 <label htmlFor="">{numberOfRooms} phòng</label>
-                <label htmlFor="">{roomDetails.reduce((total, room) => total + room.adults, 0)} người -
+                <label htmlFor="">{roomDetails.reduce((total, room) => total + room.adults, 0)} người - 
                   {roomDetails.reduce((total, room) => total + room.children, 0)}
                 </label>
               </div>
