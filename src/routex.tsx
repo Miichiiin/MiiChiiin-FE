@@ -40,6 +40,7 @@ import BookingInformation from "./features/webapp/BookingInformation";
 import HotelType from "./features/webapp/HotelType";
 import AdminInfoPage from "./features/admin/ManagerInformationAdmin";
 import Order from "./features/webapp/order";
+import UpdateUserPage from "./features/admin/user/UpdateUser";
 
 
 
@@ -153,6 +154,10 @@ export const router = createBrowserRouter([
                 element: <AddUser />,
             },
             {
+                path: "updateuser/:id",
+                element: <UpdateUserPage />,
+            },
+            {
                 path: "hotelmanagement",
                 element: <HotelManagement />,
             },
@@ -165,7 +170,7 @@ export const router = createBrowserRouter([
                 element: <AddRoomType />,
             },
             {
-                path: "updateroomtype",
+                path: "updateroomtype/:id",
                 element: <UpdateRoomType />,
             },
             {
@@ -177,7 +182,7 @@ export const router = createBrowserRouter([
                 element: <AddVoucherPage />
             },
             {
-                path: "updatevoucher",
+                path: "updatevoucher/:id",
                 element: <UpdateVoucherPage />
             },
             {
@@ -189,7 +194,7 @@ export const router = createBrowserRouter([
                 element: <AddEmployeePage />
             },
             {
-                path: "updateemployee",
+                path: "updateemployee/:id",
                 element: <UpdateEmployeePage />
             },
             {

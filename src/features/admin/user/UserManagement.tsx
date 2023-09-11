@@ -1,3 +1,4 @@
+import { useGetUsersQuery, useRemoveUserMutation } from '@/api/users';
 import { Table, Divider, Radio, Button, Select, Input, Image } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
@@ -5,97 +6,129 @@ import { Link } from 'react-router-dom';
 
 
 export const UserManagement = () => {
+    const {data:dataUser} = useGetUsersQuery([])
+    const [removeUser] = useRemoveUserMutation()
+    const dataSource = dataUser?.map(({id,name,email,image,description,email_verified_at,phone,address,status,gender,date,created_at,updated_at,cccd,nationality} :DataType) =>({
+      key:id,
+      name,
+      email,
+      image,
+      description,
+      email_verified_at,
+      phone,
+      address,
+      status,
+      gender,
+      date,
+      created_at,
+      updated_at,
+      cccd,
+      nationality
+    }))
     interface DataType {
-        key: string;
+        key:number,
+        id:string | number,
         name: string,
-        email: string,
-        image?: string,
-        order: string;
-        sex?: string,
-        birht_day?: string;
-        address?: string;
-        phone_number?: string,
-        id_number?: string,
-        nationality?: string;
-
-    }
+        email:string,
+        image:string,
+        description:string,
+        email_verified_at:string,
+        phone: number
+        address:string,
+        status: number,
+        gender:number,
+        date: string,
+        created_at:string,
+        updated_at:string
+        cccd: string,
+        nationality:string
+      }
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Tên tên khách hàng',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text: any, item: any) => {
-                return (
-                    <>
-                        <Link to={`/admin/edituser/`}>{text}</Link>
-                    </>
+            title: "#Stt",
+            dataIndex: "key",
+            key: "id",
+            // render: (_, record, index) => <span>{index + 1}</span>,
+          },
+          {
+            title: "Tên Khách hàng",
+            dataIndex: "name",
+            key: "name",
+            render: (text:any,item:any) =>{
+              return (
+                  <>
+                    <Link to={`/admin/updateuser/${item.key}`}>{text}</Link>
+                  </>
                 )
-            }
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-        },
-        {
-            title: 'Ảnh',
-            dataIndex: 'image',
-            key: 'image',
-            render: (text) => <Image src={text} width={50} />
-        },
-        {
-            title: 'Đơn hàng',
-            dataIndex: 'order',
-            key: 'order',
-        },
-        {
-            title: 'Giới tính',
-            dataIndex: 'sex',
-            key: 'sex',
-        },
-        {
-            title: 'Ngày sinh',
-            dataIndex: 'birht_day',
-            key: 'birht_day',
-        },
-        {
-            title: 'Địa chỉ',
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: 'Số điện thoại',
-            dataIndex: 'phone_number',
-            key: 'phone_number',
-        },
+              }
+            },
+          {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+          },
+          {
+            title: "Hình ảnh",
+            dataIndex: "image",
+            key: "image",
+            render: (image) => <img src={image} alt="Hình ảnh" width="100" />,
+          },
+          {
+            title: "Mô tả ",
+            dataIndex: "description",
+            key: "description",
+          },
+          {
+            title: "Email xác minh",
+            dataIndex: "email_verified_at",
+            key: "email_verified_at",
+          },
+          {
+            title: "Số điện thoại",
+            dataIndex: "phone",
+            key: "phone",
+          },
+          {
+            title: "Địa chỉ",
+            dataIndex: "address",
+            key: "address",
+          },
+          {
+            title: "Trạng thái",
+            dataIndex: "status",
+            key: "status",
+          },
+          {
+            title: "Giới tính",
+            dataIndex: "gender",
+            key: "gender",
+          },
+          {
+            title: "Năm sinh",
+            dataIndex: "date",
+            key: "date",
+          },
+          {
+            title: "created_at",
+            dataIndex: "created_at",
+            key: "created_at",
+          },
+          {
+            title: "updated_at",
+            dataIndex: "updated_at",
+            key: "updated_at",
+          },
         {
             title: 'CCCD',
-            dataIndex: 'id_number',
-            key: 'id_number',
+            dataIndex: 'cccd',
+            key: 'cccd',
         },
         {
             title: 'Quốc tịch',
             dataIndex: 'nationality',
             key: 'nationality',
         },
-    ];
-
-    const data: DataType[] = [
-        {
-            key: '1',
-            name: "Nguyễn Văn Luân",
-            email: "luan@gmail.com",
-            image: "https://media.istockphoto.com/id/1256768065/vi/vec-to/logo-linh-v%E1%BA%ADt-esport-h%E1%BB%95-tr%E1%BA%AFng.jpg?s=612x612&w=is&k=20&c=_kzP2cuB-s76LYATE2I9RIGp_6vFeqs08PDQKa0EaoU=",
-            order: "6",
-            sex: "nam",
-            birht_day: "21/08/2003",
-            address: "Hà nội",
-            phone_number: "0989898986",
-            id_number: "001203054585",
-            nationality: "Việt Nam"
-        },
-
     ];
 
     const rowSelection = {
@@ -105,6 +138,16 @@ export const UserManagement = () => {
 
     };
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
+    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+
+    const confirmDelete = (id: number) => {
+        const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
+        if (isConfirmed) {
+            removeUser(id).unwrap().then(() => {
+                setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
+            });
+        }
+    };
     // const onSearch = (value: string) => console.log(value);
     return (
         <div>
@@ -161,7 +204,12 @@ export const UserManagement = () => {
                     }
                     `}
             </style>
-            <Button type="primary" className='mx-5' danger>Xóa</Button>
+            <Button type="primary" className='mx-5' danger
+                onClick={() => {
+                    selectedRows.forEach((row) => confirmDelete(row.key));
+                }}
+                disabled={selectedRows.length === 0}
+            >Xóa</Button>
             <Radio.Group
                 onChange={({ target: { value } }) => {
                     setSelectionType(value);
@@ -176,10 +224,16 @@ export const UserManagement = () => {
                     rowSelection={{
                         type: selectionType,
                         ...rowSelection,
+                        selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
+                        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+                            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                            setSelectedRows(selectedRows);
+                        },
                     }}
                     columns={columns}
-                    dataSource={data}
+                    dataSource={dataSource}
                     className="custom-table"
+                    scroll={{ x: 2000 }}
                 />
             </div>
         </div>
