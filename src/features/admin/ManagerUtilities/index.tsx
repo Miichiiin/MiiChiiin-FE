@@ -98,7 +98,7 @@ export const ManagerUtilities = () => {
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
 
   const confirmDelete = (id: number) => {
-    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa comment này?');
+    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa tiện ích này?');
     if (isConfirmed) {
       removeUltil(id).unwrap().then(() => {
         setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));

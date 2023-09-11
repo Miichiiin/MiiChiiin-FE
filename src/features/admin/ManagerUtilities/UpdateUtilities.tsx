@@ -55,7 +55,7 @@ const UpdateUtilitiesPage = () => {
   return (
     <div>
       <header className="flex justify-between items-center my-5 mx-3">
-        <h2 className="text-2xl  text-blue-700">Sửa tiện ích</h2>
+        <h2 className="text-2xl  text-blue-700">Sửa tiện ích: <span className='font-semibold'>{Ultilities?.name}</span></h2>
       </header>
       {contextHolder}
       <Form

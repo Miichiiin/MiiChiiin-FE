@@ -52,7 +52,7 @@ export const EditComment = () => {
     return (
         <div>
             <header className="flex justify-between items-center my-5 mx-3">
-                <h2 className="text-2xl  text-blue-700">Sửa Comment:  {commentData?.user_name}</h2>
+                <h2 className="text-2xl  text-blue-700">Sửa Comment:  <span className='font-semibold'>{commentData?.user_name}</span></h2>
             </header>
             <Form
                 name="basic"
