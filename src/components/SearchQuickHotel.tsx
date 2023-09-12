@@ -1,4 +1,4 @@
-import  { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button, Form, DatePicker } from 'antd';
 import { Navigate, useNavigate } from 'react-router-dom';
 import {
@@ -42,16 +42,16 @@ export const SearchQuickHotel = () => {
   //   console.log("Giatri:",values)
   // };
 
-  const onHandSubmit = () =>{
+  const onHandSubmit = () => {
     const newValue = {
       nameHotel: selectedHotel,
-      check_in: selectedRange[0]?.toISOString().slice(0, 10),
-      check_out: selectedRange[1]?.toISOString().slice(0, 10),
-      // date: selectedRange,
+      check_in: selectedRange[0]?.toISOString().slice(0, 25),
+      check_out: selectedRange[1]?.toISOString().slice(0, 25),
+      date: selectedRange,
       numberRoom: numberOfRooms1,
       numberPeople: roomDetails1,
     };
-    console.log("valuenew",newValue)
+    console.log("valuenew", newValue)
     dispatch(addSearch(newValue));
     navigate("/choose-room")
 
@@ -232,7 +232,7 @@ export const SearchQuickHotel = () => {
           <Form.Item<FieldType>
             name="nameHotel"
             className="flex-grow"
-            // rules={[{ required: true, message: 'Please input your username!' }]}
+          // rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <div ref={refCalen} onClick={handleDivClick}>
               <div onClick={toggleDropdown} className="relative">
@@ -275,21 +275,21 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 ">
-              <RangePicker
-                style={{
-                  width: '280px',
-                  fontSize: '16px',
-                  height: '55px',
-                  borderRadius: '0',
-                }}
-                format="DD/MM/YYYY "
-                onChange={handleRangeChange}
-                disabledDate={(current) => {
-                  // Vô hiệu hóa các ngày hôm trước
-                  return current && current.isBefore(new Date(), 'day');
-                }}
-              />
-            </Form.Item>
+            <RangePicker
+              style={{
+                width: '280px',
+                fontSize: '16px',
+                height: '55px',
+                borderRadius: '0',
+              }}
+              format="DD/MM/YYYY "
+              onChange={handleRangeChange}
+              disabledDate={(current) => {
+                // Vô hiệu hóa các ngày hôm trước
+                return current && current.isBefore(new Date(), 'day');
+              }}
+            />
+          </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
             <button>
@@ -349,11 +349,10 @@ export const SearchQuickHotel = () => {
                       </div>
                       <hr className="text-gray-300 mt-3" />
                       <div
-                        className={`max-h-[230px] w-auto  ${
-                          shouldShowScroll
+                        className={`max-h-[230px] w-auto  ${shouldShowScroll
                             ? "overflow-y-scroll overflow-hidden"
                             : ""
-                        }`}
+                          }`}
                       >
                         {roomDetails1.map((room, index) => (
                           <div key={index} className="mt-3 ">

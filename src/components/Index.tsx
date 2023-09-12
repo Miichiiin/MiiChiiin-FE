@@ -69,10 +69,10 @@ console.log(booking);
                 <div className="relative ">
                     <button onClick={handlePrev} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[130px] start-[-15px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft /></button>
                     <button onClick={handleNext} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[130px] end-2  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight /></button>
-                    <Slider {...settings} ref={sliderRef} className="w-[1280px] mx-auto">
+                    <Slider {...settings}  ref={sliderRef} className="w-[1280px] mx-auto">
                         {booking?.map((item: any) => {
                           return  <>
-                                <Link to={`/hotel`} className="w-[400px] relative overflow-hidden">
+                                <Link to={`/hotel`} key={item?.id} className="w-[400px] relative overflow-hidden">
                                     <div className="relative overflow-hidden mb-4">
                                         <img className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                                             src={item.image}

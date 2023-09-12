@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button, Form, DatePicker } from 'antd';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import {
   AiOutlineEnvironment,
   AiOutlineIdcard,
@@ -7,43 +9,53 @@ import {
   AiOutlinePlus,
   AiOutlineUser,
 } from 'react-icons/ai';
-import axios from 'axios';
+
 import { useAppDispatch, useAppSelector } from '@/app/hook';
-import { addSearch } from '@/api/searchSlice';
+// import { addSearch } from '@/api/searchSlice';
 import { isYesterday } from 'date-fns';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { da } from 'date-fns/locale';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useGetHotel_homeByIdQuery } from '@/api/webapp/hotel_home';
 
 const { RangePicker } = DatePicker;
 
 export const SearchHotel = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedHotel, setSelectedHotel] = useState('');
+  
   const [divClicked, setDivClicked] = useState(false);
   const [hotelsData, setHotelsData] = useState([]);
-  const dispatch = useAppDispatch();
-  const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
+  // const dispatch = useAppDispatch();
+  
   const searchSlide = useAppSelector((state: any) => state.searchSlice?.items);
   console.log("SearchSlice", searchSlide)
+  const [selectedRange, setSelectedRange] = useState<[any | null, any | null]>([searchSlide[0].check_in, searchSlide[0].check_out]);
+  const [selectedHotel, setSelectedHotel] = useState(searchSlide[0]?.nameHotel?.[1]);
+  console.log("datesd",selectedRange[0] );
+  console.log("namejotel", searchSlide[0]?.nameHotel?.[1]);
+ 
   
-  const [dateRange, setDateRange] = useState<any>(null);
+  // console.log("detail", hotel_detail);
   
-  useEffect(() => {
-    setDateRange([searchSlide.check_in, searchSlide.check_out])
-  })
+
   
-  const navigate = useNavigate();
-  const onFinish = (values: any) => {
-    
-  };
-  
+
+  // const navigate = useNavigate();
+  // const onFinish = (values: any) => {
+  // };
+
+  // const form = useForm()
+
+  const date = [searchSlide[0].check_in,searchSlide[0].check_out]
+  const dateFormat = 'YYYY/MM/DD';
+  console.log("daye", date);
+
+
   type FieldType = {
     nameHotel?: string;
     password?: string;
     remember?: string;
   };
 
-  console.log("ngay",dateRange)
 
   //chọn ten khách sạn
   const refCalen = useRef<HTMLDivElement>(null);
@@ -83,8 +95,7 @@ export const SearchHotel = () => {
 
   // Sử dụng useEffect để gọi API khi component được mount
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/hotel_home") // Thay đổi đường dẫn dựa vào cấu hình của bạn
+    axios.get("http://localhost:3000/hotel_home") // Thay đổi đường dẫn dựa vào cấu hình của bạn
       .then((response) => {
         setHotelsData(response.data); // Lưu dữ liệu từ API vào state
       })
@@ -196,24 +207,25 @@ export const SearchHotel = () => {
   };
   /*Cuộn trang*/
   const shouldShowScroll = numberOfRooms1 > 1;
-  console.log("date",searchSlide.date)
+  console.log("date", searchSlide.date)
   return (
     <div className="ml-36">
       <Form
         className="flex items-center w-full flex-wrap" // Thêm lớp flex-wrap để xử lý trường hợp tràn dòng
         name="basic"
+
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
-        initialValues={{ remember: true, nameHotel: selectedHotel }}
-        onFinish={onFinish}
+        // initialValues={{ remember: true, nameHotel: selectedHotel }}
+        // onFinish={onFinish}
         autoComplete="off"
       >
         <div className="flex items-center w-full">
           <Form.Item<FieldType>
             name="nameHotel"
             className="flex-grow"
-           
+
           >
             <div ref={refCalen} onClick={handleDivClick}>
               <div onClick={toggleDropdown} className="relative">
@@ -255,23 +267,24 @@ export const SearchHotel = () => {
             </div>
           </Form.Item>
 
-          <Form.Item className="flex-grow ml-2 ">
-              <RangePicker 
-              value={dateRange}
-                style={{
-                  width: '280px',
-                  fontSize: '16px',
-                  height: '55px',
-                  borderRadius: '0',
-                }}
-                format="DD/MM/YYYY "
-                onChange={handleRangeChange}
-                disabledDate={(current) => {
-                  // Vô hiệu hóa các ngày hôm trước
-                  return current && current.isBefore(new Date(), 'day');
-                }}
-              />
-            </Form.Item>
+          <Form.Item className="flex-grow ml-2 "
+          >
+            <RangePicker
+              style={{
+                width: '280px',
+                fontSize: '16px',
+                height: '55px',
+                borderRadius: '0',
+              }}
+              defaultValue={[dayjs(selectedRange[0], dateFormat), dayjs(selectedRange[1], dateFormat)]}
+              format={dateFormat}
+              onChange={(datas) => handleRangeChange(datas)}
+              disabledDate={(current) => {
+                // Vô hiệu hóa các ngày hôm trước
+                return current && current.isBefore(new Date(), 'day');
+              }}
+            />
+          </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
             <button>
@@ -331,11 +344,10 @@ export const SearchHotel = () => {
                       </div>
                       <hr className="text-gray-300 mt-3" />
                       <div
-                        className={`max-h-[230px] w-auto  ${
-                          shouldShowScroll
-                            ? "overflow-y-scroll overflow-hidden"
-                            : ""
-                        }`}
+                        className={`max-h-[230px] w-auto  ${shouldShowScroll
+                          ? "overflow-y-scroll overflow-hidden"
+                          : ""
+                          }`}
                       >
                         {roomDetails1.map((room, index) => (
                           <div key={index} className="mt-3 ">
