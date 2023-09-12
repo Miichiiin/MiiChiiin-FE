@@ -180,7 +180,7 @@
       "id": 1,
       "id_user": 2,
       "id_category": 4,
-      "content": "Labore recusandae ut distinctio aspernatur ullam.",
+      "content": "vip",
       "rating": 9.49,
       "status": "2",
       "deleted_at": null,
@@ -226,19 +226,6 @@
       "created_at": "2023-09-09T17:32:52.000000Z",
       "updated_at": "2023-09-09T17:32:52.000000Z",
       "user_name": "Miss Nellie Deckow Sr.",
-      "name_category": "Lizeth Beahan"
-    },
-    {
-      "id": 5,
-      "id_user": 3,
-      "id_category": 3,
-      "content": "Iste harum voluptatem suscipit est optio.",
-      "rating": 3.41,
-      "status": "2",
-      "deleted_at": null,
-      "created_at": "2023-09-09T17:32:52.000000Z",
-      "updated_at": "2023-09-09T17:32:52.000000Z",
-      "user_name": "Ms. Brandi Stamm",
       "name_category": "Lizeth Beahan"
     }
   ],

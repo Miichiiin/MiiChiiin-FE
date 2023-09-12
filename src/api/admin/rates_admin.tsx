@@ -20,7 +20,7 @@ const ratingApi = createApi({
             providesTags: ['Rating']
         }),
         getRatingById: builder.query({
-            query: (id) => `/rating/${id}`,
+            query: (id) => `/rates_admin/${id}`,
             providesTags: ['Rating']
         }),
         addRating: builder.mutation({
