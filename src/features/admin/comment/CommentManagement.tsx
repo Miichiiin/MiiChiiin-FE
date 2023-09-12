@@ -1,13 +1,18 @@
+
 import { useGetRatingQuery, useRemoveRatingMutation } from '@/api/admin/rates_admin';
 import { Table, Divider, Radio, Button, Select, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-
 export const CommentManagement = () => {
     const { data: commentData } = useGetRatingQuery({});
     const [removeComment] = useRemoveRatingMutation();
+    const [searchText, setSearchText] = useState("");
+    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+    const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
+    const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
+
     const data = commentData?.map(({ id, id_user, id_category, content, rating, status, deleted_at, created_at, updated_at, user_name, name_category }: DataType) => ({
         key: id,
         name_category,
@@ -21,6 +26,14 @@ export const CommentManagement = () => {
         deleted_at,
         id_category,
     }));
+    //lọc dữ liệu
+    const filteredData = data ? data
+        .filter((item: DataType) =>
+            item.user_name.toLowerCase().includes(searchText.toLowerCase())
+        )
+        .filter((item: DataType) =>
+            selectedStatus === undefined ? true : item.status === selectedStatus
+        ) : [];
 
     interface DataType {
         key: number;
@@ -86,13 +99,7 @@ export const CommentManagement = () => {
         },
     ];
 
-    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
-    const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
-    const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-    };
+
     const confirmDelete = (id: number) => {
         const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa comment này?');
         if (isConfirmed) {
@@ -107,42 +114,37 @@ export const CommentManagement = () => {
             <div className='flex justify-between items-center mb-4'>
                 <div className="text-lg font-semibold">Quản lý Comment</div>
                 <div className='flex items-center'>
-                    <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} />
+                    <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
                     <Select
                         showSearch
                         style={{ width: 200 }}
                         placeholder="Search to Select"
                         optionFilterProp="children"
-                        filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                        filterOption={(input, option) => (option?.label ?? "").includes(input)}
                         filterSort={(optionA, optionB) =>
-                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                            (optionA?.label ?? "").toLowerCase().localeCompare((optionB?.label ?? "").toLowerCase())
                         }
                         options={[
                             {
-                                value: '1',
-                                label: 'Not Identified',
+                                value: "0",
+                                label: "Tất cả",
                             },
                             {
-                                value: '2',
-                                label: 'Closed',
+                                value: "1",
+                                label: "Không hiển thị",
                             },
                             {
-                                value: '3',
-                                label: 'Communicated',
-                            },
-                            {
-                                value: '4',
-                                label: 'Identified',
-                            },
-                            {
-                                value: '5',
-                                label: 'Resolved',
-                            },
-                            {
-                                value: '6',
-                                label: 'Cancelled',
+                                value: "2",
+                                label: "Hiển thị",
                             },
                         ]}
+                        onChange={(value) => {
+                            if (value === "0") {
+                                setSelectedStatus(undefined); // Xóa bộ lọc
+                            } else {
+                                setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
+                            }
+                        }}
                     />
                 </div>
                 <div></div>
@@ -183,7 +185,7 @@ export const CommentManagement = () => {
                         },
                     }}
                     columns={columns}
-                    dataSource={data}
+                    dataSource={filteredData}
                     className="custom-table"
                 />
             </div>

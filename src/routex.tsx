@@ -45,6 +45,7 @@ import UpdateHotel from "./features/admin/hotel/UpdateHotel";
 import { SearchQuickHotel } from "./components/SearchQuickHotel";
 import { SearchHotel } from "./features/webapp/booking/choose-room/searchHotel";
 import UpdateUserPage from "./features/admin/user/UpdateUser";
+import AddUtilities from "./features/admin/ManagerUtilities/AddUtilities";
 
 
 
@@ -240,8 +241,12 @@ export const router = createBrowserRouter([
                 element: <ManagerUtilities />
             },
             {
-                path: "updateUtilities",
+                path: "updateUtilities/:id",
                 element: <UpdateFeedBackPage />
+            },
+            {
+                path: "addUtilities",
+                element: <AddUtilities/>
             },
             {
                 path: "admininfo",

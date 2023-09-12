@@ -70,7 +70,7 @@ const UpdateHotel = () => {
         <div>
 
             <header className="flex justify-between items-center my-5 mx-3">
-                <h2 className="text-2xl  text-blue-700">Sửa khách sạn : {hotelData?.name}</h2>
+                <h2 className="text-2xl  text-blue-700">Sửa khách sạn : <span className='font-semibold'>{hotelData?.name}</span></h2>
             </header>
             {contextHolder}
             <Form
