@@ -37,4 +37,4 @@ const searchSlice = createSlice({
 
 export const { addSearch } = searchSlice.actions;
 
-export const cartReducer = searchSlice.reducer;
+export const sliceReducer = searchSlice.reducer;

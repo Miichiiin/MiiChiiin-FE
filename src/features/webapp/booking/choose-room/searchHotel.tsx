@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/app/hook';
 import { addSearch } from '@/api/searchSlice';
 import { isYesterday } from 'date-fns';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { da } from 'date-fns/locale';
 
 const { RangePicker } = DatePicker;
 
@@ -24,27 +25,25 @@ export const SearchHotel = () => {
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
   const searchSlide = useAppSelector((state: any) => state.searchSlice?.items);
   console.log("SearchSlice", searchSlide)
-
+  
+  const [dateRange, setDateRange] = useState<any>(null);
+  
+  useEffect(() => {
+    setDateRange([searchSlide.check_in, searchSlide.check_out])
+  })
+  
   const navigate = useNavigate();
   const onFinish = (values: any) => {
-    const newValue = {
-      ...values,
-      nameHotel: selectedHotel,
-      // check_in: selectedRange[0]?.toISOString().slice(0, 10),
-      // check_out: selectedRange[1]?.toISOString().slice(0, 10),
-      date: selectedRange,
-      numberRoom: numberOfRooms1,
-      numberPeople: roomDetails1,
-    };
-    dispatch(addSearch(newValue));
-    navigate("/choose-room")
+    
   };
-
+  
   type FieldType = {
     nameHotel?: string;
     password?: string;
     remember?: string;
   };
+
+  console.log("ngay",dateRange)
 
   //chọn ten khách sạn
   const refCalen = useRef<HTMLDivElement>(null);
@@ -152,8 +151,6 @@ export const SearchHotel = () => {
     { adults: 1, children: 0, infants: 0 },
   ]);
 
-  console.log("số phòng", numberOfRooms1);
-  console.log("số người", roomDetails1);
 
   const handleRoomChange1 = (value: number) => {
     if (value >= 1) {
@@ -199,6 +196,7 @@ export const SearchHotel = () => {
   };
   /*Cuộn trang*/
   const shouldShowScroll = numberOfRooms1 > 1;
+  console.log("date",searchSlide.date)
   return (
     <div className="ml-36">
       <Form
@@ -215,7 +213,7 @@ export const SearchHotel = () => {
           <Form.Item<FieldType>
             name="nameHotel"
             className="flex-grow"
-            // rules={[{ required: true, message: 'Please input your username!' }]}
+           
           >
             <div ref={refCalen} onClick={handleDivClick}>
               <div onClick={toggleDropdown} className="relative">
@@ -258,7 +256,8 @@ export const SearchHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 ">
-              <RangePicker
+              <RangePicker 
+              value={dateRange}
                 style={{
                   width: '280px',
                   fontSize: '16px',

@@ -11,9 +11,12 @@ import hotel_HomeApi, { hotel_HomeReducer } from '@/api/webapp/hotel_home';
 import room_adminApi, { room_AdminReducer } from '@/api/admin/room_admin';
 import services_adminApi, { services_AdminReducer } from '@/api/admin/service_admin';
 import service_HotelApi, { service_Reducer } from '@/api/webapp/service_hotel';
+import { sliceReducer } from '@/api/searchSlice';
 import userApi, { useReducer } from '@/api/users';
 import voucherApi, { voucherReducer } from '@/api/voucher';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+
+
 import {
     FLUSH,
     PAUSE,
@@ -51,8 +54,9 @@ const rootReducer = combineReducers({
     category_home: category_HomeReducer,
     hotel_home: hotel_HomeReducer,
     cart: cartReducer,
-    searchSlice: service_Reducer,
-    rating: ratingReducer
+    rating: ratingReducer,
+    searchSlice: sliceReducer
+
 })
 const middleware = [
     room_adminApi.middleware, 
