@@ -1,4 +1,4 @@
-import { useGetHotel_adminByIdQuery, useUpdateHotel_adminMutation } from '@/api/hotel_admin';
+import { useGetHotel_adminByIdQuery, useUpdateHotel_adminMutation } from '@/api/admin/hotel_admin';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Spin, Upload, message } from 'antd';
 import { useEffect } from 'react';

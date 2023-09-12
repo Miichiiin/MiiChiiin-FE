@@ -1,4 +1,4 @@
-import { useAddComfortMutation } from '@/api/comfort';
+import { useAddComfortMutation } from '@/api/admin/comfort_admin';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';

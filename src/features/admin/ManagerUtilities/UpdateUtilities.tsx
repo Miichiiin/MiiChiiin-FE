@@ -1,4 +1,4 @@
-import { useAddComfortMutation, useGetComfortByIdQuery, useUpdateComfortMutation } from '@/api/comfort';
+import { useAddComfortMutation, useGetComfortByIdQuery, useUpdateComfortMutation } from '@/api/admin/comfort_admin';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { useEffect } from 'react';

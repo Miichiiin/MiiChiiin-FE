@@ -1,18 +1,18 @@
 
-import admin_AdminApi, { Admin_AdminReducer } from '@/api/admin_admin';
-import banner_AdminApi, { banner_AdminReducer } from '@/api/banner_admin';
-import booking_AdminApi, { booking_AdminReducer } from '@/api/booking_admin';
-import category_AdminApi, { category_AdminReducer } from '@/api/category_admin';
-import category_HomeApi, { category_HomeReducer } from '@/api/category_home';
-import comfortApi, { comfortReducer } from '@/api/comfort';
+import admin_AdminApi, { Admin_AdminReducer } from '@/api/admin/admin_admin';
+import banner_AdminApi, { banner_AdminReducer } from '@/api/admin/banner_admin';
+import booking_AdminApi, { booking_AdminReducer } from '@/api/admin/booking_admin';
+import category_AdminApi, { category_AdminReducer } from '@/api/admin/category_admin';
+import category_HomeApi, { category_HomeReducer } from '@/api/webapp/category_home';
+import comfortApi, { comfortReducer } from '@/api/admin/comfort_admin';
 import districtApi, { districtReducer } from '@/api/district';
-import hotel_AdminApi, { hotel_AdminReducer } from '@/api/hotel_admin';
-import hotel_HomeApi, { hotel_HomeReducer } from '@/api/hotel_home';
-import room_adminApi, { room_AdminReducer } from '@/api/room_admin';
-import services_adminApi, { services_AdminReducer } from '@/api/service_admin';
-import service_HotelApi, { service_Reducer } from '@/api/service_hotel';
+import hotel_AdminApi, { hotel_AdminReducer } from '@/api/admin/hotel_admin';
+import hotel_HomeApi, { hotel_HomeReducer } from '@/api/webapp/hotel_home';
+import room_adminApi, { room_AdminReducer } from '@/api/admin/room_admin';
+import services_adminApi, { services_AdminReducer } from '@/api/admin/service_admin';
+import service_HotelApi, { service_Reducer } from '@/api/webapp/service_hotel';
 import userApi, { useReducer } from '@/api/users';
-import voucherApi, { voucherReducer } from '@/api/voucher';
+import voucherApi, { voucherReducer } from '@/api/admin/voucher';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
     FLUSH,
@@ -26,7 +26,7 @@ import {
 } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';
-import ratingApi, { ratingReducer } from '@/api/rates_admin';
+import ratingApi, { ratingReducer } from '@/api/admin/rates_admin';
 
 const persistConfig = {
     key: 'root',

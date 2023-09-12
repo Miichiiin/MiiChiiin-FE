@@ -1,4 +1,4 @@
-import { useGetComfortQuery, useRemoveComfortMutation } from "@/api/comfort";
+import { useGetComfortQuery, useRemoveComfortMutation } from "@/api/admin/comfort_admin";
 import {
   Table,
   Divider,
@@ -14,7 +14,6 @@ import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const { Column } = Table;
 
 export const ManagerUtilities = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -103,17 +102,6 @@ export const ManagerUtilities = () => {
     },
   ];
 
-  //Chọn nhiều dòng
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-      setSelectedRows(selectedRows);
-    },
-  };
   // Alert xác nhận xoá
   const confirmDelete = (id: number) => {
     const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa comment này?');

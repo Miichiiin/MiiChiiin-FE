@@ -1,6 +1,6 @@
 
 
-import { useGetRatingByIdQuery, useUpdateRatingMutation } from '@/api/rates_admin';
+import { useGetRatingByIdQuery, useUpdateRatingMutation } from '@/api/admin/rates_admin';
 import { Button, DatePicker, Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

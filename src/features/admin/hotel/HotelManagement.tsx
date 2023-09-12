@@ -1,4 +1,4 @@
-import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/hotel_admin';
+import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/admin/hotel_admin';
 import { Table, Divider, Radio, Button, Select, Input, Image } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
@@ -124,13 +124,6 @@ export const HotelManagement = () => {
     const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [addressFilter, setAddressFilter] = useState<string | undefined>(undefined);
-    
-    const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-
-    };
 
     const confirmDelete = (id: number) => {
         const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');

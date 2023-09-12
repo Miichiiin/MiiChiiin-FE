@@ -1,10 +1,9 @@
 
-import { useGetRatingQuery, useRemoveRatingMutation } from '@/api/rates_admin';
+import { useGetRatingQuery, useRemoveRatingMutation } from '@/api/admin/rates_admin';
 import { Table, Divider, Radio, Button, Select, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-const { Column } = Table;
 
 export const CommentManagement = () => {
     const { data: commentData } = useGetRatingQuery({});
@@ -101,11 +100,6 @@ export const CommentManagement = () => {
     ];
 
 
-    const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-    };
     const confirmDelete = (id: number) => {
         const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa comment này?');
         if (isConfirmed) {
