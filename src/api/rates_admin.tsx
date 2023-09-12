@@ -16,7 +16,7 @@ const ratingApi = createApi({
     }),
     endpoints: (builder) => ({
         getRating: builder.query({
-            query: () => `/rating`,
+            query: () => `/rates_admin`,
             providesTags: ['Rating']
         }),
         getRatingById: builder.query({
@@ -25,7 +25,7 @@ const ratingApi = createApi({
         }),
         addRating: builder.mutation({
             query: (product) => ({
-                url: `/rating`,
+                url: `/rates_admin`,
                 method: "POST",
                 body: product
             }),
@@ -33,7 +33,7 @@ const ratingApi = createApi({
         }),
         updateRating: builder.mutation({
             query: (product) => ({
-                url: `/rating/${product.id}`,
+                url: `/rates_admin/${product.id}`,
                 method: "PATCH",
                 body: product
             }),
@@ -41,7 +41,7 @@ const ratingApi = createApi({
         }),
         removeRating: builder.mutation<void, number | string>({
             query: (id: number) => ({
-                url: `/rating/${id}`,
+                url: `/rates_admin/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Rating']

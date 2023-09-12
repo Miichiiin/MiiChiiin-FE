@@ -178,39 +178,68 @@
   "rates_admin": [
     {
       "id": 1,
-      "id_user": 4,
-      "id_category": 2,
-      "content": "Unde impedit eum qui nostrum.",
-      "rating": 5.06,
-      "status": "1",
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "user_name": "Gordon McDermott",
-      "name_category": "Corine Ruecker"
+      "id_user": 2,
+      "id_category": 4,
+      "content": "Labore recusandae ut distinctio aspernatur ullam.",
+      "rating": 9.49,
+      "status": "2",
+      "deleted_at": null,
+      "created_at": "2023-09-09T17:32:52.000000Z",
+      "updated_at": "2023-09-09T17:32:52.000000Z",
+      "user_name": "Miss Nellie Deckow Sr vip qua anh oi",
+      "name_category": "Cristina Daniel"
     },
     {
       "id": 2,
-      "id_user": 1,
-      "id_category": 1,
-      "content": "Quia et quia tempore. Atque quod nulla est.",
-      "rating": 0.72,
-      "status": "0",
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "user_name": "Dejah Watsica",
-      "name_category": "Effie Muller DVM"
+      "id_user": 2,
+      "id_category": 2,
+      "content": "Perferendis nisi molestiae voluptatibus.",
+      "rating": 2.3,
+      "status": "1",
+      "deleted_at": null,
+      "created_at": "2023-09-09T17:32:52.000000Z",
+      "updated_at": "2023-09-09T17:32:52.000000Z",
+      "user_name": "Miss Nellie Deckow Sr.",
+      "name_category": "Callie Daniel MD"
+    },
+    {
+      "id": 3,
+      "id_user": 3,
+      "id_category": 3,
+      "content": "Officiis adipisci et esse alias odit.",
+      "rating": 1.41,
+      "status": "2",
+      "deleted_at": null,
+      "created_at": "2023-09-09T17:32:52.000000Z",
+      "updated_at": "2023-09-09T17:32:52.000000Z",
+      "user_name": "Ms. Brandi Stamm",
+      "name_category": "Lizeth Beahan"
     },
     {
       "id": 4,
-      "id_user": 5,
-      "id_category": 1,
-      "content": "Aspernatur natus minima cumque hic nobis.",
-      "rating": 6.01,
-      "status": "0",
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "user_name": "Nico Ratke",
-      "name_category": "Effie Muller DVM"
+      "id_user": 2,
+      "id_category": 3,
+      "content": "Sapiente et provident doloribus soluta.",
+      "rating": 6.59,
+      "status": "1",
+      "deleted_at": null,
+      "created_at": "2023-09-09T17:32:52.000000Z",
+      "updated_at": "2023-09-09T17:32:52.000000Z",
+      "user_name": "Miss Nellie Deckow Sr.",
+      "name_category": "Lizeth Beahan"
+    },
+    {
+      "id": 5,
+      "id_user": 3,
+      "id_category": 3,
+      "content": "Iste harum voluptatem suscipit est optio.",
+      "rating": 3.41,
+      "status": "2",
+      "deleted_at": null,
+      "created_at": "2023-09-09T17:32:52.000000Z",
+      "updated_at": "2023-09-09T17:32:52.000000Z",
+      "user_name": "Ms. Brandi Stamm",
+      "name_category": "Lizeth Beahan"
     }
   ],
   "hotel_admin": [
@@ -549,6 +578,12 @@
       "created_at": "2023-09-10T09:43:33.000000Z",
       "updated_at": "2023-09-10T09:43:33.000000Z",
       "alt": ""
+    },
+    {
+      "name": "non lắm",
+      "status": "1",
+      "description": "adu",
+      "id": 3
     }
   ],
   "users": [
@@ -739,86 +774,6 @@
       "total_rating_content": 0,
       "total_services": 2,
       "image_urls": null
-    }
-  ],
-  "rating": [
-    {
-      "id": 1,
-      "id_user": 2,
-      "id_category": 4,
-      "content": "Labore recusandae ut distinctio aspernatur ullam.",
-      "rating": 9.49,
-      "status": "2",
-      "deleted_at": null,
-      "created_at": "2023-09-09T17:32:52.000000Z",
-      "updated_at": "2023-09-09T17:32:52.000000Z",
-      "user_name": "Miss Nellie Deckow Sr vip qua anh oi",
-      "name_category": "Cristina Daniel"
-    },
-    {
-      "id": 2,
-      "id_user": 2,
-      "id_category": 2,
-      "content": "Perferendis nisi molestiae voluptatibus.",
-      "rating": 2.3,
-      "status": "1",
-      "deleted_at": null,
-      "created_at": "2023-09-09T17:32:52.000000Z",
-      "updated_at": "2023-09-09T17:32:52.000000Z",
-      "user_name": "Miss Nellie Deckow Sr.",
-      "name_category": "Callie Daniel MD"
-    },
-    {
-      "id": 3,
-      "id_user": 3,
-      "id_category": 3,
-      "content": "Officiis adipisci et esse alias odit.",
-      "rating": 1.41,
-      "status": "2",
-      "deleted_at": null,
-      "created_at": "2023-09-09T17:32:52.000000Z",
-      "updated_at": "2023-09-09T17:32:52.000000Z",
-      "user_name": "Ms. Brandi Stamm",
-      "name_category": "Lizeth Beahan"
-    },
-    {
-      "id": 4,
-      "id_user": 2,
-      "id_category": 3,
-      "content": "Sapiente et provident doloribus soluta.",
-      "rating": 6.59,
-      "status": "1",
-      "deleted_at": null,
-      "created_at": "2023-09-09T17:32:52.000000Z",
-      "updated_at": "2023-09-09T17:32:52.000000Z",
-      "user_name": "Miss Nellie Deckow Sr.",
-      "name_category": "Lizeth Beahan"
-    },
-    {
-      "id": 5,
-      "id_user": 3,
-      "id_category": 3,
-      "content": "Iste harum voluptatem suscipit est optio.",
-      "rating": 3.41,
-      "status": "2",
-      "deleted_at": null,
-      "created_at": "2023-09-09T17:32:52.000000Z",
-      "updated_at": "2023-09-09T17:32:52.000000Z",
-      "user_name": "Ms. Brandi Stamm",
-      "name_category": "Lizeth Beahan"
-    },
-    {
-      "id": 6,
-      "id_user": 3,
-      "id_category": 4,
-      "content": "Soluta modi sit tenetur pariatur deserunt.",
-      "rating": 1.49,
-      "status": "1",
-      "deleted_at": null,
-      "created_at": "2023-09-09T17:32:52.000000Z",
-      "updated_at": "2023-09-09T17:32:52.000000Z",
-      "user_name": "Ms. Brandi Stamm",
-      "name_category": "Cristina Daniel"
     }
   ]
 }
