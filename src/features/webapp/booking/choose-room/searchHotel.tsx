@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button, Form, DatePicker } from 'antd';
 import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import {
   AiOutlineEnvironment,
   AiOutlineIdcard,
@@ -10,12 +9,10 @@ import {
   AiOutlineUser,
 } from 'react-icons/ai';
 
-import { useAppDispatch, useAppSelector } from '@/app/hook';
 // import { addSearch } from '@/api/searchSlice';
 import { isYesterday } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useGetHotel_homeByIdQuery } from '@/api/webapp/hotel_home';
 
 const { RangePicker } = DatePicker;
 
@@ -24,30 +21,49 @@ export const SearchHotel = () => {
   
   const [divClicked, setDivClicked] = useState(false);
   const [hotelsData, setHotelsData] = useState([]);
-  // const dispatch = useAppDispatch();
   
-  const searchSlide = useAppSelector((state: any) => state.searchSlice?.items);
-  console.log("SearchSlice", searchSlide)
-  const [selectedRange, setSelectedRange] = useState<[any | null, any | null]>([searchSlide[0].check_in, searchSlide[0].check_out]);
-  const [selectedHotel, setSelectedHotel] = useState(searchSlide[0]?.nameHotel?.[1]);
-  console.log("datesd",selectedRange[0] );
-  console.log("namejotel", searchSlide[0]?.nameHotel?.[1]);
- 
+  const searchSlide = useParams()
+  console.log("param",searchSlide);
   
-  // console.log("detail", hotel_detail);
+  let numberPeople: { [key: string]: number }[] = [];
+  if (searchSlide && searchSlide.numberPeople) {
+    numberPeople = searchSlide.numberPeople.split('&').map((detailsString: string) => {
+      const detailsArray = detailsString.split(',');
+  
+      const roomDetails: { [key: string]: number } = {};
+      detailsArray.forEach((detail) => {
+        const [key, value] = detail.split(':');
+        roomDetails[key] = parseInt(value);
+      });
+  
+      return roomDetails;
+    });
+  }
+  console.log("numberPeople",numberPeople);
+  
+  let date: Date[] = [];
+  if (searchSlide && searchSlide.date) {
+    const timeArray = searchSlide.date.split(",");
+    date = timeArray.map(time => new Date(time));
+  }
+  console.log("date1",date);
+  
+  let hotel: string[] = [];
+  if (searchSlide && searchSlide.nameHotel) {
+    hotel = searchSlide.nameHotel.split(",");
+  }
+  
+  console.log("khách sạn", hotel);
+  const [selectedRange, setSelectedRange] = useState(date);
+  console.log("dsadsa",selectedRange[0]);
+  
+  const [selectedHotel, setSelectedHotel] = useState(hotel[1]);
   
 
-  
+  const navigate = useNavigate();
 
-  // const navigate = useNavigate();
-  // const onFinish = (values: any) => {
-  // };
-
-  // const form = useForm()
-
-  const date = [searchSlide[0].check_in,searchSlide[0].check_out]
   const dateFormat = 'YYYY/MM/DD';
-  console.log("daye", date);
+  console.log("dayydsyayds",[dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]);
 
 
   type FieldType = {
@@ -56,6 +72,13 @@ export const SearchHotel = () => {
     remember?: string;
   };
 
+  const onHandSubmit = () => {
+    const roomDetailsString = roomDetails1.map((details) => {
+      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+    }).join('&');
+    const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
+    navigate(url);
+  }
 
   //chọn ten khách sạn
   const refCalen = useRef<HTMLDivElement>(null);
@@ -152,15 +175,13 @@ export const SearchHotel = () => {
   //
 
   /*Tăng số lượng phòng*/
-  interface RoomDetail {
-    adults: number;
-    children: number;
-    infants: number;
-  }
-  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
-  const [roomDetails1, setRoomDetails1] = useState<RoomDetail[]>([
-    { adults: 1, children: 0, infants: 0 },
-  ]);
+  // interface RoomDetail {
+  //   adults: number;
+  //   children: number;
+  //   infants: number;
+  // }
+  const [numberOfRooms1, setNumberOfRooms1] = useState(Number(searchSlide.numberRoom));
+  const [roomDetails1, setRoomDetails1] = useState(numberPeople);
 
 
   const handleRoomChange1 = (value: number) => {
@@ -168,7 +189,7 @@ export const SearchHotel = () => {
       setNumberOfRooms1(value);
 
       // Tạo một bản sao của roomDetails1 để chỉnh sửa
-      const updatedRoomDetails: RoomDetail[] = [...roomDetails1];
+      const updatedRoomDetails = [...roomDetails1];
 
       // Nếu value tăng 1 so với phòng hiện tại, thêm các phòng mới
       while (updatedRoomDetails.length < value) {
@@ -276,7 +297,7 @@ export const SearchHotel = () => {
                 height: '55px',
                 borderRadius: '0',
               }}
-              defaultValue={[dayjs(selectedRange[0], dateFormat), dayjs(selectedRange[1], dateFormat)]}
+              defaultValue={[dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]}
               format={dateFormat}
               onChange={(datas) => handleRangeChange(datas)}
               disabledDate={(current) => {
@@ -474,6 +495,7 @@ export const SearchHotel = () => {
                 justifyContent: "center",
                 borderRadius: "0", // Áp dụng borderRadius thành 0
               }}
+              onClick={onHandSubmit}
             >
               Tìm kiếm
             </Button>

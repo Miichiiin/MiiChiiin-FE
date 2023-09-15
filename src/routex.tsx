@@ -99,9 +99,9 @@ export const router = createBrowserRouter([
                 element: <ChooseService />
             },
             {
-                path: "/choose-room",
+                path: "/choose-room/:nameHotel/:date/:numberRoom/:numberPeople",
                 element: <ChooseRoom />
-            },
+              },
             {
                 path: '/register',
                 element: <Register />
@@ -118,8 +118,6 @@ export const router = createBrowserRouter([
                 path: '/searchHotel',
                 element: <SearchHotel/>
             },
-
-
         ],
     },
 

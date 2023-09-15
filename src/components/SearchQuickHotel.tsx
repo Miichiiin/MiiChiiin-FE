@@ -43,18 +43,22 @@ export const SearchQuickHotel = () => {
   // };
 
   const onHandSubmit = () => {
-    const newValue = {
-      nameHotel: selectedHotel,
-      check_in: selectedRange[0]?.toISOString().slice(0, 25),
-      check_out: selectedRange[1]?.toISOString().slice(0, 25),
-      date: selectedRange,
-      numberRoom: numberOfRooms1,
-      numberPeople: roomDetails1,
-    };
-    console.log("valuenew", newValue)
-    dispatch(addSearch(newValue));
-    navigate("/choose-room")
+    // const newValue = {
+    //   nameHotel: selectedHotel,
+    //   check_in: selectedRange[0]?.toISOString().slice(0, 25),
+    //   check_out: selectedRange[1]?.toISOString().slice(0, 25),
+    //   date: selectedRange,
+    //   numberRoom: numberOfRooms1,
+    //   numberPeople: roomDetails1,
+    // } as any
 
+    const roomDetailsString = roomDetails1.map((details) => {
+      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+    }).join('&');
+    // console.log("vấckc",roomDetailsString);
+    // console.log("valuenew", newValue)
+    const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
+    navigate(url);
   }
 
   type FieldType = {
@@ -350,8 +354,8 @@ export const SearchQuickHotel = () => {
                       <hr className="text-gray-300 mt-3" />
                       <div
                         className={`max-h-[230px] w-auto  ${shouldShowScroll
-                            ? "overflow-y-scroll overflow-hidden"
-                            : ""
+                          ? "overflow-y-scroll overflow-hidden"
+                          : ""
                           }`}
                       >
                         {roomDetails1.map((room, index) => (

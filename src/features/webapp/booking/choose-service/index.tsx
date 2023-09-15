@@ -27,7 +27,6 @@ const ChooseService = () => {
     };
     const { data: serviceData, isLoading } = useGetService_hotelQuery({})
     const carts = useAppSelector((state: any) => state.cart?.items);
-    const dispatch = useAppDispatch();
     const navigate = useNavigate()
     
     
@@ -164,7 +163,7 @@ const ChooseService = () => {
                                             <h1>{sumPrice}</h1>
                                         </div>
                                     </div>
-                                    <button onClick={() => onhanldeSubmit } className='bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full'>Tiếp tục</button>
+                                    <button onClick={onhanldeSubmit } className='bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full'>Tiếp tục</button>
                                 </div>
                             </>
                         })}

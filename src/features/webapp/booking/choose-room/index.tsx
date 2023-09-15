@@ -1,22 +1,17 @@
 import { useState } from "react";
 import { GrLocation } from "react-icons/gr";
 import { HiOutlineUser } from "react-icons/hi";
-
-
 import {
   AiOutlineExpandAlt,
   AiOutlineInfoCircle,
   AiOutlineArrowRight,
 } from "react-icons/ai";
 import HeaderHotelType from "src/features/webapp/HotelType/HeaderHotelType";
-
-// import { SearchQuickHotel } from "@/components/SearchQuickHotel";
-
 import { SearchHotel } from "./searchHotel";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
-import { useAppSelector } from "@/app/hook";
+// import { useAppSelector } from "@/app/hook";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 
 
@@ -24,15 +19,43 @@ const ChooseRoom = () => {
   const { data: hotels } = useGetCategory_homeQuery();
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const searchSlide = useAppSelector((state: any) => state.searchSlice?.items);
-  const {data: hotel_detail} = useGetHotel_homeByIdQuery(searchSlide[0]?.nameHotel?.[0])
-  console.log("hotel_detail",hotel_detail);
+  const searchSlide = useParams()
+  // console.log("urls",searchSlide);
+  // console.log("urls 22",[searchSlide.numberPeople]);
+  // const searchSlide = useAppSelector((state: any) => state.searchSlice?.items);
+
   
+  let numberPeople: { [key: string]: number }[] = [];
+  if (searchSlide && searchSlide.numberPeople) {
+    numberPeople = searchSlide.numberPeople.split('&').map((detailsString: string) => {
+      const detailsArray = detailsString.split(',');
+  
+      const roomDetails: { [key: string]: number } = {};
+      detailsArray.forEach((detail) => {
+        const [key, value] = detail.split(':');
+        roomDetails[key] = parseInt(value);
+      });
+  
+      return roomDetails;
+    });
+  }
+  console.log("numberPeople",numberPeople);
+  
+  let date: Date[] = [];
+  if (searchSlide && searchSlide.date) {
+    const timeArray = searchSlide.date.split(",");
+    date = timeArray.map(time => new Date(time));
+  }
+  console.log("date1",date);
+  
+  let hotel: string[] = [];
+  if (searchSlide && searchSlide.nameHotel) {
+    hotel = searchSlide.nameHotel.split(",");
+  }
 
-
-
- 
-
+    const {data: hotel_detail} = useGetHotel_homeByIdQuery(hotel[0])
+  
+  console.log("khách sạn", hotel);
   const handleRoomSelect = (selectedHotel: any) => {
     setSelectedRooms([...selectedRooms, selectedHotel]);
     const price = selectedHotel.price;
@@ -72,6 +95,8 @@ const ChooseRoom = () => {
     return acc;
   }, []);
 
+  console.log("Phòng đã chọn", uniqueSelectedRooms);
+  
   return (
     <div>
       <div className="mb-[150px]">
@@ -115,7 +140,7 @@ const ChooseRoom = () => {
               <div className="border px-2 py-3 bg-gray-100 rounded my-3">
                 <div className="flex justify-between items-center">
                   <h1 className="text-lg font-bold">
-                    Chọn phòng: <span>{selectedRooms.length}/1</span>
+                    Chọn phòng: <span>{selectedRooms.length}/{searchSlide.numberRoom}</span>
                   </h1>
                 </div>
               </div>
@@ -181,16 +206,16 @@ const ChooseRoom = () => {
                 <div>
                   <div className="flex items-center justify-between">
                     <h1 className="font-semibold">
-                      Vinpearl WonderWorld Phú Quốc
+                      {hotel_detail?.name}
                     </h1>
                     <button className="text-sm">Chỉnh sửa</button>
                   </div>
                   <p className="text-sm pt-3 items-center flex">
-                    Chủ Nhật, Th08 27, 2023  
+                    {date[0].toISOString().slice(0, 10)}  
                     <AiOutlineArrowRight className="inline-block mx-1" />
-                    Thứ Ba, Th08 29, 2023
+                    {date[1].toISOString().slice(0, 10)}  
                   </p>
-                  <p className="text-sm pb-3">02 Đêm</p>
+                  {/* <p className="text-sm pb-3">{differenceInDays((parseISO(searchSlide[0]?.date[1].toISOString().slice(0, 10))), parseISO(searchSlide[0]?.date[0].toISOString().slice(0, 10)))} Đêm</p> */}
                 </div>
                 <hr className="my-4" />
                 <div className="pb-6">
@@ -225,9 +250,9 @@ const ChooseRoom = () => {
                     </h1>
                   </div>
                 </div>
-                <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full">
+                <Link to={`/choose-service`} className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full">
                   Tiếp tục
-                </button>
+                </Link>
               </div>
             </div>
           </section>
