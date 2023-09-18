@@ -95,7 +95,7 @@ export const router = createBrowserRouter([
                 element: <DetailTypeofRoom />
             },
             {
-                path: "/choose-service",
+                path: "/choose-service/:nameHotel/:date/:numberRoom/:numberPeople",
                 element: <ChooseService />
             },
             {

@@ -11,50 +11,48 @@ import { SearchHotel } from "./searchHotel";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 // import { useAppSelector } from "@/app/hook";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
-import { Link, useParams } from "react-router-dom";
-
-
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { differenceInDays, parseISO } from "date-fns";
+import { Button } from "antd";
 
 const ChooseRoom = () => {
   const { data: hotels } = useGetCategory_homeQuery();
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const searchSlide = useParams()
-  // console.log("urls",searchSlide);
-  // console.log("urls 22",[searchSlide.numberPeople]);
-  // const searchSlide = useAppSelector((state: any) => state.searchSlice?.items);
+  const searchSlide = useParams();
 
-  
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
-    numberPeople = searchSlide.numberPeople.split('&').map((detailsString: string) => {
-      const detailsArray = detailsString.split(',');
-  
-      const roomDetails: { [key: string]: number } = {};
-      detailsArray.forEach((detail) => {
-        const [key, value] = detail.split(':');
-        roomDetails[key] = parseInt(value);
+    numberPeople = searchSlide.numberPeople
+      .split("&")
+      .map((detailsString: string) => {
+        const detailsArray = detailsString.split(",");
+
+        const roomDetails: { [key: string]: number } = {};
+        detailsArray.forEach((detail) => {
+          const [key, value] = detail.split(":");
+          roomDetails[key] = parseInt(value);
+        });
+
+        return roomDetails;
       });
-  
-      return roomDetails;
-    });
   }
-  console.log("numberPeople",numberPeople);
-  
+  console.log("numberPeople", numberPeople);
+
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
     const timeArray = searchSlide.date.split(",");
-    date = timeArray.map(time => new Date(time));
+    date = timeArray.map((time) => new Date(time));
   }
-  console.log("date1",date);
-  
+  console.log("date1", date);
+
   let hotel: string[] = [];
   if (searchSlide && searchSlide.nameHotel) {
     hotel = searchSlide.nameHotel.split(",");
   }
 
-    const {data: hotel_detail} = useGetHotel_homeByIdQuery(hotel[0])
-  
+  const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
+
   console.log("khách sạn", hotel);
   const handleRoomSelect = (selectedHotel: any) => {
     setSelectedRooms([...selectedRooms, selectedHotel]);
@@ -94,9 +92,31 @@ const ChooseRoom = () => {
 
     return acc;
   }, []);
+  const navigate = useNavigate();
 
-  console.log("Phòng đã chọn", uniqueSelectedRooms);
-  
+  interface Room {
+    count: number;
+    name: string;
+    price: number;
+  }
+
+  const onHandSubmit = () => {
+    const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
+      count: room.count,
+      name: room.name,
+      price: room.price,
+    }));
+    const encodedGuests = numberPeople.map((details) => {
+      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+    }).join('&');
+    // const encodedGuests = encodeURIComponent(JSON.stringify(numberPeople));
+    const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
+    // console.log("rômmmm",updatedSelectedRooms);
+    
+    const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
+    navigate(url);
+  };
+
   return (
     <div>
       <div className="mb-[150px]">
@@ -115,7 +135,7 @@ const ChooseRoom = () => {
             </div>
             <div className="col-span-2">
               <a className="text-xl hover:underline font-semibold ">
-               {hotel_detail?.name}
+                {hotel_detail?.name}
               </a>
               <div className="flex items-center py-4">
                 <GrLocation />
@@ -123,9 +143,7 @@ const ChooseRoom = () => {
                   Địa chỉ: {hotel_detail?.city_name}
                 </p>
               </div>
-              <p className="text-lg py-2">
-                {hotel_detail?.description}
-              </p>
+              <p className="text-lg py-2">{hotel_detail?.description}</p>
               <Link
                 to="/hotel"
                 className="font-semibold text-blue-700 hover:text-blue-500 hover:underline"
@@ -140,7 +158,10 @@ const ChooseRoom = () => {
               <div className="border px-2 py-3 bg-gray-100 rounded my-3">
                 <div className="flex justify-between items-center">
                   <h1 className="text-lg font-bold">
-                    Chọn phòng: <span>{selectedRooms.length}/{searchSlide.numberRoom}</span>
+                    Chọn phòng:{" "}
+                    <span>
+                      {selectedRooms.length}/{searchSlide.numberRoom}
+                    </span>
                   </h1>
                 </div>
               </div>
@@ -205,17 +226,21 @@ const ChooseRoom = () => {
               <div className="border rounded px-2 py-4">
                 <div>
                   <div className="flex items-center justify-between">
-                    <h1 className="font-semibold">
-                      {hotel_detail?.name}
-                    </h1>
+                    <h1 className="font-semibold">{hotel_detail?.name}</h1>
                     <button className="text-sm">Chỉnh sửa</button>
                   </div>
                   <p className="text-sm pt-3 items-center flex">
-                    {date[0].toISOString().slice(0, 10)}  
+                    {date[0].toISOString().slice(0, 10)}
                     <AiOutlineArrowRight className="inline-block mx-1" />
-                    {date[1].toISOString().slice(0, 10)}  
+                    {date[1].toISOString().slice(0, 10)}
                   </p>
-                  {/* <p className="text-sm pb-3">{differenceInDays((parseISO(searchSlide[0]?.date[1].toISOString().slice(0, 10))), parseISO(searchSlide[0]?.date[0].toISOString().slice(0, 10)))} Đêm</p> */}
+                  <p className="text-sm pb-3">
+                    {differenceInDays(
+                      parseISO(date[1].toISOString().slice(0, 10)),
+                      parseISO(date[0].toISOString().slice(0, 10))
+                    )}{" "}
+                    Đêm
+                  </p>
                 </div>
                 <hr className="my-4" />
                 <div className="pb-6">
@@ -250,9 +275,12 @@ const ChooseRoom = () => {
                     </h1>
                   </div>
                 </div>
-                <Link to={`/choose-service`} className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full">
+                <Button
+                  onClick={onHandSubmit}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white  text-lg font-bold rounded-full w-full"
+                >
                   Tiếp tục
-                </Link>
+                </Button>
               </div>
             </div>
           </section>
