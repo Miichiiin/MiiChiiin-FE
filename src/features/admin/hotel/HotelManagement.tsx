@@ -9,6 +9,8 @@ export const HotelManagement = () => {
     const { data: HotelData } = useGetHotel_adminsQuery({})
     const [removeHotel] = useRemoveHotel_adminMutation({})
 
+    const [searchText, setSearchText] = useState("");
+
     const data = HotelData?.map(({ id, name, email, description, quantity_of_room, star, phone, quantity_floor, created_at, updated_at, status, id_city, name_cities, image_urls }: DataType) => ({
         key: id,
         name,
@@ -122,13 +124,6 @@ export const HotelManagement = () => {
     const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [addressFilter, setAddressFilter] = useState<string | undefined>(undefined);
-    
-    const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-
-    };
 
     const confirmDelete = (id: number) => {
         const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
@@ -144,15 +139,19 @@ export const HotelManagement = () => {
         setAddressFilter(value);
     };
 
-    const filteredData = addressFilter ? data.filter((item: any) => item.name_cities.includes(addressFilter)) : data;
-    console.log(filteredData);
+    const filteredData = data ? data.filter((item: DataType) => {
+        const nameMatch = item.name.toLowerCase().includes(searchText.toLowerCase());
+        const addressMatch = !addressFilter || item.name_cities.includes(addressFilter);
+    
+        return nameMatch && addressMatch;
+    }) : [];
 
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
                 <div className="text-lg font-semibold">Quản lý khách sạn</div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} />
+                    <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
                     <Select
                         showSearch
                         style={{ width: 200 }}

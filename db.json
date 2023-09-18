@@ -650,10 +650,7 @@
     },
     {
       "id_hotel": 2,
-      "id": 2,
       "name": "Phòng View Biển",
-      "description": "Phòng view biển với khung cảnh đẹp của bãi biểm có thể đón mình binh bao trọn view khắp thành phố",
-      "image": "https://booking-static.vinpearl.com/room_types/964a61f90cdb42db95b61263a7fdc74b_VH1PQ_Suite%20Room4.jpg",
       "short_description": "Phòng đơn một giường đầy đủ tiện ích cơ bản đảm bảo sự thoải mái trong quá trình nghỉ dưỡng",
       "quantity_of_people": 12,
       "price": 800,

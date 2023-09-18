@@ -17,6 +17,7 @@
         "axios": "^1.4.0",
         "concurrently": "^8.2.1",
         "date-fns": "^2.30.0",
+        "dayjs": "^1.11.9",
         "immer": "^10.0.2",
         "json-server-auth": "^2.1.0",
         "moment": "^2.29.4",

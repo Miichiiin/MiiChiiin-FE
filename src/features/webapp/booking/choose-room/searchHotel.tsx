@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button, Form, DatePicker } from 'antd';
+import dayjs from 'dayjs';
 import {
   AiOutlineEnvironment,
   AiOutlineIdcard,
@@ -7,43 +8,77 @@ import {
   AiOutlinePlus,
   AiOutlineUser,
 } from 'react-icons/ai';
-import axios from 'axios';
-import { useAppDispatch, useAppSelector } from '@/app/hook';
-import { addSearch } from '@/api/searchSlice';
+
+// import { addSearch } from '@/api/searchSlice';
 import { isYesterday } from 'date-fns';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { da } from 'date-fns/locale';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const { RangePicker } = DatePicker;
 
 export const SearchHotel = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedHotel, setSelectedHotel] = useState('');
+  
   const [divClicked, setDivClicked] = useState(false);
   const [hotelsData, setHotelsData] = useState([]);
-  const dispatch = useAppDispatch();
-  const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
-  const searchSlide = useAppSelector((state: any) => state.searchSlice?.items);
-  console.log("SearchSlice", searchSlide)
   
-  const [dateRange, setDateRange] = useState<any>(null);
+  const searchSlide = useParams()
+  console.log("param",searchSlide);
   
-  useEffect(() => {
-    setDateRange([searchSlide.check_in, searchSlide.check_out])
-  })
+  let numberPeople: { [key: string]: number }[] = [];
+  if (searchSlide && searchSlide.numberPeople) {
+    numberPeople = searchSlide.numberPeople.split('&').map((detailsString: string) => {
+      const detailsArray = detailsString.split(',');
   
+      const roomDetails: { [key: string]: number } = {};
+      detailsArray.forEach((detail) => {
+        const [key, value] = detail.split(':');
+        roomDetails[key] = parseInt(value);
+      });
+  
+      return roomDetails;
+    });
+  }
+  console.log("numberPeople",numberPeople);
+  
+  let date: Date[] = [];
+  if (searchSlide && searchSlide.date) {
+    const timeArray = searchSlide.date.split(",");
+    date = timeArray.map(time => new Date(time));
+  }
+  console.log("date1",date);
+  
+  let hotel: string[] = [];
+  if (searchSlide && searchSlide.nameHotel) {
+    hotel = searchSlide.nameHotel.split(",");
+  }
+  
+  console.log("khách sạn", hotel);
+  const [selectedRange, setSelectedRange] = useState(date);
+  console.log("dsadsa",selectedRange[0]);
+  
+  const [selectedHotel, setSelectedHotel] = useState(hotel[1]);
+  
+
   const navigate = useNavigate();
-  const onFinish = (values: any) => {
-    
-  };
-  
+
+  const dateFormat = 'YYYY/MM/DD';
+  console.log("dayydsyayds",[dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]);
+
+
   type FieldType = {
     nameHotel?: string;
     password?: string;
     remember?: string;
   };
 
-  console.log("ngay",dateRange)
+  const onHandSubmit = () => {
+    const roomDetailsString = roomDetails1.map((details) => {
+      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+    }).join('&');
+    const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
+    navigate(url);
+  }
 
   //chọn ten khách sạn
   const refCalen = useRef<HTMLDivElement>(null);
@@ -83,8 +118,7 @@ export const SearchHotel = () => {
 
   // Sử dụng useEffect để gọi API khi component được mount
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/hotel_home") // Thay đổi đường dẫn dựa vào cấu hình của bạn
+    axios.get("http://localhost:3000/hotel_home") // Thay đổi đường dẫn dựa vào cấu hình của bạn
       .then((response) => {
         setHotelsData(response.data); // Lưu dữ liệu từ API vào state
       })
@@ -141,15 +175,13 @@ export const SearchHotel = () => {
   //
 
   /*Tăng số lượng phòng*/
-  interface RoomDetail {
-    adults: number;
-    children: number;
-    infants: number;
-  }
-  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
-  const [roomDetails1, setRoomDetails1] = useState<RoomDetail[]>([
-    { adults: 1, children: 0, infants: 0 },
-  ]);
+  // interface RoomDetail {
+  //   adults: number;
+  //   children: number;
+  //   infants: number;
+  // }
+  const [numberOfRooms1, setNumberOfRooms1] = useState(Number(searchSlide.numberRoom));
+  const [roomDetails1, setRoomDetails1] = useState(numberPeople);
 
 
   const handleRoomChange1 = (value: number) => {
@@ -157,7 +189,7 @@ export const SearchHotel = () => {
       setNumberOfRooms1(value);
 
       // Tạo một bản sao của roomDetails1 để chỉnh sửa
-      const updatedRoomDetails: RoomDetail[] = [...roomDetails1];
+      const updatedRoomDetails = [...roomDetails1];
 
       // Nếu value tăng 1 so với phòng hiện tại, thêm các phòng mới
       while (updatedRoomDetails.length < value) {
@@ -196,24 +228,25 @@ export const SearchHotel = () => {
   };
   /*Cuộn trang*/
   const shouldShowScroll = numberOfRooms1 > 1;
-  console.log("date",searchSlide.date)
+  console.log("date", searchSlide.date)
   return (
     <div className="ml-36">
       <Form
         className="flex items-center w-full flex-wrap" // Thêm lớp flex-wrap để xử lý trường hợp tràn dòng
         name="basic"
+
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
-        initialValues={{ remember: true, nameHotel: selectedHotel }}
-        onFinish={onFinish}
+        // initialValues={{ remember: true, nameHotel: selectedHotel }}
+        // onFinish={onFinish}
         autoComplete="off"
       >
         <div className="flex items-center w-full">
           <Form.Item<FieldType>
             name="nameHotel"
             className="flex-grow"
-           
+
           >
             <div ref={refCalen} onClick={handleDivClick}>
               <div onClick={toggleDropdown} className="relative">
@@ -255,23 +288,24 @@ export const SearchHotel = () => {
             </div>
           </Form.Item>
 
-          <Form.Item className="flex-grow ml-2 ">
-              <RangePicker 
-              value={dateRange}
-                style={{
-                  width: '280px',
-                  fontSize: '16px',
-                  height: '55px',
-                  borderRadius: '0',
-                }}
-                format="DD/MM/YYYY "
-                onChange={handleRangeChange}
-                disabledDate={(current) => {
-                  // Vô hiệu hóa các ngày hôm trước
-                  return current && current.isBefore(new Date(), 'day');
-                }}
-              />
-            </Form.Item>
+          <Form.Item className="flex-grow ml-2 "
+          >
+            <RangePicker
+              style={{
+                width: '280px',
+                fontSize: '16px',
+                height: '55px',
+                borderRadius: '0',
+              }}
+              defaultValue={[dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]}
+              format={dateFormat}
+              onChange={(datas) => handleRangeChange(datas)}
+              disabledDate={(current) => {
+                // Vô hiệu hóa các ngày hôm trước
+                return current && current.isBefore(new Date(), 'day');
+              }}
+            />
+          </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
             <button>
@@ -331,11 +365,10 @@ export const SearchHotel = () => {
                       </div>
                       <hr className="text-gray-300 mt-3" />
                       <div
-                        className={`max-h-[230px] w-auto  ${
-                          shouldShowScroll
-                            ? "overflow-y-scroll overflow-hidden"
-                            : ""
-                        }`}
+                        className={`max-h-[230px] w-auto  ${shouldShowScroll
+                          ? "overflow-y-scroll overflow-hidden"
+                          : ""
+                          }`}
                       >
                         {roomDetails1.map((room, index) => (
                           <div key={index} className="mt-3 ">
@@ -462,6 +495,7 @@ export const SearchHotel = () => {
                 justifyContent: "center",
                 borderRadius: "0", // Áp dụng borderRadius thành 0
               }}
+              onClick={onHandSubmit}
             >
               Tìm kiếm
             </Button>

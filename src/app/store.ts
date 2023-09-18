@@ -4,18 +4,18 @@ import banner_AdminApi, { banner_AdminReducer } from '@/api/admin/banner_admin';
 import booking_AdminApi, { booking_AdminReducer } from '@/api/admin/booking_admin';
 import category_AdminApi, { category_AdminReducer } from '@/api/admin/category_admin';
 import category_HomeApi, { category_HomeReducer } from '@/api/webapp/category_home';
-import comfortApi, { comfortReducer } from '@/api/comfort';
+import comfortApi, { comfortReducer } from '@/api/admin/comfort_admin';
 import districtApi, { districtReducer } from '@/api/district';
-
 import hotel_AdminApi, { hotel_AdminReducer } from '@/api/admin/hotel_admin';
 import hotel_HomeApi, { hotel_HomeReducer } from '@/api/webapp/hotel_home';
 import room_adminApi, { room_AdminReducer } from '@/api/admin/room_admin';
 import services_adminApi, { services_AdminReducer } from '@/api/admin/service_admin';
 import service_HotelApi, { service_Reducer } from '@/api/webapp/service_hotel';
-
 import userApi, { useReducer } from '@/api/users';
-import voucherApi, { voucherReducer } from '@/api/voucher';
+import voucherApi, { voucherReducer } from '@/api/admin/voucher';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+
+
 import {
     FLUSH,
     PAUSE,

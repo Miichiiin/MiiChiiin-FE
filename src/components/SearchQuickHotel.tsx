@@ -1,6 +1,6 @@
-import  { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button, Form, DatePicker } from 'antd';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   AiOutlineEnvironment,
   AiOutlineIdcard,
@@ -9,8 +9,6 @@ import {
   AiOutlineUser,
 } from 'react-icons/ai';
 import axios from 'axios';
-import { useAppDispatch } from '@/app/hook';
-import { addSearch } from '@/api/searchSlice';
 import { isYesterday } from 'date-fns';
 
 
@@ -22,39 +20,16 @@ export const SearchQuickHotel = () => {
   const [selectedHotel, setSelectedHotel] = useState('');
   const [divClicked, setDivClicked] = useState(false);
   const [hotelsData, setHotelsData] = useState([]);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
   const navigate = useNavigate();
 
-  // const onFinish = (values: any) => {
-  //   const newValue = {
-  //     ...values,
-  //     nameHotel: selectedHotel,
-  //     // check_in: selectedRange[0]?.toISOString().slice(0, 10),
-  //     // check_out: selectedRange[1]?.toISOString().slice(0, 10),
-  //     date: selectedRange,
-  //     numberRoom: numberOfRooms1,
-  //     numberPeople: roomDetails1,
-  //   };
-  //   console.log("valuenew",newValue)
-  //   dispatch(addSearch(newValue));
-  //   // navigate("/choose-room")
-  //   console.log("Giatri:",values)
-  // };
-
-  const onHandSubmit = () =>{
-    const newValue = {
-      nameHotel: selectedHotel,
-      check_in: selectedRange[0]?.toISOString().slice(0, 10),
-      check_out: selectedRange[1]?.toISOString().slice(0, 10),
-      // date: selectedRange,
-      numberRoom: numberOfRooms1,
-      numberPeople: roomDetails1,
-    };
-    console.log("valuenew",newValue)
-    dispatch(addSearch(newValue));
-    navigate("/choose-room")
-
+  const onHandSubmit = () => {
+    const roomDetailsString = roomDetails1.map((details) => {
+      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+    }).join('&');
+    const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
+    navigate(url);
   }
 
   type FieldType = {
@@ -232,7 +207,7 @@ export const SearchQuickHotel = () => {
           <Form.Item<FieldType>
             name="nameHotel"
             className="flex-grow"
-            // rules={[{ required: true, message: 'Please input your username!' }]}
+          // rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <div ref={refCalen} onClick={handleDivClick}>
               <div onClick={toggleDropdown} className="relative">
@@ -275,21 +250,21 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 ">
-              <RangePicker
-                style={{
-                  width: '280px',
-                  fontSize: '16px',
-                  height: '55px',
-                  borderRadius: '0',
-                }}
-                format="DD/MM/YYYY "
-                onChange={handleRangeChange}
-                disabledDate={(current) => {
-                  // Vô hiệu hóa các ngày hôm trước
-                  return current && current.isBefore(new Date(), 'day');
-                }}
-              />
-            </Form.Item>
+            <RangePicker
+              style={{
+                width: '280px',
+                fontSize: '16px',
+                height: '55px',
+                borderRadius: '0',
+              }}
+              format="DD/MM/YYYY "
+              onChange={handleRangeChange}
+              disabledDate={(current) => {
+                // Vô hiệu hóa các ngày hôm trước
+                return current && current.isBefore(new Date(), 'day');
+              }}
+            />
+          </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
             <button>
@@ -349,11 +324,10 @@ export const SearchQuickHotel = () => {
                       </div>
                       <hr className="text-gray-300 mt-3" />
                       <div
-                        className={`max-h-[230px] w-auto  ${
-                          shouldShowScroll
-                            ? "overflow-y-scroll overflow-hidden"
-                            : ""
-                        }`}
+                        className={`max-h-[230px] w-auto  ${shouldShowScroll
+                          ? "overflow-y-scroll overflow-hidden"
+                          : ""
+                          }`}
                       >
                         {roomDetails1.map((room, index) => (
                           <div key={index} className="mt-3 ">

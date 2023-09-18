@@ -26,6 +26,9 @@ dependencies:
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
+  dayjs:
+    specifier: ^1.11.9
+    version: 1.11.9
   immer:
     specifier: ^10.0.2
     version: 10.0.2

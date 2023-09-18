@@ -45,6 +45,7 @@ import UpdateHotel from "./features/admin/hotel/UpdateHotel";
 import { SearchQuickHotel } from "./components/SearchQuickHotel";
 import { SearchHotel } from "./features/webapp/booking/choose-room/searchHotel";
 import UpdateUserPage from "./features/admin/user/UpdateUser";
+import AddUtilities from "./features/admin/ManagerUtilities/AddUtilities";
 
 
 
@@ -94,13 +95,13 @@ export const router = createBrowserRouter([
                 element: <DetailTypeofRoom />
             },
             {
-                path: "/choose-service",
+                path: "/choose-service/:nameHotel/:date/:numberRoom/:numberPeople",
                 element: <ChooseService />
             },
             {
-                path: "/choose-room",
+                path: "/choose-room/:nameHotel/:date/:numberRoom/:numberPeople",
                 element: <ChooseRoom />
-            },
+              },
             {
                 path: '/register',
                 element: <Register />
@@ -117,8 +118,6 @@ export const router = createBrowserRouter([
                 path: '/searchHotel',
                 element: <SearchHotel/>
             },
-
-
         ],
     },
 
@@ -240,8 +239,12 @@ export const router = createBrowserRouter([
                 element: <ManagerUtilities />
             },
             {
-                path: "updateUtilities",
+                path: "updateUtilities/:id",
                 element: <UpdateFeedBackPage />
+            },
+            {
+                path: "addUtilities",
+                element: <AddUtilities/>
             },
             {
                 path: "admininfo",
