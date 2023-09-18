@@ -72,7 +72,7 @@ console.log(booking);
                     <Slider {...settings} ref={sliderRef} className="w-[1280px] mx-auto">
                         {booking?.map((item: any) => {
                           return  <>
-                                <Link to={`/hotel`} className="w-[400px] relative overflow-hidden">
+                                <Link to={`/hotel/${item.id}`} className="w-[400px] relative overflow-hidden">
                                     <div className="relative overflow-hidden mb-4">
                                         <img className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                                             src={item.image}
@@ -87,6 +87,7 @@ console.log(booking);
                     </Slider>
                 </div>
             </div>
+            {/* them o day */}
             <div className="mt-10 relative bg-[#585c5b]">
                 <div className="w-[740px] mx-auto absolute inset-0 top-[300px] items-center ">
                     <p className="text-[#f2ba50] font-bold text-[20px] text-center pb-1">Pearl Club</p>

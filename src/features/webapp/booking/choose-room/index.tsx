@@ -9,12 +9,6 @@ import {
   AiOutlineArrowRight,
 } from "react-icons/ai";
 import HeaderHotelType from "src/features/webapp/HotelType/HeaderHotelType";
-<<<<<<< HEAD
-import { useGetCategory_homeQuery } from "@/api/category_home";
-=======
-
-import { SearchQuickHotel } from "@/components/SearchQuickHotel";
->>>>>>> 3000eed6044e6799156c5d734656cfc4401364f0
 import { SearchHotel } from "./searchHotel";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 

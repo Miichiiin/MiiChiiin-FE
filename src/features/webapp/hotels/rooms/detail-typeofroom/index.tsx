@@ -5,10 +5,11 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 
+
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 // import type { DatePickerProps, RadioChangeEvent } from 'antd';
-import { DatePicker, Radio, message } from 'antd';
+import { DatePicker, message } from 'antd';
 import { add } from '@/api/cartSlice';
 import { useAppDispatch } from '@/app/hook';
 import { useGetCategory_homeByIdQuery } from '@/api/webapp/category_home';
@@ -26,6 +27,7 @@ const DetailTypeofRoom = () => {
 
   const { id: idRoom } = useParams()
   const { data } = useGetCategory_homeByIdQuery(idRoom);
+  console.log("tenks",data)
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
 
@@ -174,7 +176,7 @@ const DetailTypeofRoom = () => {
         <h1 className='text-xl font-semibold pb-4'>Bạn cảm thấy ưng ý chưa ?</h1>
         <div className=' flex justify-end space-x-8 '>
           <button onClick={() =>onSubmit(data)} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</button>
-          <Link to={`/hotel`} className='bg-red-300 hover:bg-red-700 py-4 text-white  px-2 rounded  my-2'>Quay lại</Link>
+          <Link to={`/hotel/${data?.id}`} className='bg-red-300 hover:bg-red-700 py-4 text-white  px-2 rounded  my-2'>Quay lại</Link>
         </div>
       </div>
       <div className='py-5'>

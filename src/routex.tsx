@@ -66,7 +66,7 @@ export const router = createBrowserRouter([
                 element: <Index />
             },
             {
-                path: "/hotel",
+                path: "/hotel/:id",
                 element: <HotelIntroduction />
             },
             {
@@ -86,11 +86,11 @@ export const router = createBrowserRouter([
                 element:<Order/>
             },
             {
-                path: '/hotels/rooms/roomtypes',
+                path: '/hotels/:id/rooms/roomtypes',
                 element: <RoomTypes />
             },
             {
-                path: '/hotels/rooms/detail/:id',
+                path: '/hotels/:id/rooms/detail/:id',
                 element: <DetailTypeofRoom />
             },
             {

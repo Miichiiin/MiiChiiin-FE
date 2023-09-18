@@ -6,20 +6,13 @@ import category_AdminApi, { category_AdminReducer } from '@/api/admin/category_a
 import category_HomeApi, { category_HomeReducer } from '@/api/webapp/category_home';
 import comfortApi, { comfortReducer } from '@/api/comfort';
 import districtApi, { districtReducer } from '@/api/district';
-<<<<<<< HEAD
-import hotel_AdminApi, { hotel_AdminReducer } from '@/api/hotel_admin';
-import hotel_HomeApi, { hotel_HomeReducer } from '@/api/hotel_home';
-import room_adminApi, { room_AdminReducer } from '@/api/room_admin';
-import { sliceReducer } from '@/api/searchSlice';
-import services_adminApi, { services_AdminReducer } from '@/api/service_admin';
-import service_HotelApi, { service_Reducer } from '@/api/service_hotel';
-=======
+
 import hotel_AdminApi, { hotel_AdminReducer } from '@/api/admin/hotel_admin';
 import hotel_HomeApi, { hotel_HomeReducer } from '@/api/webapp/hotel_home';
 import room_adminApi, { room_AdminReducer } from '@/api/admin/room_admin';
 import services_adminApi, { services_AdminReducer } from '@/api/admin/service_admin';
 import service_HotelApi, { service_Reducer } from '@/api/webapp/service_hotel';
->>>>>>> 3000eed6044e6799156c5d734656cfc4401364f0
+
 import userApi, { useReducer } from '@/api/users';
 import voucherApi, { voucherReducer } from '@/api/voucher';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
@@ -59,14 +52,11 @@ const rootReducer = combineReducers({
     service_hotel: service_Reducer,
     category_home: category_HomeReducer,
     hotel_home: hotel_HomeReducer,
-<<<<<<< HEAD
-    searchSlice: sliceReducer
 
-=======
     cart: cartReducer,
     searchSlice: service_Reducer,
     rating: ratingReducer
->>>>>>> 3000eed6044e6799156c5d734656cfc4401364f0
+
 })
 const middleware = [
     room_adminApi.middleware, 

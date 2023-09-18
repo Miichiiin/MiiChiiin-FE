@@ -43,7 +43,7 @@ const ChooseService = () => {
             {/*Content*/}
             <div className='max-w-5xl mx-auto my-5'>
                 <section className='flex space-x-16 items-center px-2 py-3'>
-                    <Link to={"/choose-room"} className='underline text-yellow-500 text-md font-bold flex justify-start pr-32'>Chọn phòng </Link>
+                    <Link to={"/hotels/:id/rooms/roomtypes"} className='underline text-yellow-500 text-md font-bold flex justify-start pr-32'>Chọn phòng </Link>
                     <h1 className='flex items-center'> <AiFillCheckCircle className='text-yellow-500 text-4xl' /> <span className='px-2'>Chọn phòng</span> </h1>
                     <h1 className='flex items-center'> <AiOutlineCheckCircle className='text-4xl' /><span className='px-2'>Dịch vụ</span> </h1>
                     <h1 className='flex items-center'> <AiOutlineCheckCircle className='text-4xl' /><span className='px-2'>Thanh toán</span> </h1>
@@ -123,7 +123,7 @@ const ChooseService = () => {
                                     <div>
                                         <div className='flex items-center justify-between'>
                                             <h1 className='font-semibold'>
-                                                Phòng 1
+                                                {item?.name}
                                             </h1>
                                             <button className='text-lg font-semibold italic'>{item?.price}</button>
                                         </div>
