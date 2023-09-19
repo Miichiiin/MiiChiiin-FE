@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BsPeople } from "react-icons/bs";
 import { MdOutlineBed } from "react-icons/md";
 import { DatePicker, message } from 'antd';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 
 const { RangePicker } = DatePicker;
@@ -10,6 +10,8 @@ const { RangePicker } = DatePicker;
 const RoomTypes = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetCategory_homeQuery();
+  console.log("data", data);
+  const navigate = useNavigate()
 
 
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
@@ -18,29 +20,40 @@ const RoomTypes = () => {
     setSelectedRange([dates[0]?.toDate() || null, dates[1]?.toDate() || null]);
   };
 
-  const handleBookNow = (roomType: any) => {
+  const handleButtonClick = () => {
     if (selectedRange[0] && selectedRange[1]) {
       console.log('Ngày bắt đầu:', selectedRange[0].toISOString().slice(0, 10));
       console.log('Ngày kết thúc:', selectedRange[1].toISOString().slice(0, 10));
       message.success('Chọn ngày thành công');
-      
-      // Tạo dữ liệu mới
-      const newData = {
-        check_in: selectedRange[0]?.toISOString().slice(0, 10),
-        check_out: selectedRange[1]?.toISOString().slice(0, 10),
-        roomName: roomType.name, 
-        roomPrice: roomType.price
-      };
-      console.log("newData", newData);
-      
-      // Thực hiện xử lý đặt phòng ngay và chuyển dữ liệu thông qua URL
-      const queryString = Object.keys(newData)
-        .map(key => `${key}=${newData[key]}`)
-        .join("&");
-      
-      window.location.href = `/choose-service?${queryString}`;
     } else {
       message.error('Vui lòng chọn một khoảng ngày.');
+    }
+  };
+
+  interface Room {
+    count: number;
+    name: string;
+    price: number;
+  }
+
+  const onHandSubmit = (index: any) => {
+    if (selectedRange[0] && selectedRange[1]) {
+      const updatedSelectedRooms = [{
+        count: 1,
+        name: data[index]?.name,
+        price: data[index]?.price
+      }];
+      const encodedGuests = [`adults:1,children:0,infants:0`];
+      const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
+  
+      const hotel = `${data[1].hotel_id}, ${data[1].nameHotel}`
+      console.log("hoteldl:",hotel)
+      const url = `/choose-service/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
+      console.log("url", url);
+  
+      // navigate(url);
+    } else {
+      message.error('Vui lòng chọn ngày check-in và check-out trước khi đặt phòng.');
     }
   };
 
@@ -64,7 +77,7 @@ const RoomTypes = () => {
           </div>
         </div>
         <div className="">
-          {data?.map((roomType: any) => (
+          {data?.map((roomType: any, index: number) => (
             <section
               key={roomType.id}
               className="grid grid-cols-5 gap-4 px-2 py-3"
@@ -116,7 +129,7 @@ const RoomTypes = () => {
               <div className="flex justify-center items-center mt-6">
                 <button
                   className="border-2 border-blue-500 bg-blue-500 hover:border-blue-700 hover:bg-blue-700 text-white px-4 py-3 rounded mx-2 w-full"
-                  onClick={handleBookNow} // Xử lý khi người dùng nhấn nút "Đặt ngay"
+                  onClick={onHandSubmit} 
                 >
                   Đặt ngay
                 </button>

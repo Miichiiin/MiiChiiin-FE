@@ -1,16 +1,14 @@
-import { AiOutlineHeart, AiOutlineClose, AiOutlineInfoCircle, AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import { AiOutlineHeart, AiOutlineClose, AiOutlineInfoCircle } from 'react-icons/ai'
 import { BsPeople, BsChevronCompactRight, BsChevronCompactLeft } from 'react-icons/bs'
 import { MdOutlineBed } from 'react-icons/md'
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Modal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 // import type { DatePickerProps, RadioChangeEvent } from 'antd';
-import { DatePicker, Radio, message } from 'antd';
-import { add } from '@/api/cartSlice';
-import { useAppDispatch } from '@/app/hook';
+import { DatePicker,  message } from 'antd';
 import { useGetCategory_homeByIdQuery } from '@/api/webapp/category_home';
 
 const { RangePicker } = DatePicker;
@@ -26,7 +24,8 @@ const DetailTypeofRoom = () => {
 
   const { id: idRoom } = useParams()
   const { data } = useGetCategory_homeByIdQuery(idRoom);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+  console.log("data", data);
   const navigate = useNavigate()
 
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
@@ -35,20 +34,16 @@ const DetailTypeofRoom = () => {
     setSelectedRange([dates[0]?.toDate() || null, dates[1]?.toDate() || null]);
   };
 
-  const uniqueSelectedRooms = selectedRooms.reduce((acc: any, room: any) => {
-    // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
-    const existingRoom = acc.find((r: any) => r.id === room.id);
-
-    // Nếu phòng đã tồn tại, tăng số lượng
-    if (existingRoom) {
-      existingRoom.count++;
+  const handleButtonClick = () => {
+    if (selectedRange[0] && selectedRange[1]) {
+      console.log('Ngày bắt đầu:', selectedRange[0].toISOString().slice(0, 10));
+      console.log('Ngày kết thúc:', selectedRange[1].toISOString().slice(0, 10));
+      message.success('Chọn ngày thành công');
     } else {
-      // Nếu không, thêm phòng vào danh sách mới
-      acc.push({ ...room, count: 1 });
+      message.error('Vui lòng chọn một khoảng ngày.');
     }
+  };
 
-    return acc;
-  }, []);
 
   interface Room {
     count: number;
@@ -57,24 +52,24 @@ const DetailTypeofRoom = () => {
   }
 
   const onHandSubmit = () => {
-    const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
-      count: room.count,
-      name: room.name,
-      price: room.price,
-    }));
-    const encodedGuests = numberPeople.map((details) => {
-      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
-    }).join('&');
-    
-    const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
-    
-    
-    const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
-    navigate(url);
+    if (selectedRange[0] && selectedRange[1]) {
+      const updatedSelectedRooms = [{
+        count: 1,
+        name: data?.name,
+        price: data?.price
+      }];
+      const encodedGuests = [`adults:1,children:0,infants:0`];
+      const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
+  
+      const hotel = `${data.hotel_id}, ${data.nameHotel}`
+      const url = `/choose-service/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
+      console.log("url", url);
+  
+      navigate(url);
+    } else {
+      message.error('Vui lòng chọn ngày check-in và check-out trước khi đặt phòng.');
+    }
   };
-
-
-
 
   // State để bật tắt modal và lưu index của ảnh hiện tại
   const [showModal, setShowModal] = useState(false);
@@ -183,7 +178,7 @@ const DetailTypeofRoom = () => {
       <div className='pb-5'>
         <h1 className='text-xl font-semibold pb-4'>Bạn cảm thấy ưng ý chưa ?</h1>
         <div className=' flex justify-end space-x-8 '>
-          <button onClick={() =>onHandSubmit(data)} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</button>
+          <button onClick={onHandSubmit} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</button>
           <Link to={`/hotel`} className='bg-red-300 hover:bg-red-700 py-4 text-white  px-2 rounded  my-2'>Quay lại</Link>
         </div>
       </div>
