@@ -62,7 +62,7 @@ const ChooseService = () => {
     hotel = dataParam.nameHotel.split(",");
   }
 
-  console.log("hotek", hotel);
+  console.log("hotel", hotel);
 
   let date: Date[] = [];
   if (dataParam && dataParam.date) {

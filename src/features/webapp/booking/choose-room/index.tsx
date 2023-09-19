@@ -112,6 +112,8 @@ const ChooseRoom = () => {
     // const encodedGuests = encodeURIComponent(JSON.stringify(numberPeople));
     const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
     // console.log("rômmmm",updatedSelectedRooms);
+    console.log("hotel", hotel, "date",date, "numbeRoom", encodedSelectedRooms, "numberPeople",encodedGuests  )
+
     
     const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
     navigate(url);
