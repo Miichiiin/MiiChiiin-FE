@@ -3,7 +3,11 @@ import { Table, Divider, Radio, Button, Select, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
+import 'dayjs/plugin/utc';
+import 'dayjs/plugin/timezone';
+dayjs.locale('vi');
 
 export const BookingManagement = () => {
     const {data: dataBooking} = useGetBooking_adminQuery({})
@@ -32,8 +36,8 @@ export const BookingManagement = () => {
     interface DataType {
         key: number;
         id:number|string;
-        check_in: string;
-        check_out: string;
+        check_in: Date;
+        check_out: Date;
         email: string;
         name: string;
         people_quantity: number;
@@ -60,7 +64,7 @@ export const BookingManagement = () => {
             render: (text: any, item: any) => {
                 return (
                     <>
-                        <Link to={`/admin/bookingmanagement/${item.key}/update`}>{text}</Link>
+                        <Link to={`/admin/updatebooking/${item.key}`}>{text}</Link>
                     </>
                 )
             }
@@ -89,12 +93,26 @@ export const BookingManagement = () => {
             title: 'Ngày đặt',
             dataIndex: 'check_in',
             key: 'check_in',
-        },
-        {
+            render: (text, record) => {
+              const formattedDate = dayjs(record.check_in)
+                .utc() // Chuyển đổi sang múi giờ UTC
+                .local() // Chuyển đổi lại sang múi giờ cục bộ (Việt Nam)
+                .format('DD/MM/YYYY HH:mm'); // Định dạng ngày tháng giờ phút
+              return <span>{formattedDate}</span>;
+            },
+          },
+          {
             title: 'Ngày trả',
             dataIndex: 'check_out',
             key: 'check_out',
-        },
+            render: (text, record) => {
+              const formattedDate = dayjs(record.check_out)
+                .utc() // Chuyển đổi sang múi giờ UTC
+                .local() // Chuyển đổi lại sang múi giờ cục bộ (Việt Nam)
+                .format('DD/MM/YYYY HH:mm'); // Định dạng ngày tháng giờ phút
+              return <span>{formattedDate}</span>;
+            },
+          },
         {
             title: 'Số người',
             dataIndex: 'people_quantity',

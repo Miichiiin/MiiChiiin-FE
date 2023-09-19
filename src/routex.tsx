@@ -47,6 +47,7 @@ import { SearchHotel } from "./features/webapp/booking/choose-room/searchHotel";
 import UpdateUserPage from "./features/admin/user/UpdateUser";
 import AddUtilities from "./features/admin/ManagerUtilities/AddUtilities";
 import AddBooking from "./features/admin/booking/AddBooking";
+import UpdateBooking from "./features/admin/booking/UpdateBooking";
 
 
 
@@ -169,6 +170,10 @@ export const router = createBrowserRouter([
             {
                 path: "addbooking",
                 element: <AddBooking />,
+            },
+            {
+                path: "updatebooking/:id",
+                element: <UpdateBooking/>
             },
             {
                 path: "usermanagement",
