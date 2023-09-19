@@ -46,13 +46,16 @@ const UpdateBooking = () => {
   const [form] = useForm();
   const { data: categories } = useGetCategory_adminQuery({});
   const { data: services } = useGetServices_AdminQuery();
-  const [roomCount, setRoomCount] = useState(1);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [roomCount, setRoomCount] = useState(bookingData?.cart?.length || 1);
+
+  const [totalAmount, setTotalAmount] = useState(bookingData?.total_amount || 0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (bookingData) {
+    if (bookingData && typeof bookingData.total_amount === 'number') {
       form.setFieldsValue({
+        cart: bookingData.cart || [],
+        total_amount: bookingData.total_amount,
         name: bookingData.name,
         cccd: bookingData.cccd,
         phone: bookingData.phone,
@@ -61,8 +64,9 @@ const UpdateBooking = () => {
         check_out: dayjs(bookingData.check_out).tz('Asia/Ho_Chi_Minh'),
         people_quantity: bookingData.people_quantity,
         nationality: bookingData.nationality,
-        cart: bookingData.cart || [], // Kiểm tra nếu 'cart' không tồn tại, sẽ gán một mảng trống
+        // Kiểm tra nếu 'cart' không tồn tại, sẽ gán một mảng trống
       });
+      setRoomCount(bookingData.cart.length || 1);
       calculateTotalAmount(bookingData);
     }
   }, [bookingData]);
@@ -135,7 +139,7 @@ const UpdateBooking = () => {
   };
 
   return (
-    <div>
+    <div className="mx-auto w-[50%]">
       <Form
         form={form}
         name="basic"
@@ -147,92 +151,140 @@ const UpdateBooking = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item label="Tên người dùng" name="name" rules={[{ required: true, message: 'Hãy nhập tên người dùng!' }]}>
-          <Input allowClear />
-        </Form.Item>
+        <div className="grid grid-cols-2 mx-2">
+          <Form.Item
+            label="Tên người dùng"
+            name="name"
+            rules={[{ required: true, message: 'Hãy nhập tên người dùng!' }]}
+            labelCol={{ span: 24 }}
+          >
 
-        <Form.Item label="Căn cước công dân" name="cccd" rules={[{ required: true, message: 'Hãy nhập căn cước công dân!' }]}>
-          <Input allowClear />
-        </Form.Item>
+            <Input allowClear className='w-[250px]' />
+          </Form.Item>
 
-        <Form.Item label="Số điện thoại" name="phone" rules={[{ required: true, message: 'Hãy nhập số điện thoại!' }]}>
-          <Input allowClear />
-        </Form.Item>
+          <Form.Item
+            label="Căn cước công dân"
+            name="cccd"
+            rules={[{ required: true, message: 'Hãy nhập căn cước công dân!' }]}
+            labelCol={{ span: 24 }}
+          >
+            <Input allowClear className='w-[250px]' />
+          </Form.Item>
 
-        <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Hãy nhập email!' }, { type: 'email', message: 'Email không hợp lệ!' }]}>
-          <Input allowClear />
-        </Form.Item>
+          <Form.Item
+            label="Số điện thoại"
+            name="phone"
+            rules={[{ required: true, message: 'Hãy nhập số điện thoại!' }]}
+            labelCol={{ span: 24 }}
+          >
+            <Input allowClear className='w-[250px]' />
+          </Form.Item>
 
-        <Form.Item label="Check in" name="check_in">
-          <DatePicker
-            value={form.getFieldValue('check_in')}
-            onChange={handleCheckInDateChange}
-            showTime
-            format="YYYY-MM-DD HH:mm:ss"
-            placeholder="Chọn ngày và giờ"
-          />
-        </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: 'Hãy nhập email!' },
+            { type: 'email', message: 'Email không hợp lệ!' }]}
+            labelCol={{ span: 24 }}
+          >
+            <Input allowClear className='w-[250px]' />
+          </Form.Item>
 
-        <Form.Item label="Check out" name="check_out">
-          <DatePicker
-            value={form.getFieldValue('check_out')}
-            onChange={handleCheckOutDateChange}
-            showTime
-            format="YYYY-MM-DD HH:mm:ss"
-            placeholder="Chọn ngày và giờ"
-          />
-        </Form.Item>
+          <Form.Item label="Check in" name="check_in"
+            labelCol={{ span: 24 }}
+          >
+            <DatePicker
+              value={form.getFieldValue('check_in')}
+              onChange={handleCheckInDateChange}
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="Chọn ngày và giờ"
+              className='w-[250px]'
+            />
+          </Form.Item>
 
-        <Form.Item label="Số lượng người" name="people_quantity" rules={[{ required: true, message: 'Hãy nhập số lượng người!' }]}>
-          <InputNumber />
-        </Form.Item>
+          <Form.Item label="Check out" name="check_out" labelCol={{ span: 24 }}>
+            <DatePicker
+              value={form.getFieldValue('check_out')}
+              onChange={handleCheckOutDateChange}
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="Chọn ngày và giờ"
+              className='w-[250px]'
+            />
+          </Form.Item>
 
-        <Form.Item label="Quốc tịch" name="nationality" rules={[{ required: true, message: 'Hãy nhập quốc tịch!' }]}>
-          <Input allowClear />
-        </Form.Item>
+          <Form.Item
+            label="Số lượng người"
+            name="people_quantity"
+            rules={[{ required: true, message: 'Hãy nhập số lượng người!' }]}
+            labelCol={{ span: 24 }}
+          >
+            <InputNumber className='w-[250px]' />
+          </Form.Item>
+          <Form.Item
+            label="Quốc tịch"
+            name="nationality"
+            rules={[{ required: true, message: 'Hãy nhập quốc tịch!' }]}
+            labelCol={{ span: 24 }}>
+            <Input allowClear className='w-[250px]' />
+          </Form.Item>
+        </div>
+
 
         {Array.from({ length: roomCount }).map((_, index) => (
           <React.Fragment key={index}>
-            <Form.Item
-              label={`Loại phòng ${index + 1}`}
-              name={['cart', index, 'id_cate']}
-              initialValue={bookingData?.cart[index]?.id_cate}
-            >
-              <Select style={{ width: '150px' }} onChange={() => calculateTotalAmount(form.getFieldsValue())}>
-                {categories?.map((category: any) => (
-                  <Select.Option value={category.id} key={category.id}>
-                    {category.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label={`Dịch vụ ${index + 1}`}
-              name={['cart', index, 'services']}
-              initialValue={bookingData?.cart[index]?.services}
-            >
-              <Select mode="multiple" style={{ width: '150px' }} onChange={() => calculateTotalAmount(form.getFieldsValue())}>
-                {services?.map((service: any) => (
-                  <Select.Option value={service.id} key={service.id}>
-                    {service.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
+            <div className="grid grid-cols-2 gap-4 mx-2">
+              <div>
+                <Form.Item
+                  label={`Loại phòng ${index + 1}`}
+                  name={['cart', index, 'id_cate']}
+                  initialValue={bookingData?.cart[index]?.id_cate}
+                  labelCol={{ span: 24 }}
+                >
+                  <Select className='w-[250px]' onChange={() => calculateTotalAmount(form.getFieldsValue())}>
+                    {categories?.map((category: any) => (
+                      <Select.Option value={category.id} key={category.id}>
+                        {category.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+              <div>
+                <Form.Item
+                  label={`Dịch vụ ${index + 1}`}
+                  name={['cart', index, 'services']}
+                  initialValue={bookingData?.cart[index]?.services}
+                  labelCol={{ span: 24 }}
+                >
+                  <Select mode="multiple" className='w-[250px]' onChange={() => calculateTotalAmount(form.getFieldsValue())}>
+                    {services?.map((service: any) => (
+                      <Select.Option value={service.id} key={service.id}>
+                        {service.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </div>
           </React.Fragment>
         ))}
-
         <Form.Item label="Tổng thanh toán" name="total_amount">
           <InputNumber value={totalAmount} disabled className="text-black font-semibold" />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 ml-[-190px]">
+            <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
+              Cập nhật
+            </Button>
             <Button
               onClick={() => {
                 setRoomCount(roomCount + 1);
                 setShowDeleteButton(true);
               }}
+              className='bg-yellow-500 text-white'
             >
               Thêm phòng
             </Button>
@@ -246,12 +298,6 @@ const UpdateBooking = () => {
               </Button>
             )}
           </div>
-        </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
-            Cập nhật
-          </Button>
         </Form.Item>
       </Form>
     </div>

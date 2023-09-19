@@ -176,14 +176,20 @@ const AddBooking = () => {
             name="check_in"
             labelCol={{ span: 24 }}
           >
-            <DatePicker className='w-[250px]'/>
+            <DatePicker className='w-[250px]' 
+            showTime
+               format="YYYY-MM-DD HH:mm:ss"
+               placeholder="Chọn ngày và giờ"/>
           </Form.Item>
           <Form.Item
             label="Check out"
             name="check_out"
             labelCol={{ span: 24 }}
           >
-            <DatePicker className='w-[250px]' />
+            <DatePicker className='w-[250px]' 
+              showTime
+               format="YYYY-MM-DD HH:mm:ss"
+               placeholder="Chọn ngày và giờ"/>
           </Form.Item>
           <Form.Item
             label="Số lượng người"
