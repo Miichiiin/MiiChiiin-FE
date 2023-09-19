@@ -420,9 +420,15 @@
             42,
             43
           ]
+        },
+        {
+          "id_cate": 1,
+          "services": [
+            41
+          ]
         }
       ],
-      "total_amount": 756,
+      "total_amount": 1212,
       "id": 10
     },
     {
@@ -430,8 +436,8 @@
       "cccd": "04020404040",
       "phone": "0344411122",
       "email": "aduu@hotmail.com",
-      "check_in": "2023-09-19T01:33:54.744Z",
-      "check_out": "2023-09-22T01:33:57.473Z",
+      "check_in": "2023-09-19 08:33:54",
+      "check_out": "2023-09-22 08:33:57",
       "people_quantity": 10,
       "nationality": "VN",
       "cart": [
@@ -449,10 +455,77 @@
             42,
             43
           ]
+        },
+        {
+          "id_cate": 2,
+          "services": [
+            42,
+            43,
+            41
+          ]
+        },
+        {
+          "id_cate": 1,
+          "services": [
+            42,
+            41,
+            43
+          ]
+        },
+        {
+          "id_cate": 2,
+          "services": [
+            42,
+            41,
+            43
+          ]
+        },
+        {
+          "id_cate": 1,
+          "services": [
+            42,
+            43
+          ]
         }
       ],
-      "total_amount": 1868,
+      "total_amount": 5910,
       "id": 11
+    },
+    {
+      "name": "thiên đẹp zai",
+      "cccd": "0403123124",
+      "phone": "1312412351235",
+      "email": "thien@hotmail.com",
+      "check_in": "2023-09-19 19:09:43",
+      "check_out": "2023-09-23 19:09:45",
+      "people_quantity": 123,
+      "nationality": "VN",
+      "cart": [
+        {
+          "id_cate": 1,
+          "services": [
+            41,
+            42,
+            43
+          ]
+        },
+        {
+          "id_cate": 2,
+          "services": [
+            42,
+            43
+          ]
+        },
+        {
+          "id_cate": 3,
+          "services": [
+            41,
+            42
+          ]
+        }
+      ],
+      "total_amount": 2774,
+      "id": 12
     }
   ],
   "vouchers": [
