@@ -81,7 +81,7 @@ export const router = createBrowserRouter([
                 element: <New />
             },
             {
-                path: "/booking",
+                path: "/booking/:hotel/:date/:roomNumber/:selectedServices/",
                 element: <BookingInformation />
             },
             {

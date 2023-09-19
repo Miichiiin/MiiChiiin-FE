@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/app/hook";
+// import { useAppSelector } from "@/app/hook";
 import { useState } from "react";
 import {
   AiOutlineInfoCircle,
@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
+import { Button } from "antd";
 interface ServiceOpenState {
   [index: number]: boolean;
 }
@@ -80,8 +81,14 @@ const ChooseService = () => {
     console.log("submitroomNumber",roomNumber);
     console.log("submitdate",date);
     console.log("submitsermist",selectedServices);
+    const service = JSON.stringify(selectedServices);
     console.log("submithotel",hotel);    
-    const url = `/booking/${hotel}/${date}/${roomNumber}/${selectedServices}`
+    const url = `/booking/${hotel}/${date}/${roomNumber}/${service}/`
+    navigate(url);
+    // navigate(`/booking`)
+  };
+  const onhanldeGoBack = () => {  
+    const url = `/choose-room/${dataParam.nameHotel}/${dataParam.date}/${dataParam.roomNumber}/${dataParam.numberRoom}`
     navigate(url);
     // navigate(`/booking`)
   };
@@ -122,12 +129,12 @@ const ChooseService = () => {
       {/*Content*/}
       <div className="max-w-5xl mx-auto my-5">
         <section className="flex space-x-16 items-center px-2 py-3">
-          <Link
-            to={"/choose-room"}
-            className="underline text-yellow-500 text-md font-bold flex justify-start pr-32"
+          <Button
+            onClick={onhanldeGoBack}
+            className="underline text-yellow-500 text-md font-bold flex justify-start pr-32 border-none"
           >
             Chọn phòng{" "}
-          </Link>
+          </Button>
           <h1 className="flex items-center">
             {" "}
             <AiFillCheckCircle className="text-yellow-500 text-4xl" />{" "}
@@ -240,7 +247,7 @@ const ChooseService = () => {
               <div>
                 <div className="flex items-center justify-between">
                   <h1 className="font-semibold">{hotel[1]}</h1>
-                  <button className="text-sm">Chỉnh sửa</button>
+                  <button onClick={onhanldeGoBack} className="text-sm">Chỉnh sửa</button>
                 </div>
                 <p className="text-sm pt-3 items-center flex">
                   {date[0].toISOString().slice(0, 10)}
