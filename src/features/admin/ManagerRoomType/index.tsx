@@ -53,7 +53,7 @@ export const ManagerRoomType = () => {
     price:number;
     acreage:number;
     floor:number;
-    status:string;
+    status: number | string;
     likes:number;
     views:number;
     created_at:string;
@@ -135,21 +135,18 @@ export const ManagerRoomType = () => {
     
   ];
 
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-    },
-    getCheckboxProps: (record: DataType) => ({
-      disabled: record.name === "Disabled User", // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
-  const [selectionType, setSelectionType] = useState<"checkbox">("checkbox");
+  const [searchText, setSearchText] = useState("");
   const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+  const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
+  const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
+  const filteredData = dataSource ? dataSource
+    .filter((item: DataType) =>
+      item.name.toLowerCase().includes(searchText.toLowerCase())
+    )
+    .filter((item: DataType) =>
+      selectedStatus === undefined ? true : item.status === selectedStatus
+    ) : [];
+
 
   const confirmDelete = (id: number) => {
     const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa phòng này?');
@@ -170,47 +167,38 @@ export const ManagerRoomType = () => {
         }}
       >
         <div className="text-lg font-semibold">Quản Lý Loại Phòng</div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Input.Search placeholder="Tìm kiếm" style={{ marginRight: "8px" }} />
+        <div className='flex items-center'>
+          <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
           <Select
             showSearch
             style={{ width: 200 }}
             placeholder="Search to Select"
             optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
-            }
+            filterOption={(input, option) => (option?.label ?? "").includes(input)}
             filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
+              (optionA?.label ?? "").toLowerCase().localeCompare((optionB?.label ?? "").toLowerCase())
             }
             options={[
               {
+                value: "0",
+                label: "Tất cả",
+              },
+              {
                 value: "1",
-                label: "Not Identified",
+                label: "Không hiển thị",
               },
               {
                 value: "2",
-                label: "Closed",
-              },
-              {
-                value: "3",
-                label: "Communicated",
-              },
-              {
-                value: "4",
-                label: "Identified",
-              },
-              {
-                value: "5",
-                label: "Resolved",
-              },
-              {
-                value: "6",
-                label: "Cancelled",
+                label: "Hiển thị",
               },
             ]}
+            onChange={(value) => {
+              if (value === "0") {
+                setSelectedStatus(undefined); // Xóa bộ lọc
+              } else {
+                setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
+              }
+            }}
           />
         </div>
         <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
@@ -241,7 +229,6 @@ export const ManagerRoomType = () => {
       <Table
         rowSelection={{
           type: selectionType,
-          ...rowSelection,
           selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
           onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -249,7 +236,7 @@ export const ManagerRoomType = () => {
         },
         }}
         columns={columns}
-        dataSource={dataSource}
+        dataSource={filteredData}
         scroll={{ x: 2000 }}
        
       />

@@ -23,6 +23,7 @@
         "moment": "^2.29.4",
         "react": "^18.2.0",
         "react-date-range": "^1.4.0",
+        "react-datepicker": "^4.18.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.45.2",
         "react-icons": "^4.10.1",
