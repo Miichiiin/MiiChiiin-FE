@@ -20,6 +20,7 @@ const ChooseRoom = () => {
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const searchSlide = useParams();
+  console.log("hotelds", hotels);
 
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
@@ -106,15 +107,27 @@ const ChooseRoom = () => {
       name: room.name,
       price: room.price,
     }));
-    const encodedGuests = numberPeople.map((details) => {
-      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
-    }).join('&');
+    const encodedGuests = numberPeople
+      .map((details) => {
+        return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+      })
+      .join("&");
     // const encodedGuests = encodeURIComponent(JSON.stringify(numberPeople));
-    const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
+    const encodedSelectedRooms = encodeURIComponent(
+      JSON.stringify(updatedSelectedRooms)
+    );
     // console.log("rômmmm",updatedSelectedRooms);
-    console.log("hotel", hotel, "date",date, "numbeRoom", encodedSelectedRooms, "numberPeople",encodedGuests  )
+    console.log(
+      "hotel",
+      hotel,
+      "date",
+      date,
+      "numbeRoom",
+      encodedSelectedRooms,
+      "numberPeople",
+      encodedGuests
+    );
 
-    
     const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
     navigate(url);
   };
@@ -208,7 +221,18 @@ const ChooseRoom = () => {
                         </span>{" "}
                       </p>
                       {/* ... */}
-                      <div className="justify-end flex items-center">
+                      <div className="justify-between flex items-center">
+                        <div>
+                          <p>
+                            {hotel.total_rooms < 4 ? (
+                              <span style={{ color: "red" }}>
+                                Còn {hotel.total_rooms} phòng
+                              </span>
+                            ) : (
+                              <span>Còn {hotel.total_rooms} phòng</span>
+                            )}
+                          </p>
+                        </div>
                         <button
                           className="flex border px-8 py-3 mt-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full"
                           onClick={() => handleRoomSelect(hotel)}

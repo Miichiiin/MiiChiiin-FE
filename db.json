@@ -642,7 +642,7 @@
       "created_at": "2023-08-27T17:59:42.000000Z",
       "updated_at": "2023-08-27T17:59:42.000000Z",
       "nameHotel": "Brando Trantow",
-      "total_rooms": 3,
+      "total_rooms": 5,
       "total_comfort": 1,
       "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
     },
@@ -682,7 +682,7 @@
       "created_at": "2023-08-27T17:59:42.000000Z",
       "updated_at": "2023-08-27T17:59:42.000000Z",
       "nameHotel": "Brando Trantow",
-      "total_rooms": 3,
+      "total_rooms": 5,
       "total_comfort": 1,
       "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
     }

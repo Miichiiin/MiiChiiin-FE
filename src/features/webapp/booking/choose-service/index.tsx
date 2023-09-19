@@ -24,7 +24,7 @@ const ChooseService = () => {
   };
 
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
 
   const toggleServiceSelection = (
     serviceId: any,
@@ -49,7 +49,7 @@ const ChooseService = () => {
     }
   };
   const { data: serviceData } = useGetService_hotelQuery({});
-  const carts = useAppSelector((state: any) => state.cart?.items);
+  // const carts = useAppSelector((state: any) => state.cart?.items);
   const navigate = useNavigate();
 
   const dataParam = useParams();
@@ -73,24 +73,50 @@ const ChooseService = () => {
   if (dataParam && dataParam.numberRoom) {
     roomNumber = JSON.parse(dataParam.numberRoom);
   }
-  console.log("Phobgf", roomNumber);
 
   const numberOfRooms = roomNumber.length;
-  console.log("numberOfRoom", numberOfRooms);
-
-  console.log("date1", date);
-  const sumPrice =
-    carts?.reduce(
-      (total: any, item: any) =>
-        total +
-        item.price *
-          differenceInDays(parseISO(item?.check_out), parseISO(item?.check_in)),
-      0
-    ) + totalPrice;
 
   const onhanldeSubmit = () => {
+    console.log("submitroomNumber",roomNumber);
+    console.log("submitdate",date);
+    console.log("submitsermist",selectedServices);
+    console.log("submithotel",hotel);    
+    const url = `/booking/${hotel}/${date}/${roomNumber}/${selectedServices}`
+    navigate(url);
     // navigate(`/booking`)
   };
+  // Tính tổng tiền của dịch vụ trong phòng
+  const serviceTotalPrice = selectedServices.reduce(
+    (accumulator: any, selectedService: any) => {
+      const { id } = selectedService;
+      const selectedServiceData = serviceData.find(
+        (item: any) => item.id === id
+      );
+      if (selectedServiceData) {
+        return accumulator + selectedServiceData.price;
+      }
+      return accumulator;
+    },
+    0
+  );
+  console.log("tien dịch vụ", serviceTotalPrice);
+  let totalPrice1 = 0;
+
+  roomNumber.map((item: any) => {
+    const startDate = new Date(date[0]); // Lấy ngày bắt đầu thuê phòng từ date[0]
+    const endDate = new Date(date[1]); // Lấy ngày kết thúc thuê phòng từ date[1]
+    const numberOfDays = Math.ceil(
+      (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
+    ); // Tính số ngày thuê phòng
+
+    totalPrice1 += item.price * numberOfDays * item.count;
+  });
+
+  // Hiển thị tổng tiền
+  console.log("Tổng tiền: ", totalPrice1);
+
+  const sumprice = totalPrice1 + serviceTotalPrice
+
   return (
     <div className="max-w-7xl mx-auto ">
       {/*Content*/}
@@ -253,7 +279,9 @@ const ChooseService = () => {
                     {/* Dịch vụ đã chọn */}
                     {selectedServicesInRoom.length > 0 && (
                       <div className="border-gray-100 bg-gray-100 px-2 rounded">
-                        <p className="text-sm pb-3 font-semibold">Dịch vụ mua thêm</p>
+                        <p className="text-sm pb-3 font-semibold">
+                          Dịch vụ mua thêm
+                        </p>
                         <ul className="list-disc px-3">
                           {selectedServicesInRoom.map((selectedService) => {
                             const { id, price, roomIndex } = selectedService;
@@ -265,10 +293,16 @@ const ChooseService = () => {
                               return (
                                 <li className="text-sm pb-2" key={id}>
                                   <div className="flex justify-between items-center">
-                                    <p>{" "}Phòng {selectedRoom}:{" "}{selectedServiceData.name}</p>
+                                    <p>
+                                      {" "}
+                                      Phòng {selectedRoom}:{" "}
+                                      {selectedServiceData.name}
+                                    </p>
                                     <p>{selectedServiceData.price} vnđ</p>
                                   </div>
-                                </li>)}
+                                </li>
+                              );
+                            }
                             return null;
                           })}
                         </ul>
@@ -282,13 +316,13 @@ const ChooseService = () => {
                 {/*tổng cộng*/}
                 <div className="flex items-center justify-between">
                   <h1 className="font-semibold">Tổng cộng:</h1>
-                  {/* <h1 className='text-xl font-bold text-yellow-500'>{totalPrice} vnđ</h1> */}
-                  <h1>{sumPrice}</h1>
+                  <h1 className='text-xl font-bold text-yellow-500'>{sumprice} vnđ</h1>
                 </div>
               </div>
               <button
                 onClick={onhanldeSubmit}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full">
+                className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full"
+              >
                 Tiếp tục
               </button>
             </div>
