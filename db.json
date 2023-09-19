@@ -647,6 +647,7 @@
       "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
     },
     {
+      "hotel_id":2,
       "id": 2,
       "name": "Phòng View Biển",
       "description": "Phòng view biển với khung cảnh đẹp của bãi biểm có thể đón mình binh bao trọn view khắp thành phố",

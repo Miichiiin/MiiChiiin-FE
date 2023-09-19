@@ -35,35 +35,45 @@ const DetailTypeofRoom = () => {
     setSelectedRange([dates[0]?.toDate() || null, dates[1]?.toDate() || null]);
   };
 
-  const handleButtonClick = () => {
-    if (selectedRange[0] && selectedRange[1]) {
-      console.log('Ngày bắt đầu:', selectedRange[0].toISOString().slice(0, 10));
-      console.log('Ngày kết thúc:', selectedRange[1].toISOString().slice(0, 10));
-      message.success('Chọn ngày thành công');
-    } else {
-      message.error('Vui lòng chọn một khoảng ngày.');
-    }
-  };
+  const uniqueSelectedRooms = selectedRooms.reduce((acc: any, room: any) => {
+    // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
+    const existingRoom = acc.find((r: any) => r.id === room.id);
 
-  const onSubmit = (data: any) => {
-    if (selectedRange[0] && selectedRange[1]) {
-      console.log('Ngày bắt đầu:', selectedRange[0].toISOString().slice(0, 10));
-      console.log('Ngày kết thúc:', selectedRange[1].toISOString().slice(0, 10));
-      message.success('Chọn ngày thành công');
-      const newData = {
-        ...data,
-        check_in: selectedRange[0]?.toISOString().slice(0, 10),
-        check_out: selectedRange[1]?.toISOString().slice(0, 10)
-      };
-      console.log("newdata",newData);
-
-      dispatch(add(newData))
-      navigate('/choose-service')
+    // Nếu phòng đã tồn tại, tăng số lượng
+    if (existingRoom) {
+      existingRoom.count++;
     } else {
-      message.error('Vui lòng chọn một khoảng ngày.');
+      // Nếu không, thêm phòng vào danh sách mới
+      acc.push({ ...room, count: 1 });
     }
 
+    return acc;
+  }, []);
+
+  interface Room {
+    count: number;
+    name: string;
+    price: number;
+  }
+
+  const onHandSubmit = () => {
+    const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
+      count: room.count,
+      name: room.name,
+      price: room.price,
+    }));
+    const encodedGuests = numberPeople.map((details) => {
+      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+    }).join('&');
+    
+    const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
+    
+    
+    const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
+    navigate(url);
   };
+
+
 
 
   // State để bật tắt modal và lưu index của ảnh hiện tại
@@ -173,7 +183,7 @@ const DetailTypeofRoom = () => {
       <div className='pb-5'>
         <h1 className='text-xl font-semibold pb-4'>Bạn cảm thấy ưng ý chưa ?</h1>
         <div className=' flex justify-end space-x-8 '>
-          <button onClick={() =>onSubmit(data)} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</button>
+          <button onClick={() =>onHandSubmit(data)} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</button>
           <Link to={`/hotel`} className='bg-red-300 hover:bg-red-700 py-4 text-white  px-2 rounded  my-2'>Quay lại</Link>
         </div>
       </div>
