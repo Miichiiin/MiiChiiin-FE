@@ -1,4 +1,4 @@
-import { AiOutlineHeart, AiOutlineClose, AiOutlineInfoCircle, AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import { AiOutlineHeart, AiOutlineClose, AiOutlineInfoCircle } from 'react-icons/ai'
 import { BsPeople, BsChevronCompactRight, BsChevronCompactLeft } from 'react-icons/bs'
 import { MdOutlineBed } from 'react-icons/md'
 import { useState } from 'react';
@@ -8,9 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 // import type { DatePickerProps, RadioChangeEvent } from 'antd';
-import { DatePicker, message } from 'antd';
-import { add } from '@/api/cartSlice';
-import { useAppDispatch } from '@/app/hook';
+import { DatePicker,  message } from 'antd';
 import { useGetCategory_homeByIdQuery } from '@/api/webapp/category_home';
 
 const { RangePicker } = DatePicker;
@@ -26,7 +24,8 @@ const DetailTypeofRoom = () => {
 
   const { id: idRoom } = useParams()
   const { data } = useGetCategory_homeByIdQuery(idRoom);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+  console.log("data", data);
   const navigate = useNavigate()
 
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
@@ -45,26 +44,32 @@ const DetailTypeofRoom = () => {
     }
   };
 
-  const onSubmit = (data: any) => {
+
+  interface Room {
+    count: number;
+    name: string;
+    price: number;
+  }
+
+  const onHandSubmit = () => {
     if (selectedRange[0] && selectedRange[1]) {
-      console.log('Ngày bắt đầu:', selectedRange[0].toISOString().slice(0, 10));
-      console.log('Ngày kết thúc:', selectedRange[1].toISOString().slice(0, 10));
-      message.success('Chọn ngày thành công');
-      const newData = {
-        ...data,
-        check_in: selectedRange[0]?.toISOString().slice(0, 10),
-        check_out: selectedRange[1]?.toISOString().slice(0, 10)
-      };
-      console.log("newdata",newData);
-
-      dispatch(add(newData))
-      navigate('/choose-service')
+      const updatedSelectedRooms = [{
+        count: 1,
+        name: data?.name,
+        price: data?.price
+      }];
+      const encodedGuests = [`adults:1,children:0,infants:0`];
+      const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
+  
+      const hotel = `${data.hotel_id}, ${data.nameHotel}`
+      const url = `/choose-service/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
+      console.log("url", url);
+  
+      navigate(url);
     } else {
-      message.error('Vui lòng chọn một khoảng ngày.');
+      message.error('Vui lòng chọn ngày check-in và check-out trước khi đặt phòng.');
     }
-
   };
-
 
   // State để bật tắt modal và lưu index của ảnh hiện tại
   const [showModal, setShowModal] = useState(false);
@@ -173,7 +178,7 @@ const DetailTypeofRoom = () => {
       <div className='pb-5'>
         <h1 className='text-xl font-semibold pb-4'>Bạn cảm thấy ưng ý chưa ?</h1>
         <div className=' flex justify-end space-x-8 '>
-          <button onClick={() =>onSubmit(data)} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</button>
+          <button onClick={onHandSubmit} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</button>
           <Link to={`/hotel`} className='bg-red-300 hover:bg-red-700 py-4 text-white  px-2 rounded  my-2'>Quay lại</Link>
         </div>
       </div>

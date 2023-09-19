@@ -69,7 +69,7 @@ export const router = createBrowserRouter([
                 element: <Index />
             },
             {
-                path: "/hotel",
+                path: "/hotel/:id",
                 element: <HotelIntroduction />
             },
             {
