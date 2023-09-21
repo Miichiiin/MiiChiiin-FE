@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineShoppingCart, AiFillDelete } from "react-icons/ai";
-import { Dropdown, Menu, Modal } from "antd";
+import { Dropdown, Menu } from "antd";
 
 const Cart = () => {
   const [roomList, setRoomList] = useState([
@@ -31,31 +31,29 @@ const Cart = () => {
         "https://booking-static.vinpearl.com/room_types/be5c1e189982470b8968ef37841168ee_VH1PQ_Standard%20Room1.jpg",
       date: "20/09/2023 - 24/09/2023",
     },
-    // Thêm các phần tử khác của giỏ hàng ở đây
   ]);
 
-  const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
-    useState(false);
-  const [roomToDelete, setRoomToDelete] = useState<any>(null);
-  const [isCartHovered, setIsCartHovered] = useState(false); // Sử dụng để kiểm tra khi di chuột vào biểu tượng giỏ hàng
+  const [roomToDelete, setRoomToDelete] = useState(null);
+  const [isCartHovered, setIsCartHovered] = useState(false);
+  const [selectedRoomCount, setSelectedRoomCount] = useState(0); // Số phòng đã chọn
 
-  const handleRemoveRoom = (roomId: any) => {
-    setRoomToDelete(roomId);
-    setDeleteConfirmationVisible(true);
+  useEffect(() => {
+    // Tính toán số phòng đã chọn dựa trên danh sách phòng
+    setSelectedRoomCount(roomList.length);
+  }, [roomList]);
+
+  const handleRemoveRoom = (roomId:any) => {
+    // Nếu phòng đang trong trạng thái "đang xóa", thực hiện xóa
+    if (roomToDelete === roomId) {
+      const updatedRoomList = roomList.filter((room) => room.id !== roomId);
+      setRoomList(updatedRoomList);
+      setRoomToDelete(null); // Đặt lại trạng thái "đang xóa" sau khi xóa
+    } else {
+      // Nếu phòng không trong trạng thái "đang xóa", đặt nó thành "đang xóa"
+      setRoomToDelete(roomId);
+    }
   };
 
-  const confirmDelete = () => {
-    const updatedRoomList = roomList.filter((room) => room.id !== roomToDelete);
-    setRoomList(updatedRoomList);
-    setDeleteConfirmationVisible(false);
-  };
-
-  const cancelDelete = () => {
-    setRoomToDelete(null);
-    setDeleteConfirmationVisible(false);
-  };
-
-  const selectedRoomCount = roomList.length;
   const totalPrice = roomList.reduce((total, room) => total + room.price, 0);
 
   const roomListDropdown = (
@@ -78,18 +76,36 @@ const Cart = () => {
             <div className="flex items-center">
               <span className="text-red-500">{room.price} Vnđ</span>
             </div>
-            <button
-              onClick={() => handleRemoveRoom(room.id)}
-              className="text-red-500"
-            >
-              <AiFillDelete />
-            </button>
+            {roomToDelete === room.id ? (
+              // Hiển thị nút xác nhận xóa và nút hủy bỏ
+              <div className="flex items-center">
+                <button
+                  onClick={() => handleRemoveRoom(room.id)}
+                  className="text-red-500 hover:underline mr-5 "
+                >
+                  <AiFillDelete />
+                </button>
+                <button
+                  onClick={() => setRoomToDelete(null)}
+                  className="text-gray-600 hover:text-gray-800 hover:underline"
+                >
+                  Hủy bỏ
+                </button>
+              </div>
+            ) : (
+              // Hiển thị nút xóa
+              <button
+                onClick={() => handleRemoveRoom(room.id)}
+                className="text-red-500 hover:underline"
+              >
+                <AiFillDelete />
+              </button>
+            )}
           </div>
         </Menu.Item>
       ))}
       <div className="mt-4 flex justify-center items-center">
-        <p className="mr-4">Số phòng đã chọn: {selectedRoomCount}</p>
-        <p>Tổng tiền: {totalPrice} Vnđ</p>
+        <p className="mr-4">Tổng tiền: {totalPrice} Vnđ</p>
       </div>
     </Menu>
   );
@@ -99,21 +115,20 @@ const Cart = () => {
       <div
         onMouseEnter={() => setIsCartHovered(true)}
         onMouseLeave={() => setIsCartHovered(false)}
+        className="relative"
       >
         <Dropdown overlay={roomListDropdown} visible={isCartHovered}>
-          <AiOutlineShoppingCart size={22} />
+          <AiOutlineShoppingCart size={30} />
         </Dropdown>
+        {selectedRoomCount > 0 && (
+          <div
+            className="absolute top-0 left-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+            style={{ fontSize: "8px", paddingLeft: "2px",}}
+          >
+            {selectedRoomCount}
+          </div>
+        )}
       </div>
-
-      <Modal
-        title="Xác nhận xóa phòng"
-        visible={deleteConfirmationVisible}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        destroyOnClose
-      >
-        <p>Bạn có chắc chắn muốn xóa phòng này không?</p>
-      </Modal>
     </div>
   );
 };
