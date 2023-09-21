@@ -51,7 +51,7 @@ const RoomTypes = () => {
       const url = `/choose-service/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
       console.log("url", url);
   
-      // navigate(url);
+      navigate(url);
     } else {
       message.error('Vui lòng chọn ngày check-in và check-out trước khi đặt phòng.');
     }

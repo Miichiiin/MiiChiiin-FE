@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineDown} from "react-icons/ai";
 import "../../../components/Css/index.css"
+import Cart from "@/components/cart";
 const HeaderHotel = () => {
     /*Hàm Dropdow*/ 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -109,6 +110,8 @@ const HeaderHotel = () => {
                                 <img className="rounded-full w-5 h-5" src="https://st.quantrimang.com/photos/image/2021/09/05/Co-Vietnam.png" alt="" /> 
                                 <span className="font-medium text-[16px] hover:">VIE</span> <AiOutlineRight/>
                             </button>
+                            <Cart/>
+                            
                             {isDropdownOpen && (
                                 <div className="absolute mt-[220px] bg-white border border-gray-300 shadow-lg ">
                                     <ul className="py-3 px-6 leading-9 text-black" >
