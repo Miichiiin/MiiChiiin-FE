@@ -83,7 +83,7 @@ const Cart = () => {
                   onClick={() => handleRemoveRoom(room.id)}
                   className="text-red-500 hover:underline mr-5 "
                 >
-                  <AiFillDelete />
+                  <AiFillDelete size={18} />
                 </button>
                 <button
                   onClick={() => setRoomToDelete(null)}
@@ -98,7 +98,7 @@ const Cart = () => {
                 onClick={() => handleRemoveRoom(room.id)}
                 className="text-red-500 hover:underline"
               >
-                <AiFillDelete />
+                <AiFillDelete size={18} />
               </button>
             )}
           </div>
@@ -122,7 +122,7 @@ const Cart = () => {
         </Dropdown>
         {selectedRoomCount > 0 && (
           <div
-            className="absolute top-0 left-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+            className="absolute top-0 left-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs ml-4"
             style={{ fontSize: "8px", paddingLeft: "2px",}}
           >
             {selectedRoomCount}
