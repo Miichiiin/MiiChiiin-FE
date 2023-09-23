@@ -12,6 +12,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { Button } from "antd";
+import HeaderHotelType from "../../HotelType/HeaderHotelType";
 interface ServiceOpenState {
   [index: number]: boolean;
 }
@@ -126,6 +127,7 @@ const ChooseService = () => {
 
   return (
     <div className="max-w-7xl mx-auto ">
+      <HeaderHotelType/>
       {/*Content*/}
       <div className="max-w-5xl mx-auto my-5">
         <section className="flex space-x-16 items-center px-2 py-3">

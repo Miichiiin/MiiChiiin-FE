@@ -352,38 +352,6 @@
   ],
   "booking_admin": [
     {
-      "id": 1,
-      "check_in": "2023-09-05",
-      "check_out": "2023-09-07",
-      "email": "ntt091103@gmail.com",
-      "name": "tung",
-      "message": "kfgahsgad",
-      "people_quantity": 8,
-      "total_amount": 100,
-      "status": 1,
-      "cccd": "1123",
-      "nationality": "vn",
-      "id_user": 1,
-      "phone": "111",
-      "cart": [
-        {
-          "id_cate": 1,
-          "services": [
-            1,
-            3,
-            5
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            5
-          ]
-        }
-      ],
-      "promotion": 1
-    },
-    {
       "name": "adu chiên béo",
       "cccd": "012034012",
       "phone": "121312412",
