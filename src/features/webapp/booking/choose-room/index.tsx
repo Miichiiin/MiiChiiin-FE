@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GrLocation } from "react-icons/gr";
 import { HiOutlineUser } from "react-icons/hi";
 import {
@@ -39,6 +39,7 @@ const ChooseRoom = () => {
       });
   }
   console.log("numberPeople", numberPeople);
+  
 
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
@@ -53,14 +54,30 @@ const ChooseRoom = () => {
   }
 
   const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
+  
 
   console.log("khách sạn", hotel);
+
   const handleRoomSelect = (selectedHotel: any) => {
-    setSelectedRooms([...selectedRooms, selectedHotel]);
-    const price = selectedHotel.price;
-    setTotalPrice(totalPrice + price);
-    // Đánh dấu rằng đã chọn phòng
+    // Kiểm tra xem số lượng phòng đã chọn có vượt quá giới hạn không
+    if (searchSlide && typeof searchSlide.numberRoom === 'string' && /^\d+$/.test(searchSlide.numberRoom)) {
+      const numberRoom = parseInt(searchSlide.numberRoom, 10); // Chuyển đổi chuỗi thành số nguyên
+      if (selectedRooms.length < numberRoom) {
+        setSelectedRooms([...selectedRooms, selectedHotel]);
+        const price = selectedHotel.price;
+        setTotalPrice(totalPrice + price);
+        // Đánh dấu rằng đã chọn phòng
+      } else {
+        // Xử lý trường hợp khi đã đạt đến giới hạn phòng
+       
+      }
+    } 
+    localStorage.setItem("selectedRooms", JSON.stringify(selectedRooms));
+    localStorage.setItem("totalPrice", totalPrice.toString());
+    // Không thực hiện gì nếu đã đạt đến giới hạn, không cần thông báo
   };
+
+  
   const handleRemoveRoom = (room: any) => {
     // Tìm vị trí của phòng trong danh sách đã chọn
     const roomIndex = selectedRooms.findIndex(
@@ -101,6 +118,21 @@ const ChooseRoom = () => {
     price: number;
   }
 
+  useEffect(() => {
+    const storedSelectedRooms = localStorage.getItem("selectedRooms");
+    const storedTotalPrice = localStorage.getItem("totalPrice");
+  
+    // Kiểm tra xem dữ liệu có tồn tại trong Local Storage không
+    if (storedSelectedRooms && storedTotalPrice) {
+      const parsedSelectedRooms = JSON.parse(storedSelectedRooms);
+      const parsedTotalPrice = parseFloat(storedTotalPrice);
+  
+      // Cập nhật trạng thái với dữ liệu lấy từ Local Storage
+      setSelectedRooms(parsedSelectedRooms);
+      setTotalPrice(parsedTotalPrice);
+    }
+  }, []);
+
   const onHandSubmit = () => {
     const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
       count: room.count,
@@ -131,6 +163,8 @@ const ChooseRoom = () => {
     const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
     navigate(url);
   };
+
+  
 
   return (
     <div>
