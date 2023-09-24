@@ -89,10 +89,12 @@ const HotelIntroduction = () => {
                                 return <>
                                     <div >
                                         <div className="relative overflow-hidden mb-4">
+                                        <Link to={`/hotels/rooms/detail/${item.id}`}>
                                             <img className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                                                 src={item.image}
                                                 alt=""
                                             />
+                                        </Link>
                                         </div>
                                         <h1 className="text-[24px] font-normal pb-2">{item.name}</h1>
                                         <h2 className="text-[20px] font-normal pb-2 text-red-500">{item.price}</h2>

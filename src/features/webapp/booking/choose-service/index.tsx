@@ -85,6 +85,7 @@ const ChooseService = () => {
     const service = JSON.stringify(selectedServices);
     console.log("submithotel",hotel);    
     const url = `/booking/${hotel}/${date}/${roomNumber}/${service}/`
+    localStorage.clear();
     navigate(url);
     // navigate(`/booking`)
   };
@@ -129,7 +130,7 @@ const ChooseService = () => {
     <div className="max-w-7xl mx-auto ">
       <HeaderHotelType/>
       {/*Content*/}
-      <div className="max-w-5xl mx-auto my-5">
+      <div className="max-w-5xl mx-auto my-5 mt-36">
         <section className="flex space-x-16 items-center px-2 py-3">
           <Button
             onClick={onhanldeGoBack}
@@ -331,6 +332,7 @@ const ChooseService = () => {
               <button
                 onClick={onhanldeSubmit}
                 className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full"
+                
               >
                 Tiếp tục
               </button>
