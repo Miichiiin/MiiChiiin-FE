@@ -91,58 +91,150 @@
   "roles_admin": [
     {
       "id": 1,
-      "name": "Quản lý khách sạn - Đà Nẵng",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng đôi"
+      "name": "Nihil natus impedit qui ea blanditiis. ff",
+      "lever": 1,
+      "guard_name": "web",
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "permissions": [
+        "5",
+        "4",
+        "3",
+        "1",
+        "2",
+        "10",
+        "9"
+      ]
     },
     {
       "id": 2,
-      "name": "Quản lý khách sạn - Nha Trang",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "  Phòng đôi"
+      "name": "Quyền ông tướng",
+      "lever": 2,
+      "guard_name": "web",
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "permissions": [
+        "10",
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "2",
+        "1"
+      ]
     },
     {
       "id": 3,
-      "name": "Quản lý khách sạn - Hạ Long",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "  Phòng đơn"
+      "name": "Dicta id beatae quaerat non.",
+      "lever": 3,
+      "guard_name": "web",
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z"
     },
     {
       "id": 4,
-      "name": "Quản lý khách sạn - Đà Nẵng",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 3,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Jace Schmidt"
+      "name": "Quasi perferendis veniam impedit optio.",
+      "lever": 2,
+      "guard_name": "web",
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z"
     },
     {
       "id": 5,
-      "name": "Jaylin Ritchie II",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Mrs. Isabella Weimann",
-      "name_category": "Effie Muller DVM"
+      "name": "Esse maiores quia odit et.",
+      "guard_name": "web",
+      "lever": 1,
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z"
+    },
+    {
+      "id": 6,
+      "name": "Itaque et asperiores aut quisquam repellendus.",
+      "guard_name": "web",
+      "lever": 3,
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z"
+    },
+    {
+      "id": 7,
+      "name": "Ad eum explicabo facilis qui eius.",
+      "guard_name": "web",
+      "lever": 1,
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z"
+    }
+  ],
+  "permission_admin": [
+    {
+      "id": 1,
+      "name": "quyền 1",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 2,
+      "name": "quyền 2",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 3,
+      "name": "quyền 3",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 4,
+      "name": "quyền 4",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 5,
+      "name": "quyền 11",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 6,
+      "name": "quyền 13",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 7,
+      "name": "quyền 7",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 8,
+      "name": "quyền 13",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 9,
+      "name": "quyền 13",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 10,
+      "name": "quyền 1g",
+      "guard_name": "admin\r\n",
+      "created_at": null,
+      "updated_at": null
     }
   ],
   "rates_admin": [
@@ -302,6 +394,7 @@
       "created_at": "2023-08-31T14:00:56.000000Z",
       "updated_at": "2023-08-31T14:00:56.000000Z"
     }
+    
   ],
   "category_admin": [
     {
@@ -432,74 +525,14 @@
       "id": 10
     },
     {
-      "name": "user1011",
-      "cccd": "04020404040",
-      "phone": "0344411122",
-      "email": "aduu@hotmail.com",
-      "check_in": "2023-09-19 08:33:54",
-      "check_out": "2023-09-22 08:33:57",
-      "people_quantity": 10,
-      "nationality": "VN",
-      "cart": [
-        {
-          "id_cate": 1,
-          "services": [
-            42,
-            43
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            41,
-            42,
-            43
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            42,
-            43,
-            41
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            42,
-            41,
-            43
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            42,
-            41,
-            43
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            42,
-            43
-          ]
-        }
-      ],
-      "total_amount": 5910,
-      "id": 11
-    },
-    {
-      "name": "thiên đẹp zai",
-      "cccd": "0403123124",
-      "phone": "1312412351235",
-      "email": "thien@hotmail.com",
-      "check_in": "2023-09-19 19:09:43",
-      "check_out": "2023-09-23 19:09:45",
-      "people_quantity": 123,
-      "nationality": "VN",
+      "name": "chien",
+      "cccd": "2222",
+      "phone": "222",
+      "email": "chien@gmail.com",
+      "check_in": "2023-09-20 23:00:00",
+      "check_out": "2023-09-22 23:00:00",
+      "people_quantity": 22,
+      "nationality": "vn",
       "cart": [
         {
           "id_cate": 1,
@@ -510,22 +543,22 @@
           ]
         },
         {
-          "id_cate": 2,
-          "services": [
-            42,
-            43
-          ]
-        },
-        {
-          "id_cate": 3,
+          "id_cate": 1,
           "services": [
             41,
             42
           ]
+        },
+        {
+          "id_cate": 2,
+          "services": [
+            42,
+            41
+          ]
         }
       ],
-      "total_amount": 2774,
-      "id": 12
+      "total_amount": 2624,
+      "id": 11
     }
   ],
   "vouchers": [
@@ -752,7 +785,7 @@
   ],
   "category_home": [
     {
-      "hotel_id":1,
+      "hotel_id": 1,
       "id": 1,
       "name": "Phòng Đơn",
       "description": "Phù hợp với các cặp đôi đang yêu",
@@ -773,7 +806,7 @@
       "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
     },
     {
-      "hotel_id":2,
+      "hotel_id": 2,
       "id": 2,
       "name": "Phòng View Biển",
       "description": "Phòng view biển với khung cảnh đẹp của bãi biểm có thể đón mình binh bao trọn view khắp thành phố",

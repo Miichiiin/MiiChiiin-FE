@@ -34,168 +34,165 @@ export const LayoutAdmin = () => {
   } = theme.useToken();
   const users = [
     {
-      id: 1,
-      name: "",
-      role: "nhanvien",
-    },
-    
+      token: "haha",
+      admin: {
+        id: 2,
+        id_hotel: 1,
+        name: "Augustus Mitchell",
+        image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
+        role: "",
+        permissions: [
+          'get banner',
+          'add banner',
+          'update banner',
+          'get voucher',
+          'add voucher',
+          'get statisticshotels',
+          'get manageroomtype',
+          'get manageremployee',
+          'get room',
+          'get comfort',
+          'get comment',
+          'get service',
+          'get booking',
+          'get user',
+          'get hotel',
+          'get permission'
+        ]
+      },
+    }
   ];
 
-  // Lấy vai trò của người dùng hiện tại (lấy ví dụ từ người dùng đầu tiên trong danh sách)
-  const currentUserRole = users.length > 0 ? users[0].role : null;
+  // Lấy quyền hạn của người dùng hiện tại (lấy ví dụ từ người dùng đầu tiên trong danh sách)
+  const currentUserPermissions = users.length > 0 ? users[0].admin.permissions : [];
 
-  // Tạo menu dựa trên vai trò của người dùng
+  // Tạo menu dựa trên quyền hạn của người dùng
   const getMenuItems = () => {
-    if(currentUserRole === "" || currentUserRole === null) {
-      return [
+    const menuItems = [];
+
+    if (currentUserPermissions.includes('get statisticshotels')) {
+      menuItems.push(
         getItem(
           <Link to={"statisticshotels"}>Thống kê theo chuỗi</Link>,
           "1",
           <AiFillSignal />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get manageroomtype')) {
+      menuItems.push(
         getItem(
           <Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>,
           "2",
           <BiSolidBed />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get voucher')) {
+      menuItems.push(
         getItem(
           <Link to={"managervouchers"}>Quản lý Vouchers</Link>,
           "3",
           <AiOutlineCreditCard />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get manageremployee')) {
+      menuItems.push(
         getItem(
           <Link to={"manageremployee"}>Quản lý Nhân Viên</Link>,
           "4",
           <UserOutlined />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get room')) {
+      menuItems.push(
         getItem(
           <Link to={"managerroom"}>Quản lý Phòng</Link>,
           "5",
           <BiHotel />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get comfort')) {
+      menuItems.push(
         getItem(
           <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
           "6",
           <UserOutlined />
-        ), 
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get comment')) {
+      menuItems.push(
         getItem(
           <Link to={"commentmanagement"}>Quản lý comment</Link>,
           "7",
           <BiCommentDetail />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get service')) {
+      menuItems.push(
         getItem(
           <Link to={"service"}>Quản lý dịch vụ</Link>,
           "8",
           <MdMedicalServices />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get booking')) {
+      menuItems.push(
         getItem(
           <Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>,
           "9",
           <TbBrandBooking />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get user')) {
+      menuItems.push(
         getItem(
           <Link to={"usermanagement"}>Quản lý khách hàng</Link>,
           "10",
           <AiOutlineUser />
-        ),
-        getItem(
-<Link to={"hotelmanagement"}>Quản lý khách sạn</Link>,
-          "11",
-          <FaHotel />
-        ),
-        getItem(
-          <Link to={"bookingmanagement"}>Quản lý booking</Link>,
-          "12",
-          <FaHotel />
-        ),
-      ]
-    
-     } else if (currentUserRole === "chuchuoi") {
-      // Nếu vai trò là "chain owner," hiển thị chỉ mục "Thống kê theo chuỗi"
-      return [
-        getItem(
-          <Link to={"statisticshotels"}>Thống kê theo chuỗi</Link>,
-          "1",
-          <AiFillSignal />
-        ),
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get hotel')) {
+      menuItems.push(
         getItem(
           <Link to={"hotelmanagement"}>Quản lý khách sạn</Link>,
           "11",
           <FaHotel />
-        ),
-        
-        // Thêm các mục menu khác tại đây nếu cần
-      ];
-    } else if (currentUserRole === "nhanvien") {
-      // Nếu vai trò là "nhanvien," hiển thị các mục quản lý
-      return [
-        
+        )
+      );
+    }
+
+    if (currentUserPermissions.includes('get permission')) {
+      menuItems.push(
         getItem(
-          <Link to={"managerroom"}>Quản lý Phòng</Link>,
-          "5",
-          <BiHotel />
-        ),
-        
-        getItem(
-          <Link to={"commentmanagement"}>Quản lý comment</Link>,
-          "7",
-          <BiCommentDetail />
-        ),
-        getItem(
-          <Link to={"service"}>Quản lý dịch vụ</Link>,
-          "8",
-          <MdMedicalServices />
-        ),
-        getItem(
-          <Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>,
-          "9",
-          <TbBrandBooking />
-        ),
-        getItem(
-          <Link to={"usermanagement"}>Quản lý khách hàng</Link>,
-          "10",
-          <AiOutlineUser />
-        ),
-       
-        getItem(
-          <Link to={"bookingmanagement"}>Quản lý booking</Link>,
+          <Link to={"indexPermission"}>Quản lý quyền</Link>,
           "12",
           <FaHotel />
-        ),
-      ];
-    } else if(currentUserRole === "chu") {
-        return [
-          getItem(
-            <Link to={"statisticshotels"}>Thống kê theo chuỗi</Link>,
-            "1",
-            <AiFillSignal />
-          ),
-          getItem(
-            <Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>,
-            "2",
-            <BiSolidBed />
-          ),
-          getItem(
-            <Link to={"managervouchers"}>Quản lý Vouchers</Link>,
-            "3",
-            <AiOutlineCreditCard />
-          ),
-          getItem(
-            <Link to={"manageremployee"}>Quản lý Nhân Viên</Link>,
-            "4",
-            <UserOutlined />
-          ),
-          getItem(
-            <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
-            "6",
-            <UserOutlined />
-          ),  
-        ]
-    }else {
-      // Nếu vai trò không phải là "chain owner" hoặc "nhanvien," ẩn tất cả các mục menu
-      return [];
+        )
+      );
     }
+
+    return menuItems;
   };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -204,7 +201,7 @@ export const LayoutAdmin = () => {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="flex flex-col items-center justify-center my-5 text-white">
-<Link to="admininfo" className="flex items-center">
+          <Link to="admininfo" className="flex items-center">
             <img
               src="https://media.istockphoto.com/id/1256768065/vi/vec-to/logo-linh-v%E1%BA%ADt-esport-h%E1%BB%95-tr%E1%BA%AFng.jpg?s=612x612&w=is&k=20&c=_kzP2cuB-s76LYATE2I9RIGp_6vFeqs08PDQKa0EaoU="
               alt="Logo"

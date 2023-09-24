@@ -15,6 +15,25 @@ import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+const users = [
+  {
+   token: "haha",
+   admin:{
+     id: 2,
+     id_hotel: 1,
+     name: "Augustus Mitchell",
+     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
+     role: "",
+     permissions: [
+       'add service',
+       'update service',
+       'delete service',
+       'add voucher',
+     ]
+   },
+  }
+ 
+];
 export const ServiceManagement = () => {
   const { data: visibleItems } = useGetServices_AdminQuery();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -23,7 +42,12 @@ export const ServiceManagement = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
+// phân quyền
+const [hasAddUserPermission, setHasAddUserPermission] = useState(
+  users[0].admin.permissions.includes("add service") &&
+  users[0].admin.permissions.includes("update service") &&
+  users[0].admin.permissions.includes("delete service")
+);
   interface DataType {
     key: string;
     name: string;
@@ -44,9 +68,15 @@ export const ServiceManagement = () => {
       title: "Tên dịch vụ",
       dataIndex: "name",
       key: "name",
-      render: (text: any, item: any) => (
-        <Link to={`/admin/updateservice/${item.id}`}>{text}</Link>
-      ),
+      render: (text: any, item: any) => {
+        return (
+          <>
+            {hasAddUserPermission && (
+              <Link to={`/admin/updateservice/${item.id}`}>{text}</Link>          
+            )}
+          </>
+        )
+      }
     },
     {
       title: "Giá dịch vụ",
@@ -161,22 +191,26 @@ export const ServiceManagement = () => {
             }}
           />
         </div>
-        <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
+        {hasAddUserPermission && (
+          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
           <Link to={`/admin/addservice`}>Thêm Dịch Vụ</Link>
         </button>
+        )}
       </div>
       <div>
-        <Popconfirm
-          title="Xóa sản phẩm"
-          description="Bạn có muốn xóa không??"
-          onConfirm={() => {
-            // Xử lý xóa sản phẩm ở đây
-          }}
-          okText="Có"
-          cancelText="Không"
-        >
-          <Button danger>Xóa</Button>
-        </Popconfirm>
+       {hasAddUserPermission && (
+         <Popconfirm
+         title="Xóa sản phẩm"
+         description="Bạn có muốn xóa không??"
+         onConfirm={() => {
+           // Xử lý xóa sản phẩm ở đây
+         }}
+         okText="Có"
+         cancelText="Không"
+       >
+         <Button danger>Xóa</Button>
+       </Popconfirm>
+       )}
       </div>
       <Radio.Group
         onChange={({ target: { value } }) => {

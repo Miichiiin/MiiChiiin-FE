@@ -3,16 +3,26 @@ import { Input, DatePicker, Select, Button, Upload, Form, Radio ,message} from '
 import {  ArrowLeftOutlined} from '@ant-design/icons';
 import { Link ,useNavigate} from 'react-router-dom';
 import { useAddAdmin_AdminMutation } from '@/api/admin/admin_admin';
+import { useGetRolesQuery } from '@/api/admin/role_admin';
 
 
 
 
 const { Option } = Select;
-
+interface DataType {
+  name: string
+  id:number
+}
 const AddEmployeePage = () => {
   const navigate = useNavigate()
   const [selectedRange, setSelectedRange] = useState<any>();
-
+  const {data: dataRole} = useGetRolesQuery({});
+  const data = dataRole?.map(({id,name}:DataType) =>({
+    key:id,
+    name:name,
+  }));
+  console.log("data",dataRole);
+  
   const handleRangeChange = (dates: any) => {
     setSelectedRange(dates?.toDate() || null);
   };
@@ -110,6 +120,15 @@ const AddEmployeePage = () => {
         <Form.Item label="Ngày Sinh" name="date" rules={[{ required: true, message: 'Vui lòng nhập ngày sinh nhân viên! ' }]}>
         <DatePicker onChange={handleRangeChange} />
         </Form.Item>
+        <Form.Item label="Chọn Role" name="role" rules={[{ required: true, message: 'Vui lòng chọn vai trò!' }]}>
+          <Select style={{ width: 200 }}>
+            {data?.map((item: any, index: any) => (
+              <Option key={index} value={item.key}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
+      </Form.Item>
 
   </div>
 
@@ -131,7 +150,9 @@ const AddEmployeePage = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item label="Hình ảnh" name="image" rules={[{ required: true, message: 'Bạn chưa cập nhập file ảnh! ' }]}>
+        <Form.Item label="Hình ảnh" name="image" 
+        rules={[{ required: true, message: 'Bạn chưa cập nhập file ảnh! ' }]}
+        >
           <Upload>
             <Button>Tải lên</Button>
           </Upload>
