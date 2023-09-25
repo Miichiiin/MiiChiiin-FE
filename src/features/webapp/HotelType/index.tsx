@@ -10,7 +10,7 @@ import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
 const HotelType = () => {
-    const { data: booking, error, isLoading } = useGetHotel_homesQuery();
+    const { data: booking} = useGetHotel_homesQuery();
     const [value, setValue] = useState(4);
     return (
         <div>
@@ -27,20 +27,20 @@ const HotelType = () => {
                         <a className="border-2 border-black py-3 px-9 rounded-md font-medium " href="">Đà Nẵng</a>
                         <a className="border-2 border-black py-3 px-9 rounded-md font-medium " href="">Hạ Long</a>
                     </div>
-                    <p>Có 3 khách sạn tại <span className="font-medium">Phú Quốc</span></p>
+                    <p>Có 1 khách sạn tại <span className="font-medium">Phú Quốc</span></p>
                 </div>
                 <div className="fixed bottom-4 z-10 right-4 w-20 h-20  bg-[#f2ba50] border border-gray-300 rounded-full shadow-md p-4 ">
-                    {/* Nội dung box chát */}
+                    
                     <span className="text-[50px] text-white"><AiFillWechat /></span>
                 </div>
                 <div>
                     {booking?.map((item: any) => {
                         return <>
-                            <Link to={`/hotel`} className="w-[1280px] mx-auto shadow-lg rounded-md flex space-x-8 my-5">
+                            <Link to={`/hotel/${item.id}`} className="w-[1280px] mx-auto shadow-lg rounded-md flex space-x-8 my-5">
                                 <img className="rounded-l-sm" src="https://statics.vinpearl.com/styles/images_530_x_312/public/2021_08/vinpearl-resort-&-spa-phu-quoc-1_1629092655.jpg.webp?itok=Ui1quUvu" alt="" />
                                 <div className="py-3 ">
                                     <h1 className="text-[26px] font-bold">{item?.name}</h1>
-                                    <p className="mt-5 text-[18px]"><AiOutlineEnvironment /><span>Khu Bãi Dài, Xã Gành Dầu, Thành Phố Phú Quốc, Tỉnh Kiên Giang</span></p>
+                                    <p className="mt-5 text-[18px]"><AiOutlineEnvironment /><span>{item?.city_name}</span></p>
                                     <p className="mt-5 text-[18px]"><AiOutlinePhone />(+84) {item?.phone}</p>
                                     <p className="mt-4 text-[18px]"><AiOutlineReconciliation /></p>
 
