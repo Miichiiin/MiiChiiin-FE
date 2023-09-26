@@ -152,6 +152,7 @@ const ChooseRoom = () => {
       date: date,
       numberRoom: updatedSelectedRooms,
       numberPeople: numberPeople,
+      price: totalPrice
     };
     if (!localStorage.getItem("cart")) {
       localStorage.setItem("cart", JSON.stringify([]));
