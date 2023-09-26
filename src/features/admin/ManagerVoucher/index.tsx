@@ -4,7 +4,32 @@ import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+const users = [
+  {
+   token: "haha",
+   admin:{
+     id: 2,
+     id_hotel: 1,
+     name: "Augustus Mitchell",
+     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
+     role: "",
+     permissions: [
+       'add voucher',
+       'update voucher',
+       'delete voucher',
+       'add voucher',
+     ]
+   },
+  }
+ 
+];
 export const ManagerVouchers = () => {
+  // phân quyền
+  const [hasAddUserPermission, setHasAddUserPermission] = useState(
+    users[0].admin.permissions.includes("add voucher") &&
+    users[0].admin.permissions.includes("update voucher") &&
+    users[0].admin.permissions.includes("delete voucher")
+  );
   const [messageApi, contextHolder] = message.useMessage();
   interface DataType {
     key: number;
@@ -155,12 +180,16 @@ export const ManagerVouchers = () => {
             }}
           />
         </div>
-        <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-          <Link to={`/admin/addvoucher`}>Thêm Voucher</Link>
-        </button>
+        {hasAddUserPermission && (
+            <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
+            <Link to={`/admin/addvoucher`}>Thêm Voucher</Link>
+          </button>
+        )}
       </div>
       <div>
-        <Popconfirm
+       {
+        hasAddUserPermission && (
+          <Popconfirm
           title="Xóa sản phẩm"
           description="Bạn có muốn xóa không??"
           onConfirm={() => {
@@ -178,9 +207,13 @@ export const ManagerVouchers = () => {
         >
           <Button danger>Xóa</Button>
         </Popconfirm>
-        <Button type="primary" danger className="mt-2 ml-1">
-          <Link to={`/admin/updatevoucher`}>Sửa</Link>
-        </Button>
+        )
+       }
+        {hasAddUserPermission && (
+            <Button type="primary" danger className="mt-2 ml-1">
+            <Link to={`/admin/updatevoucher`}>Sửa</Link>
+          </Button>
+        )}
       </div>
 
       <Radio.Group

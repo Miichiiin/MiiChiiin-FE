@@ -5,6 +5,26 @@ import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+
+const users = [
+  {
+   token: "haha",
+   admin:{
+     id: 2,
+     id_hotel: 1,
+     name: "Augustus Mitchell",
+     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
+     role: "",
+     permissions: [
+       'add user',
+       'update user',
+       'delete user',
+       'add voucher',
+     ]
+   },
+  }
+ 
+];
 export const ManagerEmployee = () => {
   const { data: emploData } = useGetAdmin_AdminQuery({})
   const [removeEployee] = useRemoveAdmin_AdminMutation()
@@ -114,6 +134,12 @@ export const ManagerEmployee = () => {
       });
     }
   };
+  // Khởi tạo biến trạng thái để kiểm tra quyền "add user"
+  const [hasAddUserPermission, setHasAddUserPermission] = useState(
+    users[0].admin.permissions.includes("add user") &&
+    users[0].admin.permissions.includes("update user") &&
+    users[0].admin.permissions.includes("delete user")
+  );
   return (
     <div>
       <div
@@ -159,22 +185,30 @@ export const ManagerEmployee = () => {
             }}
           />
         </div>
-        <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-          <Link to={`/admin/addemployee`}>Thêm Nhân Viên</Link>
-        </button>
+        {hasAddUserPermission && (
+          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
+                <Link to={`/admin/addemployee`}>Thêm Nhân Viên</Link>
+          </button>
+          )}
       </div>
       <div>
-
-        <Button type="primary" className='mx-5' danger
-          onClick={() => {
-            selectedRows.forEach((row) => confirmDelete(row.key));
-          }}
-          disabled={selectedRows.length === 0}
-        >Xóa</Button>
-
-        <Button type="primary" danger className="mt-1 ml-1">
-          <Link to={`/admin/updateemployee`}>Sửa</Link>
-        </Button>
+        {hasAddUserPermission && (
+            <Button type="primary" className='mx-5' danger
+              onClick={() => {
+                selectedRows.forEach((row) => confirmDelete(row.key));
+              }}
+              disabled={selectedRows.length === 0}
+            >
+            xóa
+          </Button>
+        )}
+        {hasAddUserPermission && (
+          <Button type="primary" danger className="mt-1 ml-1">
+            
+              <Link to={`/admin/updateemployee`}>Sửa</Link>
+            
+          </Button>
+        )}
       </div>
 
 
