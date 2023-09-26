@@ -77,6 +77,7 @@ export const SearchHotel = () => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
+    console.log("roomDetailsString",roomDetailsString)
     navigate(url);
   }
 

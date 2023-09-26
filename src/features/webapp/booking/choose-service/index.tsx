@@ -13,6 +13,7 @@ import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { Button } from "antd";
 import HeaderHotelType from "../../HotelType/HeaderHotelType";
+
 interface ServiceOpenState {
   [index: number]: boolean;
 }
@@ -25,10 +26,6 @@ const ChooseService = () => {
     }));
   };
 
-
-
-console.log("numberOfPeople", numberOfPeopleInt);
-console.log("numberOfRooms", numberOfRoomsInt);
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
   // const [totalPrice, setTotalPrice] = useState(0);
 
@@ -83,20 +80,42 @@ console.log("numberOfRooms", numberOfRoomsInt);
   const numberOfRooms = roomNumber.length;
 
   const onhanldeSubmit = () => {
-    console.log("submitroomNumber",roomNumber);
-    console.log("submitdate",date);
-    console.log("submitsermist",selectedServices);
+    console.log("submitroomNumber", roomNumber);
+    console.log("submitdate", date);
+    console.log("submitsermist", selectedServices);
     const service = JSON.stringify(selectedServices);
-    console.log("submithotel",hotel);    
-    const url = `/booking/${hotel}/${date}/${roomNumber}/${service}/`
+    console.log("submithotel", hotel);
+    const url = `/booking/${hotel}/${date}/${roomNumber}/${service}/`;
     localStorage.clear();
     navigate(url);
     // navigate(`/booking`)
   };
-  const onhanldeGoBack = () => {  
-    const url = `/choose-room/${dataParam.nameHotel}/${dataParam.date}/${dataParam.roomNumber}/${dataParam.numberRoom}`
+  
+  interface RoomDetail {
+    adults: number;
+    children: number;
+    infants: number;
+  }
+
+
+  let roomDetailsString = "";
+
+if (Array.isArray(dataParam.numberPeople)) {
+  roomDetailsString = dataParam.numberPeople.map((details: any) => {
+    return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+  }).join('&');
+  // Rest of your code that uses roomDetailsString
+}
+
+console.log("roomDetailsString",roomDetailsString)
+console.log("numberpeople",dataParam.numberPeople)
+  const onhanldeGoBack = () => {
+
+    const url = `/choose-room/${dataParam?.nameHotel}/${dataParam?.date}/${numberOfRooms}/${dataParam?.numberPeople}`;
+
     navigate(url);
-    // navigate(`/booking`)
+    
+    console.log("numberRoom:", dataParam?.numberRoom)
   };
   // Tính tổng tiền của dịch vụ trong phòng
   const serviceTotalPrice = selectedServices.reduce(
@@ -128,11 +147,11 @@ console.log("numberOfRooms", numberOfRoomsInt);
   // Hiển thị tổng tiền
   console.log("Tổng tiền: ", totalPrice1);
 
-  const sumprice = totalPrice1 + serviceTotalPrice
+  const sumprice = totalPrice1 + serviceTotalPrice;
 
   return (
     <div className="max-w-7xl mx-auto ">
-      <HeaderHotelType/>
+      <HeaderHotelType />
       {/*Content*/}
       <div className="max-w-5xl mx-auto my-5 mt-36">
         <section className="flex space-x-16 items-center px-2 py-3">
@@ -254,7 +273,9 @@ console.log("numberOfRooms", numberOfRoomsInt);
               <div>
                 <div className="flex items-center justify-between">
                   <h1 className="font-semibold">{hotel[1]}</h1>
-                  <button onClick={onhanldeGoBack} className="text-sm">Chỉnh sửa</button>
+                  <button onClick={onhanldeGoBack} className="text-sm">
+                    Chỉnh sửa
+                  </button>
                 </div>
                 <p className="text-sm pt-3 items-center flex">
                   {date[0].toISOString().slice(0, 10)}
@@ -330,13 +351,14 @@ console.log("numberOfRooms", numberOfRoomsInt);
                 {/*tổng cộng*/}
                 <div className="flex items-center justify-between">
                   <h1 className="font-semibold">Tổng cộng:</h1>
-                  <h1 className='text-xl font-bold text-yellow-500'>{sumprice} vnđ</h1>
+                  <h1 className="text-xl font-bold text-yellow-500">
+                    {sumprice} vnđ
+                  </h1>
                 </div>
               </div>
               <button
                 onClick={onhanldeSubmit}
                 className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full"
-                
               >
                 Tiếp tục
               </button>

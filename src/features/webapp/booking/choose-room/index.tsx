@@ -20,6 +20,7 @@ const ChooseRoom = () => {
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
   const [totalPrice, setTotalPrice] = useState<any>(0);
   const searchSlide = useParams();
+  console.log("search",searchSlide)
   const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [selectedRoomCount, setSelectedRoomCount] = useState(0);
   console.log("hotelds", hotels);
