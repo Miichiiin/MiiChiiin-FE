@@ -26,9 +26,6 @@ const ChooseService = () => {
   };
 
 
-
-console.log("numberOfPeople", numberOfPeopleInt);
-console.log("numberOfRooms", numberOfRoomsInt);
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
   // const [totalPrice, setTotalPrice] = useState(0);
 

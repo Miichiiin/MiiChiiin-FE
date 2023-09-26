@@ -18,10 +18,8 @@ import { Button } from "antd";
 const ChooseRoom = () => {
   const { data: hotels } = useGetCategory_homeQuery();
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
-  const [totalPrice, setTotalPrice] = useState<any>(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const searchSlide = useParams();
-  const [isRoomSelected, setIsRoomSelected] = useState(false);
-  const [selectedRoomCount, setSelectedRoomCount] = useState(0);
   console.log("hotelds", hotels);
 
   let numberPeople: { [key: string]: number }[] = [];
@@ -70,19 +68,13 @@ const ChooseRoom = () => {
         setSelectedRooms([...selectedRooms, selectedHotel]);
         const price = selectedHotel.price;
         setTotalPrice(totalPrice + price);
-        setSelectedRoomCount(selectedRooms.length + 1); // Tăng số lượng phòng đã chọn
-        // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage
-        localStorage.setItem(
-          "selectedRooms",
-          JSON.stringify([...selectedRooms, selectedHotel])
-        );
-        localStorage.setItem("totalPrice", (totalPrice + price).toString());
         // Đánh dấu rằng đã chọn phòng
       } else {
         // Xử lý trường hợp khi đã đạt đến giới hạn phòng
-        // Ở đây bạn có thể thêm thông báo hoặc xử lý tùy ý
       }
     }
+    localStorage.setItem("selectedRooms", JSON.stringify(selectedRooms));
+    localStorage.setItem("totalPrice", totalPrice.toString());
     // Không thực hiện gì nếu đã đạt đến giới hạn, không cần thông báo
   };
 
@@ -101,18 +93,6 @@ const ChooseRoom = () => {
       // Trừ giá của phòng ra khỏi tổng giá
       const priceToRemove = room.price;
       setTotalPrice(totalPrice - priceToRemove);
-
-      setSelectedRoomCount(selectedRooms.length - 1); // Giảm số lượng phòng đã chọn
-
-      // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage sau khi xóa
-      localStorage.setItem(
-        "selectedRooms",
-        JSON.stringify(updatedSelectedRooms)
-      );
-      localStorage.setItem(
-        "totalPrice",
-        (totalPrice - priceToRemove).toString()
-      );
     }
   };
 
@@ -141,21 +121,17 @@ const ChooseRoom = () => {
   useEffect(() => {
     const storedSelectedRooms = localStorage.getItem("selectedRooms");
     const storedTotalPrice = localStorage.getItem("totalPrice");
-  
+
     // Kiểm tra xem dữ liệu có tồn tại trong Local Storage không
     if (storedSelectedRooms && storedTotalPrice) {
       const parsedSelectedRooms = JSON.parse(storedSelectedRooms);
       const parsedTotalPrice = parseFloat(storedTotalPrice);
-  
+
       // Cập nhật trạng thái với dữ liệu lấy từ Local Storage
       setSelectedRooms(parsedSelectedRooms);
       setTotalPrice(parsedTotalPrice);
-  
-      // Cập nhật selectedRoomCount dựa trên độ dài của danh sách phòng đã chọn
-      setSelectedRoomCount(parsedSelectedRooms.length);
     }
   }, []);
-  
 
   const onHandSubmit = () => {
     const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
@@ -168,22 +144,21 @@ const ChooseRoom = () => {
         return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
       })
       .join("&");
-    // const encodedGuests = encodeURIComponent(JSON.stringify(numberPeople));
     const encodedSelectedRooms = encodeURIComponent(
       JSON.stringify(updatedSelectedRooms)
     );
-    // console.log("rômmmm",updatedSelectedRooms);
-    console.log(
-      "hotel",
-      hotel,
-      "date",
-      date,
-      "numbeRoom",
-      encodedSelectedRooms,
-      "numberPeople",
-      encodedGuests
-    );
-
+    const newCart = {
+      hotel: searchSlide.nameHotel,
+      date: date,
+      numberRoom: updatedSelectedRooms,
+      numberPeople: numberPeople,
+    };
+    if (!localStorage.getItem("cart")) {
+      localStorage.setItem("cart", JSON.stringify([]));
+    }
+    const cartItems = JSON.parse(localStorage.getItem("cart") as any);
+    cartItems.push(newCart);
+    localStorage.setItem("cart", JSON.stringify(cartItems));
     const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
     navigate(url);
   };
@@ -216,7 +191,7 @@ const ChooseRoom = () => {
               </div>
               <p className="text-lg py-2">{hotel_detail?.description}</p>
               <Link
-                to={`/hotel/${hotel_detail?.id}`}
+                to="/hotel"
                 className="font-semibold text-blue-700 hover:text-blue-500 hover:underline"
               >
                 {" "}
@@ -359,11 +334,7 @@ const ChooseRoom = () => {
                 </div>
                 <Button
                   onClick={onHandSubmit}
-                  className={`bg-yellow-500 hover:bg-yellow-600 text-white text-lg font-bold rounded-full w-full ${
-                    selectedRoomCount === parseInt(searchSlide.numberRoom, 10)
-                      ? ""
-                      : "opacity-50 pointer-events-none" // Ẩn và vô hiệu hóa nút nếu chưa đủ số phòng
-                  }`}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white  text-lg font-bold rounded-full w-full"
                 >
                   Tiếp tục
                 </Button>
