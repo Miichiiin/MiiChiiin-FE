@@ -103,7 +103,8 @@ console.log(booking);
                 <div className="xl:w-[1280px] xl:mx-auto mt-10 lg:">
                     <div className="flex items-center justify-between">
                         <h2 className="text-[30px] mb-7">Ưu đãi khuyến mãi</h2>
-                        <span className="flex items-center space-x-6 text-[#f2ba50]"><a href="">Xem thêm</a> <AiOutlineArrowRight /></span>
+                        <span className="flex items-center space-x-6 text-[#f2ba50]"><Link to={`/new`} > Xem thêm
+                        </Link> <AiOutlineArrowRight /></span>
                     </div>
                     <div className="sm:grid xl:grid-cols-3 flex lg:grid-cols-2 sm:justify-center ">
                         <div className="w-[400px] ">

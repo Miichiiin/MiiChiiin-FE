@@ -121,7 +121,7 @@ export const router = createBrowserRouter([
             {
                 path: '/searchHotel',
                 element: <SearchHotel/>
-            },
+            }
         ],
     },
 

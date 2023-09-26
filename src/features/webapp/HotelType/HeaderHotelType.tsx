@@ -8,6 +8,7 @@ import {
 import "../../../components/Css/index.css";
 import Cart from "@/components/cart";
 import { Link } from "react-router-dom";
+
 const HeaderHotelType = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -73,6 +74,11 @@ const HeaderHotelType = () => {
     };
   }, [isScrollLocked]);
   /*slideshow*/
+
+   const clearLocalStorageData = () => {
+    localStorage.removeItem('selectRoom');
+    localStorage.removeItem('totalPrice');
+  };
   return (
     <div>
       <header className=" ">
@@ -88,9 +94,8 @@ const HeaderHotelType = () => {
                 <div onClick={toggleMenu} className="text-[25px] pt-6">
                   <AiOutlineMenu />
                 </div>
-                <Link to="/homepage">
-                  {" "}
-                  {/* Use the 'to' prop to specify the destination */}
+                <Link to="/homepage" onClick={clearLocalStorageData}>
+                  {/* Đặt hàm clearLocalStorageData khi click vào liên kết */}
                   <img
                     src="https://booking.vinpearl.com/static/media/vinpearl-logo@2x.cc2b881d.svg"
                     alt=""
