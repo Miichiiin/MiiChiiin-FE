@@ -39,7 +39,6 @@ const ChooseRoom = () => {
       });
   }
   console.log("numberPeople", numberPeople);
-  
 
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
@@ -54,13 +53,16 @@ const ChooseRoom = () => {
   }
 
   const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
-  
 
   console.log("khách sạn", hotel);
 
   const handleRoomSelect = (selectedHotel: any) => {
     // Kiểm tra xem số lượng phòng đã chọn có vượt quá giới hạn không
-    if (searchSlide && typeof searchSlide.numberRoom === 'string' && /^\d+$/.test(searchSlide.numberRoom)) {
+    if (
+      searchSlide &&
+      typeof searchSlide.numberRoom === "string" &&
+      /^\d+$/.test(searchSlide.numberRoom)
+    ) {
       const numberRoom = parseInt(searchSlide.numberRoom, 10); // Chuyển đổi chuỗi thành số nguyên
       if (selectedRooms.length < numberRoom) {
         setSelectedRooms([...selectedRooms, selectedHotel]);
@@ -69,15 +71,13 @@ const ChooseRoom = () => {
         // Đánh dấu rằng đã chọn phòng
       } else {
         // Xử lý trường hợp khi đã đạt đến giới hạn phòng
-       
       }
-    } 
+    }
     localStorage.setItem("selectedRooms", JSON.stringify(selectedRooms));
     localStorage.setItem("totalPrice", totalPrice.toString());
     // Không thực hiện gì nếu đã đạt đến giới hạn, không cần thông báo
   };
 
-  
   const handleRemoveRoom = (room: any) => {
     // Tìm vị trí của phòng trong danh sách đã chọn
     const roomIndex = selectedRooms.findIndex(
@@ -121,12 +121,12 @@ const ChooseRoom = () => {
   useEffect(() => {
     const storedSelectedRooms = localStorage.getItem("selectedRooms");
     const storedTotalPrice = localStorage.getItem("totalPrice");
-  
+
     // Kiểm tra xem dữ liệu có tồn tại trong Local Storage không
     if (storedSelectedRooms && storedTotalPrice) {
       const parsedSelectedRooms = JSON.parse(storedSelectedRooms);
       const parsedTotalPrice = parseFloat(storedTotalPrice);
-  
+
       // Cập nhật trạng thái với dữ liệu lấy từ Local Storage
       setSelectedRooms(parsedSelectedRooms);
       setTotalPrice(parsedTotalPrice);
@@ -144,27 +144,25 @@ const ChooseRoom = () => {
         return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
       })
       .join("&");
-    // const encodedGuests = encodeURIComponent(JSON.stringify(numberPeople));
     const encodedSelectedRooms = encodeURIComponent(
       JSON.stringify(updatedSelectedRooms)
     );
-    // console.log("rômmmm",updatedSelectedRooms);
-    console.log(
-      "hotel",
-      hotel,
-      "date",
-      date,
-      "numbeRoom",
-      encodedSelectedRooms,
-      "numberPeople",
-      encodedGuests
-    );
-
+    const newCart = {
+      hotel: searchSlide.nameHotel,
+      date: date,
+      numberRoom: updatedSelectedRooms,
+      numberPeople: numberPeople,
+      price: totalPrice
+    };
+    if (!localStorage.getItem("cart")) {
+      localStorage.setItem("cart", JSON.stringify([]));
+    }
+    const cartItems = JSON.parse(localStorage.getItem("cart") as any);
+    cartItems.push(newCart);
+    localStorage.setItem("cart", JSON.stringify(cartItems));
     const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
     navigate(url);
   };
-
-  
 
   return (
     <div>
