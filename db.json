@@ -96,14 +96,14 @@
       "guard_name": "web",
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z",
-      "permissions": [
-        "5",
-        "4",
-        "3",
-        "1",
-        "2",
-        "10",
-        "9"
+      "had_permissions": [
+        31,
+        25,
+        24,
+        23,
+        14,
+        12,
+        18
       ]
     },
     {
@@ -113,15 +113,15 @@
       "guard_name": "web",
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z",
-      "permissions": [
-        "10",
-        "9",
-        "8",
-        "7",
-        "6",
-        "5",
-        "2",
-        "1"
+      "had_permissions": [
+        10,
+        9,
+        18,
+        14,
+        12,
+        23,
+        24,
+        25
       ]
     },
     {
@@ -130,7 +130,15 @@
       "lever": 3,
       "guard_name": "web",
       "created_at": "2023-09-23T14:19:02.000000Z",
-      "updated_at": "2023-09-23T14:19:02.000000Z"
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "had_permissions": [
+        12,
+        14,
+        18,
+        23,
+        24,
+        25
+      ]
     },
     {
       "id": 4,
@@ -154,7 +162,12 @@
       "guard_name": "web",
       "lever": 3,
       "created_at": "2023-09-23T14:19:02.000000Z",
-      "updated_at": "2023-09-23T14:19:02.000000Z"
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "had_permissions": [
+        12,
+        18,
+        14
+      ]
     },
     {
       "id": 7,
@@ -162,79 +175,212 @@
       "guard_name": "web",
       "lever": 1,
       "created_at": "2023-09-23T14:19:02.000000Z",
-      "updated_at": "2023-09-23T14:19:02.000000Z"
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "had_permissions": [
+        18,
+        14,
+        12,
+        23,
+        24
+      ]
     }
   ],
   "permission_admin": [
     {
+      "id": 12,
+      "name": "update hotel"
+    },
+    {
+      "id": 14,
+      "name": "get room"
+    },
+    {
+      "id": 18,
+      "name": "get category"
+    },
+    {
+      "id": 23,
+      "name": "add service"
+    },
+    {
+      "id": 24,
+      "name": "update service"
+    },
+    {
+      "id": 25,
+      "name": "delete service"
+    },
+    {
+      "id": 26,
+      "name": "get comfort"
+    },
+    {
+      "id": 31,
+      "name": "update rate"
+    },
+    {
+      "id": 32,
+      "name": "delete rate"
+    },
+    {
       "id": 1,
-      "name": "quyền 1",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "get banner"
     },
     {
       "id": 2,
-      "name": "quyền 2",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "add banner"
     },
     {
       "id": 3,
-      "name": "quyền 3",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "update banner"
     },
     {
       "id": 4,
-      "name": "quyền 4",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "delete banner"
     },
     {
       "id": 5,
-      "name": "quyền 11",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "get voucher"
     },
     {
       "id": 6,
-      "name": "quyền 13",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "add voucher"
     },
     {
       "id": 7,
-      "name": "quyền 7",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "update voucher"
     },
     {
       "id": 8,
-      "name": "quyền 13",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "delete voucher"
     },
     {
       "id": 9,
-      "name": "quyền 13",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "get hotel"
     },
     {
       "id": 10,
-      "name": "quyền 1g",
-      "guard_name": "admin\r\n",
-      "created_at": null,
-      "updated_at": null
+      "name": "get detail hotel"
+    },
+    {
+      "id": 11,
+      "name": "add hotel"
+    },
+    {
+      "id": 13,
+      "name": "delete hotel"
+    },
+    {
+      "id": 15,
+      "name": "add room"
+    },
+    {
+      "id": 16,
+      "name": "update room"
+    },
+    {
+      "id": 17,
+      "name": "delete room"
+    },
+    {
+      "id": 19,
+      "name": "add category"
+    },
+    {
+      "id": 20,
+      "name": "update category"
+    },
+    {
+      "id": 21,
+      "name": "delete category"
+    },
+    {
+      "id": 22,
+      "name": "get service"
+    },
+    {
+      "id": 27,
+      "name": "add comfort"
+    },
+    {
+      "id": 28,
+      "name": "update comfort"
+    },
+    {
+      "id": 29,
+      "name": "delete comfort"
+    },
+    {
+      "id": 30,
+      "name": "get rate"
+    },
+    {
+      "id": 33,
+      "name": "get admin"
+    },
+    {
+      "id": 34,
+      "name": "get detail admin"
+    },
+    {
+      "id": 35,
+      "name": "add admin"
+    },
+    {
+      "id": 36,
+      "name": "update admin"
+    },
+    {
+      "id": 37,
+      "name": "delete admin"
+    },
+    {
+      "id": 38,
+      "name": "get user"
+    },
+    {
+      "id": 39,
+      "name": "add user"
+    },
+    {
+      "id": 40,
+      "name": "update user"
+    },
+    {
+      "id": 41,
+      "name": "delete user"
+    },
+    {
+      "id": 42,
+      "name": "get role"
+    },
+    {
+      "id": 43,
+      "name": "add role"
+    },
+    {
+      "id": 44,
+      "name": "update role"
+    },
+    {
+      "id": 45,
+      "name": "delete role"
+    },
+    {
+      "id": 46,
+      "name": "get permission"
+    },
+    {
+      "id": 47,
+      "name": "add permission"
+    },
+    {
+      "id": 48,
+      "name": "update permission"
+    },
+    {
+      "id": 49,
+      "name": "delete permission"
     }
   ],
   "rates_admin": [
@@ -394,7 +540,6 @@
       "created_at": "2023-08-31T14:00:56.000000Z",
       "updated_at": "2023-08-31T14:00:56.000000Z"
     }
-    
   ],
   "category_admin": [
     {
