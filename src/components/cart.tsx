@@ -47,7 +47,7 @@ const Cart = () => {
       {roomList?.map((room: any, index: any) => (
         <Menu.Item key={room?.id} className="p-4">
           <div className="flex items-center justify-between">
-            <Link to={`/choose-service/${JSON.stringify(room?.hotel)} /${room?.date}/${encodeURIComponent(JSON.stringify(room?.numberRoom))}/${JSON.stringify(room?.numberPeople .map((details: any) => {
+            <Link to={`/choose-service/${room?.hotel} /${room?.date}/${encodeURIComponent(JSON.stringify(room?.numberRoom))}/${JSON.stringify(room?.numberPeople .map((details: any) => {
         return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
       })
       .join("&"))}`} className="flex items-center">
