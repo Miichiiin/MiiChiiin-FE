@@ -91,58 +91,298 @@
   "roles_admin": [
     {
       "id": 1,
-      "name": "Quản lý khách sạn - Đà Nẵng",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng đôi"
+      "name": "Nihil natus impedit qui ea blanditiis. ff",
+      "lever": 1,
+      "guard_name": "web",
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "had_permissions": [
+        31,
+        25,
+        24,
+        23,
+        14,
+        12,
+        18
+      ]
     },
     {
       "id": 2,
-      "name": "Quản lý khách sạn - Nha Trang",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "  Phòng đôi"
+      "name": "Quyền ông tướng",
+      "lever": 2,
+      "guard_name": "web",
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "had_permissions": [
+        10,
+        9,
+        18,
+        14,
+        12,
+        23,
+        24,
+        25,
+        26,
+        31
+      ]
     },
     {
       "id": 3,
-      "name": "Quản lý khách sạn - Hạ Long",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "  Phòng đơn"
+      "name": "Dicta id beatae quaerat non.",
+      "lever": 3,
+      "guard_name": "web",
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "had_permissions": [
+        12,
+        14,
+        18,
+        23,
+        24,
+        25
+      ]
     },
     {
       "id": 4,
-      "name": "Quản lý khách sạn - Đà Nẵng",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 3,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Jace Schmidt"
+      "name": "Quasi perferendis veniam impedit optio.",
+      "lever": 2,
+      "guard_name": "web",
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z"
     },
     {
       "id": 5,
-      "name": "Jaylin Ritchie II",
-      "id_hotel": 1,
-      "status": 1,
-      "id_cate": 1,
-      "created_at": "2023-08-29T17:15:52.000000Z",
-      "updated_at": "2023-08-29T17:15:52.000000Z",
-      "name_hotel": "Mrs. Isabella Weimann",
-      "name_category": "Effie Muller DVM"
+      "name": "Esse maiores quia odit et.",
+      "guard_name": "web",
+      "lever": 1,
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z"
+    },
+    {
+      "id": 6,
+      "name": "Itaque et asperiores aut quisquam repellendus.",
+      "guard_name": "web",
+      "lever": 3,
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "had_permissions": [
+        12,
+        18,
+        14
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Ad eum explicabo facilis qui eius.",
+      "guard_name": "web",
+      "lever": 1,
+      "created_at": "2023-09-23T14:19:02.000000Z",
+      "updated_at": "2023-09-23T14:19:02.000000Z",
+      "had_permissions": [
+        18,
+        14,
+        12,
+        23,
+        24
+      ]
+    }
+  ],
+  "permission_admin": [
+    {
+      "id": 12,
+      "name": "update hotel"
+    },
+    {
+      "id": 14,
+      "name": "get room"
+    },
+    {
+      "id": 18,
+      "name": "get category"
+    },
+    {
+      "id": 23,
+      "name": "add service"
+    },
+    {
+      "id": 24,
+      "name": "update service"
+    },
+    {
+      "id": 25,
+      "name": "delete service"
+    },
+    {
+      "id": 26,
+      "name": "get comfort"
+    },
+    {
+      "id": 31,
+      "name": "update rate"
+    },
+    {
+      "id": 32,
+      "name": "delete rate"
+    },
+    {
+      "id": 1,
+      "name": "get banner"
+    },
+    {
+      "id": 2,
+      "name": "add banner"
+    },
+    {
+      "id": 3,
+      "name": "update banner"
+    },
+    {
+      "id": 4,
+      "name": "delete banner"
+    },
+    {
+      "id": 5,
+      "name": "get voucher"
+    },
+    {
+      "id": 6,
+      "name": "add voucher"
+    },
+    {
+      "id": 7,
+      "name": "update voucher"
+    },
+    {
+      "id": 8,
+      "name": "delete voucher"
+    },
+    {
+      "id": 9,
+      "name": "get hotel"
+    },
+    {
+      "id": 10,
+      "name": "get detail hotel"
+    },
+    {
+      "id": 11,
+      "name": "add hotel"
+    },
+    {
+      "id": 13,
+      "name": "delete hotel"
+    },
+    {
+      "id": 15,
+      "name": "add room"
+    },
+    {
+      "id": 16,
+      "name": "update room"
+    },
+    {
+      "id": 17,
+      "name": "delete room"
+    },
+    {
+      "id": 19,
+      "name": "add category"
+    },
+    {
+      "id": 20,
+      "name": "update category"
+    },
+    {
+      "id": 21,
+      "name": "delete category"
+    },
+    {
+      "id": 22,
+      "name": "get service"
+    },
+    {
+      "id": 27,
+      "name": "add comfort"
+    },
+    {
+      "id": 28,
+      "name": "update comfort"
+    },
+    {
+      "id": 29,
+      "name": "delete comfort"
+    },
+    {
+      "id": 30,
+      "name": "get rate"
+    },
+    {
+      "id": 33,
+      "name": "get admin"
+    },
+    {
+      "id": 34,
+      "name": "get detail admin"
+    },
+    {
+      "id": 35,
+      "name": "add admin"
+    },
+    {
+      "id": 36,
+      "name": "update admin"
+    },
+    {
+      "id": 37,
+      "name": "delete admin"
+    },
+    {
+      "id": 38,
+      "name": "get user"
+    },
+    {
+      "id": 39,
+      "name": "add user"
+    },
+    {
+      "id": 40,
+      "name": "update user"
+    },
+    {
+      "id": 41,
+      "name": "delete user"
+    },
+    {
+      "id": 42,
+      "name": "get role"
+    },
+    {
+      "id": 43,
+      "name": "add role"
+    },
+    {
+      "id": 44,
+      "name": "update role"
+    },
+    {
+      "id": 45,
+      "name": "delete role"
+    },
+    {
+      "id": 46,
+      "name": "get permission"
+    },
+    {
+      "id": 47,
+      "name": "add permission"
+    },
+    {
+      "id": 48,
+      "name": "update permission"
+    },
+    {
+      "id": 49,
+      "name": "delete permission"
     }
   ],
   "rates_admin": [
@@ -400,24 +640,17 @@
       "id": 10
     },
     {
-      "name": "user1011",
-      "cccd": "04020404040",
-      "phone": "0344411122",
-      "email": "aduu@hotmail.com",
-      "check_in": "2023-09-19 08:33:54",
-      "check_out": "2023-09-22 08:33:57",
-      "people_quantity": 10,
-      "nationality": "VN",
+      "name": "chien",
+      "cccd": "2222",
+      "phone": "222",
+      "email": "chien@gmail.com",
+      "check_in": "2023-09-20 23:00:00",
+      "check_out": "2023-09-22 23:00:00",
+      "people_quantity": 22,
+      "nationality": "vn",
       "cart": [
         {
           "id_cate": 1,
-          "services": [
-            42,
-            43
-          ]
-        },
-        {
-          "id_cate": 2,
           "services": [
             41,
             42,
@@ -425,104 +658,22 @@
           ]
         },
         {
+          "id_cate": 1,
+          "services": [
+            41,
+            42
+          ]
+        },
+        {
           "id_cate": 2,
           "services": [
             42,
-            43,
             41
           ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            42,
-            41,
-            43
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            42,
-            41,
-            43
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            42,
-            43
-          ]
         }
       ],
-      "total_amount": 5910,
+      "total_amount": 2624,
       "id": 11
-    },
-    {
-      "name": "thiên đẹp zai",
-      "cccd": "0403123124",
-      "phone": "1312412351235",
-      "email": "thien@hotmail.com",
-      "check_in": "2023-09-19 19:09:43",
-      "check_out": "2023-09-23 19:09:45",
-      "people_quantity": 123,
-      "nationality": "VN",
-      "cart": [
-        {
-          "id_cate": 1,
-          "services": [
-            41,
-            42,
-            43
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            42,
-            43
-          ]
-        },
-        {
-          "id_cate": 3,
-          "services": [
-            41,
-            42
-          ]
-        }
-      ],
-      "total_amount": 2774,
-      "id": 12
-    },
-    {
-      "name": "djsaidjsa",
-      "cccd": "dsadasd",
-      "phone": "0332304352",
-      "email": "vinhkqph25485@fpt.edu.vn",
-      "check_in": "2023-09-19 22:56:20",
-      "check_out": "2023-09-20 21:56:34",
-      "people_quantity": 5,
-      "nationality": "vieetj nam",
-      "cart": [
-        {
-          "id_cate": 2,
-          "services": [
-            41,
-            42,
-            43
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            41,
-            42
-          ]
-        }
-      ],
-      "total_amount": 1918,
-      "id": 13
     }
   ],
   "vouchers": [

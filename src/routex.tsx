@@ -48,6 +48,8 @@ import UpdateUserPage from "./features/admin/user/UpdateUser";
 import AddUtilities from "./features/admin/ManagerUtilities/AddUtilities";
 import AddBooking from "./features/admin/booking/AddBooking";
 import UpdateBooking from "./features/admin/booking/UpdateBooking";
+import Permission from "./features/admin/Permission/Permission";
+import IndexPremission from "./features/admin/Permission/IndexPremission";
 
 
 
@@ -265,7 +267,14 @@ export const router = createBrowserRouter([
                 element:<AdminInfoPage/>
             },
 
-
+            {
+                path: "permission/:id",
+                element:<Permission/>
+            },
+            {
+                path:"indexPermission",
+                element:<IndexPremission/>
+            }
 
         ],
     },

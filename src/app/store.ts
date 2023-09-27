@@ -31,6 +31,9 @@ import {
 import storage from 'redux-persist/lib/storage';
 import ratingApi, { ratingReducer } from '@/api/admin/rates_admin';
 import { cartReducer } from '@/api/cartSlice';
+import roleApi, { roleReducer } from '@/api/admin/role_admin';
+import permissionApi, { permissionReducer } from '@/api/admin/permission_admin';
+import middlewares from 'json-server-auth';
 
 const persistConfig = {
     key: 'root',
@@ -55,8 +58,9 @@ const rootReducer = combineReducers({
     hotel_home: hotel_HomeReducer,
     cart: cartReducer,
     rating: ratingReducer,
-    searchSlice: sliceReducer
-
+    searchSlice: sliceReducer,
+    roles_admin : roleReducer,
+    permission_admin: permissionReducer
 })
 const middleware = [
     room_adminApi.middleware, 
@@ -73,7 +77,9 @@ const middleware = [
     service_HotelApi.middleware,
     category_HomeApi.middleware,
     hotel_HomeApi.middleware,
-    ratingApi.middleware
+    ratingApi.middleware,
+    roleApi.middleware,
+    permissionApi.middleware
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
