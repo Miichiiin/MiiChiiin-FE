@@ -9,10 +9,13 @@ import {
 import video from "../video/vdeo.mp4";
 import "../components/Css/index.css";
 import Cart from "./cart";
+import { Link } from "react-router-dom";
+import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
 
 const Header = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { data: hotels } = useGetHotel_homesQuery();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -166,7 +169,6 @@ const Header = () => {
                   </div>
                 )}
               </div>
-             
 
               <div className="">
                 <div
@@ -185,79 +187,31 @@ const Header = () => {
                     <button className="h-[40px] pb-3 " onClick={toggleMenuu}>
                       <AiOutlineMenu />
                     </button>
-                    <li className="group  h-[40px]  after-3 ">
-                      <div className="">
+                    <ul className="group h-[40px] after-3">
+                      <li className="relative">
                         <a href="">Khách sạn</a>
-                        <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000">
-                          <div className="leading-[45px]">
-                            <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
-                              <AiOutlineEnvironment /> <span>Phú Quốc</span>
-                            </span>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">VinHolidays Fiesta Phú Quốc</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Wonderworld Phú Quốc</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Phú Quốc</a>
-                            </p>
-                          </div>
-                          <div className="leading-[45px]">
-                            <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
-                              <AiOutlineEnvironment /> <span>Nha Trang</span>
-                            </span>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Nha Trang Bay</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort Nha Trang</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Sealink Nha Trang</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Luxury Nha Trang</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Beachfront Nha Trang</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Golflink Nha Trang</a>
-                            </p>
-                          </div>
-                          <div className="leading-[45px]">
-                            <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
-                              <AiOutlineEnvironment /> <span>Hội An</span>
-                            </span>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Hội An</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Golf Nam Hội An</a>
-                            </p>
-
-                            <span className="flex items-center space-x-2 text-[17px] mt-8 hover:text-[#f2ba50]">
-                              <AiOutlineEnvironment /> <span>Đà Nẵng</span>
-                            </span>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Hội An</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Đà Nẵng</a>
-                            </p>
-                          </div>
-                          <div className="leading-[45px]">
-                            <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
-                              <AiOutlineEnvironment /> <span>Quảng Ninh</span>
-                            </span>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Hạ Long</a>
-                            </p>
-                          </div>
+                        <div className="top-10 bg-white px-6 py-6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute hidden group-hover:block group-hover:flex transition duration-2000">
+                          {hotels?.map((hotel: any) => (
+                            <div key={hotel.id} className="leading-[45px]">
+                              <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
+                                <AiOutlineEnvironment />{" "}
+                                <Link to={`/hoteltype`}>
+                                <span>{hotel?.city_name}</span>
+                                </Link>
+                              </span>
+                              <Link to={`/hotel/${hotel.id}`}>
+                                {" "}
+                                {/* Sử dụng Link để chuyển đến trang HotelIntroduction */}
+                                <p className="text-[12px] hover:text-[#f2ba50]">
+                                  <a href="">{hotel?.name}</a>
+                                </p>
+                              </Link>
+                            </div>
+                          ))}
                         </div>
-                      </div>
-                    </li>
+                      </li>
+                    </ul>
+
                     <li className="h-[40px] group after-3 ">
                       <div className="">
                         <a href="">Trải nghiệm</a>
@@ -364,9 +318,8 @@ const Header = () => {
             <p>
               <a href="">Ưu đãi khuyến mãi</a>
             </p>
-            <p>
-              <a href="">New</a>
-            </p>
+
+            <Link to={`/new`}>New</Link>
           </div>
         </div>
       )}

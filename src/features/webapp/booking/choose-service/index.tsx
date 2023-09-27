@@ -26,7 +26,6 @@ const ChooseService = () => {
     }));
   };
 
-
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
   // const [totalPrice, setTotalPrice] = useState(0);
 
