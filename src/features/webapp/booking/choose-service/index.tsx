@@ -90,6 +90,12 @@ const ChooseService = () => {
     navigate(url);
     // navigate(`/booking`)
   };
+  
+  interface RoomDetail {
+    adults: number;
+    children: number;
+    infants: number;
+  }
 
 
   let roomDetailsString = "";
