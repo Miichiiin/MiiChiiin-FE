@@ -28,6 +28,8 @@ export const SearchQuickHotel = () => {
     const roomDetailsString = roomDetails1.map((details) => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
+    console.log("roomDetailsString", roomDetailsString);
+    
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
     navigate(url);
   }
@@ -139,11 +141,11 @@ export const SearchQuickHotel = () => {
     children: number;
     infants: number;
   }
-  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
+
   const [roomDetails1, setRoomDetails1] = useState<RoomDetail[]>([
     { adults: 1, children: 0, infants: 0 },
   ]);
-
+  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
   console.log("số phòng", numberOfRooms1);
   console.log("số người", roomDetails1);
 

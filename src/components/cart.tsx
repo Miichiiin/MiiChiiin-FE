@@ -10,8 +10,7 @@ const Cart = () => {
   const cartArray: any = newArrayWithId && Array.isArray(newArrayWithId)
   ? newArrayWithId.map((item, index) => ({ ...item, id: index + 1 }))
   : [];
-  console.log("mảng cart", cartArray);
-  console.log("datecart", cartArray[1]?.date);
+  console.log("mảng cart", cartArray.hotel);
   
   const [roomList, setRoomList] = useState(cartArray);
 
@@ -48,7 +47,7 @@ const Cart = () => {
       {roomList?.map((room: any, index: any) => (
         <Menu.Item key={room?.id} className="p-4">
           <div className="flex items-center justify-between">
-            <Link to={`/choose-service/${room?.hotel.split(",")} /${room?.date}/${encodeURIComponent(JSON.stringify(room?.numberRoom))}/${JSON.stringify(room?.numberPeople .map((details: any) => {
+            <Link to={`/choose-service/${JSON.stringify(room?.hotel)} /${room?.date}/${encodeURIComponent(JSON.stringify(room?.numberRoom))}/${JSON.stringify(room?.numberPeople .map((details: any) => {
         return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
       })
       .join("&"))}`} className="flex items-center">
@@ -64,7 +63,7 @@ const Cart = () => {
                 })}
               </span>
             </Link>
-            <span className="font-semibold">{room?.hotel?.substring(2)}</span>
+            <span className="font-semibold">{room?.hotel.split(",")[1]}</span>
             <div className="flex items-center">
               <span className="text-red-500">{room?.price} Vnđ</span>
             </div>
@@ -87,7 +86,7 @@ const Cart = () => {
             ) : (
               // Hiển thị nút xóa
               <button
-                onClick={() => handleRemoveRoom(room.id)}
+                onClick={() => handleRemoveRoom(room?.id)}
                 className="text-red-500 hover:underline"
               >
                 <AiFillDelete size={18} />
