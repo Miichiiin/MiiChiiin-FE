@@ -9,6 +9,7 @@ import Search from "./Search";
 
 import { Link } from "react-router-dom";
 import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
+import { useGetVoucherQuery } from "@/api/admin/voucher";
 import { SearchQuickHotel } from "./SearchQuickHotel";
 const Index = () => {
     let settings = {
@@ -19,6 +20,8 @@ const Index = () => {
         slidesToScroll: 1,
     };
     const { data: booking, error, isLoading } = useGetHotel_homesQuery();
+    const {data:voucher} = useGetVoucherQuery();
+    console.log("voucher",voucher)
 console.log(booking);
 
     const sliderRef = React.useRef<Slider>(null);
@@ -103,38 +106,26 @@ console.log(booking);
                 <div className="xl:w-[1280px] xl:mx-auto mt-10 lg:">
                     <div className="flex items-center justify-between">
                         <h2 className="text-[30px] mb-7">Ưu đãi khuyến mãi</h2>
-                        <span className="flex items-center space-x-6 text-[#f2ba50]"><Link to={`/new`} > Xem thêm
+                        <span className="flex items-center space-x-6 text-[#f2ba50]"><Link to={`/promotion`} > Xem thêm
                         </Link> <AiOutlineArrowRight /></span>
                     </div>
                     <div className="sm:grid xl:grid-cols-3 flex lg:grid-cols-2 sm:justify-center ">
+                    <Slider {...settings}  ref={sliderRef} className="w-[1280px] mx-auto">
+                        {voucher?.map((item:any)=>{
+                            return  <>
                         <div className="w-[400px] ">
                             <div className="relative overflow-hidden mb-4">
-                                <img className="w-full h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                                    src="https://statics.vinpearl.com/styles/378x250/public/2023_05/vinpearl_1684721297.jpg.webp?itok=hYT97ZUH"
+                                <img className=" h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                                    src={item.image} width="400px" height="300px"
+                                    
                                     alt=""
                                 />
                             </div>
-                            <a className="hover:text-[#f2ba50]" href="">Wonder Summer 2023: Miễn phí kỳ nghỉ tuyệt hơn mơ cho bé yêu</a>
+                            <a className="hover:text-[#f2ba50]" href="/promotion"  key={item?.id}>{item?.name}</a>
                         </div>
-                        <div className="w-[400px] ">
-                            <div className="relative overflow-hidden mb-4">
-                                <img className="w-full h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                                    src="https://statics.vinpearl.com/styles/378x250/public/2023_05/combo-cam-hung-bat-tan-banner_1685342465.jpg.webp?itok=Bh7dfsY4"
-                                    alt=""
-                                />
-                            </div>
-                            <a className="hover:text-[#f2ba50]" href="">Cảm hứng bất tận: trọn gói vé máy bay và nghỉ dưỡng 3N2Đ tiết kiệm đến 40%</a>
-                        </div>
-                        <div className="w-[400px]  ">
-                            <div className="relative overflow-hidden mb-4">
-                                <img className="w-full h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                                    src="https://statics.vinpearl.com/styles/378x250/public/2023_01/tong-hop-uu-dai-early-bird-banner_1673341683.jpg.webp?itok=YNNs_fjY"
-                                    alt=""
-                                />
-                            </div>
-                            <a className="hover:text-[#f2ba50]" href="">Đặt phòng sớm, ưu đãi lớn: tổng hợp ưu đãi early bird không thể bỏ lỡ</a>
-                        </div>
-
+                        </>
+                        })}
+                    </Slider>
                     </div>
                 </div>
             </div>
