@@ -50,6 +50,7 @@ import AddBooking from "./features/admin/booking/AddBooking";
 import UpdateBooking from "./features/admin/booking/UpdateBooking";
 import Permission from "./features/admin/Permission/Permission";
 import IndexPremission from "./features/admin/Permission/IndexPremission";
+import Promotion from "./features/webapp/Promotion";
 
 
 
@@ -121,6 +122,10 @@ export const router = createBrowserRouter([
             {
                 path: '/searchHotel',
                 element: <SearchHotel/>
+            },
+            {
+                path: '/promotion',
+                element: <Promotion/>
             }
         ],
     },

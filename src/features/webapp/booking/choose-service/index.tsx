@@ -51,7 +51,7 @@ const ChooseService = () => {
       ]);
     }
   };
-  const { data: serviceData } = useGetService_hotelQuery({});
+  const { data: serviceData } = useGetService_hotelQuery();
   // const carts = useAppSelector((state: any) => state.cart?.items);
   const navigate = useNavigate();
 

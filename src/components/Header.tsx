@@ -189,14 +189,14 @@ const Header = () => {
                     </button>
                     <ul className="group h-[40px] after-3">
                       <li className="relative">
-                        <a href="">Khách sạn</a>
+                        <a href="/hoteltype">Khách sạn</a>
                         <div className="top-10 bg-white px-6 py-6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute hidden group-hover:block group-hover:flex transition duration-2000">
                           {hotels?.map((hotel: any) => (
                             <div key={hotel.id} className="leading-[45px]">
                               <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
                                 <AiOutlineEnvironment />{" "}
                                 <Link to={`/hoteltype`}>
-                                <span>{hotel?.city_name}</span>
+                                  <span>{hotel?.city_name}</span>
                                 </Link>
                               </span>
                               <Link to={`/hotel/${hotel.id}`}>
@@ -259,10 +259,10 @@ const Header = () => {
                       </div>
                     </li>
                     <li className="h-[40px] after-3">
-                      <a href="">Ưu đãi khuyến mãi</a>
+                      <a href="/promotion">Ưu đãi khuyến mãi</a>
                     </li>
                     <li className="h-[40px] after-3">
-                      <a href="">New</a>
+                      <a href="/new">New</a>
                     </li>
                   </ul>
                 </div>
