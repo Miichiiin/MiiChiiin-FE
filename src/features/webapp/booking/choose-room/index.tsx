@@ -174,16 +174,29 @@ const ChooseRoom = () => {
       JSON.stringify(updatedSelectedRooms)
     );
     // console.log("rômmmm",updatedSelectedRooms);
-    console.log(
-      "hotel",
-      hotel,
-      "date",
-      date,
-      "numbeRoom",
-      encodedSelectedRooms,
-      "numberPeople",
-      encodedGuests
-    );
+    // console.log(
+    //   "hotel",
+    //   hotel,
+    //   "date",
+    //   date,
+    //   "numbeRoom",
+    //   encodedSelectedRooms,
+    //   "numberPeople",
+    //   encodedGuests
+    // );
+    const newCart = {
+      hotel: searchSlide.nameHotel,
+      date: date,
+      numberRoom: updatedSelectedRooms,
+      numberPeople: numberPeople,
+      price: totalPrice
+    };
+    if (!localStorage.getItem("cart")) {
+      localStorage.setItem("cart", JSON.stringify([]));
+    }
+    const cartItems = JSON.parse(localStorage.getItem("cart") as any);
+    cartItems.push(newCart);
+    localStorage.setItem("cart", JSON.stringify(cartItems));
 
     const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
     navigate(url);
