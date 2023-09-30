@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { BsGoogle } from 'react-icons/bs'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './login.css'
+import { useSigninMutation } from '@/api/auth/auth';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-
+    const [Signin] = useSigninMutation()
     const handleEmailChange = (e: any) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
@@ -29,17 +30,13 @@ const Login = () => {
             setPasswordError('');
         }
     };
+    const navigate = useNavigate()
     const handleLogin = (e: any) => {
         e.preventDefault();
-        if (emailError || passwordError) {
-            // Nếu có lỗi thì không thực hiện đăng nhập
-            return;
-        }
-        // Kiểm tra xem email và password có hợp lệ hay không
-        if (email === 'example@example.com' && password === 'password') {
-            // Đăng nhập thành công, thực hiện hành động tương ứng
-            // Tiến hành đăng nhập hoặc thực hiện các xử lý khác
-        }
+        const login = {email,password}
+       Signin(login).then(() => {
+        // navigate("/homepage")
+       })
     };
     return (
         <div className="mx-auto items-center h-screen bg-[url('https://res.cloudinary.com/chuoi2taps/image/upload/v1692668816/wallpaperflare.com_wallpaper_jsnfw2.jpg')] bg-no-repeat bg-fixed bg-cover brightness-[100%]">

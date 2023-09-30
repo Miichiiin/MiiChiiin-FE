@@ -72,10 +72,14 @@ const ChooseService = () => {
     const timeArray = dataParam.date.split(",");
     date = timeArray.map((time) => new Date(time));
   }
+  
   let roomNumber: any[] = [];
   if (dataParam && dataParam.numberRoom) {
     roomNumber = JSON.parse(dataParam.numberRoom);
   }
+
+  console.log("RoomNumberParam", roomNumber);
+  
 
   const numberOfRooms = roomNumber.length;
 
@@ -100,12 +104,10 @@ if (Array.isArray(dataParam.numberPeople)) {
   }).join('&');
   // Rest of your code that uses roomDetailsString
 }
-
-console.log("roomDetailsString",roomDetailsString)
-console.log("numberpeople",dataParam.numberPeople)
+let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.numberPeople.replace(/"/g, '') : undefined;
   const onhanldeGoBack = () => {
 
-    const url = `/choose-room/${dataParam?.nameHotel}/${dataParam?.date}/${numberOfRooms}/${dataParam?.numberPeople}`;
+    const url = `/choose-room/${dataParam?.nameHotel}/${dataParam?.date}/${numberOfRooms}/${cleanedNumberPeople}`;
 
     navigate(url);
     
