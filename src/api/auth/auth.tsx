@@ -33,6 +33,7 @@ const authApi = createApi({
         localStorage.setItem("user",JSON.stringify(user))
         return response;
       },
+      
       invalidatesTags: ["Users"],
       
     }),

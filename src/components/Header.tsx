@@ -131,9 +131,9 @@ const Header = () => {
                   {" "}
                   <AiOutlineSearch />
                 </span>{" "}
-                <a href="" className="hover:">
+                <Link to="/login" className="hover:">
                   Đăng nhập
-                </a>
+                </Link>
                 <AiOutlineRight />
                 <span className="pl-2 pr-1 text-[14px]">/</span>
                 <button
