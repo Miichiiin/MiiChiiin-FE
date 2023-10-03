@@ -25,7 +25,6 @@ import { UserManagement } from "./features/admin/user/UserManagement";
 import { AddUser } from "./features/admin/user/AddUser";
 import { HotelManagement } from "./features/admin/hotel/HotelManagement";
 import { AddHotel } from "./features/admin/hotel/AddHotel";
-
 import ChooseRoom from "./features/webapp/booking/choose-room";
 import RoomTypes from "./features/webapp/hotels/rooms/typeofroom";
 import ChooseService from "./features/webapp/booking/choose-service";
