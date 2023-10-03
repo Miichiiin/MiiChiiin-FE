@@ -21,7 +21,7 @@
 }
 
 .animate-fade-in {
-    animation: fade-in 0.5s ease-out;
+    animation: fade-in 0.5s ease-in-out;
 }
 .after-3 {
     @apply cursor-pointer py-1  relative after:absolute

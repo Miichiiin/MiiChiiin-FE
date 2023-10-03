@@ -1,33 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { useGetBooking_adminByIdQuery } from "@/api/admin/booking_admin";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 import { Form } from 'antd';
 import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
+import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
+
 
 const DetailBooking = () => {
   const { data: categories } = useGetCategory_homeQuery();
+  const { data: services } = useGetService_hotelQuery({});
   const { id } = useParams<{ id: string }>();
   const { data: booking } = useGetBooking_adminByIdQuery(id);
-  const { data: services } = useGetService_hotelQuery({});
-  const [form] = Form.useForm();
+  const [isServicesVisible, setIsServicesVisible] = useState<{ [key: number]: boolean }>({});
 
-  const [isServiceOpen, setIsServiceOpen] = React.useState(false);
+  const toggleServicesVisibility = (roomIndex: number) => {
+    setIsServicesVisible((prevIsServicesVisible) => ({
+      ...prevIsServicesVisible,
+      [roomIndex]: !prevIsServicesVisible[roomIndex],
+    }));
+  };
+  const getServiceName = (serviceId: any) => {
+    // Điều này chỉ là một ví dụ đơn giản, bạn cần thay thế bằng cách lấy tên dịch vụ từ dữ liệu thực tế của bạn.
+    const serviceData = services.find((service: any) => service.id === serviceId);
+    return serviceData ? serviceData.name : 'Dịch vụ không tồn tại';
+  };
+
+
 
   return (
     <div className="w-[100%] mx-auto">
       <h1 className="font-semibold text-xl">Thông tin Đặt phòng</h1>
 
       <div>
-        <Form
-          form={form}
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
-          initialValues={{ remember: true }}
-          autoComplete="off">
-        </Form>
+
 
         <div className='choice-column'>
           <section className='flex'>
@@ -46,31 +52,41 @@ const DetailBooking = () => {
                     <h1 className=''>{booking?.description}</h1>
                   </div>
                 </div>
-                <div>
-                  {/* Hiển thị thông tin từng loại phòng và dịch vụ */}
-                  {booking?.cart.map((cartItem: any, index: number) => {
-                    const categoryId = cartItem.id_cate;
-                    const category = categories?.[categoryId]?.name;
+                <div className="col-span-2">
+                  <h2 className="text-lg font-semibold mb-2 ml-4">Danh sách phòng và dịch vụ đã đặt</h2>
+                  <ul>
+                    {booking?.cart?.map((item: any, index: any) => {
+                      const room = categories?.find((category: any) => category.id === item.id_cate);
 
-                    return (
-                      <div key={index}>
-                        <div className="border rounded-lg px-2 py-3 my-2">
-                          <h2>Tên loại phòng: {category}</h2>
-                          <ul>
-                            {cartItem.services.map((serviceId: number, serviceIndex: number) => {
-                              const serviceName = services?.[serviceId]?.name;
+                      return (
+                        <li key={index} className='ml-3 my-2'>
+                          <div className='border flex justify-between px-2 py-3'>
+                            <div className=''>
+                              {room && (
+                                <>
+                                  <span className='font-bold text-md' >Phòng: </span>
+                                  <span className='text-blue-800 font-semibold'>{room.name}</span>
+                                </>
+                              )}
+                            </div>
+                            <button onClick={() => toggleServicesVisibility(index)} type='button'>
+                              {isServicesVisible[index] ? <span className='flex items-center'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center'>Hiện dịch vụ <AiOutlineDown /></span>}
+                            </button>
+                          </div>
+                          {isServicesVisible[index] && (
+                            <ul className='border-b border-x'>
+                              {item.services.map((serviceId:any, serviceIndex:any) => (
+                                <li key={serviceIndex} className='pt-1'>
+                                  <span className='text-md  font-bold px-2'>Dịch vụ {serviceIndex + 1}: </span> {getServiceName(serviceId)}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
 
-                              return (
-                                <li key={serviceIndex}>
-                                  Tên dịch vụ: {serviceName}
-</li>
-                              );
-                            })}
-                          </ul>
-                        </div>
-                      </div>
-                    );
-                  })}
                 </div>
               </div>
             </div>
