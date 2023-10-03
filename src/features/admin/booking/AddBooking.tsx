@@ -340,7 +340,7 @@ const AddBooking = () => {
             isOpen={showModal}
             onRequestClose={toggleModal}
             contentLabel="Additional Images"
-            className="modal mx-auto mt-[100px] animate-fade-in w-[1080px] overflow-scroll h-[800px] bg-white ">
+            className="modal mx-auto animate-fade-in w-[1080px] max-h-screen overflow-y-auto bg-white border p-2">
 
             <div className='p-3 rounded-md grid grid-cols-2 gap-4' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
               <div className='text-md col-span-2'><h1>Phòng {roomCount} / {maxRoomQuantity}</h1></div>
