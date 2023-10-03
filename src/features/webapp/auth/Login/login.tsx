@@ -22,8 +22,8 @@ const Login = () => {
         if(userLocal) {
           message.success("Đăng nhập thành công");
           setTimeout(() => {
-            // navigate("/");
-          }, 2000);
+            navigate("/");
+          }, 1000);
         }else{
           message.error("Thông tin tài khoản hoặc mật khẩu không chính xác !");
         }
