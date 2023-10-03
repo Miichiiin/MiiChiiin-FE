@@ -650,18 +650,47 @@
       "nationality": "vn",
       "cart": [
         {
-          "id_cate": 1,
+          "id_cate": 5,
           "services": [
-            41,
-            42,
-            43
+            1,
+            2,
+            4,
+            5
+          ]
+        },
+        {
+          "id_cate": 4,
+          "services": [
+            1,
+            2,
+            4,
+            5
           ]
         },
         {
           "id_cate": 1,
           "services": [
-            41,
-            42
+            1,
+            2,
+            4,
+            5
+          ]
+        },
+        {
+          "id_cate": 3,
+          "services": [
+            1,
+            2,
+            4
+          ]
+        },
+        {
+          "id_cate": 2,
+          "services": [
+            1,
+            2,
+            5,
+            4
           ]
         },
         {
@@ -672,8 +701,100 @@
           ]
         }
       ],
-      "total_amount": 2624,
-      "id": 11
+      "total_amount": 12993,
+      "id": 12,
+      "total_rooms": 5
+    },
+    {
+      "name": "aaaâ",
+      "cccd": "aaaaa",
+      "phone": "aaaaa",
+      "email": "aaaaa",
+      "check_in": "2023-10-01 12:38:39",
+      "check_out": "2023-10-03 12:38:41",
+      "people_quantity": 12,
+      "nationality": "VN",
+      "total_rooms": 5,
+      "total_amount": 3532,
+      "cart": [
+        {
+          "id_cate": 1,
+          "services": [
+            1,
+            2,
+            4,
+            5
+          ]
+        },
+        {
+          "id_cate": 2,
+          "services": [
+            2
+          ]
+        },
+        {
+          "id_cate": 3,
+          "services": [
+            1,
+            2,
+            4
+          ]
+        },
+        {
+          "id_cate": 3,
+          "services": [
+            1,
+            2,
+            4
+          ]
+        },
+        {
+          "id_cate": 5,
+          "services": [
+            1,
+            2
+          ]
+        }
+      ],
+      "id": 13
+    },
+    {
+      "name": "abcxyz xxxx",
+      "cccd": "3123123123",
+      "phone": "123123123",
+      "email": "adu@gmail.com",
+      "check_in": "2023-10-03 08:40:18",
+      "check_out": "2023-10-05 20:59:33",
+      "people_quantity": 12,
+      "nationality": "vn",
+      "total_rooms": 5,
+      "total_amount": 2332,
+      "cart": [
+        {
+          "id_cate": 1,
+          "services": []
+        },
+        {
+          "id_cate": 1,
+          "services": []
+        },
+        {
+          "id_cate": 1,
+          "services": []
+        },
+        {
+          "id_cate": 1,
+          "services": []
+        },
+        {
+          "id_cate": 1,
+          "services": [
+            1,
+            2
+          ]
+        }
+      ],
+      "id": 14
     }
   ],
   "vouchers": [
@@ -915,6 +1036,18 @@
       "status": 2,
       "created_at": "2023-08-27T17:59:42.000000Z",
       "updated_at": "2023-08-27T17:59:42.000000Z"
+    },
+    {
+      "id_hotel": 1,
+      "id": 5,
+      "name": "Dịch vụ thuê xe đạp",
+      "description": "Consequatur qui hic.",
+      "image": "https://booking-static.vinpearl.com/hotels/amenity/9d1b2f4b552c43418d3c83a4525512a6_VAP%20PQ.jpg",
+      "quantity": 668,
+      "price": 637,
+      "status": 2,
+      "created_at": "2023-08-27T17:59:42.000000Z",
+      "updated_at": "2023-08-27T17:59:42.000000Z"
     }
   ],
   "category_home": [
@@ -977,6 +1110,46 @@
       "updated_at": "2023-08-27T17:59:42.000000Z",
       "nameHotel": "Michii-Đà Nẵng",
       "total_rooms": 5,
+      "total_comfort": 1,
+      "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
+    },
+    {
+      "id": 4,
+      "name": "Phòng View Biển 4",
+      "description": "Phòng view biển với khung cảnh đẹp của bãi biểm có thể đón mình binh bao trọn view khắp thành phố",
+      "image": "https://booking-static.vinpearl.com/room_types/964a61f90cdb42db95b61263a7fdc74b_VH1PQ_Suite%20Room4.jpg",
+      "short_description": "Phòng đơn một giường đầy đủ tiện ích cơ bản đảm bảo sự thoải mái trong quá trình nghỉ dưỡng",
+      "quantity_of_people": 14,
+      "price": 800,
+      "reduced_price": 650,
+      "acreage": 150,
+      "floor": 4,
+      "likes": 200,
+      "views": 1500,
+      "created_at": "2023-08-27T17:59:42.000000Z",
+      "updated_at": "2023-08-27T17:59:42.000000Z",
+      "nameHotel": "Brando Trantow",
+      "total_rooms": 3,
+      "total_comfort": 1,
+      "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
+    },
+    {
+      "id": 5,
+      "name": "Phòng View Biển 3",
+      "description": "Phòng view biển với khung cảnh đẹp của bãi biểm có thể đón mình binh bao trọn view khắp thành phố",
+      "image": "https://booking-static.vinpearl.com/room_types/964a61f90cdb42db95b61263a7fdc74b_VH1PQ_Suite%20Room4.jpg",
+      "short_description": "Phòng đơn một giường đầy đủ tiện ích cơ bản đảm bảo sự thoải mái trong quá trình nghỉ dưỡng",
+      "quantity_of_people": 14,
+      "price": 800,
+      "reduced_price": 650,
+      "acreage": 150,
+      "floor": 4,
+      "likes": 200,
+      "views": 1500,
+      "created_at": "2023-08-27T17:59:42.000000Z",
+      "updated_at": "2023-08-27T17:59:42.000000Z",
+      "nameHotel": "Brando Trantow",
+      "total_rooms": 0,
       "total_comfort": 1,
       "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
     }
