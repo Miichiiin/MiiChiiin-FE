@@ -134,8 +134,6 @@ const UpdateBooking = () => {
   // Hàm hiện dịch vụ khi click vào phòng
 
   const handleRoomClick = (roomIndex: number) => {
-
-
     setSelectedRoomIndex(roomIndex);
     setIsRoomsHidden(!isRoomsHidden);
     calculateTotalAmount();
@@ -162,28 +160,35 @@ const UpdateBooking = () => {
   // Hàm để xóa một dịch vụ khỏi phòng đã chọn
   const handleRemoveService = (roomIndex: any, serviceId: any) => {
     const roomData = selectedRoomsData[roomIndex];
-    // Remove the service from the room's services
-    roomData.services = roomData.services.filter((id) => id !== serviceId);
+    const confirm = window.confirm("Chắc chưa?")
+    if (confirm) {
+      // Remove the service from the room's services
+      roomData.services = roomData.services.filter((id) => id !== serviceId);
 
 
-    // Update the selectedRoomsData
-    const updatedSelectedRoomsData = [...selectedRoomsData];
-    updatedSelectedRoomsData[roomIndex] = roomData;
-    setSelectedRoomsData(updatedSelectedRoomsData);
+      // Update the selectedRoomsData
+      const updatedSelectedRoomsData = [...selectedRoomsData];
+      updatedSelectedRoomsData[roomIndex] = roomData;
+      setSelectedRoomsData(updatedSelectedRoomsData);
 
-    // Recalculate the total amount
-    calculateTotalAmount();
+      // Recalculate the total amount
+      calculateTotalAmount();
+    }
+
   };
   const handleRemoveRoom = (roomIndex: any) => {
     // Remove the room from selectedRoomsData
-    const updatedSelectedRoomsData = selectedRoomsData.filter((_, index) => index !== roomIndex);
-    setSelectedRoomsData(updatedSelectedRoomsData);
+    const confirm = window.confirm("Chắc chưa?")
+    if (confirm) {
+      const updatedSelectedRoomsData = selectedRoomsData.filter((_, index) => index !== roomIndex);
+      setSelectedRoomsData(updatedSelectedRoomsData);
 
-    // Decrement roomCount
-    setRoomCount((prevRoomCount) => prevRoomCount - 1);
+      // Decrement roomCount
+      setRoomCount((prevRoomCount) => prevRoomCount - 1);
 
-    // Recalculate the total amount
-    calculateTotalAmount();
+      // Recalculate the total amount
+      calculateTotalAmount();
+    }
   };
 
   const onFinish = (values: FieldType) => {

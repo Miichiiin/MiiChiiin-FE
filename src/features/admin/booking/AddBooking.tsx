@@ -127,33 +127,41 @@ const AddBooking = () => {
   };
   // Hàm để xóa một dịch vụ khỏi phòng đã chọn
   const handleRemoveService = (roomIndex: any, serviceId: any) => {
+    const confirm = window.confirm("Chắc chưa?")
     const roomData = selectedRoomsData[roomIndex];
     // Remove the service from the room's services
-    roomData.services = roomData.services.filter((id) => id !== serviceId);
+    if(confirm){
+      roomData.services = roomData.services.filter((id) => id !== serviceId);
 
-    // If the room has no services left, remove the entire room
-    if (roomData.services.length === 0) {
-      handleRemoveRoom(roomIndex);
-    } else {
-      // Update the selectedRoomsData
-      const updatedSelectedRoomsData = [...selectedRoomsData];
-      updatedSelectedRoomsData[roomIndex] = roomData;
+      // If the room has no services left, remove the entire room
+      if (roomData.services.length === 0) {
+        handleRemoveRoom(roomIndex);
+      } else {
+        // Update the selectedRoomsData
+        const updatedSelectedRoomsData = [...selectedRoomsData];
+        updatedSelectedRoomsData[roomIndex] = roomData;
+        setSelectedRoomsData(updatedSelectedRoomsData);
+  
+        // Recalculate the total amount
+        calculateTotalAmount();
+      }
+    }
+    
+  };
+  const handleRemoveRoom = (roomIndex: any) => {
+    const confirm = window.confirm("Chắc chưa?")
+    // Remove the room from selectedRoomsData
+    if(confirm){
+      const updatedSelectedRoomsData = selectedRoomsData.filter((_, index) => index !== roomIndex);
       setSelectedRoomsData(updatedSelectedRoomsData);
-
+  
+      // Decrement roomCount
+      setRoomCount((prevRoomCount) => prevRoomCount - 1);
+  
       // Recalculate the total amount
       calculateTotalAmount();
     }
-  };
-  const handleRemoveRoom = (roomIndex: any) => {
-    // Remove the room from selectedRoomsData
-    const updatedSelectedRoomsData = selectedRoomsData.filter((_, index) => index !== roomIndex);
-    setSelectedRoomsData(updatedSelectedRoomsData);
-
-    // Decrement roomCount
-    setRoomCount((prevRoomCount) => prevRoomCount - 1);
-
-    // Recalculate the total amount
-    calculateTotalAmount();
+    
   };
 
   const calculateTotalAmount = () => {

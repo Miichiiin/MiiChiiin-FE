@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetBooking_adminByIdQuery } from "@/api/admin/booking_admin";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
-import { Form } from 'antd';
+import { Button, Form } from 'antd';
 import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 
@@ -25,6 +25,7 @@ const DetailBooking = () => {
     const serviceData = services.find((service: any) => service.id === serviceId);
     return serviceData ? serviceData.name : 'Dịch vụ không tồn tại';
   };
+  const navigate = useNavigate()
 
 
 
@@ -89,7 +90,11 @@ const DetailBooking = () => {
 
                 </div>
               </div>
+              <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
+              Quay lại
+            </Button>
             </div>
+            
           </section>
         </div>
       </div>
