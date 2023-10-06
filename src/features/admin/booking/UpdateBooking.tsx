@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Form, Input, InputNumber, DatePicker, Checkbox } from 'antd';
+import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Select } from 'antd';
 import { useGetCategory_homeQuery } from '@/api/webapp/category_home';
 import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
 import { useGetBooking_adminByIdQuery, useUpdateBooking_adminMutation } from '@/api/admin/booking_admin';
-import Modal from 'react-modal';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
+import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
+import { BsTrash3 } from 'react-icons/bs';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -59,35 +60,97 @@ const UpdateBooking = () => {
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const [cartData, setCartData] = useState<FieldType['cart']>([]);
   const [form] = Form.useForm();
-  const [selectedRoomsData, setSelectedRoomsData] = useState<{ roomIndex: number; services: number[] }[]>([]);
+  const [selectedRoomsData, setSelectedRoomsData] = useState<{ id_cate: number; services: number[] }[]>([]);
   const [selectedRoomIndex, setSelectedRoomIndex] = useState<number | null>(null);
   const [isRoomsHidden, setIsRoomsHidden] = useState(false);
   const [isServicesVisible, setIsServicesVisible] = useState<{ [key: number]: boolean }>({});
-  const [showModal, setShowModal] = useState(false);
+  const [isServicesHidden, setIsServicesHidden] = useState<boolean>(false);
+  const { id } = useParams<{ id: string }>()
+  const { data: bookingData } = useGetBooking_adminByIdQuery(id || "")
+  const [roomCount, setRoomCount] = useState(0);
+  const [maxRoomQuantity, setMaxRoomQuantity] = useState(0);
+  const [availableRoomCounts, setAvailableRoomCounts] = useState<{ [key: number]: number }>({});
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
-  const calculateTotalAmount = () => {
-    let total = 0
-    // Tính tổng số tiền cho các phòng đã chọn
-    selectedRoomsData.forEach((roomData) => {
-      const roomCategory = categories && categories[roomData.roomIndex]
-      if (roomCategory) {
-        total += roomCategory.price;
-      }
-    });
+  useEffect(() => {
+    if (categories) {
+      const initialAvailableRoomCounts: { [key: number]: number } = {};
+      categories.forEach((category: Category) => {
+        initialAvailableRoomCounts[category.id] = category.total_rooms;
+      });
+      setAvailableRoomCounts(initialAvailableRoomCounts);
+    }
+  }, [categories]);
 
-    // Tính tổng số tiền cho các dịch vụ đã chọn
-    selectedServices.forEach((serviceId) => {
-      const service = services && services.find((service: any) => service.id === serviceId);
-      if (service) {
-        total += service.price;
-      }
-    });
+  //Hàm tính tổng giá tiền
+  const calculateTotalAmount = (cart: FieldType['cart']) => {
+    let totalRoom = 0
+    let totalService = 0
+
+    // Lấy ngày check-in và ngày check-out từ form
+    const checkInDate = form.getFieldValue('check_in');
+    const checkOutDate = form.getFieldValue('check_out');
+
+
+    // Tính tổng giá tiền của các loại phòng đã chọn
+    if (checkInDate && checkOutDate) {
+      const days = checkOutDate.diff(checkInDate, 'days');
+
+      // Tính tổng giá tiền của các loại phòng đã chọn dựa trên số ngày thuê
+      cart.forEach((roomData) => {
+        const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
+
+        if (selectedCategory) {
+          totalRoom += selectedCategory?.price * days
+        }
+
+        // Tính tổng giá tiền của các dịch vụ đã chọn cho từng phòng
+        roomData.services.forEach((serviceId) => {
+          const selectedService = services?.find((service: any) => service.id === serviceId);
+          if (selectedService) {
+            totalService += selectedService?.price
+          }
+        });
+      });
+    }
+
+    let total = totalRoom + totalService;
+    // Cập nhật giá trị tổng thanh toán
     setTotalAmount(total);
   };
 
+  //set giá trị phòng cũ vào form 
+  useEffect(() => {
+    if (bookingData) {
+      setMaxRoomQuantity(bookingData?.total_rooms || 0);
+      setRoomCount(bookingData.cart?.length || 0);
+      form.setFieldsValue({
+        name: bookingData?.name,
+        cccd: bookingData?.cccd,
+        phone: bookingData?.phone,
+        email: bookingData?.email,
+        check_in: dayjs(bookingData?.check_in)?.tz('Asia/Ho_Chi_Minh'),
+        check_out: dayjs(bookingData?.check_out)?.tz('Asia/Ho_Chi_Minh'),
+        people_quantity: bookingData?.people_quantity,
+        nationality: bookingData?.nationality,
+        total_rooms: bookingData?.total_rooms,
+        status: bookingData?.status,
+      });
+
+      // Lấy danh sách các phòng đã chọn từ bookingData và cập nhật vào selectedRoomsData
+      const selectedRoomsFromBooking = bookingData?.cart || [];
+
+      const updatedSelectedRoomsData = selectedRoomsFromBooking?.map((item: any) => {
+        const id_cate = item?.id_cate;
+        return {
+          id_cate,
+          services: item.services || [],
+        };
+      });
+      setSelectedRoomsData(updatedSelectedRoomsData);
+      setCartData(updatedSelectedRoomsData);
+      calculateTotalAmount(updatedSelectedRoomsData);
+    }
+  }, [bookingData]);
 
   const handleCheckInDateChange = (selectedDate: dayjs.Dayjs | null) => {
     form.setFieldsValue({ check_in: selectedDate });
@@ -96,13 +159,17 @@ const UpdateBooking = () => {
   const handleCheckOutDateChange = (selectedDate: dayjs.Dayjs | null) => {
     form.setFieldsValue({ check_out: selectedDate });
   };
+
   const handleContinueClick = () => {
     if (selectedRoomIndex !== null) {
       if (roomCount < maxRoomQuantity) {
         // Tăng số lượng phòng đã chọn lên 1
         setRoomCount(roomCount + 1);
+        const updatedAvailableRoomCounts = { ...availableRoomCounts };
+        updatedAvailableRoomCounts[selectedRoomIndex] -= 1;
+        setAvailableRoomCounts(updatedAvailableRoomCounts);
         // Tìm xem phòng đã được thêm vào mảng selectedRoomsData chưa
-        const roomIndex = selectedRoomsData.findIndex((roomData) => roomData.roomIndex === selectedRoomIndex);
+        const roomIndex = selectedRoomsData?.findIndex((roomData) => roomData.id_cate === selectedRoomIndex);
 
         if (roomIndex !== -1) {
           // Phòng đã có trong mảng, tạo một bản sao của nó và cập nhật dịch vụ cho phòng mới
@@ -115,28 +182,34 @@ const UpdateBooking = () => {
           setSelectedRoomsData(updatedSelectedRoomsData);
         } else {
           // Phòng chưa có trong mảng, thêm nó vào
-          setSelectedRoomsData([...selectedRoomsData, { roomIndex: selectedRoomIndex, services: selectedServices }]);
+          setSelectedRoomsData([...selectedRoomsData, { id_cate: selectedRoomIndex, services: selectedServices }]);
         }
 
         // Cập nhật giá trị cart trong form antd
         const updatedCart = [...cartData, { id_cate: selectedRoomIndex, services: selectedServices }];
         setCartData(updatedCart);
         form.setFieldsValue({ cart: updatedCart });
-        calculateTotalAmount();
+        calculateTotalAmount(updatedCart);
+
       }
     }
-
     setSelectedServices([]);
     setSelectedRoomIndex(null);
     setIsRoomsHidden(false);
+    setIsServicesHidden(false);
   };
-
   // Hàm hiện dịch vụ khi click vào phòng
-
   const handleRoomClick = (roomIndex: number) => {
-    setSelectedRoomIndex(roomIndex);
-    setIsRoomsHidden(!isRoomsHidden);
-    calculateTotalAmount();
+    const selectedCategory = categories?.find((category: any) => category.id === roomIndex); // Tìm loại phòng tương ứng với roomIndex
+    if (availableRoomCounts[roomIndex] > 0) {
+      const id_cate = selectedCategory.id;
+      setSelectedRoomIndex(id_cate);
+      if (selectedCategory) {
+        setIsRoomsHidden(!isRoomsHidden);
+        setIsServicesHidden(!isServicesHidden);
+      }
+    }
+
   };
 
   const handleEnterPress = (value: number | undefined) => {
@@ -151,50 +224,38 @@ const UpdateBooking = () => {
       [roomIndex]: !prevIsServicesVisible[roomIndex],
     }));
   };
-
   const getServiceName = (serviceId: any) => {
     // Điều này chỉ là một ví dụ đơn giản, bạn cần thay thế bằng cách lấy tên dịch vụ từ dữ liệu thực tế của bạn.
-    const serviceData = services.find((service: any) => service.id === serviceId);
+    const serviceData = services?.find((service: any) => service.id === serviceId);
     return serviceData ? serviceData.name : 'Dịch vụ không tồn tại';
   };
-  // Hàm để xóa một dịch vụ khỏi phòng đã chọn
-  const handleRemoveService = (roomIndex: any, serviceId: any) => {
-    const roomData = selectedRoomsData[roomIndex];
-    const confirm = window.confirm("Chắc chưa?")
-    if (confirm) {
-      // Remove the service from the room's services
-      roomData.services = roomData.services.filter((id) => id !== serviceId);
 
-
-      // Update the selectedRoomsData
-      const updatedSelectedRoomsData = [...selectedRoomsData];
-      updatedSelectedRoomsData[roomIndex] = roomData;
-      setSelectedRoomsData(updatedSelectedRoomsData);
-
-      // Recalculate the total amount
-      calculateTotalAmount();
+  const handleRemoveRoom = (roomIndex: number) => {
+    // Cập nhật lại mảng selectedRoomsData
+    const updatedSelectedRoomsData = [...selectedRoomsData];
+    // Xóa phòng đã chọn khỏi mảng
+    updatedSelectedRoomsData.splice(roomIndex, 1);
+    // Cập nhật lại mảng selectedRoomsData
+    setSelectedRoomsData(updatedSelectedRoomsData);
+    const selectedCategory = categories?.find((category: any) => category.id === selectedRoomIndex);
+    if (selectedCategory && selectedRoomIndex !== null) {
+      const updatedAvailableRoomCounts = { ...availableRoomCounts };
+      updatedAvailableRoomCounts[selectedRoomIndex] += 1;
+      setAvailableRoomCounts(updatedAvailableRoomCounts);
     }
-
+    // Giảm số lượng phòng đã chọn đi 1
+    setRoomCount(roomCount - 1);
+    // Cập nhật lại tổng giá 
+    calculateTotalAmount(updatedSelectedRoomsData);
   };
-  const handleRemoveRoom = (roomIndex: any) => {
-    // Remove the room from selectedRoomsData
-    const confirm = window.confirm("Chắc chưa?")
-    if (confirm) {
-      const updatedSelectedRoomsData = selectedRoomsData.filter((_, index) => index !== roomIndex);
-      setSelectedRoomsData(updatedSelectedRoomsData);
-
-      // Decrement roomCount
-      setRoomCount((prevRoomCount) => prevRoomCount - 1);
-
-      // Recalculate the total amount
-      calculateTotalAmount();
-    }
+  const handleCancelRemoveRoom = (e: React.MouseEvent<HTMLElement>) => {
+    console.log(e);
+    message.error('Click on No');
   };
-
   const onFinish = (values: FieldType) => {
 
     const cart = selectedRoomsData.map((roomData) => ({
-      id_cate: roomData.roomIndex + 1, // ID phòng đã chọn
+      id_cate: roomData.id_cate, // ID phòng đã chọn
       services: roomData.services, // Các dịch vụ đã chọn cho phòng
     }));
 
@@ -205,52 +266,18 @@ const UpdateBooking = () => {
       check_out: values.check_out?.format('YYYY-MM-DD HH:mm:ss'),
       cart: cart
     };
+    console.log(formattedValues);
 
-
-    console.log("Update Values", formattedValues)
     updateBooking(formattedValues).unwrap().then(() => {
-      navigate(`/admin/detailbooking/${id}`);
+      message.success('Cập nhật thành công');
     });
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
+    message.error('Cập nhật thất bại');
   };
 
-  const { id } = useParams<{ id: string }>()
-  const { data: bookingData } = useGetBooking_adminByIdQuery(id || "")
-  const [roomCount, setRoomCount] = useState(0);
-  const [maxRoomQuantity, setMaxRoomQuantity] = useState(0);
-
-
-  useEffect(() => {
-    if (bookingData) {
-      setMaxRoomQuantity(bookingData.total_rooms || 0);
-      setRoomCount(bookingData.cart?.length || 0);
-      form.setFieldsValue({
-        name: bookingData.name,
-        cccd: bookingData.cccd,
-        phone: bookingData.phone,
-        email: bookingData.email,
-        check_in: dayjs(bookingData.check_in).tz('Asia/Ho_Chi_Minh'),
-        check_out: dayjs(bookingData.check_out).tz('Asia/Ho_Chi_Minh'),
-        people_quantity: bookingData.people_quantity,
-        nationality: bookingData.nationality,
-        total_amount: bookingData?.total_amount,
-        total_rooms: bookingData.total_rooms,
-      });
-      // Lấy danh sách các phòng đã chọn từ bookingData và cập nhật vào selectedRoomsData
-      const selectedRoomsFromBooking = bookingData.cart || [];
-      const updatedSelectedRoomsData = selectedRoomsFromBooking.map((item: any) => {
-        const roomIndex = categories?.findIndex((category: any) => category.id === item.id_cate);
-        return {
-          roomIndex,
-          services: item.services || [],
-        };
-      });
-      setSelectedRoomsData(updatedSelectedRoomsData);
-    }
-  }, [bookingData]);
   useEffect(() => {
     form.setFieldsValue({
       total_amount: totalAmount,
@@ -258,9 +285,8 @@ const UpdateBooking = () => {
   }, [totalAmount]);
 
   return (
-
-    <div className="mx-auto w-[50%]">
-
+    <div className="mx-auto overflow-auto scroll-smooth">
+      <h1 className='text-xl font-semibold pb-5'>Cập nhật Booking: <span className='font-bold text-blue-800 text-2xl'>{bookingData?.name}</span></h1>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -274,236 +300,260 @@ const UpdateBooking = () => {
       >
 
         <div className=''>
-          <div className="grid grid-cols-2 mx-2 ">
-            <Form.Item
-              label="Tên người dùng"
-              name="name"
-              rules={[
-                { required: true, message: 'Hãy nhập tên người dùng!' },
-                { whitespace: true, message: 'Không được để trống!' },
-              ]}
-              labelCol={{ span: 24 }}
-            >
-              <Input allowClear className='w-[250px]' />
-            </Form.Item>
-            <Form.Item
-              label="Căn cước công dân"
-              name="cccd"
-              rules={[
-                { required: true, message: 'Hãy nhập !' },
-                { whitespace: true, message: 'Không được để trống!' },
-              ]}
-              labelCol={{ span: 24 }}
-            >
-              <Input allowClear className='w-[250px]' />
-            </Form.Item>
-            <Form.Item
-              label="Số điện thoại"
-              name="phone"
-              rules={[
-                { required: true, message: 'Hãy nhập !' },
-                { whitespace: true, message: 'Không được để trống!' },
-              ]}
+          <div className="grid grid-cols-2 gap-8 ">
+            <div className='grid grid-cols-2 h-screen'>
+              <Form.Item
+                label="Tên người dùng"
+                name="name"
+                rules={[
+                  { required: true, message: 'Hãy nhập tên người dùng!' },
+                  { whitespace: true, message: 'Không được để trống!' },
+                ]}
+                labelCol={{ span: 24 }}
+              >
+                <Input allowClear className='w-[250px]' />
+              </Form.Item>
+              <Form.Item
+                label="Căn cước công dân"
+                name="cccd"
+                rules={[
+                  { required: true, message: 'Hãy nhập !' },
+                  { whitespace: true, message: 'Không được để trống!' },
+                ]}
+                labelCol={{ span: 24 }}
+              >
+                <Input allowClear className='w-[250px]' />
+              </Form.Item>
+              <Form.Item
+                label="Số điện thoại"
+                name="phone"
+                rules={[
+                  { required: true, message: 'Hãy nhập !' },
+                  { whitespace: true, message: 'Không được để trống!' },
+                ]}
 
-              labelCol={{ span: 24 }}
-            >
-              <Input allowClear className='w-[250px]' />
-            </Form.Item>
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                { required: true, message: 'Hãy nhập !' },
-                { whitespace: true, message: 'Không được để trống!' },
+                labelCol={{ span: 24 }}
+              >
+                <Input allowClear className='w-[250px]' />
+              </Form.Item>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  { required: true, message: 'Hãy nhập !' },
+                  { whitespace: true, message: 'Không được để trống!' },
 
-              ]}
+                ]}
 
-              labelCol={{ span: 24 }}
-            >
-              <Input allowClear className='w-[250px]' />
-            </Form.Item>
-            <Form.Item
-              label="Check in"
-              name="check_in"
-              labelCol={{ span: 24 }}
-            >
-              <DatePicker
-                value={form.getFieldValue('check_in')}
-                onChange={handleCheckInDateChange}
-                showTime
-                format="YYYY-MM-DD HH:mm:ss"
-                placeholder="Chọn ngày và giờ"
-                className='w-[250px]'
-              />
-            </Form.Item>
-            <Form.Item
-              label="Check out"
-              name="check_out"
-              labelCol={{ span: 24 }}
-            >
-              <DatePicker
-                value={form.getFieldValue('check_out')}
-                onChange={handleCheckOutDateChange}
-                showTime
-                format="YYYY-MM-DD HH:mm:ss"
-                placeholder="Chọn ngày và giờ"
-                className='w-[250px]'
-              />
-            </Form.Item>
-            <Form.Item
-              label="Số lượng người"
-              name="people_quantity"
-              rules={[{ required: true, message: 'Hãy nhập !' }]}
-              labelCol={{ span: 24 }}
-            >
-              <InputNumber className='w-[250px]' />
-            </Form.Item>
-            <Form.Item
-              label="Quốc tịch"
-              name="nationality"
-              rules={[
-                { required: true, message: 'Hãy nhập !' },
-                { whitespace: true, message: 'Không được để trống!' },
-              ]}
+                labelCol={{ span: 24 }}
+              >
+                <Input allowClear className='w-[250px]' />
+              </Form.Item>
+              <Form.Item
+                label="Check in"
+                name="check_in"
+                labelCol={{ span: 24 }}
+              >
+                <DatePicker
+                  value={form.getFieldValue('check_in')}
+                  onChange={handleCheckInDateChange}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="Chọn ngày và giờ"
+                  className='w-[250px]'
+                />
+              </Form.Item>
+              <Form.Item
+                label="Check out"
+                name="check_out"
+                labelCol={{ span: 24 }}
+              >
+                <DatePicker
+                  value={form.getFieldValue('check_out')}
+                  onChange={handleCheckOutDateChange}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="Chọn ngày và giờ"
+                  className='w-[250px]'
+                />
+              </Form.Item>
+              <Form.Item
+                label="Số lượng người"
+                name="people_quantity"
+                rules={[{ required: true, message: 'Hãy nhập !' }]}
+                labelCol={{ span: 24 }}
+              >
+                <InputNumber className='w-[250px]' />
+              </Form.Item>
+              <Form.Item
+                label="Quốc tịch"
+                name="nationality"
+                rules={[
+                  { required: true, message: 'Hãy nhập !' },
+                  { whitespace: true, message: 'Không được để trống!' },
+                ]}
 
-              labelCol={{ span: 24 }}
-            >
-              <Input allowClear className='w-[250px]' />
-            </Form.Item>
+                labelCol={{ span: 24 }}
+              >
+                <Input allowClear className='w-[250px]' />
+              </Form.Item>
+              <Form.Item
+                label="Số lượng phòng"
+                name="total_rooms"
+                rules={[{ required: true, message: 'Hãy nhập !' }]}
+                labelCol={{ span: 24 }}
+              >
+                <InputNumber className='w-[250px]'
 
-            <Form.Item
-              label="Số lượng phòng"
-              name="total_rooms"
-              rules={[{ required: true, message: 'Hãy nhập !' }]}
-              labelCol={{ span: 24 }}
-            >
-              <InputNumber className='w-[250px]'
-
-                onChange={(value: any) => {
-                  handleEnterPress(value);
-                }}
-              />
-            </Form.Item>
-
-          </div>
-          <Button danger type='primary' onClick={toggleModal} className='my-5'>Chọn phòng</Button>
-          <Modal
-            isOpen={showModal}
-            onRequestClose={toggleModal}
-            contentLabel="Additional Images"
-            className="modal mx-auto animate-fade-in w-[1080px] max-h-screen overflow-y-auto bg-white border p-2">
-
-            <div className='p-3 rounded-md  grid grid-cols-2 gap-4' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
-              <div className='text-md col-span-2'><h1>Phòng {roomCount} / {maxRoomQuantity}</h1></div>
-              <div className="grid grid-cols-2 gap-4">
-                {categories?.map((category: Category, index: number) => (
-                  <React.Fragment key={category?.id}>
-                    {(!isRoomsHidden || (isRoomsHidden && selectedRoomIndex === index)) && (
-                      <div
-                        className={`p-4 rounded-md cursor-pointer border h-[200px] ${selectedRoomIndex === index
-                          ? 'bg-blue-500 text-white border border-black'
-                          : category.total_rooms < 1
-                            ? 'bg-red-500 text-white cursor-not-allowed'
-                            : 'bg-[#15803d] '
-                          }`}
-                        onClick={() => {
-                          if (category.total_rooms >= 1) {
-                            handleRoomClick(index);
-                          }
-                        }}
-                      >
-                        <h2 className="font-bold text-md">{category?.name}</h2>
-                        <p>Còn: {category?.total_rooms} phòng</p>
-                        <p>Sức chứa: {category?.quantity_of_people} người</p>
-                        <p>Giá {category?.price}</p>
-                      </div>
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-
-              <div className="ml-5">
-                {selectedRoomIndex !== null && (
-                  <Form.Item name={['cart', selectedRoomIndex, 'services']} className='flex items-center'>
-                    {services?.map((service: Service) => (
-                      <div key={service.id} className="my-3">
-                        <Checkbox
-                          value={service.id}
-                          checked={selectedServices.includes(service.id)}
-                          onChange={(e) => {
-                            const selectedServiceId = service.id;
-                            if (e.target.checked) {
-                              setSelectedServices([...selectedServices, selectedServiceId]);
-                            } else {
-                              setSelectedServices(selectedServices.filter((id) => id !== selectedServiceId));
+                  onChange={(value: any) => {
+                    handleEnterPress(value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label="Trạng thái"
+                name="status"
+                labelCol={{ span: 24 }}
+              >
+                <Select className='w-[250px]'>
+                  <Select.Option value="1" >Không hiển thi</Select.Option>
+                  <Select.Option value="2">Hiển thị</Select.Option>
+                </Select>
+              </Form.Item>
+            </div>
+            <div className='choose-room w-full '>
+              <div className='p-3 rounded-md ' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
+                <div className='text-md col-span-2'><h1>Phòng {roomCount} / {maxRoomQuantity}</h1></div>
+                <div className="grid grid-cols-2 gap-2">
+                  {categories?.map((category: Category, index: number) => (
+                    <React.Fragment key={index}>
+                      {(!isRoomsHidden && !isServicesHidden || (isRoomsHidden && selectedRoomIndex === category?.id)) && (
+                        <div
+                          className={`p-4 rounded-md cursor-pointer border h-[125px] ${selectedRoomIndex === category?.id
+                            ? 'bg-blue-500 text-white border border-black'
+                            : category.total_rooms < 1
+                              ? 'bg-red-500 text-white cursor-not-allowed'
+                              : availableRoomCounts[category?.id] === 0
+                                ? 'bg-red-500 text-white cursor-not-allowed'
+                                : 'bg-[#15803d] '
+                            }`}
+                          onClick={() => {
+                            if (category.total_rooms >= 1) {
+                              handleRoomClick(category?.id);
+                              toggleServicesVisibility(category?.id)
                             }
                           }}
-                        />
-                        <div className='flex items-center'>
-                          <img src={service.image} alt={service.name} className="w-[100px] h-[100px]" />
-                          <span className="ml-2">{service.name} </span> <span className='font-semibold'>{service?.price}</span></div>
-                      </div>
-                    ))}
-                  </Form.Item>
+                        >
+                          <h2 className="font-bold text-xl">{category?.name}</h2>
+                          <p className='text-md'>Còn: <span className='font-bold'>{availableRoomCounts[category?.id]}</span> phòng</p>
+                          <p className='text-md'>Sức chứa: <span className='font-bold'>{category?.quantity_of_people}</span> người</p>
+                          <p className='text-md'>Giá: <span className='font-bold'>{category?.price}</span> <span>vnđ</span></p>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
 
-                )}
-                <div className='flex justify-center items-center'><Button className='border border-blue-500 rounded px-4 ' onClick={handleContinueClick}>Tiếp tục</Button></div>
+                </div>
+
+                <div className="">
+                  {isServicesHidden && selectedRoomIndex !== null && (
+                    <Form.Item name={['cart', selectedRoomIndex, 'services']} className=''>
+                      {services?.map((service: Service) => (
+                        <div key={service.id} className="my-3 flex items-center text-md w-[600px]">
+                          <Checkbox
+                            className=''
+                            value={service.id}
+                            checked={selectedServices.includes(service.id)}
+                            onChange={(e) => {
+                              const selectedServiceId = service.id;
+                              if (e.target.checked) {
+                                setSelectedServices([...selectedServices, selectedServiceId]);
+                              } else {
+                                setSelectedServices(selectedServices.filter((id) => id !== selectedServiceId));
+                              }
+                            }}
+                          />
+
+                          <div className='ml-1'>
+                            <span className='text-xl font-semibold text-blue-900 pl-2'>{service.name}</span>
+                            <span className='font-semibold px-5 text-md'>Giá : {service?.price} vnđ</span>
+                          </div>
+                        </div>
+
+                      ))}
+                    </Form.Item>
+
+                  )}
+                  <div className='flex justify-center items-center'><Button className='border border-blue-500 rounded px-4 mt-2 ' onClick={handleContinueClick}>Tiếp tục</Button></div>
+                </div>
               </div>
 
+              <div className='my-3 px-2'>
+                <h2 className='font-bold'>Các phòng đã chọn:</h2>
+                <ul className="">
+                  {selectedRoomsData.map((roomData, index) => {
+                    const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
+                    return (
+                      <li key={index} className="p-3 rounded-md border border-gray-300 mb-2">
+                        <div className='flex justify-between items-center'>
+                          <div>
+                            <p className='font-bold text-lg'>Phòng {index + 1}</p>
+                            <p>Tên loại phòng: {selectedCategory?.name}</p>
+                          </div>
+                          <button
+                            type='button'
+                            onClick={() => toggleServicesVisibility(index)}
+                            className="mb-2 flex items-center text-blue-500"
+                          >
+                            {isServicesVisible[index] ? <span className='flex items-center'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center'>Hiện dịch vụ <AiOutlineDown /></span>}
+                          </button>
+                        </div>
+
+                        {isServicesVisible[index] && (
+                          <ul>
+                            {roomData.services.map((serviceId, serviceIndex) => (
+                              <li key={serviceIndex}>
+                                Dịch vụ {serviceIndex + 1}: {getServiceName(serviceId)}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        <Popconfirm
+                          title="Xoá phòng ?"
+                          description="Bạn có chắc muốn xoá phòng này không ?"
+                          onConfirm={() => handleRemoveRoom(index)}
+                          onCancel={() => handleCancelRemoveRoom}
+                          okText={<span className='text-blue-900 font-semibold hover:text-white'>Yes</span>}
+                          cancelText="No"
+                        >
+                          <div className='flex justify-end'>
+                            <Button className="bg-red-300 flex justify-center items-center" type='primary' danger shape='circle'><BsTrash3 /></Button>
+                          </div>
+                        </Popconfirm>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
-            <div className='my-3 px-2'>
-              <h2 className='font-bold '>Các phòng đã chọn:</h2>
-              <ul className="grid grid-cols-2 gap-4">
-                {selectedRoomsData.map((roomData, roomIndex) => (
-                  <li key={roomIndex} className="p-3 rounded-md border border-gray-300">
-                    <div className=''>
-                      <p className='font-bold text-lg'>Phòng {roomIndex + 1}</p>
-                      <p>Tên loại phòng: {categories && categories[roomData.roomIndex]?.name}
-                      </p>
-                      <button type='button' onClick={() => toggleServicesVisibility(roomIndex)} className="mb-2 text-blue-500">
-                        {isServicesVisible[roomIndex] ? 'Ẩn dịch vụ' : 'Hiện dịch vụ'}
-                      </button>
-                    </div>
-
-                    {isServicesVisible[roomIndex] && (
-                      <ul>
-                        {roomData.services.map((serviceId, serviceIndex) => (
-                          <li key={serviceIndex}>
-                            Dịch vụ {serviceIndex + 1}: {getServiceName(serviceId)}
-                            <button
-                              onClick={() => handleRemoveService(roomIndex, serviceId)}
-                              className={`ml-2 text-red-500`}
-                              type='button'
-                            >
-                              Xóa
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    <button onClick={() => handleRemoveRoom(roomIndex)} className="text-red-500">Xóa phòng</button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Modal>
-        </div>
-        {/* Danh sách phòng và dịch vụ đã đặt */}
-
-
-        <Form.Item label="Tổng thanh toán" name="total_amount" className='ml-16  '>
-          <InputNumber value={totalAmount} disabled className="text-black text-lg font-semibold" />
-        </Form.Item>
-        <Form.Item >
-          <div className="flex justify-start items-center space-x-4">
-            <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
-              Cập nhật
-            </Button>
-            <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
-              Quay lại
-            </Button>
           </div>
-        </Form.Item>
+        </div>
+        <div>
+          <Form.Item label="Tổng thanh toán" name="total_amount" className='ml-16  '>
+            <InputNumber value={totalAmount} disabled className="text-black text-lg font-semibold" />
+          </Form.Item>
+          <Form.Item >
+            <div className="flex justify-start items-center space-x-4">
+              <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
+                Cập nhật
+              </Button>
+              <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
+                Quay lại
+              </Button>
+            </div>
+          </Form.Item></div>
+
+
       </Form>
     </div>
   );

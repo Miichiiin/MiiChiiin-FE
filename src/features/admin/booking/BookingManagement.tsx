@@ -97,7 +97,7 @@ export const BookingManagement = () => {
             key: 'check_in',
             render: (text, record) => {
                 const formattedDate = dayjs(record.check_in)
-                    .format('DD/MM/YYYY HH:mm'); // Remove .utc() and .local()
+                    .format('DD/MM/YYYY HH:mm:ss'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
             },
         },
@@ -107,7 +107,7 @@ export const BookingManagement = () => {
             key: 'check_out',
             render: (text, record) => {
                 const formattedDate = dayjs(record.check_out)
-                    .format('DD/MM/YYYY HH:mm'); // Remove .utc() and .local()
+                    .format('DD/MM/YYYY HH:mm:ss'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
             },
         },
@@ -118,23 +118,12 @@ export const BookingManagement = () => {
             key: 'people_quantity',
         },
         {
-            title: 'Số CCCD',
-            dataIndex: 'cccd',
-            key: 'cccd',
-        },
-        {
-            title: 'Quốc tịch',
-            dataIndex: 'nationality',
-            key: 'nationality'
-        },
-        {
             title: "Hành động",
             key: "action",
             render: (text, record) => (
-                <div className="flex items-center">
-                    <button className="mr-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={`/admin/updatebooking/${record.key}`}>Sửa</Link></button>
-                    <Link to={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</Link>
-                </div>
+
+                <Link to={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</Link>
+
             )
         }
     ];
@@ -177,11 +166,11 @@ export const BookingManagement = () => {
                                 label: "Tất cả",
                             },
                             {
-                                value: 1,
+                                value: "1",
                                 label: "Không hiển thị",
                             },
                             {
-                                value: 2,
+                                value: "2",
                                 label: "Hiển thị",
                             },
                         ]}

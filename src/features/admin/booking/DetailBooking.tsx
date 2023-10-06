@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetBooking_adminByIdQuery } from "@/api/admin/booking_admin";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
-import { Button, Form } from 'antd';
+import { Button } from 'antd';
 import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
-import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/locale/vi';
 
+import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const DetailBooking = () => {
   const { data: categories } = useGetCategory_homeQuery();
@@ -26,78 +32,83 @@ const DetailBooking = () => {
     return serviceData ? serviceData.name : 'Dịch vụ không tồn tại';
   };
   const navigate = useNavigate()
-
+  const checkIn = dayjs(booking?.check_in);
+  const checkOut = dayjs(booking?.check_out);
+  const numberOfNights = checkOut.diff(checkIn, 'day');
 
 
   return (
     <div className="w-[100%] mx-auto">
-      <h1 className="font-semibold text-xl">Thông tin Đặt phòng</h1>
-
-      <div>
-
-
-        <div className='choice-column'>
-          <section className='flex'>
-            <div className='px-2'>
-              <div key={booking?.id} className='flex items-center'>
-                <div className='flex flex-col border rounded-lg px-2 py-3 my-2 w-[400px] mt-10 leading-[50px] text-[17px] font-medium'>
-                  <h1 >Tên khách hàng: {booking?.name}</h1>
-                  <span>Căn cước công dân: {booking?.cccd}</span>
-                  <span>Số điện thoại: {booking?.phone}</span>
-                  <span>Email: {booking?.email}</span>
-                  <span>Check in: {booking?.check_in}</span>
-                  <span>Check out: {booking?.check_out}</span>
-                  <span>Quốc tịch: {booking?.nationality}</span>
-                  <span>Tổng số người: {booking?.people_quantity}</span>
-                  <div className='flex justify-between'>
-                    <h1 className=''>{booking?.description}</h1>
-                  </div>
-                </div>
-                <div className="col-span-2">
-                  <h2 className="text-lg font-semibold mb-2 ml-4">Danh sách phòng và dịch vụ đã đặt</h2>
-                  <ul>
-                    {booking?.cart?.map((item: any, index: any) => {
-                      const room = categories?.find((category: any) => category.id === item.id_cate);
-
-                      return (
-                        <li key={index} className='ml-3 my-2'>
-                          <div className='border flex justify-between px-2 py-3'>
-                            <div className=''>
-                              {room && (
-                                <>
-                                  <span className='font-bold text-md' >Phòng: </span>
-                                  <span className='text-blue-800 font-semibold'>{room.name}</span>
-                                </>
-                              )}
-                            </div>
-                            <button onClick={() => toggleServicesVisibility(index)} type='button'>
-                              {isServicesVisible[index] ? <span className='flex items-center'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center'>Hiện dịch vụ <AiOutlineDown /></span>}
-                            </button>
-                          </div>
-                          {isServicesVisible[index] && (
-                            <ul className='border-b border-x'>
-                              {item.services.map((serviceId:any, serviceIndex:any) => (
-                                <li key={serviceIndex} className='pt-1'>
-                                  <span className='text-md  font-bold px-2'>Dịch vụ {serviceIndex + 1}: </span> {getServiceName(serviceId)}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-
-                </div>
-              </div>
-              <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
-              Quay lại
-            </Button>
-            </div>
-            
-          </section>
-        </div>
+      <div className='flex justify-end mb-5'>
+        <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
+          Quay lại
+        </Button>
+        <Button type="primary" className='bg-green-500 mx-2'>
+          Export PDF
+        </Button>
+        <Button type="primary" className='bg-blue-500'> <Link to={`/admin/updatebooking/${booking?.id}`}>Sửa</Link></Button>
       </div>
+      <section className='grid grid-cols-2 gap-8'>
+
+        <div key={booking?.id} className=''>
+          
+          <h1 className="font-semibold text-lg mb-2">Thông tin Đặt phòng</h1>
+          <div className='flex flex-col border rounded-lg px-2 mb-4 py-3 leading-[25px] '>
+            <div className='grid grid-cols-2 gap-4'>
+              <p className='font-semibold'>Tên khách hàng: <span className='text-lg font-medium text-blue-900'>{booking?.name}</span></p>
+              <p className='font-semibold'>Căn cước công dân: <span className='text-lg font-medium text-blue-900'>{booking?.cccd}</span></p>
+              <p className='font-semibold'>Số điện thoại: <span className='text-lg font-medium text-blue-900'>{booking?.phone}</span></p>
+              <p className='font-semibold'>Email: <span className='text-lg font-medium text-blue-900'>{booking?.email}</span></p>
+              <p className='font-semibold'>Check in: <span className='text-lg font-medium text-blue-900'>{dayjs(booking?.check_in).format('YYYY-MM-DD HH:mm:ss')}</span></p>
+              <p className='font-semibold'>Check out: <span className='text-lg font-medium text-blue-900'>{dayjs(booking?.check_out).format('YYYY-MM-DD HH:mm:ss')}</span></p>
+              <p className='font-semibold'>Quốc tịch: <span className='text-lg font-medium text-blue-900'>{booking?.nationality}</span></p>
+              <p className='font-semibold'>Tổng số người: <span className='text-lg font-medium text-blue-900'>{booking?.people_quantity}</span></p>
+              <p className='font-semibold'>Số phòng: <span className='text-lg font-medium text-blue-900'>{booking?.total_rooms}</span></p>
+              <p className='font-semibold'>Số đêm: <span className='text-lg font-medium text-blue-900'>{numberOfNights}</span></p>
+              <p className='font-semibold'>Tổng tiền: <span className='text-lg font-medium text-blue-900'>{booking?.total_amount}</span></p>
+            </div>
+
+          </div>
+
+        </div>
+        <div className="">
+          <h1 className="text-lg font-semibold mb-2 ml-4">Danh sách phòng và dịch vụ đã đặt</h1>
+          <ul>
+            {booking?.cart?.map((item: any, index: any) => {
+              const room = categories?.find((category: any) => category.id === item.id_cate);
+              return (
+                <li key={index} className='ml-3 my-2'>
+                  <div className='border flex justify-between px-2 py-3'>
+                    <div className=''>
+                      {room && (
+                        <>
+                          <span className='font-bold text-md' >Phòng: </span>
+                          <span className='text-blue-800 font-semibold'>{room.name}</span>
+                        </>
+                      )}
+                    </div>
+                    <button onClick={() => toggleServicesVisibility(index)} type='button'>
+                      {isServicesVisible[index] ? <span className='flex items-center'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center'>Hiện dịch vụ <AiOutlineDown /></span>}
+                    </button>
+                  </div>
+                  {isServicesVisible[index] && (
+                    <ul className='border-b border-x'>
+                      {item.services.map((serviceId: any, serviceIndex: any) => (
+                        <li key={serviceIndex} className='pt-1'>
+                          <span className='text-md  font-bold px-2'>Dịch vụ {serviceIndex + 1}: </span> {getServiceName(serviceId)}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+
+        </div>
+
+      </section>
+
     </div>
   );
 }
