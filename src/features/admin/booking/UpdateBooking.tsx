@@ -319,6 +319,10 @@ const UpdateBooking = () => {
                 rules={[
                   { required: true, message: 'Hãy nhập !' },
                   { whitespace: true, message: 'Không được để trống!' },
+                  {
+                    pattern: /^[0-9]*$/,
+                    message: 'Căn cước không có chữ',
+                  },
                 ]}
                 labelCol={{ span: 24 }}
               >
@@ -330,6 +334,10 @@ const UpdateBooking = () => {
                 rules={[
                   { required: true, message: 'Hãy nhập !' },
                   { whitespace: true, message: 'Không được để trống!' },
+                  {
+                    pattern: /^[0-9]*$/,
+                    message: 'Chỉ được nhập số ',
+                  },
                 ]}
 
                 labelCol={{ span: 24 }}
@@ -353,6 +361,20 @@ const UpdateBooking = () => {
                 label="Check in"
                 name="check_in"
                 labelCol={{ span: 24 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Hãy chọn ngày check in!',
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (dayjs(value).isBefore(dayjs(), 'day')) {
+                        return Promise.reject('Không được chọn ngày trong quá khứ!');
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
               >
                 <DatePicker
                   value={form.getFieldValue('check_in')}
@@ -367,6 +389,20 @@ const UpdateBooking = () => {
                 label="Check out"
                 name="check_out"
                 labelCol={{ span: 24 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Hãy chọn ngày check out!',
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (dayjs(value).isBefore(dayjs(), 'day')) {
+                        return Promise.reject('Không được chọn ngày trong quá khứ!');
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
               >
                 <DatePicker
                   value={form.getFieldValue('check_out')}
@@ -380,8 +416,16 @@ const UpdateBooking = () => {
               <Form.Item
                 label="Số lượng người"
                 name="people_quantity"
-                rules={[{ required: true, message: 'Hãy nhập !' }]}
                 labelCol={{ span: 24 }}
+                rules={[
+                  { required: true, message: 'Hãy nhập!' },
+                  { whitespace: true, message: 'Không được để trống!' },
+                  {
+                    pattern: /^[1-9][0-9]*$/,
+                    message: 'Phải nhập số nguyên dương',
+                  },
+
+                ]}
               >
                 <InputNumber className='w-[250px]' />
               </Form.Item>
@@ -400,7 +444,12 @@ const UpdateBooking = () => {
               <Form.Item
                 label="Số lượng phòng"
                 name="total_rooms"
-                rules={[{ required: true, message: 'Hãy nhập !' }]}
+                rules={[
+                  { required: true, message: 'Hãy nhập!' },
+                  {
+                    pattern: /^[1-9][0-9]*$/,
+                    message: 'Phải nhập số nguyên dương',
+                  },]}
                 labelCol={{ span: 24 }}
               >
                 <InputNumber className='w-[250px]'
