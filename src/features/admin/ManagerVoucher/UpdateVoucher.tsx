@@ -2,7 +2,7 @@ import  { useEffect, useState } from 'react';
 import { Input, DatePicker, InputNumber, Select, Button, Upload, Form ,message} from 'antd';
 import { CloudUploadOutlined, ArrowLeftOutlined} from '@ant-design/icons';
 import { Link ,useNavigate,useParams} from 'react-router-dom';
-import { useGetVoucherByIdQuery, useUpdateVoucherMutation } from '@/api/voucher';
+import { useGetVoucherByIdQuery, useUpdateVoucherMutation } from '@/api/admin/voucher';
 
 const { Option } = Select;
 
