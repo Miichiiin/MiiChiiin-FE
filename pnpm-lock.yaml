@@ -56,6 +56,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-google-login:
+    specifier: ^5.2.2
+    version: 5.2.2(react-dom@18.2.0)(react@18.2.0)
   react-hook-form:
     specifier: ^7.45.2
     version: 7.45.2(react@18.2.0)
@@ -4371,6 +4374,19 @@ packages:
 
   /react-fast-compare@3.2.2:
     resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
+    dev: false
+
+  /react-google-login@5.2.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-JUngfvaSMcOuV0lFff7+SzJ2qviuNMQdqlsDJkUM145xkGPVIfqWXq9Ui+2Dr6jdJWH5KYdynz9+4CzKjI5u6g==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    peerDependencies:
+      react: ^16 || ^17
+      react-dom: ^16 || ^17
+    dependencies:
+      '@types/react': 18.2.14
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-hook-form@7.45.2(react@18.2.0):

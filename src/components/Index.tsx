@@ -44,7 +44,7 @@ console.log(booking);
             <div className="mt-7 bg-[#fbf8f2] w-full pb-8">
                 <div className="xl:w-[1280px] xl:mx-auto ">
                    <div className="flex items-center  lg:w-[1280px]">
-                        <h1 className="lg:text-[30px]  pt-10 pb-6 ">Trải nghiệm hệ sinh thái Vinpearl</h1>
+                        <h1 className="lg:text-[30px]  pt-10 pb-6 ">Trải nghiệm hệ sinh thái Miichi</h1>
                    </div>
                     <div className="flex items-center space-10 sm:justify-center">
                         <div className="">
@@ -95,9 +95,9 @@ console.log(booking);
                     <p className="text-[#f2ba50] font-bold text-[20px] text-center pb-1">Pearl Club</p>
                     <p className="text-[27px] text-center pb-2 text-white font-medium">Đặc quyền nghỉ dưỡng thượng lưu</p>
                     <p className="text-white">
-                        Pearl Club là chương trình khách hàng thân thiết của Vinpearl. Khách hàng có thể đăng ký là thành viên
+                        Pearl Club là chương trình khách hàng thân thiết của Miichi. Khách hàng có thể đăng ký là thành viên
                         miễn phí và tích lũy giao dịch để nâng hạng, trải nghiệm ngay các đặc quyền ưu đãi trong toàn bộ hệ sinh
-                        thái Vinpearl.
+                        thái Miichi.
                     </p>
                 </div>
                 <img className="w-full bg-[#585c5b]" src="https://statics.vinpearl.com/styles/1920x860/public/2023_01/About%20Pearl%20Club_1673079019.jpg.webp?itok=f-G5FUpc" alt="" />

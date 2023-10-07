@@ -52,6 +52,9 @@ import Permission from "./features/admin/Permission/Permission";
 import IndexPremission from "./features/admin/Permission/IndexPremission";
 import Promotion from "./features/webapp/Promotion";
 import DetailBooking from "./features/admin/booking/DetailBooking";
+import { LayoutProfile } from "./features/webapp/profileUser/component/layoutProfile";
+import MyOrder from "./features/webapp/profileUser/component/myOrder";
+import ProfileUsre from "./features/webapp/profileUser/component/profileUsre";
 
 
 
@@ -131,7 +134,23 @@ export const router = createBrowserRouter([
         ],
     },
 
+    {
+        path: "/profileUser",
+        element: (
+            <LayoutProfile />
+        ),
+        children: [
+            {
+                index: true,
+                element: <ProfileUsre/>  ,
+            },
+            {
+                path: "myorder",
+                element: <MyOrder /> ,
+            }
 
+        ],
+    },
 
     {
         path: "/admin",

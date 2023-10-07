@@ -11,7 +11,7 @@ const Footer = () => {
                     <p className="text-[#f2ba50] flex items-center space-x-2 mt-4 mb-4"><AiTwotonePhone/><span> 1900 23 23 89 (Nhánh số 3)</span></p>
                     <p className="text-[12px] mb-8">
                       <span>Chủ tài khoản: <br />
-                            Công ty cổ phần Vinpearl <br />
+                            Công ty cổ phần Miichi <br />
                             Tài khoản ngân hàng số: 9124412488166 (VND) <br />
                             Ngân hàng thương mại cổ phần Kỹ Thương Việt Nam (Techcombank) – Hội sở
                       </span>
@@ -28,7 +28,7 @@ const Footer = () => {
                     <img className="w-[40%]" src="https://vinpearl.com/themes/porto/img/vinpearl/logo-da-thong-bao-website-voi-bo-cong-thuong.png" alt="" />
                 </div>
                 <div className="text-white leading-10">
-                    <p className="text-[21px] hover:text-[#f2ba50]">Về Vinpearl</p>
+                    <p className="text-[21px] hover:text-[#f2ba50]">Về Miichi</p>
                       <p className="text-[14px] hover:text-[#f2ba50]">Về chúng tôi</p>
                       <p className="text-[14px] hover:text-[#f2ba50]">Liên hệ</p>
                       <p className="text-[14px] hover:text-[#f2ba50]">Tuyển dụng</p>

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { SigninForm, schemaSignIn } from "@/schema/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
+import GoogleLoginButton from "./loginGoogle";
 const Login = () => {
   const [Signin] = useSigninMutation();
   const navigate = useNavigate();
@@ -108,6 +109,7 @@ const Login = () => {
                     <BsGoogle className="text-xl" />
                     <span className="px-2">Login with Google</span>
                   </button>
+                  <GoogleLoginButton/>
                 </div>
               </div>
             </form>
