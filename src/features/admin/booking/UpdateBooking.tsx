@@ -427,7 +427,7 @@ const UpdateBooking = () => {
 
                 ]}
               >
-                <InputNumber className='w-[250px]' />
+                <Input className='w-[250px]' />
               </Form.Item>
               <Form.Item
                 label="Quốc tịch"

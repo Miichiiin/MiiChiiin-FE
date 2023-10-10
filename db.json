@@ -352,65 +352,6 @@
   ],
   "booking_admin": [
     {
-      "name": "thiên đẹp zai",
-      "cccd": "0403123124",
-      "phone": "1312412351235",
-      "email": "thien@hotmail.com",
-      "check_in": "2023-09-19 19:09:43",
-      "check_out": "2023-09-23 19:09:45",
-      "people_quantity": 123,
-      "nationality": "VN",
-      "cart": [
-        {
-          "id_cate": 5,
-          "services": [
-            1,
-            2,
-            4,
-            5
-          ]
-        },
-        {
-          "id_cate": 4,
-          "services": [
-            1,
-            2,
-            4,
-            5
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            1,
-            2,
-            4,
-            5
-          ]
-        },
-        {
-          "id_cate": 3,
-          "services": [
-            1,
-            2,
-            4
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            1,
-            2,
-            5,
-            4
-          ]
-        }
-      ],
-      "total_amount": 12993,
-      "id": 12,
-      "total_rooms": 5
-    },
-    {
       "name": "aaaâ",
       "cccd": "aaaaa",
       "phone": "aaaaa",
