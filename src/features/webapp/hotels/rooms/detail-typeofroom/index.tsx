@@ -1,7 +1,7 @@
 import { AiOutlineHeart, AiOutlineClose, AiOutlineInfoCircle } from 'react-icons/ai'
 import { BsPeople, BsChevronCompactRight, BsChevronCompactLeft } from 'react-icons/bs'
 import { MdOutlineBed } from 'react-icons/md'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Modal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -10,7 +10,6 @@ import { FaUser } from 'react-icons/fa';
 // import type { DatePickerProps, RadioChangeEvent } from 'antd';
 import { DatePicker,  message } from 'antd';
 import { useGetCategory_homeByIdQuery } from '@/api/webapp/category_home';
-import { useGetHotel_homeByIdQuery } from '@/api/webapp/hotel_home';
 
 const { RangePicker } = DatePicker;
 
@@ -23,10 +22,10 @@ const images = [
 
 const DetailTypeofRoom = () => {
 
-  const { idHotel, idRoom } = useParams()
-  const {data:hotelData} = useGetHotel_homeByIdQuery(idHotel);
+  const { id: idRoom } = useParams()
   const { data } = useGetCategory_homeByIdQuery(idRoom);
   // const dispatch = useAppDispatch();
+  console.log("data", data);
   const navigate = useNavigate()
 
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
@@ -62,8 +61,7 @@ const DetailTypeofRoom = () => {
       const encodedGuests = [`adults:1,children:0,infants:0`];
       const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
   
-      const hotel = `${data.hotel_id}, ${hotelData?.name}`
-      
+      const hotel = `${data.hotel_id}, ${data.nameHotel}`
       const url = `/choose-service/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
       console.log("url", url);
   
@@ -97,31 +95,11 @@ const DetailTypeofRoom = () => {
       setCurrentImageIndex(0);
     }
   };
-  useEffect(() => {
-    let timer:any;
-
-    if (showModal) {
-      // Tạo một hàm để chuyển đổi ảnh tiếp theo
-      const showNextImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-      };
-
-      // Thiết lập một interval để tự động chuyển đổi ảnh sau mỗi 2 giây
-      timer = setInterval(showNextImage, 2000);
-    } else {
-      clearInterval(timer); // Xóa interval khi Modal không hiển thị
-    }
-
-    return () => {
-      clearInterval(timer); // Đảm bảo xóa interval khi component unmounts
-    };
-  }, [showModal, images]);
-
 
   return (
     <div className='max-w-7xl mx-auto my-5'>
       <div className="flex justify-between pb-5">
-        <h1 className=' uppercase'><span className='text-2xl font-bold text-blue-900 italic'>{hotelData?.name}</span> - <span className='text-lg font-semibold'>{data?.name}</span></h1>
+        <h1 className='text-2xl uppercase font-bold'>{data?.nameHotel}</h1>
         <button className='flex items-center text-red-500 font-semibold hover:text-red-700'><AiOutlineHeart className='mx-2' /> Yêu thích</button>
       </div>
       <div className='grid grid-cols-5 gap-8'>
@@ -139,8 +117,7 @@ const DetailTypeofRoom = () => {
             <img src="https://booking-static.vinpearl.com/room_types/58dbe43d1302477fbaf0c10782bcca91_3630-039.jpg" alt="" className='w-full rounded' />
           </div>
           <div className=''>
-            <img src="https://booking-static.vinpearl.com/room_types/d76f7196be2e4dc48052b4216cf5d3b6_3630-024.jpg" alt="" className='w-full rounded cursor-pointer'
-             onClick={toggleModal}/>
+            <img src="https://booking-static.vinpearl.com/room_types/d76f7196be2e4dc48052b4216cf5d3b6_3630-024.jpg" alt="" className='w-full rounded' onClick={toggleModal}/>
             
           </div>
           {/*  */}
@@ -150,7 +127,7 @@ const DetailTypeofRoom = () => {
           isOpen={showModal}
           onRequestClose={toggleModal}
           contentLabel="Additional Images"
-          className="modal mx-auto mt-[100px] animate-fade-in "
+          className="modal mx-auto mt-[200px] animate-fade-in "
         >
           <div className='max-w-3xl mx-auto'>
             <button
@@ -160,7 +137,7 @@ const DetailTypeofRoom = () => {
               <AiOutlineClose className='text-2xl' />
             </button>
             <div className='relative'>
-              <img src={images[currentImageIndex]} alt="" className='w-full rounded ' />
+              <img src={images[currentImageIndex]} alt="" className='w-full rounded' />
               <div className='absolute inset-0 flex justify-between items-center'>
                 <button
                   className='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded'
@@ -189,7 +166,8 @@ const DetailTypeofRoom = () => {
           <RangePicker onChange={handleRangeChange} />
           <button
             className="bg-blue-500 hover:bg-blue-700 border-none text-white py-1 px-2 rounded my-2"
-            onClick={handleButtonClick}>
+            onClick={handleButtonClick}
+          >
             Chọn ngày
           </button>
         </div>
@@ -201,7 +179,7 @@ const DetailTypeofRoom = () => {
         <h1 className='text-xl font-semibold pb-4'>Bạn cảm thấy ưng ý chưa ?</h1>
         <div className=' flex justify-end space-x-8 '>
           <button onClick={onHandSubmit} className='bg-blue-500 hover:bg-blue-700 text-white py-4 px-2 rounded my-2'>Đặt phòng ngay</button>
-          <Link to={`/hotel/${idHotel}`} className='bg-red-300 hover:bg-red-700 py-4 text-white  px-2 rounded  my-2'>Quay lại</Link>
+          <Link to={`/hotel`} className='bg-red-300 hover:bg-red-700 py-4 text-white  px-2 rounded  my-2'>Quay lại</Link>
         </div>
       </div>
       <div className='py-5'>

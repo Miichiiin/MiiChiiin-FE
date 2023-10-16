@@ -93,11 +93,11 @@ export const router = createBrowserRouter([
                 element:<Order/>
             },
             {
-                path: '/hotel/:id/rooms/roomtypes',
+                path: '/hotels/rooms/roomtypes',
                 element: <RoomTypes />
             },
             {
-                path: '/hotel/:idHotel/rooms/detail/:idRoom',
+                path: '/hotels/rooms/detail/:id',
                 element: <DetailTypeofRoom />
             },
             {

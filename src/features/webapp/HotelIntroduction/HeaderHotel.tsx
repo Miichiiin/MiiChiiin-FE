@@ -2,11 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineDown} from "react-icons/ai";
 import "../../../components/Css/index.css"
 import Cart from "@/components/cart";
-import { useGetHotel_homeByIdQuery, useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
-import { useParams } from "react-router-dom";
 const HeaderHotel = () => {
-    const {id} = useParams<{id: string}>()
-    const {data: hotelData} = useGetHotel_homeByIdQuery(id);
     /*Hàm Dropdow*/ 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -162,8 +158,8 @@ const HeaderHotel = () => {
                             </div>
                         </div>
                         <div className={` transition-opacity z-0 lg:ml-10 absolute top-[450px] sm:ml-5 ${isFixed ? 'absolute top-[-400px] opacity-0 ' : ''}`}>
-                            <h1 className="lg:text-[45px] text-white mb-5 sm:text-[30px] font-medium" style={{ textShadow: '2px 2px 4px #000' }}>{hotelData?.name}</h1>
-                            <p className="text-white sm:text-[11px] lg:text-[20px] font-medium" style={{ textShadow: '2px 2px 4px #000' }}>{hotelData?.description}</p>
+                            <h1 className="lg:text-[45px] text-white mb-5 sm:text-[30px] font-medium">VinHolidays Fiesta Phú Quốc</h1>
+                            <p className="text-white sm:text-[11px] lg:text-[20px] font-medium">Phú Quốc, Viêt Nam</p>
                         </div>
                     </div>
                 </div>

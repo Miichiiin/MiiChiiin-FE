@@ -33,6 +33,3 @@
     after:bottom-2 after:left-0 after:bg-[#e8952f] after:h-0.5 after:w-0 hover:after:w-full after:transition-all
     after:ease-in-out after:duration-300;
 }
-.modal-image {
-    transition: opacity 0.3s ease-in-out; /* Thay đổi opacity trong 0.3 giây với hiệu ứng ease-in-out */
-  }
