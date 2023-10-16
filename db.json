@@ -795,13 +795,35 @@
         }
       ],
       "id": 14
+    },
+    {
+      "name": "đasa",
+      "cccd": "dsadsads",
+      "phone": "0332304352",
+      "email": "vinhkqph25485@fpt.edu.vn",
+      "check_in": "2023-10-03T16:54:41.338Z",
+      "check_out": "2023-10-11T16:54:43.553Z",
+      "people_quantity": 22,
+      "nationality": "dsad",
+      "total_rooms": 3,
+      "total_amount": 2065,
+      "cart": [
+        {
+          "id_cate": 1,
+          "services": [
+            1,
+            2
+          ]
+        }
+      ],
+      "id": 15
     }
   ],
   "vouchers": [
     {
       "id": 1,
       "name": "Mùa hè sôi động",
-      "name_hotel":"Khách sạn MiiChi - Đà Nẵng",
+      "name_hotel": "Khách sạn MiiChi - Đà Nẵng",
       "slug": "Qui.",
       "image": "https://statics.vinpearl.com/styles/365x240/public/2023_09/trung-thu-2023-tai-vinpearl-banner_1695893719.jpg.webp?itok=3tuRInjl",
       "quantity": 6,
@@ -816,7 +838,7 @@
     },
     {
       "id": 2,
-      "name_hotel":"Khách sạn MiiChi - Hội An",
+      "name_hotel": "Khách sạn MiiChi - Hội An",
       "name": "Mùa hè náo nhiệt",
       "slug": "Qui.",
       "image": "https://statics.vinpearl.com/styles/365x240/public/2023_07/uu-dai-vinpearl-techcombank_1689590957.jpg.webp?itok=DrRVNwkB",
@@ -832,7 +854,7 @@
     },
     {
       "id": 3,
-      "name_hotel":"Khách sạn MiiChi - Quảng Ninh",
+      "name_hotel": "Khách sạn MiiChi - Quảng Ninh",
       "name": "Mùa hè đi biển",
       "slug": "Qui.",
       "image": "https://statics.vinpearl.com/styles/365x240/public/2023_06/uu-dai-vinpearl-danh-cho-nhom-ban-thumb_1686133190.jpg.webp?itok=n6FNM-V2",
@@ -848,7 +870,7 @@
     },
     {
       "id": 4,
-      "name_hotel":"Khách sạn MiiChi -Nha Trang",
+      "name_hotel": "Khách sạn MiiChi -Nha Trang",
       "name": "Hè rồi đi thôi",
       "slug": "Qui.",
       "image": "https://statics.vinpearl.com/styles/365x240/public/2023_06/uu-dai-vinpearl-danh-cho-nhom-ban-thumb_1686133190.jpg.webp?itok=n6FNM-V2",

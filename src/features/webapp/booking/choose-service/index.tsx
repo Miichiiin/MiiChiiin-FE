@@ -8,7 +8,7 @@ import {
   AiOutlineUp,
   AiOutlineArrowRight,
 } from "react-icons/ai";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { Button } from "antd";
@@ -89,7 +89,7 @@ const ChooseService = () => {
     console.log("submitsermist", selectedServices);
     const service = JSON.stringify(selectedServices);
     console.log("submithotel", hotel);
-    const url = `/booking/${hotel}/${date}/${roomNumber}/${service}/`;
+    const url = `/booking/${hotel}/${date}/${JSON.stringify(roomNumber)}/${service}/${dataParam.numberPeople}`;
     localStorage.clear();
     navigate(url);
     // navigate(`/booking`)

@@ -33,7 +33,8 @@ import ratingApi, { ratingReducer } from '@/api/admin/rates_admin';
 import { cartReducer } from '@/api/cartSlice';
 import roleApi, { roleReducer } from '@/api/admin/role_admin';
 import permissionApi, { permissionReducer } from '@/api/admin/permission_admin';
-import middlewares from 'json-server-auth';
+// import middlewares from 'json-server-auth';
+import bookingUserApi, { bookingUserReducer } from '@/api/bookingUser';
 
 const persistConfig = {
     key: 'root',
@@ -60,7 +61,8 @@ const rootReducer = combineReducers({
     rating: ratingReducer,
     searchSlice: sliceReducer,
     roles_admin : roleReducer,
-    permission_admin: permissionReducer
+    permission_admin: permissionReducer,
+    bookingUser: bookingUserReducer
 })
 const middleware = [
     room_adminApi.middleware, 
@@ -79,7 +81,8 @@ const middleware = [
     hotel_HomeApi.middleware,
     ratingApi.middleware,
     roleApi.middleware,
-    permissionApi.middleware
+    permissionApi.middleware,
+    bookingUserApi.middleware
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
