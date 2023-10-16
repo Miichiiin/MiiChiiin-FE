@@ -18,52 +18,52 @@ const { RangePicker } = DatePicker;
 
 export const SearchHotel = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
+
   const [divClicked, setDivClicked] = useState(false);
   const [hotelsData, setHotelsData] = useState([]);
-  
+
   const searchSlide = useParams()
-  console.log("param",searchSlide);
-  
+  console.log("param", searchSlide);
+
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
     numberPeople = searchSlide.numberPeople.split('&').map((detailsString: string) => {
       const detailsArray = detailsString.split(',');
-  
+
       const roomDetails: { [key: string]: number } = {};
       detailsArray.forEach((detail) => {
         const [key, value] = detail.split(':');
         roomDetails[key] = parseInt(value);
       });
-  
+
       return roomDetails;
     });
   }
-  console.log("numberPeople",numberPeople);
-  
+  console.log("numberPeople", numberPeople);
+
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
     const timeArray = searchSlide.date.split(",");
     date = timeArray.map(time => new Date(time));
   }
-  console.log("date1",date);
-  
+  console.log("date1", date);
+
   let hotel: string[] = [];
   if (searchSlide && searchSlide.nameHotel) {
     hotel = searchSlide.nameHotel.split(",");
   }
-  
+
   console.log("khách sạn", hotel);
   const [selectedRange, setSelectedRange] = useState(date);
-  console.log("dsadsa",selectedRange[0]);
-  
+  console.log("dsadsa", selectedRange[0]);
+
   const [selectedHotel, setSelectedHotel] = useState(hotel[1]);
-  
+
 
   const navigate = useNavigate();
 
   const dateFormat = 'YYYY/MM/DD';
-  console.log("dayydsyayds",[dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]);
+  console.log("dayydsyayds", [dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]);
 
 
   type FieldType = {
@@ -77,7 +77,7 @@ export const SearchHotel = () => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
-    console.log("roomDetailsString",roomDetailsString)
+    console.log("roomDetailsString", roomDetailsString)
     navigate(url);
   }
 
@@ -231,11 +231,10 @@ export const SearchHotel = () => {
   const shouldShowScroll = numberOfRooms1 > 1;
   console.log("date", searchSlide.date)
   return (
-    <div className="ml-36">
+    <div className="xl:ml-[100px] 2xl:ml-[250px] md:ml-[50px] lg:ml-[75px]">
       <Form
         className="flex items-center w-full flex-wrap" // Thêm lớp flex-wrap để xử lý trường hợp tràn dòng
         name="basic"
-
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
@@ -243,20 +242,20 @@ export const SearchHotel = () => {
         // onFinish={onFinish}
         autoComplete="off"
       >
-        <div className="flex items-center w-full">
+        <div className="flex items-center w-full ">
           <Form.Item<FieldType>
             name="nameHotel"
             className="flex-grow"
 
           >
             <div ref={refCalen} onClick={handleDivClick}>
-              <div onClick={toggleDropdown} className="relative">
+              <div onClick={toggleDropdown} className="relative cursor-pointer">
                 <div
-                  className="border z-0 border-[#e0e0e0] xl:w-[400px] xl:h-[55px] xl:pl-[55px] 
-                        lg:w-[200px] lg:h-[55px] xl:text-[16px] lg:text-[11px] lg:pl-[40px] 
-                        sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px]"
+                  className="border rounded border-[#e0e0e0] xl:w-[410px] xl:h-[57px] xl:pl-[55px] 
+                  lg:w-[200px] lg:h-[55px] xl:text-[16px] lg:text-[11px] lg:pl-[40px] 
+                  sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px] transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md"
                 >
-                  <span className="text-[#b0b4b8] absolute top-4">
+                  <span className="text-gray-700 absolute pt-[13px]">
                     {selectedHotel || "Bạn nhập nơi muốn đến..."}
                   </span>
                 </div>
@@ -265,8 +264,8 @@ export const SearchHotel = () => {
                 </span>
               </div>
               {isDropdownOpen && (
-                <div className="absolute">
-                  <div className="box-full rounded-md top-1 bg-white px-6 py 6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute transition duration-2000">
+                <div className="absolute cursor-pointer">
+                  <div className="box-full rounded-md top-1 bg-white px-6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute transition duration-2000">
                     {hotelsData.map((hotel: any) => (
                       <div key={hotel.id} className="leading-[45px]">
                         <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
@@ -289,15 +288,9 @@ export const SearchHotel = () => {
             </div>
           </Form.Item>
 
-          <Form.Item className="flex-grow ml-2 "
-          >
+          <Form.Item className="flex-grow ml-2">
             <RangePicker
-              style={{
-                width: '280px',
-                fontSize: '16px',
-                height: '55px',
-                borderRadius: '0',
-              }}
+              className="w-[280px] text-[16px] h-[57px] border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md"
               defaultValue={[dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]}
               format={dateFormat}
               onChange={(datas) => handleRangeChange(datas)}
@@ -309,38 +302,33 @@ export const SearchHotel = () => {
           </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
-            <button>
-              <div className="flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] ">
+            <button className='w-[310px]' >
+              <div className="flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md ">
                 <span className="xl:text-[22px] lg:text-[19px] mr-4">
                   <AiOutlineUser />
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
-                  <div className="xl:text-[12px] xl:space-x-7 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-medium">
-                    <label htmlFor="">Số phòng </label>
-                    <label htmlFor="">Số người </label>
+                  <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-semibold ">
+                    <label htmlFor="" className='cursor-pointer'>Số phòng </label>
+                    <label htmlFor="" className='cursor-pointer pl-[20px]'>Số người </label>
                   </div>
                   <div
                     onClick={toggleDropdown1}
-                    className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46]"
+                    className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46] w-[320px] cursor-pointer"
                   >
-                    <label htmlFor="">{numberOfRooms1} phòng</label>
-                    <label htmlFor="">
-                      {roomDetails1.reduce(
-                        (total, room) => total + room.adults,
-                        0
-                      )}{" "}
-                      người -
-                      {roomDetails1.reduce(
-                        (total, room) => total + room.children,
-                        0
-                      )}
+                    <label htmlFor="" className='cursor-pointer pl-0.5'>{numberOfRooms1} phòng</label>
+                    <label htmlFor="" className='cursor-pointer '>
+                      {roomDetails1.reduce((total, room) => total + room.adults, 0)}{" "}
+                      người lớn - {" "}
+                      {roomDetails1.reduce((total, room) => total + room.children, 0)}{" "}
+                      trẻ em
                     </label>
                   </div>
                 </div>
                 <div ref={refCalen1}>
                   {isDropdownOpen1 && (
-                    <div className="absolute  lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 ">
-                      <div className="flex items-center justify-between cursor-pointer text-[15px]">
+                    <div className="absolute mt-1 lg:w-[385px] sm:w-[340px] ml-[-20px] bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 rounded-md ">
+                      <div className="flex items-center justify-between cursor-pointer text-[15px] ">
                         <span className="font-medium">Số phòng</span>
                         <div className="flex items-center space-x-4">
                           {numberOfRooms1 > 1 && (
@@ -384,20 +372,20 @@ export const SearchHotel = () => {
                                 <div className="flex items-center space-x-3">
                                   <button
                                     onClick={() =>
-                                      handleAdultChange1(index, room.adults + 1)
-                                    }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                                  >
-                                    <AiOutlinePlus />
-                                  </button>
-                                  <a href="">{room.adults}</a>
-                                  <button
-                                    onClick={() =>
                                       handleAdultChange1(index, room.adults - 1)
                                     }
                                     className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
                                   >
                                     <AiOutlineMinus />
+                                  </button>
+                                  <a href="">{room.adults}</a>
+                                  <button
+                                    onClick={() =>
+                                      handleAdultChange1(index, room.adults + 1)
+                                    }
+                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                  >
+                                    <AiOutlinePlus />
                                   </button>
                                 </div>
                               </span>
@@ -406,18 +394,7 @@ export const SearchHotel = () => {
                                   Trẻ em
                                 </h2>
                                 <div className="flex items-center space-x-3">
-                                  <button
-                                    onClick={() =>
-                                      handleChildrenChange1(
-                                        index,
-                                        room.children + 1
-                                      )
-                                    }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                                  >
-                                    <AiOutlinePlus />
-                                  </button>
-                                  <a href="">{room.children}</a>
+
                                   <button
                                     onClick={() =>
                                       handleChildrenChange1(
@@ -428,6 +405,18 @@ export const SearchHotel = () => {
                                     className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
                                   >
                                     <AiOutlineMinus />
+                                  </button>
+                                  <a href="">{room.children}</a>
+                                  <button
+                                    onClick={() =>
+                                      handleChildrenChange1(
+                                        index,
+                                        room.children + 1
+                                      )
+                                    }
+                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                  >
+                                    <AiOutlinePlus />
                                   </button>
                                 </div>
                               </span>
@@ -440,18 +429,6 @@ export const SearchHotel = () => {
                                     onClick={() =>
                                       handleInfantChange1(
                                         index,
-                                        room.infants + 1
-                                      )
-                                    }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                                  >
-                                    <AiOutlinePlus />
-                                  </button>
-                                  <a href="">{room.infants}</a>
-                                  <button
-                                    onClick={() =>
-                                      handleInfantChange1(
-                                        index,
                                         room.infants - 1
                                       )
                                     }
@@ -459,6 +436,19 @@ export const SearchHotel = () => {
                                   >
                                     <AiOutlineMinus />
                                   </button>
+                                  <a href="">{room.infants}</a>
+                                  <button
+                                    onClick={() =>
+                                      handleInfantChange1(
+                                        index,
+                                        room.infants + 1
+                                      )
+                                    }
+                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                  >
+                                    <AiOutlinePlus />
+                                  </button>
+
                                 </div>
                               </span>
                             </div>
@@ -475,8 +465,8 @@ export const SearchHotel = () => {
             </button>
           </Form.Item>
 
-          <Form.Item className="border border-[#e0e0e0] ml-2">
-            <div className="flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-40 h-18">
+          <Form.Item className="flex-grow ml-2">
+            <div className="flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-40 h-[57px] border border-[#e0e0e0] rounded">
               <span className="xl:text-[23px] lg:text-[16px] sm:text-[12px] mr-4 ">
                 <AiOutlineIdcard />
               </span>
@@ -487,19 +477,15 @@ export const SearchHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2">
-            <Button
-              htmlType="submit"
-              className="text-white bg-[#e8952f] px-10 py-7 font-bold text-center xl:text-[16px] lg:text-[16px] sm:text-[12px] "
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "0", // Áp dụng borderRadius thành 0
-              }}
+            <button
+              type="submit"
+              className="border text-white bg-[#e8952f] xl:text-center px-8 h-[57px] font-bold xl:text-[16px] lg:text-[16px] sm:text-[12px]
+            hover:border-[#e8952f] hover:bg-[#f2ba50] transition-all duration-300 ease-in-out flex items-center justify-center rounded"
               onClick={onHandSubmit}
             >
-              Tìm kiếm
-            </Button>
+              <span>Tìm</span>
+              <span className="ml-1">kiếm</span>
+            </button>
           </Form.Item>
         </div>
       </Form>
