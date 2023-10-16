@@ -44,11 +44,11 @@ const RoomTypes = () => {
         price: data[index]?.price
       }];
       const encodedGuests = [`adults:1,children:0,infants:0`];
-      const encodedSelectedRooms = 1;
+      const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
   
       const hotel = `${data[1].hotel_id}, ${data[1].nameHotel}`
       console.log("hoteldl:",hotel)
-      const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
+      const url = `/choose-service/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
       console.log("url", url);
   
       navigate(url);

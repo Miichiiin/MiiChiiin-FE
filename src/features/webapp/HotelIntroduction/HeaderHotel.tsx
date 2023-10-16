@@ -18,6 +18,7 @@ const HeaderHotel = () => {
   const handleScroll = () => {
     setIsFixed(window.scrollY > 800);
   };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -28,12 +29,15 @@ const HeaderHotel = () => {
     /*click ngoài = out*/
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null); 
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   const closeMenu = () => {
     setIsMenuOpen(false);
     setIsScrollLocked(false); // Đặt giá trị trạng thái cuộn trang
+
   };
   
   useEffect(() => {
@@ -42,10 +46,12 @@ const HeaderHotel = () => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         closeMenu();
       }
+
       if (isDropdownOpen && !target?.closest(".dropdown-button")) {
         setIsDropdownOpen(false);
       }
     };
+
     window.addEventListener("mousedown", handleClickOutside);
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
@@ -55,6 +61,7 @@ const HeaderHotel = () => {
   const toggleMenuu = () => {
     setIsMenuOpen(!isMenuOpen);
     setIsScrollLocked(!isMenuOpen); // Đặt giá trị trạng thái cuộn trang
+
   };
   const closeMenuu = () => {
     setIsMenuOpen(false);
@@ -66,6 +73,7 @@ const HeaderHotel = () => {
         closeMenu();
       }
     };
+
     window.addEventListener("mousedown", handleClickOutside);
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
@@ -73,6 +81,7 @@ const HeaderHotel = () => {
   }, []);
   /*Khóa cuộn trang*/
   const [isScrollLocked, setIsScrollLocked] = useState(false);
+
   useEffect(() => {
     if (isScrollLocked) {
       document.documentElement.style.overflow = 'hidden'; // Khóa cuộn trang
@@ -80,6 +89,7 @@ const HeaderHotel = () => {
     
       document.documentElement.style.overflow = 'auto'; // Cho phép cuộn trang
     }
+
     return () => {
       document.documentElement.style.overflow = 'auto'; // Đảm bảo rằng cuộn trang đã được kích hoạt trở lại khi component bị unmount
     };
@@ -120,6 +130,7 @@ const HeaderHotel = () => {
                         <div className="">
                             <div className="flex items-center mx-auto mt-6 justify-between  
                                 lg:ml-10
+
                             ">
                                 <ul className="flex items-center space-x-[30px] text-[12px] text-white 
                                     xl:space-x-[80px] xl:text-[17px]
@@ -182,4 +193,5 @@ const HeaderHotel = () => {
     </div>
   )
 }
+
 export default HeaderHotel
