@@ -23,10 +23,18 @@ const bookingUserApi = createApi({
             query: (id) => `/bookingDetail/${id}`,
             providesTags: ['BookingUser']
         }),
+        addBookingUser: builder.mutation<any,any>({
+            query: (product) => ({
+                url: `/booking`,
+                method: "POST",
+                body: product
+            }),
+            invalidatesTags: ['BookingUser']
+        }),
     })
 })
 export const { 
- useGetBokingUserQuery, useGetBookingDetailUserQuery
+ useGetBokingUserQuery, useGetBookingDetailUserQuery, useAddBookingUserMutation
  } = bookingUserApi;
 export const bookingUserReducer = bookingUserApi.reducer;
 export default bookingUserApi;
