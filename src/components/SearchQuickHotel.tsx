@@ -135,6 +135,9 @@ export const SearchQuickHotel = () => {
   }, [divClicked1]);
   //
 
+  console.log("user", localStorage.getItem("user"));
+  
+
   /*Tăng số lượng phòng*/
   interface RoomDetail {
     adults: number;

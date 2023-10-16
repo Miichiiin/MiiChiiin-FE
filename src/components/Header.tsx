@@ -98,6 +98,22 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const [loggedIn, setLoggedIn] = useState<any | null>(() => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+  });
+
+  const handleLogout = () => {
+   const confirm =  window.confirm("Bạn có muốn đăng xuất")
+    if(confirm){
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setLoggedIn(null);
+    }
+    
+  };
+
   return (
     <div>
       <header className=" ">
@@ -116,25 +132,35 @@ const Header = () => {
                 : "duration-500 "
             }`}
           >
-            <div
-              className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 
-                        lg:text-[15px] lg:mr-10 
-                        sm:mr-10
-                        "
-            >
-              <div
-                className="flex items-center justify-end space-x-2 mt-6 text-white 
-                         lg:text-[15px] 
-                        "
-              >
+            <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 lg:text-[15px] lg:mr-10 sm:mr-10">
+              <div className="flex items-center justify-end space-x-2 mt-6 text-white lg:text-[15px] ">
                 <span className="text-[28px] ">
                   {" "}
                   <AiOutlineSearch />
                 </span>{" "}
-                <a href="" className="hover:">
-                  Đăng nhập
-                </a>
-                <AiOutlineRight />
+                {loggedIn ? (
+                  <>
+                    <div className="text-white me-3">
+                      Xin chào : {loggedIn?.name}
+                    </div>
+                      <button
+                      onClick={handleLogout}
+                      className=" px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+                      style={{ marginRight: "30px" }}
+                    >
+                      {" "}
+                      Logout
+                    </button>
+                  
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="hover:">
+                      Đăng nhập
+                    </Link>
+                    <AiOutlineRight />
+                  </>
+                )}
                 <span className="pl-2 pr-1 text-[14px]">/</span>
                 <button
                   type="submit"

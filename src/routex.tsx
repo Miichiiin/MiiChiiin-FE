@@ -51,6 +51,7 @@ import UpdateBooking from "./features/admin/booking/UpdateBooking";
 import Permission from "./features/admin/Permission/Permission";
 import IndexPremission from "./features/admin/Permission/IndexPremission";
 import Promotion from "./features/webapp/Promotion";
+import DetailBooking from "./features/admin/booking/DetailBooking";
 
 
 
@@ -181,6 +182,10 @@ export const router = createBrowserRouter([
             {
                 path: "updatebooking/:id",
                 element: <UpdateBooking/>
+            },
+            {
+                path: "detailbooking/:id",
+                element: <DetailBooking />,
             },
             {
                 path: "usermanagement",

@@ -29,14 +29,14 @@ const users = [
    
   ];
 export const BookingManagement = () => {
-    const {data: dataBooking} = useGetBooking_adminQuery({})
+    const { data: dataBooking } = useGetBooking_adminQuery({})
     const [removeBooking] = useRemoveBooking_adminMutation()
     const [searchText, setSearchText] = useState("");
     const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
 
-    const data = dataBooking?.map(({id, check_in,check_out,email,name,people_quantity,total_amount,status,cccd,nationality,id_user,phone,promotion,cart}:DataType) => ({
+    const data = dataBooking?.map(({ id, check_in, check_out, email, name, people_quantity, total_amount, status, cccd, nationality, id_user, phone, promotion, cart }: DataType) => ({
         key: id,
         check_in,
         check_out,
@@ -54,14 +54,14 @@ export const BookingManagement = () => {
     }))
     interface DataType {
         key: number;
-        id:number|string;
+        id: number | string;
         check_in: Date;
         check_out: Date;
         email: string;
         name: string;
         people_quantity: number;
         total_amount: number;
-        status: number|string
+        status: number | string
         cccd: string;
         nationality: string;
         id_user: number;
@@ -110,30 +110,29 @@ export const BookingManagement = () => {
             dataIndex: 'status',
             key: 'status',
         },
+        // Modify the render functions for 'check_in' and 'check_out' columns
+
         {
             title: 'Ngày đặt',
             dataIndex: 'check_in',
             key: 'check_in',
             render: (text, record) => {
-              const formattedDate = dayjs(record.check_in)
-                .utc() // Chuyển đổi sang múi giờ UTC
-                .local() // Chuyển đổi lại sang múi giờ cục bộ (Việt Nam)
-                .format('DD/MM/YYYY HH:mm'); // Định dạng ngày tháng giờ phút
-              return <span>{formattedDate}</span>;
+                const formattedDate = dayjs(record.check_in)
+                    .format('DD/MM/YYYY HH:mm'); // Remove .utc() and .local()
+                return <span>{formattedDate}</span>;
             },
-          },
-          {
+        },
+        {
             title: 'Ngày trả',
             dataIndex: 'check_out',
             key: 'check_out',
             render: (text, record) => {
-              const formattedDate = dayjs(record.check_out)
-                .utc() // Chuyển đổi sang múi giờ UTC
-                .local() // Chuyển đổi lại sang múi giờ cục bộ (Việt Nam)
-                .format('DD/MM/YYYY HH:mm'); // Định dạng ngày tháng giờ phút
-              return <span>{formattedDate}</span>;
+                const formattedDate = dayjs(record.check_out)
+                    .format('DD/MM/YYYY HH:mm'); // Remove .utc() and .local()
+                return <span>{formattedDate}</span>;
             },
-          },
+        },
+
         {
             title: 'Số người',
             dataIndex: 'people_quantity',
@@ -150,12 +149,14 @@ export const BookingManagement = () => {
             key: 'nationality'
         },
         {
-            title: 'Mã giảm giá',
-            dataIndex: 'promotion',
-            key: 'promotion'
-        },
-        {
-            
+            title: "Hành động",
+            key: "action",
+            render: (text, record) => (
+                <div className="flex items-center">
+                    <button className="mr-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={`/admin/updatebooking/${record.key}`}>Sửa</Link></button>
+                    <Link to={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</Link>
+                </div>
+            )
         }
     ];
     // Xóa booking
@@ -186,7 +187,7 @@ export const BookingManagement = () => {
             <div className='flex justify-between items-center mb-4'>
                 <div className="text-lg font-semibold">Quản lý đơn hàng</div>
                 <div className='flex items-center'>
-                <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
+                    <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
                     <Select
                         showSearch
                         style={{ width: 200 }}
