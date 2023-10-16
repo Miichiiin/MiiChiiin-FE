@@ -52,6 +52,8 @@ import Permission from "./features/admin/Permission/Permission";
 import IndexPremission from "./features/admin/Permission/IndexPremission";
 import Promotion from "./features/webapp/Promotion";
 import DetailBooking from "./features/admin/booking/DetailBooking";
+import HotelStatistics from "./features/admin/HotelStatistics";
+import HotelChainStatistic from "./features/admin/HotelChainStatistics";
 
 
 
@@ -93,11 +95,11 @@ export const router = createBrowserRouter([
                 element:<Order/>
             },
             {
-                path: '/hotels/rooms/roomtypes',
+                path: '/hotel/:id/rooms/roomtypes',
                 element: <RoomTypes />
             },
             {
-                path: '/hotels/rooms/detail/:id',
+                path: '/hotel/:id/rooms/detail/:id',
                 element: <DetailTypeofRoom />
             },
             {
@@ -141,7 +143,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <HotelChainStatistics />,
+                element: <HotelStatistics/>,
             },
             {
                 path: "manageroomtype",
@@ -284,6 +286,10 @@ export const router = createBrowserRouter([
             {
                 path:"indexPermission",
                 element:<IndexPremission/>
+            },
+            {
+                path:"HotelChainStatistics",
+                element:<HotelChainStatistic/>
             }
 
         ],

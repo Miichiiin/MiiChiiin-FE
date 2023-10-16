@@ -57,7 +57,8 @@ export const LayoutAdmin = () => {
           'get booking',
           'get user',
           'get hotel',
-          'get permission'
+          'get permission',
+          'get hotelchainstatistics'
         ]
       },
     }
@@ -73,18 +74,30 @@ export const LayoutAdmin = () => {
     if (currentUserPermissions.includes('get statisticshotels')) {
       menuItems.push(
         getItem(
-          <Link to={"statisticshotels"}>Thống kê theo chuỗi</Link>,
+          <Link to={"statisticshotels"}>Thống kê theo khách sạn</Link>,
           "1",
           <AiFillSignal />
         )
       );
     }
 
+    if (currentUserPermissions.includes('get hotelchainstatistics')) {
+      menuItems.push(
+        getItem(
+          <Link to={"HotelChainStatistics"}>Thống kê chuỗi khách sạn</Link>,
+          "2",
+          <AiFillSignal />
+        )
+      );
+    }
+
+    
+
     if (currentUserPermissions.includes('get manageroomtype')) {
       menuItems.push(
         getItem(
           <Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>,
-          "2",
+          "3",
           <BiSolidBed />
         )
       );
@@ -94,7 +107,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"managervouchers"}>Quản lý Vouchers</Link>,
-          "3",
+          "4",
           <AiOutlineCreditCard />
         )
       );
@@ -104,7 +117,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"manageremployee"}>Quản lý Nhân Viên</Link>,
-          "4",
+          "5",
           <UserOutlined />
         )
       );
@@ -114,7 +127,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"managerroom"}>Quản lý Phòng</Link>,
-          "5",
+          "6",
           <BiHotel />
         )
       );
@@ -124,7 +137,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
-          "6",
+          "7",
           <UserOutlined />
         )
       );
@@ -134,7 +147,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"commentmanagement"}>Quản lý comment</Link>,
-          "7",
+          "8",
           <BiCommentDetail />
         )
       );
@@ -144,7 +157,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"service"}>Quản lý dịch vụ</Link>,
-          "8",
+          "9",
           <MdMedicalServices />
         )
       );
@@ -154,7 +167,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>,
-          "9",
+          "10",
           <TbBrandBooking />
         )
       );
@@ -164,7 +177,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"usermanagement"}>Quản lý khách hàng</Link>,
-          "10",
+          "11",
           <AiOutlineUser />
         )
       );
@@ -174,7 +187,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"hotelmanagement"}>Quản lý khách sạn</Link>,
-          "11",
+          "12",
           <FaHotel />
         )
       );
@@ -184,7 +197,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"indexPermission"}>Quản lý quyền</Link>,
-          "12",
+          "13",
           <FaHotel />
         )
       );

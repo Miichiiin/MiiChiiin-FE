@@ -11,7 +11,7 @@ import Slider from "react-slick";
 import { TextTruncate } from "../../../components/TextTruncate";
 import Search from "../../../components/Search";
 import HeaderHotel from "./HeaderHotel";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 import { useGetVoucherQuery } from "@/api/admin/voucher";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
@@ -20,6 +20,7 @@ const HotelIntroduction = () => {
   const { data } = useGetCategory_homeQuery();
   const { data: voucher } = useGetVoucherQuery();
   const { data: service } = useGetService_hotelQuery();
+  const {id:idHotel} = useParams<{id:string}>();
 
   let settings = {
     dots: false,
@@ -115,7 +116,7 @@ const HotelIntroduction = () => {
           <div className="flex items-center justify-between w-[1280px] mx-auto mt-[80px]">
             <h1 className="text-[30px]">Các hạng phòng</h1>
             <span className="flex items-center space-x-2 text-[#f2ba50]">
-              <Link to="/hotels/rooms/roomtypes">Xem tất cả </Link>
+            <Link to={`/hotel/${idHotel}/rooms/roomtypes`}>Xem tất cả </Link>
               <AiOutlineArrowRight />
             </span>
           </div>
@@ -139,7 +140,7 @@ const HotelIntroduction = () => {
                   <>
                     <div>
                       <div className="relative overflow-hidden mb-4">
-                        <Link to={`/hotels/rooms/detail/${item.id}`}>
+                        <Link to={`/hotel/${item.hotel_id}/rooms/detail/${item.id}`}>
                           <img
                             className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                             src={item.image}

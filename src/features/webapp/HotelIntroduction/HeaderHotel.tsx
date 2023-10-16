@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineDown} from "react-icons/ai";
 import "../../../components/Css/index.css"
 import Cart from "@/components/cart";
+import { useGetHotel_homeByIdQuery, useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
+import { useParams } from "react-router-dom";
 const HeaderHotel = () => {
+    const {id} = useParams<{id: string}>()
+    const {data: hotelData} = useGetHotel_homeByIdQuery(id);
     /*Hàm Dropdow*/ 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -14,7 +18,6 @@ const HeaderHotel = () => {
   const handleScroll = () => {
     setIsFixed(window.scrollY > 800);
   };
-
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -25,15 +28,12 @@ const HeaderHotel = () => {
     /*click ngoài = out*/
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null); 
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   const closeMenu = () => {
     setIsMenuOpen(false);
     setIsScrollLocked(false); // Đặt giá trị trạng thái cuộn trang
-
   };
   
   useEffect(() => {
@@ -42,12 +42,10 @@ const HeaderHotel = () => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         closeMenu();
       }
-
       if (isDropdownOpen && !target?.closest(".dropdown-button")) {
         setIsDropdownOpen(false);
       }
     };
-
     window.addEventListener("mousedown", handleClickOutside);
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
@@ -57,7 +55,6 @@ const HeaderHotel = () => {
   const toggleMenuu = () => {
     setIsMenuOpen(!isMenuOpen);
     setIsScrollLocked(!isMenuOpen); // Đặt giá trị trạng thái cuộn trang
-
   };
   const closeMenuu = () => {
     setIsMenuOpen(false);
@@ -69,7 +66,6 @@ const HeaderHotel = () => {
         closeMenu();
       }
     };
-
     window.addEventListener("mousedown", handleClickOutside);
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
@@ -77,7 +73,6 @@ const HeaderHotel = () => {
   }, []);
   /*Khóa cuộn trang*/
   const [isScrollLocked, setIsScrollLocked] = useState(false);
-
   useEffect(() => {
     if (isScrollLocked) {
       document.documentElement.style.overflow = 'hidden'; // Khóa cuộn trang
@@ -85,7 +80,6 @@ const HeaderHotel = () => {
     
       document.documentElement.style.overflow = 'auto'; // Cho phép cuộn trang
     }
-
     return () => {
       document.documentElement.style.overflow = 'auto'; // Đảm bảo rằng cuộn trang đã được kích hoạt trở lại khi component bị unmount
     };
@@ -126,7 +120,6 @@ const HeaderHotel = () => {
                         <div className="">
                             <div className="flex items-center mx-auto mt-6 justify-between  
                                 lg:ml-10
-
                             ">
                                 <ul className="flex items-center space-x-[30px] text-[12px] text-white 
                                     xl:space-x-[80px] xl:text-[17px]
@@ -158,8 +151,8 @@ const HeaderHotel = () => {
                             </div>
                         </div>
                         <div className={` transition-opacity z-0 lg:ml-10 absolute top-[450px] sm:ml-5 ${isFixed ? 'absolute top-[-400px] opacity-0 ' : ''}`}>
-                            <h1 className="lg:text-[45px] text-white mb-5 sm:text-[30px] font-medium">VinHolidays Fiesta Phú Quốc</h1>
-                            <p className="text-white sm:text-[11px] lg:text-[20px] font-medium">Phú Quốc, Viêt Nam</p>
+                            <h1 className="lg:text-[45px] text-white mb-5 sm:text-[30px] font-medium" style={{ textShadow: '2px 2px 4px #000' }}>{hotelData?.name}</h1>
+                            <p className="text-white sm:text-[11px] lg:text-[20px] font-medium" style={{ textShadow: '2px 2px 4px #000' }}>{hotelData?.description}</p>
                         </div>
                     </div>
                 </div>
@@ -189,5 +182,4 @@ const HeaderHotel = () => {
     </div>
   )
 }
-
 export default HeaderHotel
