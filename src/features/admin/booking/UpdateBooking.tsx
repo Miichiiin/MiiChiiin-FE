@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Select } from 'antd';
+import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Select, Radio } from 'antd';
 import { useGetCategory_homeQuery } from '@/api/webapp/category_home';
 import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
 import { useGetBooking_adminByIdQuery, useUpdateBooking_adminMutation } from '@/api/admin/booking_admin';
@@ -8,8 +8,8 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
-import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 import { BsTrash3 } from 'react-icons/bs';
+import { useGetRoom_AdminsQuery } from '@/api/admin/room_admin';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -45,15 +45,18 @@ interface FieldType {
   id_user: number;
   phone: string;
   cart: {
-    id_cate: number;
-    services: number[];
+    id_cate: number | string;
+    services: number[] | string[];
   }[];
+  id_room: string | number;
   promotion: number;
 }
 
 const UpdateBooking = () => {
   const { data: categories } = useGetCategory_homeQuery(); // Lấy danh sách loại phòng
   const { data: services } = useGetService_hotelQuery({}); // Lấy danh sách dịch vụ
+  const { data: roomsData } = useGetRoom_AdminsQuery({}) // Lấy danh sách phòng
+
   const navigate = useNavigate();
   const [updateBooking] = useUpdateBooking_adminMutation() // Thêm booking
   const [totalAmount, setTotalAmount] = useState<number>(0);
@@ -63,13 +66,14 @@ const UpdateBooking = () => {
   const [selectedRoomsData, setSelectedRoomsData] = useState<{ id_cate: number; services: number[] }[]>([]);
   const [selectedRoomIndex, setSelectedRoomIndex] = useState<number | null>(null);
   const [isRoomsHidden, setIsRoomsHidden] = useState(false);
-  const [isServicesVisible, setIsServicesVisible] = useState<{ [key: number]: boolean }>({});
   const [isServicesHidden, setIsServicesHidden] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>()
   const { data: bookingData } = useGetBooking_adminByIdQuery(id || "")
   const [roomCount, setRoomCount] = useState(0);
   const [maxRoomQuantity, setMaxRoomQuantity] = useState(0);
   const [availableRoomCounts, setAvailableRoomCounts] = useState<{ [key: number]: number }>({});
+  const [listRoomSelected, setListRoomSelected] = useState<any[]>([])
+  const [selectedRoom, setSelectedRoom] = useState<any[]>([])
 
   useEffect(() => {
     if (categories) {
@@ -118,7 +122,7 @@ const UpdateBooking = () => {
     setTotalAmount(total);
   };
 
-  //set giá trị phòng cũ vào form 
+  //set giá trị phòng cũ vào form
   useEffect(() => {
     if (bookingData) {
       setMaxRoomQuantity(bookingData?.total_rooms || 0);
@@ -200,6 +204,7 @@ const UpdateBooking = () => {
   };
   // Hàm hiện dịch vụ khi click vào phòng
   const handleRoomClick = (roomIndex: number) => {
+    setSelectedServices([]);
     const selectedCategory = categories?.find((category: any) => category.id === roomIndex); // Tìm loại phòng tương ứng với roomIndex
     if (availableRoomCounts[roomIndex] > 0) {
       const id_cate = selectedCategory.id;
@@ -211,25 +216,17 @@ const UpdateBooking = () => {
     }
 
   };
-
   const handleEnterPress = (value: number | undefined) => {
     // Xử lý giá trị khi có sự thay đổi trong InputNumber
     if (typeof value === 'number') {
       setMaxRoomQuantity(value); // Cập nhật maxRoomQuantity khi có thay đổi
     }
   };
-  const toggleServicesVisibility = (roomIndex: number) => {
-    setIsServicesVisible((prevIsServicesVisible) => ({
-      ...prevIsServicesVisible,
-      [roomIndex]: !prevIsServicesVisible[roomIndex],
-    }));
-  };
   const getServiceName = (serviceId: any) => {
     // Điều này chỉ là một ví dụ đơn giản, bạn cần thay thế bằng cách lấy tên dịch vụ từ dữ liệu thực tế của bạn.
     const serviceData = services?.find((service: any) => service.id === serviceId);
     return serviceData ? serviceData.name : 'Dịch vụ không tồn tại';
   };
-
   const handleRemoveRoom = (roomIndex: number) => {
     // Cập nhật lại mảng selectedRoomsData
     const updatedSelectedRoomsData = [...selectedRoomsData];
@@ -245,12 +242,61 @@ const UpdateBooking = () => {
     }
     // Giảm số lượng phòng đã chọn đi 1
     setRoomCount(roomCount - 1);
-    // Cập nhật lại tổng giá 
+    // Cập nhật lại tổng giá
     calculateTotalAmount(updatedSelectedRoomsData);
   };
   const handleCancelRemoveRoom = (e: React.MouseEvent<HTMLElement>) => {
     console.log(e);
     message.error('Click on No');
+  };
+  useEffect(() => {
+    form.setFieldsValue({
+      total_amount: totalAmount,
+    });
+  }, [totalAmount]);
+
+  const [isSelectingServices, setIsSelectingServices] = useState(false);
+  const [isSelectingRooms, setIsSelectingRooms] = useState(false);
+  const [hiddenSelectingRooms, setHiddenSelectingRooms] = useState(false);
+  const [hiddenSelectingServices, setHiddenSelectingServices] = useState(false);
+
+  const handleSelectRooms = (roomIndex: any) => {
+    setSelectedRoomIndex(roomIndex);
+    console.log(selectedRoomIndex);
+    setListRoomSelected(roomsData.filter((room: any) => room.id_cate === Number(selectedRoomIndex)+1))
+    setIsSelectingRooms(!isSelectingRooms);
+    setHiddenSelectingRooms(!hiddenSelectingRooms)
+    setIsSelectingServices(false);
+  }
+  const handleSelectServices = (roomIndex: any) => {
+    setSelectedRoomIndex(roomIndex);
+    setIsSelectingServices(!isSelectingServices);
+    const selectedServices = selectedRoomsData[roomIndex]?.services || [];
+    setSelectedServices(selectedServices);
+    setHiddenSelectingServices(!hiddenSelectingServices)
+    setIsSelectingRooms(false);
+
+  };
+  const handleUpdateCart = () => {
+    if (selectedRoomIndex !== null && selectedServices.length > 0) {
+      const updatedCartData = cartData.map((item) => { 
+        if (item.id_cate === selectedRoomIndex ) {
+          // Chỉ cập nhật dịch vụ (services) và giữ nguyên id_cate
+          return {
+            ...item,
+            services: selectedServices,
+          };
+        }
+        return item;
+      });
+
+      // Cập nhật mảng cartData
+      console.log("mảng mới cập nhật", updatedCartData);
+      setCartData(updatedCartData);
+      form.setFieldsValue({ cart: updatedCartData });
+      calculateTotalAmount(updatedCartData);
+    }
+    
   };
   const onFinish = (values: FieldType) => {
 
@@ -278,11 +324,6 @@ const UpdateBooking = () => {
     message.error('Cập nhật thất bại');
   };
 
-  useEffect(() => {
-    form.setFieldsValue({
-      total_amount: totalAmount,
-    });
-  }, [totalAmount]);
 
   return (
     <div className="mx-auto overflow-auto scroll-smooth">
@@ -298,7 +339,6 @@ const UpdateBooking = () => {
         autoComplete="off"
         form={form}
       >
-
         <div className=''>
           <div className="grid grid-cols-2 gap-8 ">
             <div className='grid grid-cols-2 h-screen'>
@@ -478,18 +518,19 @@ const UpdateBooking = () => {
                     <React.Fragment key={index}>
                       {(!isRoomsHidden && !isServicesHidden || (isRoomsHidden && selectedRoomIndex === category?.id)) && (
                         <div
-                          className={`p-4 rounded-md cursor-pointer border h-[125px] ${selectedRoomIndex === category?.id
-                            ? 'bg-blue-500 text-white border border-black'
-                            : category.total_rooms < 1
-                              ? 'bg-red-500 text-white cursor-not-allowed'
-                              : availableRoomCounts[category?.id] === 0
+                          className={`px-3 py-2 rounded-md cursor-pointer border h-full
+                          ${selectedRoomIndex === category?.id
+                              ? 'bg-blue-500 text-white border border-black'
+                              : category.total_rooms < 1
                                 ? 'bg-red-500 text-white cursor-not-allowed'
-                                : 'bg-[#15803d] '
+                                : availableRoomCounts[category?.id] === 0
+                                  ? 'bg-red-500 text-white cursor-not-allowed'
+                                  : 'bg-[#15803d] '
+
                             }`}
                           onClick={() => {
                             if (category.total_rooms >= 1) {
                               handleRoomClick(category?.id);
-                              toggleServicesVisibility(category?.id)
                             }
                           }}
                         >
@@ -501,9 +542,7 @@ const UpdateBooking = () => {
                       )}
                     </React.Fragment>
                   ))}
-
                 </div>
-
                 <div className="">
                   {isServicesHidden && selectedRoomIndex !== null && (
                     <Form.Item name={['cart', selectedRoomIndex, 'services']} className=''>
@@ -533,56 +572,123 @@ const UpdateBooking = () => {
                     </Form.Item>
 
                   )}
-                  <div className='flex justify-center items-center'><Button className='border border-blue-500 rounded px-4 mt-2 ' onClick={handleContinueClick}>Tiếp tục</Button></div>
+                  <div className='flex justify-center items-center'><Button className='border border-blue-500 rounded px-4 mt-2 w-full ' onClick={handleContinueClick}>Tiếp tục</Button></div>
                 </div>
               </div>
-
-              <div className='my-3 px-2'>
-                <h2 className='font-bold'>Các phòng đã chọn:</h2>
-                <ul className="">
-                  {selectedRoomsData.map((roomData, index) => {
+              {/*Các loại phòng đã chon*/}
+              <div className='p-3 rounded-md mt-3 ' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
+                <div className='text-md col-span-2'><h1>Các loại phòng đã chọn</h1></div>
+                <div className="grid grid-cols-2 gap-2">
+                  {selectedRoomsData?.map((roomData, index) => {
                     const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
-                    return (
-                      <li key={index} className="p-3 rounded-md border border-gray-300 mb-2">
-                        <div className='flex justify-between items-center'>
-                          <div>
-                            <p className='font-bold text-lg'>Phòng {index + 1}</p>
-                            <p>Tên loại phòng: {selectedCategory?.name}</p>
-                          </div>
-                          <button
-                            type='button'
-                            onClick={() => toggleServicesVisibility(index)}
-                            className="mb-2 flex items-center text-blue-500"
-                          >
-                            {isServicesVisible[index] ? <span className='flex items-center'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center'>Hiện dịch vụ <AiOutlineDown /></span>}
-                          </button>
-                        </div>
 
-                        {isServicesVisible[index] && (
-                          <ul>
-                            {roomData.services.map((serviceId, serviceIndex) => (
-                              <li key={serviceIndex}>
-                                Dịch vụ {serviceIndex + 1}: {getServiceName(serviceId)}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        <Popconfirm
-                          title="Xoá phòng ?"
-                          description="Bạn có chắc muốn xoá phòng này không ?"
-                          onConfirm={() => handleRemoveRoom(index)}
-                          onCancel={() => handleCancelRemoveRoom}
-                          okText={<span className='text-blue-900 font-semibold hover:text-white'>Yes</span>}
-                          cancelText="No"
-                        >
-                          <div className='flex justify-end'>
-                            <Button className="bg-red-300 flex justify-center items-center" type='primary' danger shape='circle'><BsTrash3 /></Button>
+                    return (
+                      <React.Fragment key={index}>
+                        {((!hiddenSelectingServices || selectedRoomIndex === index) && (!hiddenSelectingRooms || selectedRoomIndex === index)) && (
+                          <div
+                            className={`px-3 py-2 rounded-md border h-full`}>
+                            <h2 className="font-bold text-xl"> Phòng {index + 1}</h2>
+
+                            <div className="flex justify-between items-center">
+                              <h2 >
+                                <span className='pr-2'>Loại phòng:</span><span className='font-semibold italic'>{selectedCategory?.name}</span></h2>
+                              <Popconfirm
+                                title="Xoá phòng ?"
+                                description="Bạn có chắc muốn xoá phòng này không ?"
+                                onConfirm={() => handleRemoveRoom(index)}
+                                onCancel={() => handleCancelRemoveRoom}
+                                okText={<span className='text-blue-900 font-semibold hover:text-white'>Yes</span>}
+                                cancelText="No"
+                              >
+                                <div className='flex justify-end'>
+                                  <Button className="bg-red-300 flex justify-center items-center" type='primary' danger shape='circle'><BsTrash3 /></Button>
+                                </div>
+                              </Popconfirm>
+                            </div>
+                            <p className=''>Tên phòng : </p>
+                            <p className="text-md">Dịch vụ đã chọn: </p>
+                            <ul>
+                              {roomData.services.map((serviceId, serviceIndex) => (
+                                <li key={serviceIndex}>
+                                  Dịch vụ {serviceIndex + 1}: {getServiceName(serviceId)}
+                                </li>
+                              ))}
+                            </ul>
+                            <div className='flex justify-between item-center pt-4'>
+                              <Button onClick={() => handleSelectRooms(index)}>Chọn phòng</Button>
+                              <Button onClick={() => handleSelectServices(index)}>Chọn lại dịch vụ</Button>
+                            </div>
                           </div>
-                        </Popconfirm>
-                      </li>
+                        )}
+                      </React.Fragment>
                     );
                   })}
-                </ul>
+                </div>
+                <div className="">
+                  {isSelectingServices && selectedRoomIndex !== null && (
+                    <Form.Item name={['cart', selectedRoomIndex, 'services']} className=''>
+                      {services?.map((service: Service) => (
+                        <div key={service.id} className="my-3 flex items-center text-md w-[600px]">
+                          <Checkbox
+                            className=''
+                            value={service.id}
+                            checked={selectedServices.includes(service.id)}
+                            onChange={(e) => {
+                              const selectedServiceId = service.id;
+                              if (e.target.checked) {
+                                setSelectedServices([...selectedServices, selectedServiceId]);
+                              } else {
+                                setSelectedServices(selectedServices.filter((id) => id !== selectedServiceId));
+                              }
+                            }}
+                          />
+
+                          <div className='ml-1'>
+                            <span className='text-xl font-semibold text-blue-900 pl-2'>{service.name}</span>
+                            <span className='font-semibold px-5 text-md'>Giá : {service?.price} vnđ</span>
+                          </div>
+                        </div>
+
+                      ))}
+                    </Form.Item>
+                  )}
+                  {isSelectingRooms && selectedRoomIndex !== null && (
+                    <Form.Item name="id_room" className=''>
+                      <Radio.Group
+                        optionType="button"
+                        buttonStyle="solid"
+                        onChange={(e) => {
+                          const selectedRoomId = e.target.value;
+                          if (selectedRoom.includes(selectedRoomId)) {
+                            // If the room is already selected, remove it
+                            setSelectedRoom(selectedRoom.filter(id => id !== selectedRoomId));
+                          } else {
+                            // If the room is not selected, add it to the selected services
+                            setSelectedRoom([...selectedRoom, selectedRoomId]);
+                          }
+                        }}
+                      >
+                        {listRoomSelected?.map((room: any) => (
+                          <div key={room.id} className="my-3 flex items-center text-md w-[600px]">
+                            <Radio
+                              value={room.id}
+                              checked={selectedRoom.includes(room.id)}
+                              className='mr-2'
+                            >
+                              Phòng {room.name}
+                            </Radio>
+                          </div>
+                        ))}
+                      </Radio.Group>
+                    </Form.Item>
+                  )}
+
+
+
+                  <Button className='border border-blue-500 rounded px-4 mt-2 w-full ' onClick={handleUpdateCart}>
+                    Cập nhật cart
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -601,8 +707,6 @@ const UpdateBooking = () => {
               </Button>
             </div>
           </Form.Item></div>
-
-
       </Form>
     </div>
   );

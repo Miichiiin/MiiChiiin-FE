@@ -462,7 +462,6 @@ const AddBooking = () => {
                           onClick={() => {
                             if (category.total_rooms >= 1) {
                               handleRoomClick(category?.id);
-                              toggleServicesVisibility(category?.id)
                             }
                           }}
                         >

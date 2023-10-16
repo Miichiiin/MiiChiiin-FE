@@ -48,11 +48,11 @@
       "name": "102",
       "id_hotel": 1,
       "status": 1,
-      "id_cate": 1,
+      "id_cate": 2,
       "created_at": "2023-08-29T17:15:52.000000Z",
       "updated_at": "2023-08-29T17:15:52.000000Z",
       "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng Đôi"
+      "name_category": "Phòng View Biển"
     },
     {
       "id": 3,
@@ -63,14 +63,14 @@
       "created_at": "2023-08-29T17:15:52.000000Z",
       "updated_at": "2023-08-29T17:15:52.000000Z",
       "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng Đôi"
+      "name_category": "Phòng View Biển"
     },
     {
       "id": 4,
       "name": "104",
       "id_hotel": 1,
       "status": 1,
-      "id_cate": 3,
+      "id_cate": 1,
       "created_at": "2023-08-29T17:15:52.000000Z",
       "updated_at": "2023-08-29T17:15:52.000000Z",
       "name_hotel": "Khách sạn MiiChi",
