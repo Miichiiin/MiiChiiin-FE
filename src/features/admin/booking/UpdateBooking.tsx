@@ -214,7 +214,6 @@ const UpdateBooking = () => {
         setIsServicesHidden(!isServicesHidden);
       }
     }
-
   };
   const handleEnterPress = (value: number | undefined) => {
     // Xử lý giá trị khi có sự thay đổi trong InputNumber
@@ -263,7 +262,7 @@ const UpdateBooking = () => {
   const handleSelectRooms = (roomIndex: any) => {
     setSelectedRoomIndex(roomIndex);
     console.log(selectedRoomIndex);
-    setListRoomSelected(roomsData.filter((room: any) => room.id_cate === Number(selectedRoomIndex)+1))
+    setListRoomSelected(roomsData.filter((room: any) => room.id_cate === Number(selectedRoomIndex) + 1))
     setIsSelectingRooms(!isSelectingRooms);
     setHiddenSelectingRooms(!hiddenSelectingRooms)
     setIsSelectingServices(false);
@@ -279,25 +278,28 @@ const UpdateBooking = () => {
   };
   const handleUpdateCart = () => {
     if (selectedRoomIndex !== null && selectedServices.length > 0) {
-      const updatedCartData = cartData.map((item) => { 
-        if (item.id_cate === selectedRoomIndex ) {
-          // Chỉ cập nhật dịch vụ (services) và giữ nguyên id_cate
-          return {
-            ...item,
-            services: selectedServices,
-          };
-        }
-        return item;
-      });
-
-      // Cập nhật mảng cartData
-      console.log("mảng mới cập nhật", updatedCartData);
-      setCartData(updatedCartData);
-      form.setFieldsValue({ cart: updatedCartData });
-      calculateTotalAmount(updatedCartData);
+      // Kiểm tra xem đã có mục với id_cate tương tự trong cartData hay chưa
+      const index = cartData.findIndex((item) => item.id_cate === selectedRoomIndex + 1);    
+      if (index  !== -1) {
+        // Nếu đã tồn tại, cập nhật services của mục đó
+        const updatedCartData = cartData.map((item, i) => {
+          if (i === index) {
+            return {
+              ...item,
+              services: selectedServices,
+            };
+          }
+          return item;
+        });
+        setCartData(updatedCartData);
+        form.setFieldsValue({ cart: updatedCartData });
+        calculateTotalAmount(updatedCartData);
+      }
     }
-    
+    setIsSelectingServices(false);
+    setHiddenSelectingServices(false)
   };
+
   const onFinish = (values: FieldType) => {
 
     const cart = selectedRoomsData.map((roomData) => ({
@@ -419,7 +421,6 @@ const UpdateBooking = () => {
                 <DatePicker
                   value={form.getFieldValue('check_in')}
                   onChange={handleCheckInDateChange}
-                  showTime
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="Chọn ngày và giờ"
                   className='w-[250px]'
@@ -447,7 +448,6 @@ const UpdateBooking = () => {
                 <DatePicker
                   value={form.getFieldValue('check_out')}
                   onChange={handleCheckOutDateChange}
-                  showTime
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="Chọn ngày và giờ"
                   className='w-[250px]'

@@ -589,12 +589,12 @@
       "cccd": "040204001446",
       "phone": "0344891321",
       "email": "thien@gmail.com.vn",
-      "check_in": "2023-10-06 12:59:20",
-      "check_out": "2023-10-08 12:59:22",
+      "check_in": "2023-10-16 21:48:55",
+      "check_out": "2023-10-18 21:48:57",
       "people_quantity": "12",
       "nationality": "VN",
       "total_rooms": 4,
-      "total_amount": 6340,
+      "total_amount": 8137,
       "cart": [
         {
           "id_cate": 1,
@@ -605,7 +605,9 @@
         },
         {
           "id_cate": 1,
-          "services": []
+          "services": [
+            2
+          ]
         },
         {
           "id_cate": 2,
@@ -616,10 +618,13 @@
         },
         {
           "id_cate": 5,
-          "services": []
+          "services": [
+            2
+          ]
         }
       ],
-      "id": 21
+      "id": 21,
+      "status": "1"
     },
     {
       "name": "lý tự lẫm",
