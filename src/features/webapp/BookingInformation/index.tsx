@@ -44,31 +44,31 @@ const BookingInformation = () => {
   console.log("selectedServicesParam", selectedServices);
   //Tính số người
   // Tách chuỗi thành các phần tử riêng biệt
-const individuals = dataParam.people && dataParam.people.split('&');
+  const individuals = dataParam.people && dataParam.people.split("&");
 
-let totalAdults = 0;
-let totalChildren = 0;
+  let totalAdults = 0;
+  let totalChildren = 0;
 
-// Lặp qua từng phần tử và tính tổng số người lớn và trẻ em
-individuals.forEach((individual: any) => {
-  // Tách thông tin về người lớn và trẻ em
-  const info = individual.split(',');
+  // Lặp qua từng phần tử và tính tổng số người lớn và trẻ em
+  individuals.forEach((individual: any) => {
+    // Tách thông tin về người lớn và trẻ em
+    const info = individual.split(",");
 
-  // Lặp qua từng thông tin và tìm số lượng người lớn và trẻ em
-  info.forEach((item: any) => {
-    if (item.includes('adults')) {
-      const count = parseInt(item.split(':')[1]);
-      totalAdults += count;
-    } else if (item.includes('children')) {
-      const count = parseInt(item.split(':')[1]);
-      totalChildren += count;
-    }
+    // Lặp qua từng thông tin và tìm số lượng người lớn và trẻ em
+    info.forEach((item: any) => {
+      if (item.includes("adults")) {
+        const count = parseInt(item.split(":")[1]);
+        totalAdults += count;
+      } else if (item.includes("children")) {
+        const count = parseInt(item.split(":")[1]);
+        totalChildren += count;
+      }
+    });
   });
-});
 
-// In kết quả
-console.log("Total adults:", totalAdults);
-console.log("Total children:", totalChildren);
+  // In kết quả
+  console.log("Total adults:", totalAdults);
+  console.log("Total children:", totalChildren);
 
   //Tính tiền
   const serviceTotalPrice = selectedServices.reduce(
@@ -109,54 +109,64 @@ console.log("Total children:", totalChildren);
 
   //Add mảng cart
 
-const intermediateCart = [] as any;
+  const intermediateCart = [] as any;
 
-// Lặp qua mảng roomNumber để tạo dữ liệu cho cart
-roomNumber?.map((item, index) => {
-  const selectedServicesInRoom = selectedServices.filter(
-    (service) => service.roomIndex === index
-  );
+  // Lặp qua mảng roomNumber để tạo dữ liệu cho cart
+  roomNumber?.map((item, index) => {
+    const selectedServicesInRoom = selectedServices.filter(
+      (service) => service.roomIndex === index
+    );
 
-  // Tạo một đối tượng mới đại diện cho mỗi phần tử trong roomNumber
-  const cartItem = {
-    id_cate: item.id_cate, // Giá trị id_cate của mỗi phần tử trong roomNumber
-    services: selectedServicesInRoom.map((selectedService) => selectedService.id) // Mảng chứa các id dịch vụ đã chọn trong roomNumber
-  };
+    // Tạo một đối tượng mới đại diện cho mỗi phần tử trong roomNumber
+    const cartItem = {
+      id_cate: item.id_cate, // Giá trị id_cate của mỗi phần tử trong roomNumber
+      services: selectedServicesInRoom.map(
+        (selectedService) => selectedService.id
+      ), // Mảng chứa các id dịch vụ đã chọn trong roomNumber
+    };
 
-  // Thêm cartItem vào mảng trung gian intermediateCart
-  intermediateCart.push(cartItem);
-});
+    // Thêm cartItem vào mảng trung gian intermediateCart
+    intermediateCart.push(cartItem);
+  });
 
-// Gán dữ liệu từ mảng trung gian vào trạng thái (hoặc sử dụng dữ liệu tương ứng)
-const cart = intermediateCart;
+  // Gán dữ liệu từ mảng trung gian vào trạng thái (hoặc sử dụng dữ liệu tương ứng)
+  const cart = intermediateCart;
 
-console.log("mảng cart 1111", cart); // Kiểm tra kết quả trong console
+  console.log("mảng cart 1111", cart); // Kiểm tra kết quả trong console
 
-  const id_user = localStorage.getItem("user")
-  const [addBookingUser] = useAddBookingUserMutation()
-console.log("id_user", hotel[0]);
+  const [addBookingUser] = useAddBookingUserMutation();
+  console.log("id_user", hotel[0]);
+
+  let userData:any = null; // Biến bên ngoài
+
+  const userPromise = localStorage.getItem("user");
+  userPromise.then((user: any) => {
+    userData = JSON.parse(user);
+    console.log("userData", userData);
+  });
+
+  console.log("userData bên ngoài", userData);
 
   const onSubmit = (data: any) => {
     const dataBooking = {
-        check_in: date[0].toISOString().slice(0, 10),
-        check_out: date[1].toISOString().slice(0, 10),
-        email: data.email,
-        name: data.firstName + data.lastName,
-        message: "...",
-        people_quantity: totalChildren + totalAdults,
-        total_amount: sumprice,
-        cccd: data.id,
-        nationality: data.country,
-        id_user: 3,
-        phone: data.phone,
-        cart: cart,
-        id_hotel: Number(hotel[0]),
-        promotion: 1
-    }
+      check_in: date[0].toISOString().slice(0, 10),
+      check_out: date[1].toISOString().slice(0, 10),
+      email: data.email,
+      name: data.firstName + data.lastName,
+      message: "...",
+      people_quantity: totalChildren + totalAdults,
+      total_amount: sumprice,
+      cccd: data.id,
+      nationality: data.country,
+      id_user: userData?.id || null,
+      phone: data.phone,
+      cart: cart,
+      id_hotel: Number(hotel[0]),
+      promotion: 1,
+    };
     addBookingUser(dataBooking)
     console.log("data form", data);
     console.log("newDataBooking", dataBooking);
-    
   };
   return (
     <div>
