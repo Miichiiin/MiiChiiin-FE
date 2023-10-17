@@ -141,7 +141,7 @@ const HotelIntroduction = () => {
                   <>
                     <div>
                       <div className="relative overflow-hidden mb-4">
-                        <Link to={`/hotel/${item.hotel_id}/rooms/detail/${item.id}`}>
+                        <Link to={`/hotel/${idHotel}/rooms/detail/${item.id}`}>
                           <img
                             className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                             src={item.image}
@@ -159,12 +159,12 @@ const HotelIntroduction = () => {
                         {" "}
                         <TextTruncate text={item.description} maxLength={100} />
                       </p>
-                      <span className="flex items-center space-x-2 text-[#f2ba50]">
+                      <div className="flex items-center space-x-2 text-[#f2ba50] cursor-pointer">
                         <Link to={`/hotel/${idHotel}/rooms/detail/${item.id}`}>
                           Xem chi tiết{" "}
                         </Link>
                         <AiOutlineArrowRight />
-                      </span>
+                      </div>
                     </div>
                   </>
                 );
