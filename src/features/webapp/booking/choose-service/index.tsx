@@ -90,7 +90,6 @@ const ChooseService = () => {
     const service = JSON.stringify(selectedServices);
     console.log("submithotel", hotel);
     const url = `/booking/${hotel}/${date}/${JSON.stringify(roomNumber)}/${service}/${dataParam.numberPeople}`;
-    localStorage.clear();
     navigate(url);
     // navigate(`/booking`)
   };

@@ -55,6 +55,7 @@ import DetailBooking from "./features/admin/booking/DetailBooking";
 import { LayoutProfile } from "./features/webapp/profileUser/component/layoutProfile";
 import MyOrder from "./features/webapp/profileUser/component/myOrder";
 import ProfileUsre from "./features/webapp/profileUser/component/profileUsre";
+import HotelChainStatistic from "./features/admin/HotelChainStatistics";
 
 
 
@@ -100,7 +101,7 @@ export const router = createBrowserRouter([
                 element: <RoomTypes />
             },
             {
-                path: '/hotels/rooms/detail/:id',
+                path: '/hotel/:idHotel/rooms/detail/:idRoom',
                 element: <DetailTypeofRoom />
             },
             {
@@ -303,6 +304,10 @@ export const router = createBrowserRouter([
             {
                 path:"indexPermission",
                 element:<IndexPremission/>
+            },
+            {
+                path:"HotelChainStatistics",
+                element:<HotelChainStatistic/>
             }
 
         ],
