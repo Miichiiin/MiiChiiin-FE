@@ -280,7 +280,7 @@ const HotelChainStatistics = () => {
                   className="flex items-center justify-between cursor-pointer "
                   onClick={handleTitleClick}
                 >
-                  <h1 className="text-2xl font-semibold text-blue-600 mb-4 ">
+                  <h1 className="text-2xl font-semibold text-blue-600 mb-4 cursor-pointer ">
                     Biểu đồ thống kê doanh thu và số lượng booking
                   </h1>
                 </div>
@@ -351,7 +351,7 @@ const HotelChainStatistics = () => {
       </Row>
       {/* bieu do 2 */}
       <h1
-        className="text-2xl font-semibold text-blue-600 mb-4 "
+        className="text-2xl font-semibold text-blue-600 mb-4 cursor-pointer"
         onClick={handleh1Click}
       >
         Thống kê số lượng dịch vụ của khách sạn

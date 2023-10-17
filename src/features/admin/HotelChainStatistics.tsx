@@ -128,7 +128,7 @@ const handleYearChangesv = (event: React.ChangeEvent<HTMLSelectElement>) => {
     <div>
         {/* Biểu đồ 1 */}
         <h1
-        className="text-2xl font-semibold text-blue-600 mb-4 "
+        className="text-2xl font-semibold text-blue-600 mb-4 cursor-pointer"
         onClick={handleTitleClick1}
       >
         Biểu đồ thống kê tổng doanh thu và số booking
@@ -202,7 +202,7 @@ const handleYearChangesv = (event: React.ChangeEvent<HTMLSelectElement>) => {
 
       {/* Bieu do 2 */}
       <div>
-      <h2 className="text-2xl font-semibold text-blue-600 mb-4" onClick={handleTitleClick2}>Biểu đồ thống kê dịch vụ chuỗi khách sạn</h2>
+      <h2 className="text-2xl font-semibold text-blue-600 mb-4 cursor-pointer" onClick={handleTitleClick2}>Biểu đồ thống kê dịch vụ chuỗi khách sạn</h2>
       <div className={`relative ${isDropdownVisiblesv ? "block" : "hidden"} flex space-x-4` }>
         <div className="bg-blue-200">
           <label>Chọn tháng: </label>

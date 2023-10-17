@@ -5,7 +5,7 @@ const hotelchainstatisticsvApi = createApi({
     reducerPath: 'hotelchainstatisticsv',
     tagTypes: ['HotelChainStatisticSv'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/admin/statictical_total_booking_monthl/10/2023",
+        baseUrl: "http://localhost:3000",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
