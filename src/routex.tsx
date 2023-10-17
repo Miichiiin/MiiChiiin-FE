@@ -56,6 +56,7 @@ import { LayoutProfile } from "./features/webapp/profileUser/component/layoutPro
 import MyOrder from "./features/webapp/profileUser/component/myOrder";
 import ProfileUsre from "./features/webapp/profileUser/component/profileUsre";
 import HotelChainStatistic from "./features/admin/HotelChainStatistics";
+import LoginAdmin from "./features/webapp/LoginAdmin/Login";
 
 
 
@@ -97,7 +98,7 @@ export const router = createBrowserRouter([
                 element:<Order/>
             },
             {
-                path: '/hotels/rooms/roomtypes',
+                path: '/hotel/:id/rooms/roomtypes',
                 element: <RoomTypes />
             },
             {
@@ -131,6 +132,10 @@ export const router = createBrowserRouter([
             {
                 path: '/promotion',
                 element: <Promotion/>
+            },
+            {
+                path: "/loginadmin",
+                element:<LoginAdmin/>
             }
         ],
     },
@@ -308,7 +313,8 @@ export const router = createBrowserRouter([
             {
                 path:"HotelChainStatistics",
                 element:<HotelChainStatistic/>
-            }
+            },
+            
 
         ],
     },

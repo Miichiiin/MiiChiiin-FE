@@ -105,13 +105,13 @@ const Header = () => {
   });
 
   const handleLogout = () => {
-   const confirm =  window.confirm("Bạn có muốn đăng xuất")
-    if(confirm){
+    const confirm = window.confirm("Bạn có muốn đăng xuất")
+    if (confirm) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       setLoggedIn(null);
     }
-    
+
   };
 
   return (
@@ -126,11 +126,10 @@ const Header = () => {
             loop
           />
           <div
-            className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${
-              isFixed
-                ? "fixed  top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]"
-                : "duration-500 "
-            }`}
+            className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${isFixed
+              ? "fixed  top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]"
+              : "duration-500 "
+              }`}
           >
             <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 lg:text-[15px] lg:mr-10 sm:mr-10">
               <div className="flex items-center justify-end space-x-2 mt-6 text-white lg:text-[15px] ">
@@ -143,7 +142,7 @@ const Header = () => {
                     <div className="text-white me-3">
                       Xin chào : {loggedIn?.name}
                     </div>
-                      <button
+                    <button
                       onClick={handleLogout}
                       className=" px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
                       style={{ marginRight: "30px" }}
@@ -151,11 +150,11 @@ const Header = () => {
                       {" "}
                       Logout
                     </button>
-                  
+
                   </>
                 ) : (
                   <>
-                    <Link to="/login" className="hover:">
+                    <Link to="/login" className="hover:underline" style={{ textShadow: '1px 2px 3px #000' }}>
                       Đăng nhập
                     </Link>
                     <AiOutlineRight />
@@ -172,7 +171,7 @@ const Header = () => {
                     src="https://st.quantrimang.com/photos/image/2021/09/05/Co-Vietnam.png"
                     alt=""
                   />
-                  <span className="font-medium text-[16px] hover:">VIE</span>{" "}
+                  <span className="font-medium text-[16px] hover:underline" style={{ textShadow: '1px 2px 3px #000' }}>VIE</span>{" "}
                   <AiOutlineRight />
                 </button>
                 <Cart />
@@ -215,8 +214,8 @@ const Header = () => {
                     </button>
                     <ul className="group h-[40px] after-3">
                       <li className="relative">
-                        <a href="/hoteltype">Khách sạn</a>
-                        <div className="top-10 bg-white px-6 py-6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute hidden group-hover:block group-hover:flex transition duration-2000">
+                        <a href="/hoteltype" style={{ textShadow: '2px 2px 4px #000' }}>Khách sạn</a>
+                        <div className="top-10 bg-white px-6 py-3 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute hidden group-hover:block group-hover:flex transition duration-2000 border rounded shadow-md">
                           {hotels?.map((hotel: any) => (
                             <div key={hotel.id} className="leading-[45px]">
                               <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
@@ -240,8 +239,8 @@ const Header = () => {
 
                     <li className="h-[40px] group after-3 ">
                       <div className="">
-                        <a href="">Trải nghiệm</a>
-                        <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[750px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000">
+                      <a href="/promotion" style={{ textShadow: '2px 2px 4px #000' }}>Trải nghiệm</a>
+                        <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[750px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000 border rounded shadow-md">
                           <div className="leading-[45px]">
                             <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
                               <AiOutlineEnvironment /> <span>Phú Quốc</span>
@@ -285,23 +284,22 @@ const Header = () => {
                       </div>
                     </li>
                     <li className="h-[40px] after-3">
-                      <a href="/promotion">Ưu đãi khuyến mãi</a>
+                    <a href="/promotion" style={{ textShadow: '2px 2px 4px #000' }}>Ưu đãi khuyến mãi</a>
                     </li>
                     <li className="h-[40px] after-3">
-                      <a href="/new">New</a>
+                    <a href="/new" style={{ textShadow: '2px 2px 4px #000' }}>New</a>
                     </li>
                   </ul>
                 </div>
               </div>
               <div
-                className={` transition-opacity z-0 lg:ml-10 absolute top-[300px] sm:ml-5 ${
-                  isFixed ? "absolute top-[-400px] opacity-0 " : ""
-                }`}
+                className={` transition-opacity z-0 lg:ml-10 absolute top-[300px] sm:ml-5 ${isFixed ? "absolute top-[-400px] opacity-0 " : ""
+                  }`}
               >
-                <h1 className="lg:text-[35px] text-white mb-5 sm:text-[30px] ">
+                <h1 className="lg:text-[35px] text-white mb-5 sm:text-[30px] font-bold " style={{ textShadow: '1px 2px 3px #000' }}>
                   Chào mừng đến với Vinpearl
                 </h1>
-                <p className="text-white sm:text-[11px] lg:text-[16px]">
+                <p className="text-white sm:text-[11px] lg:text-[16px] font-semibold" style={{ textShadow: '1px 2px 3px #000' }}>
                   Đánh thức mọi giác quan với hệ sinh thái nghỉ dưỡng ven biển
                   đẳng cấp của Vinpearl
                 </p>
@@ -314,10 +312,9 @@ const Header = () => {
         <div
           ref={menuRef}
           className={`fixed top-0 z-30 box-shadow left-0 w-[400px] h-full bg-white text-white  transition-transform duration-300 ease-in-out transform 
-            ${
-              isMenuOpen
-                ? "translate-x-0 fixed top-0  left-0 duration-800  text-white "
-                : "-translate-x-full opacity-0 duration-800"
+            ${isMenuOpen
+              ? "translate-x-0 fixed top-0  left-0 duration-800  text-white "
+              : "-translate-x-full opacity-0 duration-800"
             }`}
         >
           <div className="h-[130px] bg-gray-800">
@@ -330,19 +327,19 @@ const Header = () => {
           </div>
           <div className="text-gray-800 text-[21px] leading-[50px] px-10 py-10 font-medium">
             <div className="flex items-center justify-between">
-              <a href="">Khách sạn</a>{" "}
+            <a href="/hoteltype">Khách sạn</a>{" "}
               <span className="mt-1 text-[12px] ">
                 <AiOutlineDown />
               </span>
             </div>
             <p className="flex items-center justify-between">
-              <a href="">Trải nghiện</a>{" "}
+            <a href="">Trải nghiệm</a>{" "}
               <span className="mt-1 text-[12px] ">
                 <AiOutlineDown />
               </span>
             </p>
             <p>
-              <a href="">Ưu đãi khuyến mãi</a>
+            <a href="/promotion">Ưu đãi khuyến mãi</a>
             </p>
 
             <Link to={`/new`}>New</Link>

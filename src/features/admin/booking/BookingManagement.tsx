@@ -1,5 +1,6 @@
 import { useGetBooking_adminQuery, useRemoveBooking_adminMutation } from '@/api/admin/booking_admin';
-import { Table, Divider, Radio, Button, Select, Input } from 'antd';
+import { Table, Divider, Radio, Button, Select, Input, Space } from 'antd';
+const { Search } = Input;
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import 'dayjs/plugin/utc';
 import 'dayjs/plugin/timezone';
+import { AiOutlineSearch } from 'react-icons/ai';
 dayjs.locale('vi');
 
 const users = [
@@ -118,7 +120,7 @@ export const BookingManagement = () => {
             key: 'check_in',
             render: (text, record) => {
                 const formattedDate = dayjs(record.check_in)
-                    .format('DD/MM/YYYY HH:mm'); // Remove .utc() and .local()
+                    .format('DD/MM/YYYY HH:mm:ss'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
             },
         },
@@ -128,7 +130,7 @@ export const BookingManagement = () => {
             key: 'check_out',
             render: (text, record) => {
                 const formattedDate = dayjs(record.check_out)
-                    .format('DD/MM/YYYY HH:mm'); // Remove .utc() and .local()
+                    .format('DD/MM/YYYY HH:mm:ss'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
             },
         },
@@ -139,23 +141,12 @@ export const BookingManagement = () => {
             key: 'people_quantity',
         },
         {
-            title: 'Số CCCD',
-            dataIndex: 'cccd',
-            key: 'cccd',
-        },
-        {
-            title: 'Quốc tịch',
-            dataIndex: 'nationality',
-            key: 'nationality'
-        },
-        {
             title: "Hành động",
             key: "action",
             render: (text, record) => (
-                <div className="flex items-center">
-                    <button className="mr-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={`/admin/updatebooking/${record.key}`}>Sửa</Link></button>
-                    <Link to={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</Link>
-                </div>
+
+                <Link to={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</Link>
+
             )
         }
     ];
@@ -169,6 +160,7 @@ export const BookingManagement = () => {
         }
     };
     //lọc dữ liệu
+
     const filteredData = data ? data
         .filter((item: DataType) =>
             item.name.toLowerCase().includes(searchText.toLowerCase())
@@ -186,39 +178,44 @@ export const BookingManagement = () => {
         <div>
             <div className='flex justify-between items-center mb-4'>
                 <div className="text-lg font-semibold">Quản lý đơn hàng</div>
-                <div className='flex items-center'>
-                    <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
-                    <Select
-                        showSearch
-                        style={{ width: 200 }}
-                        placeholder="Search to Select"
-                        optionFilterProp="children"
-                        filterOption={(input, option) => (option?.label ?? "").includes(input)}
-                        filterSort={(optionA, optionB) =>
-                            (optionA?.label ?? "").toLowerCase().localeCompare((optionB?.label ?? "").toLowerCase())
-                        }
-                        options={[
-                            {
-                                value: 0,
-                                label: "Tất cả",
-                            },
-                            {
-                                value: 1,
-                                label: "Không hiển thị",
-                            },
-                            {
-                                value: 2,
-                                label: "Hiển thị",
-                            },
-                        ]}
-                        onChange={(value) => {
-                            if (value === 0) {
-                                setSelectedStatus(undefined); // Xóa bộ lọc
-                            } else {
-                                setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
+                <div className='flex items-center '>
+                    <Space.Compact className='mx-2'>
+                        <Search placeholder="Nhập vào để tìm kiếm" allowClear className='w-[250px]' onSearch={(value) => { setSearchText(value) }} />
+                    </Space.Compact>
+                    <div>
+                        <Select
+                            showSearch
+                            className='w-[200px]'
+                            placeholder="Lọc trạng thái"
+                            optionFilterProp="children"
+                            filterOption={(input, option) => (option?.label ?? "").includes(input)}
+                            filterSort={(optionA, optionB) =>
+                                (optionA?.label ?? "").toLowerCase().localeCompare((optionB?.label ?? "").toLowerCase())
                             }
-                        }}
-                    />
+                            options={[
+                                {
+                                    value: 0,
+                                    label: "Tất cả",
+                                },
+                                {
+                                    value: "1",
+                                    label: "Không hiển thị",
+                                },
+                                {
+                                    value: "2",
+                                    label: "Hiển thị",
+                                },
+                            ]}
+                            onChange={(value) => {
+                                if (value === 0) {
+                                    setSelectedStatus(undefined); // Xóa bộ lọc
+                                } else {
+                                    setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
+                                }
+                            }}
+                        />
+                    </div>
+
                 </div>
                 {hasAddUserPermission && (
                 <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/addbooking'}>Thêm booking</Link></button>
@@ -251,7 +248,7 @@ export const BookingManagement = () => {
             </Radio.Group>
 
             <Divider />
-            <div className="table-container">
+            <div className="bg-[#f4f4f4] rounded-md p-3">
                 <Table
                     rowSelection={{
                         type: selectionType,

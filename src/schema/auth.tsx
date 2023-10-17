@@ -7,7 +7,7 @@ export const schemaSignUp = yup.object({
 })
 export const schemaSignIn = yup.object({
     email: yup.string().email("Email không đúng định dạng").required("Trường dữ liệu bắt buộc"),
-    password: yup.string().min(6, "Tối đa 6 kí tự").typeError("Mật khẩu tối đa 6 kí tự").required("Trường dữ liệu bắt buộc"),
+    password: yup.string().min(5, "Tối đa 6 kí tự").typeError("Mật khẩu tối đa 6 kí tự").required("Trường dữ liệu bắt buộc"),
 })
 export type SigninForm = yup.InferType<typeof schemaSignIn>
 export type SignupForm = yup.InferType<typeof schemaSignUp>
