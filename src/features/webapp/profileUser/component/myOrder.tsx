@@ -2,7 +2,7 @@ import { useGetBokingUserQuery } from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
-
+import Modal from "react-modal";
 const MyOrder = () => {
   const [isProductInCart, setIsProductInCart] = useState();
   console.log("isProductInCart", isProductInCart);
@@ -20,7 +20,7 @@ const MyOrder = () => {
 
   const { data: booking } = useGetBokingUserQuery(user?.id);
 
-  console.log("booking2333", user?.id);
+  console.log("booking2333", booking);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -30,6 +30,16 @@ const MyOrder = () => {
 
     console.log("storedUser", storedUser);
   }, []);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+  };
 
   return (
     <div className="container mx-auto py-8">
@@ -74,9 +84,11 @@ const MyOrder = () => {
                       alt=""
                     />
                     <div className="leading-10">
-                      <div className="grid grid-cols-2 font-medium">
-                        <h3 className="font-medium">Tên khách sạn:</h3>
-                        <h3>Tổng số phòng:</h3>
+                      <div className="grid grid-cols-2 font-medium space-x-10">
+                        <h3 className="font-medium">
+                          Tên khách sạn: {item?.hotel?.name}
+                        </h3>
+                        <h3>Tổng số phòng: {item?.total_room}</h3>
                       </div>
                       <div className="grid grid-cols-1 font-medium">
                         <span>
@@ -94,6 +106,37 @@ const MyOrder = () => {
                             {new Date(item?.check_out).toLocaleDateString()}
                           </span>
                         </span>
+                        <button
+                          className="text-red-300"
+                          onClick={handleOpenModal}
+                        >
+                          Xem chi tiết
+                        </button>
+
+                        <Modal
+                          isOpen={modalIsOpen}
+                          onRequestClose={handleCloseModal}
+                          contentLabel="Chi tiết"
+                          style={{
+                            overlay: {
+                              backgroundColor: "rgba(0, 0, 0, 0.5)",
+                            },
+                            content: {
+                              width: "800px",
+                              height: "500px",
+                              margin: "auto",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            },
+                          }}
+                        >
+                          {/* Nội dung màn hình nổi */}
+                          <h2>Chi tiết</h2>
+                          <p>Đây là nội dung chi tiết trong màn hình nổi.</p>
+                          <button onClick={handleCloseModal}>Đóng</button>
+                        </Modal>
                       </div>
                     </div>
                   </div>
