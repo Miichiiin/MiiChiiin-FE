@@ -20,7 +20,7 @@ const LoginAdmin = () => {
         console.log("userAdminLocal", userAdminLocal);
         
         if(userAdminLocal) {
-          message.success("Đăng nhập thành công");
+          message.success("Đăng nhập thành công!");
           setTimeout(() => {
             navigate("/admin");
           }, 2000);
