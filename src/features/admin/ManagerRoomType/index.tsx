@@ -15,11 +15,35 @@ import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+const users = [
+  {
+   token: "haha",
+   admin:{
+     id: 2,
+     id_hotel: 1,
+     name: "Augustus Mitchell",
+     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
+     role: "",
+     permissions: [
+       'add typeRom',
+       'update typeRom',
+       'delete typeRom',
+       'add voucher',
+     ]
+   },
+  }
+ 
+];
 export const ManagerRoomType = () => {
   const {data: categoryData} = useGetCategory_adminQuery([]);
   const [removeCategory_admin] = useRemoveCategory_adminMutation();
   
-  
+  // Phân quyền 
+  const [hasAddUserPermission, setHasAddUserPermission] = useState(
+    users[0].admin.permissions.includes("add typeRom") &&
+    users[0].admin.permissions.includes("update typeRom") &&
+    users[0].admin.permissions.includes("delete typeRom")
+  );
 
   const [messageApi, contextHolder] = message.useMessage();
   const dataSource = categoryData?.map(({id,name,price,image,description,capacity,convenient,quantity_of_people,acreage,floor,status,likes,views,
@@ -75,7 +99,9 @@ export const ManagerRoomType = () => {
       render: (text:any,item:any) =>{
         return (
             <>
-              <Link to={`/admin/updateroomtype/${item.key}`}>{text}</Link>
+              {hasAddUserPermission && (
+                <Link to={`/admin/updateroomtype/${item.key}`}>{text}</Link>
+              )}
             </>
           )
         }
@@ -201,21 +227,31 @@ export const ManagerRoomType = () => {
             }}
           />
         </div>
-        <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-          <Link to={`/admin/addroomtype`}>Thêm loại phòng</Link>
-        </button>
+        {hasAddUserPermission && (
+            <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
+            <Link to={`/admin/addroomtype`}>Thêm loại phòng</Link>
+          </button>
+        )}
       </div>
       <div>
           
-             <Button type="primary" className='mx-5' danger
+             {hasAddUserPermission && (
+                <Button type="primary" className='mx-5' danger
                 onClick={() => {
                     selectedRows.forEach((row) => confirmDelete(row.key));
                 }}
                 disabled={selectedRows.length === 0}
-            >Xóa</Button>
-          <Button type="primary" danger className="ml-2 mt-1">
-            <Link to={`/admin/updateroomtype`}>Sửa</Link>
-          </Button>
+              >
+                Xóa
+              </Button>
+             )}
+          {
+            hasAddUserPermission && (
+              <Button type="primary" danger className="ml-2 mt-1">
+                <Link to={`/admin/updateroomtype`}>Sửa</Link>
+            </Button>
+            )
+          }
         </div>
 
       <Radio.Group

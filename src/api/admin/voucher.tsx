@@ -15,7 +15,7 @@ const voucherApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getVoucher: builder.query({
+        getVoucher: builder.query<any, void>({
             query: () => `/vouchers`,
             providesTags: ['Voucher']
         }),

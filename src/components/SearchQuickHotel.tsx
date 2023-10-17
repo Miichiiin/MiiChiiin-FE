@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button, Form, DatePicker } from 'antd';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   AiOutlineEnvironment,
   AiOutlineIdcard,
@@ -9,8 +9,6 @@ import {
   AiOutlineUser,
 } from 'react-icons/ai';
 import axios from 'axios';
-import { useAppDispatch } from '@/app/hook';
-import { addSearch } from '@/api/searchSlice';
 import { isYesterday } from 'date-fns';
 
 
@@ -22,41 +20,16 @@ export const SearchQuickHotel = () => {
   const [selectedHotel, setSelectedHotel] = useState('');
   const [divClicked, setDivClicked] = useState(false);
   const [hotelsData, setHotelsData] = useState([]);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
   const navigate = useNavigate();
 
-  // const onFinish = (values: any) => {
-  //   const newValue = {
-  //     ...values,
-  //     nameHotel: selectedHotel,
-  //     // check_in: selectedRange[0]?.toISOString().slice(0, 10),
-  //     // check_out: selectedRange[1]?.toISOString().slice(0, 10),
-  //     date: selectedRange,
-  //     numberRoom: numberOfRooms1,
-  //     numberPeople: roomDetails1,
-  //   };
-  //   console.log("valuenew",newValue)
-  //   dispatch(addSearch(newValue));
-  //   // navigate("/choose-room")
-  //   console.log("Giatri:",values)
-  // };
-
   const onHandSubmit = () => {
-    // const newValue = {
-    //   nameHotel: selectedHotel,
-    //   check_in: selectedRange[0]?.toISOString().slice(0, 25),
-    //   check_out: selectedRange[1]?.toISOString().slice(0, 25),
-    //   date: selectedRange,
-    //   numberRoom: numberOfRooms1,
-    //   numberPeople: roomDetails1,
-    // } as any
-
     const roomDetailsString = roomDetails1.map((details) => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
-    // console.log("vấckc",roomDetailsString);
-    // console.log("valuenew", newValue)
+    console.log("roomDetailsString", roomDetailsString);
+    
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
     navigate(url);
   }
@@ -162,17 +135,20 @@ export const SearchQuickHotel = () => {
   }, [divClicked1]);
   //
 
+  console.log("user", localStorage.getItem("user"));
+  
+
   /*Tăng số lượng phòng*/
   interface RoomDetail {
     adults: number;
     children: number;
     infants: number;
   }
-  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
+
   const [roomDetails1, setRoomDetails1] = useState<RoomDetail[]>([
     { adults: 1, children: 0, infants: 0 },
   ]);
-
+  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
   console.log("số phòng", numberOfRooms1);
   console.log("số người", roomDetails1);
 

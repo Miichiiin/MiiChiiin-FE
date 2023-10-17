@@ -54,7 +54,7 @@ interface FieldType {
 
 const UpdateBooking = () => {
   const { data: categories } = useGetCategory_homeQuery(); // Lấy danh sách loại phòng
-  const { data: services } = useGetService_hotelQuery({}); // Lấy danh sách dịch vụ
+  const { data: services } = useGetService_hotelQuery(); // Lấy danh sách dịch vụ
   const { data: roomsData } = useGetRoom_AdminsQuery({}) // Lấy danh sách phòng
 
   const navigate = useNavigate();

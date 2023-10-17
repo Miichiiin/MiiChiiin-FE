@@ -9,6 +9,7 @@ import Search from "./Search";
 
 import { Link } from "react-router-dom";
 import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
+import { useGetVoucherQuery } from "@/api/admin/voucher";
 import { SearchQuickHotel } from "./SearchQuickHotel";
 const Index = () => {
     let settings = {
@@ -19,6 +20,8 @@ const Index = () => {
         slidesToScroll: 1,
     };
     const { data: booking, error, isLoading } = useGetHotel_homesQuery();
+    const {data:voucher} = useGetVoucherQuery();
+    console.log("voucher",voucher)
 console.log(booking);
 
     const sliderRef = React.useRef<Slider>(null);
@@ -41,7 +44,7 @@ console.log(booking);
             <div className="mt-7 bg-[#fbf8f2] w-full pb-8">
                 <div className="xl:w-[1280px] xl:mx-auto ">
                    <div className="flex items-center  lg:w-[1280px]">
-                        <h1 className="lg:text-[30px]  pt-10 pb-6 ">Trải nghiệm hệ sinh thái Vinpearl</h1>
+                        <h1 className="lg:text-[30px]  pt-10 pb-6 ">Trải nghiệm hệ sinh thái Miichi</h1>
                    </div>
                     <div className="flex items-center space-10 sm:justify-center">
                         <div className="">
@@ -72,7 +75,7 @@ console.log(booking);
                     <Slider {...settings}  ref={sliderRef} className="w-[1280px] mx-auto">
                         {booking?.map((item: any) => {
                           return  <>
-                                <Link to={`/hotel`} key={item?.id} className="w-[400px] relative overflow-hidden">
+                                <Link to={`/hotel/${item?.id}`} key={item?.id} className="w-[400px] relative overflow-hidden">
                                     <div className="relative overflow-hidden mb-4">
                                         <img className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                                             src={item.image}
@@ -92,9 +95,9 @@ console.log(booking);
                     <p className="text-[#f2ba50] font-bold text-[20px] text-center pb-1">Pearl Club</p>
                     <p className="text-[27px] text-center pb-2 text-white font-medium">Đặc quyền nghỉ dưỡng thượng lưu</p>
                     <p className="text-white">
-                        Pearl Club là chương trình khách hàng thân thiết của Vinpearl. Khách hàng có thể đăng ký là thành viên
+                        Pearl Club là chương trình khách hàng thân thiết của Miichi. Khách hàng có thể đăng ký là thành viên
                         miễn phí và tích lũy giao dịch để nâng hạng, trải nghiệm ngay các đặc quyền ưu đãi trong toàn bộ hệ sinh
-                        thái Vinpearl.
+                        thái Miichi.
                     </p>
                 </div>
                 <img className="w-full bg-[#585c5b]" src="https://statics.vinpearl.com/styles/1920x860/public/2023_01/About%20Pearl%20Club_1673079019.jpg.webp?itok=f-G5FUpc" alt="" />
@@ -103,37 +106,26 @@ console.log(booking);
                 <div className="xl:w-[1280px] xl:mx-auto mt-10 lg:">
                     <div className="flex items-center justify-between">
                         <h2 className="text-[30px] mb-7">Ưu đãi khuyến mãi</h2>
-                        <span className="flex items-center space-x-6 text-[#f2ba50]"><a href="">Xem thêm</a> <AiOutlineArrowRight /></span>
+                        <span className="flex items-center space-x-6 text-[#f2ba50]"><Link to={`/promotion`} > Xem thêm
+                        </Link> <AiOutlineArrowRight /></span>
                     </div>
                     <div className="sm:grid xl:grid-cols-3 flex lg:grid-cols-2 sm:justify-center ">
+                    <Slider {...settings}  ref={sliderRef} className="w-[1280px] mx-auto">
+                        {voucher?.map((item:any)=>{
+                            return  <>
                         <div className="w-[400px] ">
                             <div className="relative overflow-hidden mb-4">
-                                <img className="w-full h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                                    src="https://statics.vinpearl.com/styles/378x250/public/2023_05/vinpearl_1684721297.jpg.webp?itok=hYT97ZUH"
+                                <img className=" h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                                    src={item.image} width="400px" height="300px"
+                                    
                                     alt=""
                                 />
                             </div>
-                            <a className="hover:text-[#f2ba50]" href="">Wonder Summer 2023: Miễn phí kỳ nghỉ tuyệt hơn mơ cho bé yêu</a>
+                            <a className="hover:text-[#f2ba50]" href="/promotion"  key={item?.id}>{item?.name}</a>
                         </div>
-                        <div className="w-[400px] ">
-                            <div className="relative overflow-hidden mb-4">
-                                <img className="w-full h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                                    src="https://statics.vinpearl.com/styles/378x250/public/2023_05/combo-cam-hung-bat-tan-banner_1685342465.jpg.webp?itok=Bh7dfsY4"
-                                    alt=""
-                                />
-                            </div>
-                            <a className="hover:text-[#f2ba50]" href="">Cảm hứng bất tận: trọn gói vé máy bay và nghỉ dưỡng 3N2Đ tiết kiệm đến 40%</a>
-                        </div>
-                        <div className="w-[400px]  ">
-                            <div className="relative overflow-hidden mb-4">
-                                <img className="w-full h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                                    src="https://statics.vinpearl.com/styles/378x250/public/2023_01/tong-hop-uu-dai-early-bird-banner_1673341683.jpg.webp?itok=YNNs_fjY"
-                                    alt=""
-                                />
-                            </div>
-                            <a className="hover:text-[#f2ba50]" href="">Đặt phòng sớm, ưu đãi lớn: tổng hợp ưu đãi early bird không thể bỏ lỡ</a>
-                        </div>
-
+                        </>
+                        })}
+                    </Slider>
                     </div>
                 </div>
             </div>

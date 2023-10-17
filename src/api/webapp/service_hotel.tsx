@@ -15,7 +15,7 @@ const service_HotelApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getService_hotel: builder.query({
+        getService_hotel: builder.query<any,void>({
             query: () => `/service_of_hotel`,
             providesTags: ['Service_hotel']
         }),

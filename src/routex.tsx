@@ -48,7 +48,13 @@ import UpdateUserPage from "./features/admin/user/UpdateUser";
 import AddUtilities from "./features/admin/ManagerUtilities/AddUtilities";
 import AddBooking from "./features/admin/booking/AddBooking";
 import UpdateBooking from "./features/admin/booking/UpdateBooking";
+import Permission from "./features/admin/Permission/Permission";
+import IndexPremission from "./features/admin/Permission/IndexPremission";
+import Promotion from "./features/webapp/Promotion";
 import DetailBooking from "./features/admin/booking/DetailBooking";
+import { LayoutProfile } from "./features/webapp/profileUser/component/layoutProfile";
+import MyOrder from "./features/webapp/profileUser/component/myOrder";
+import ProfileUsre from "./features/webapp/profileUser/component/profileUsre";
 
 
 
@@ -70,7 +76,7 @@ export const router = createBrowserRouter([
                 element: <Index />
             },
             {
-                path: "/hotel",
+                path: "/hotel/:id",
                 element: <HotelIntroduction />
             },
             {
@@ -82,7 +88,7 @@ export const router = createBrowserRouter([
                 element: <New />
             },
             {
-                path: "/booking",
+                path: "/booking/:hotel/:date/:roomNumber/:selectedServices/:people",
                 element: <BookingInformation />
             },
             {
@@ -98,7 +104,7 @@ export const router = createBrowserRouter([
                 element: <DetailTypeofRoom />
             },
             {
-                path: "/choose-service",
+                path: "/choose-service/:nameHotel/:date/:numberRoom/:numberPeople",
                 element: <ChooseService />
             },
             {
@@ -121,10 +127,30 @@ export const router = createBrowserRouter([
                 path: '/searchHotel',
                 element: <SearchHotel/>
             },
+            {
+                path: '/promotion',
+                element: <Promotion/>
+            }
         ],
     },
 
+    {
+        path: "/profileUser",
+        element: (
+            <LayoutProfile />
+        ),
+        children: [
+            {
+                index: true,
+                element: <ProfileUsre/>  ,
+            },
+            {
+                path: "myorder",
+                element: <MyOrder /> ,
+            }
 
+        ],
+    },
 
     {
         path: "/admin",
@@ -270,7 +296,14 @@ export const router = createBrowserRouter([
                 element:<AdminInfoPage/>
             },
 
-
+            {
+                path: "permission/:id",
+                element:<Permission/>
+            },
+            {
+                path:"indexPermission",
+                element:<IndexPremission/>
+            }
 
         ],
     },

@@ -12,7 +12,32 @@ import {
   import { useState } from "react";
   import { Link } from "react-router-dom";
   
+  const users = [
+    {
+     token: "haha",
+     admin:{
+       id: 2,
+       id_hotel: 1,
+       name: "Augustus Mitchell",
+       image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
+       role: "",
+       permissions: [
+         'add room',
+         'update room',
+         'delete room',
+         'add voucher',
+       ]
+     },
+    }
+   
+  ];
   export const ManagerRoom = () => {
+    // phân quyền
+  const [hasAddUserPermission, setHasAddUserPermission] = useState(
+    users[0].admin.permissions.includes("add room") &&
+    users[0].admin.permissions.includes("update room") &&
+    users[0].admin.permissions.includes("delete room")
+  );
     const [messageApi, contextHolder] = message.useMessage();
     interface DataType {
       key: string;
@@ -161,12 +186,15 @@ import {
             }}
           />
         </div>
-          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
+          {hasAddUserPermission && (
+            <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
             <Link to={`/admin/addroom`}>Thêm phòng</Link>
           </button>
+          )}
         </div>
         <div>
-            <Popconfirm
+            {hasAddUserPermission && (
+              <Popconfirm
               title="Xóa sản phẩm"
               description="Bạn có muốn xóa không??"
               onConfirm={() => {
@@ -184,9 +212,12 @@ import {
             >
               <Button danger>Xóa</Button>
             </Popconfirm>
-            <Button type="primary" danger className="ml-2 mt-1">
+            )}
+            {hasAddUserPermission && (
+              <Button type="primary" danger className="ml-2 mt-1">
               <Link to={`/admin/updateroom`}>Sửa</Link>
             </Button>
+            )}
           </div>
   
         <Radio.Group

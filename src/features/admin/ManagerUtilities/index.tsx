@@ -14,8 +14,32 @@ import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-
+const users = [
+  {
+   token: "haha",
+   admin:{
+     id: 2,
+     id_hotel: 1,
+     name: "Augustus Mitchell",
+     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
+     role: "",
+     permissions: [
+       'add dichvu',
+       'update dichvu',
+       'delete dichvu',
+       'add voucher',
+     ]
+   },
+  }
+ 
+];
 export const ManagerUtilities = () => {
+  // phân quyền
+  const [hasAddUserPermission, setHasAddUserPermission] = useState(
+    users[0].admin.permissions.includes("add dichvu") &&
+    users[0].admin.permissions.includes("update dichvu") &&
+    users[0].admin.permissions.includes("delete dichvu")
+  );
   const [messageApi, contextHolder] = message.useMessage();
 
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
@@ -67,7 +91,16 @@ export const ManagerUtilities = () => {
       title: "Tên tiện ích",
       dataIndex: "name",
       key: "name",
-      render: (text, item) => <Link to={`/admin/updateUtilities/${item.key}`}>{text}</Link>
+      render: (text:any, item:any) => {
+        return (
+          <>
+            {hasAddUserPermission && (
+              <Link to={`/admin/updateUtilities/${item.key}`}>{text}</Link>
+            )}
+          </>
+        ) 
+       
+      }
     },
     {
       title: "Mô tả",
@@ -157,18 +190,22 @@ export const ManagerUtilities = () => {
           />
           {/*Nút Thêm */}
         </div>
-        <Button type="primary" className="ml-2 mt-1 bg-gray-500">
+        {hasAddUserPermission && (
+          <Button type="primary" className="ml-2 mt-1 bg-gray-500">
           <Link to={`/admin/addUtilities`}>Thêm</Link>
         </Button>
+        )}
       </div>
       {/*Nút Xoá */}
       <div>
-        <Button type="primary" className='' danger
+        {hasAddUserPermission && (
+          <Button type="primary" className='' danger
           onClick={() => {
             selectedRows.forEach((row) => confirmDelete(row.key));
           }}
           disabled={selectedRows.length === 0}
         >Xóa</Button>
+        )}
       </div>
 
       <Radio.Group
