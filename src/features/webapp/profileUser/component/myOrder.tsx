@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
+import dayjs from "dayjs";
 const MyOrder = () => {
   const [isProductInCart, setIsProductInCart] = useState();
   console.log("isProductInCart", isProductInCart);
@@ -122,8 +123,8 @@ const MyOrder = () => {
                               backgroundColor: "rgba(0, 0, 0, 0.5)",
                             },
                             content: {
-                              width: "800px",
-                              height: "500px",
+                              width: "1100px",
+                              height: "450px",
                               margin: "auto",
                               display: "flex",
                               flexDirection: "column",
@@ -132,10 +133,160 @@ const MyOrder = () => {
                             },
                           }}
                         >
-                          {/* Nội dung màn hình nổi */}
-                          <h2>Chi tiết</h2>
-                          <p>Đây là nội dung chi tiết trong màn hình nổi.</p>
-                          <button onClick={handleCloseModal}>Đóng</button>
+                          <div className="w-[100%] mx-auto">
+                            <section className="grid grid-cols-2 gap-8">
+                              <div key={item?.id} className="">
+                                <h1 className="font-semibold text-lg mb-2">
+                                  Thông tin Đặt phòng
+                                </h1>
+                                <div className="flex flex-col border rounded-lg px-2 mb-4 py-3 leading-[25px] ">
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <p className="font-semibold">
+                                      Tên khách hàng:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.name}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Căn cước công dân:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.cccd}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Số điện thoại:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.phone}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Email:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.email}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Check in:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {dayjs(item?.check_in).format(
+                                          "YYYY-MM-DD "
+                                        )}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Check out:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {dayjs(item?.check_out).format(
+                                          "YYYY-MM-DD"
+                                        )}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Quốc tịch:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.nationality}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Tổng số người:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.people_quantity}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Số phòng:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.total_rooms}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Số đêm:{" "}
+                                      {/* <span className="text-lg font-medium text-blue-900">
+                                        {numberOfNights}
+                                      </span> */}
+                                    </p>
+                                    <p className="font-semibold">
+                                      Tổng tiền:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.total_amount}
+                                      </span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="">
+                                <h1 className="text-lg font-semibold mb-2 ml-4">
+                                  Danh sách phòng và dịch vụ đã đặt
+                                </h1>
+                                {/* <ul>
+                                  {booking?.cart?.map(
+                                    (item: any, index: any) => {
+                                      const room = categories?.find(
+                                        (category: any) =>
+                                          category.id === item.id_cate
+                                      );
+                                      return (
+                                        <li key={index} className="ml-3 my-2">
+                                          <div className="border flex justify-between px-2 py-3">
+                                            <div className="">
+                                              {room && (
+                                                <>
+                                                  <span className="font-bold text-md">
+                                                    Phòng:{" "}
+                                                  </span>
+                                                  <span className="text-blue-800 font-semibold">
+                                                    {room.name}
+                                                  </span>
+                                                </>
+                                              )}
+                                            </div>
+                                            <button
+                                              onClick={() =>
+                                                toggleServicesVisibility(index)
+                                              }
+                                              type="button"
+                                            >
+                                              {isServicesVisible[index] ? (
+                                                <span className="flex items-center">
+                                                  Ẩn dịch vụ <AiOutlineUp />
+                                                </span>
+                                              ) : (
+                                                <span className="flex items-center">
+                                                  Hiện dịch vụ <AiOutlineDown />
+                                                </span>
+                                              )}
+                                            </button>
+                                          </div>
+                                          {isServicesVisible[index] && (
+                                            <ul className="border-b border-x">
+                                              {item.services.map(
+                                                (
+                                                  serviceId: any,
+                                                  serviceIndex: any
+                                                ) => (
+                                                  <li
+                                                    key={serviceIndex}
+                                                    className="pt-1"
+                                                  >
+                                                    <span className="text-md  font-bold px-2">
+                                                      Dịch vụ {serviceIndex + 1}
+                                                      :{" "}
+                                                    </span>{" "}
+                                                    {getServiceName(serviceId)}
+                                                  </li>
+                                                )
+                                              )}
+                                            </ul>
+                                          )}
+                                        </li>
+                                      );
+                                    }
+                                  )}
+                                </ul> */}
+                              </div>
+                            </section>
+                          </div>
+                          <button className="text-red-500" onClick={handleCloseModal}>Đóng</button>
                         </Modal>
                       </div>
                     </div>
