@@ -8,7 +8,7 @@ import {
   AiOutlineUp,
   AiOutlineArrowRight,
 } from "react-icons/ai";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { Button } from "antd";
@@ -72,14 +72,14 @@ const ChooseService = () => {
     const timeArray = dataParam.date.split(",");
     date = timeArray.map((time) => new Date(time));
   }
-  
+
   let roomNumber: any[] = [];
   if (dataParam && dataParam.numberRoom) {
     roomNumber = JSON.parse(dataParam.numberRoom);
   }
 
   console.log("RoomNumberParam", roomNumber);
-  
+
 
   const numberOfRooms = roomNumber.length;
 
@@ -89,12 +89,12 @@ const ChooseService = () => {
     console.log("submitsermist", selectedServices);
     const service = JSON.stringify(selectedServices);
     console.log("submithotel", hotel);
-    const url = `/booking/${hotel}/${date}/${JSON.stringify(roomNumber)}/${service}/${dataParam.numberPeople}`;
+    const url = `/booking/${hotel}/${date}/${roomNumber}/${service}/`;
     localStorage.clear();
     navigate(url);
     // navigate(`/booking`)
   };
-  
+
   interface RoomDetail {
     adults: number;
     children: number;
@@ -104,19 +104,19 @@ const ChooseService = () => {
 
   let roomDetailsString = "";
 
-if (Array.isArray(dataParam.numberPeople)) {
-  roomDetailsString = dataParam.numberPeople.map((details: any) => {
-    return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
-  }).join('&');
-  // Rest of your code that uses roomDetailsString
-}
-let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.numberPeople.replace(/"/g, '') : undefined;
+  if (Array.isArray(dataParam.numberPeople)) {
+    roomDetailsString = dataParam.numberPeople.map((details: any) => {
+      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+    }).join('&');
+    // Rest of your code that uses roomDetailsString
+  }
+  let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.numberPeople.replace(/"/g, '') : undefined;
   const onhanldeGoBack = () => {
 
     const url = `/choose-room/${dataParam?.nameHotel}/${dataParam?.date}/${numberOfRooms}/${cleanedNumberPeople}`;
 
     navigate(url);
-    
+
     console.log("numberRoom:", dataParam?.numberRoom)
   };
   // Tính tổng tiền của dịch vụ trong phòng
@@ -197,12 +197,13 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                   key={roomIndex}
                   className="border rounded-lg px-2 py-3 my-2"
                 >
+
                   <div className="px-2">
                     <h1 className="font-semibold text-xl">
                       Phòng {roomIndex + 1}
                     </h1>
                     <div className="flex justify-between">
-                      <h1 className="">Biệt thự 1 phòng ngủ</h1>
+                      <h1 className="" >{roomNumber[roomIndex]?.name}</h1>
                       <button
                         onClick={() => toggleShowService(roomIndex)}
                         className="text-yellow-700 hover:text-yellow-500 font-semibold"

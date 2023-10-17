@@ -8,7 +8,7 @@ import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 const { RangePicker } = DatePicker;
 
 const RoomTypes = () => {
-  const { id } = useParams();
+  const { id:idHotel } = useParams();
   const { data, isLoading } = useGetCategory_homeQuery();
   console.log("data", data);
   const navigate = useNavigate()
@@ -44,11 +44,11 @@ const RoomTypes = () => {
         price: data[index]?.price
       }];
       const encodedGuests = [`adults:1,children:0,infants:0`];
-      const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
+      const encodedSelectedRooms = 1;
   
       const hotel = `${data[1].hotel_id}, ${data[1].nameHotel}`
       console.log("hoteldl:",hotel)
-      const url = `/choose-service/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
+      const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
       console.log("url", url);
   
       navigate(url);
@@ -135,7 +135,7 @@ const RoomTypes = () => {
                 </button>
                 <button className="border-2 border-blue-500 hover:bg-blue-500 text-blue-700 hover:text-white px-4 py-3 rounded w-full">
                   <Link
-                    to={`/hotels/${id}/rooms/detail/${roomType.id}?idroom=${roomType.id}`}
+                    to={`/hotel/${idHotel}/rooms/detail/${roomType.id}?idroom=${roomType.id}`}
                   >
                     Xem thêm
                   </Link>
