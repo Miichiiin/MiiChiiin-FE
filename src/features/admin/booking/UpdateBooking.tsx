@@ -262,7 +262,7 @@ const UpdateBooking = () => {
   const handleSelectRooms = (roomIndex: any) => {
     setSelectedRoomIndex(roomIndex);
     console.log(selectedRoomIndex);
-    setListRoomSelected(roomsData.filter((room: any) => room.id_cate === Number(selectedRoomIndex) + 1))
+    setListRoomSelected(roomsData.filter((room: any) => room.id_cate === selectedRoomsData[roomIndex]?.id_cate))
     setIsSelectingRooms(!isSelectingRooms);
     setHiddenSelectingRooms(!hiddenSelectingRooms)
     setIsSelectingServices(false);
@@ -277,28 +277,29 @@ const UpdateBooking = () => {
 
   };
   const handleUpdateCart = () => {
-    if (selectedRoomIndex !== null && selectedServices.length > 0) {
-      // Kiểm tra xem đã có mục với id_cate tương tự trong cartData hay chưa
-      const index = cartData.findIndex((item) => item.id_cate === selectedRoomIndex + 1);    
-      if (index  !== -1) {
-        // Nếu đã tồn tại, cập nhật services của mục đó
-        const updatedCartData = cartData.map((item, i) => {
-          if (i === index) {
-            return {
-              ...item,
-              services: selectedServices,
-            };
-          }
-          return item;
-        });
-        setCartData(updatedCartData);
-        form.setFieldsValue({ cart: updatedCartData });
-        calculateTotalAmount(updatedCartData);
-      }
-    }
-    setIsSelectingServices(false);
-    setHiddenSelectingServices(false)
-  };
+  if (selectedRoomIndex !== null && selectedServices.length > 0) {
+    // Tạo một bản sao mới của cartData để tránh thay đổi trực tiếp.
+    const updatedCartData = [...cartData];
+    const selectedRoomIdCate = selectedRoomsData[selectedRoomIndex]?.id_cate;
+
+    // Tìm mục trong cartData có id_cate tương tự
+    const existingItem = updatedCartData.find((item) => item.id_cate === selectedRoomIdCate);
+    
+    if (existingItem) {
+      // Nếu đã tồn tại, thêm dịch vụ vào mục đó mà không ghi đè
+      existingItem.services = [...new Set([...existingItem.services, ...selectedServices])];
+    } 
+    setCartData(updatedCartData);
+    form.setFieldsValue({ cart: updatedCartData });
+    calculateTotalAmount(updatedCartData);
+  }
+
+  setIsSelectingServices(false);
+  setHiddenSelectingServices(false);
+};
+
+
+
 
   const onFinish = (values: FieldType) => {
 
@@ -408,14 +409,7 @@ const UpdateBooking = () => {
                     required: true,
                     message: 'Hãy chọn ngày check in!',
                   },
-                  {
-                    validator: (_, value) => {
-                      if (dayjs(value).isBefore(dayjs(), 'day')) {
-                        return Promise.reject('Không được chọn ngày trong quá khứ!');
-                      }
-                      return Promise.resolve();
-                    },
-                  },
+
                 ]}
               >
                 <DatePicker
@@ -424,6 +418,10 @@ const UpdateBooking = () => {
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="Chọn ngày và giờ"
                   className='w-[250px]'
+                  disabledDate={(current) => {
+                    // Vô hiệu hóa các ngày hôm trước
+                    return current && current.isBefore(new Date(), 'day');
+                  }}
                 />
               </Form.Item>
               <Form.Item
@@ -435,14 +433,6 @@ const UpdateBooking = () => {
                     required: true,
                     message: 'Hãy chọn ngày check out!',
                   },
-                  {
-                    validator: (_, value) => {
-                      if (dayjs(value).isBefore(dayjs(), 'day')) {
-                        return Promise.reject('Không được chọn ngày trong quá khứ!');
-                      }
-                      return Promise.resolve();
-                    },
-                  },
                 ]}
               >
                 <DatePicker
@@ -451,6 +441,10 @@ const UpdateBooking = () => {
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="Chọn ngày và giờ"
                   className='w-[250px]'
+                  disabledDate={(current) => {
+                    // Vô hiệu hóa các ngày hôm trước
+                    return current && current.isBefore(new Date(), 'day');
+                  }}
                 />
               </Form.Item>
               <Form.Item
@@ -459,7 +453,6 @@ const UpdateBooking = () => {
                 labelCol={{ span: 24 }}
                 rules={[
                   { required: true, message: 'Hãy nhập!' },
-                  { whitespace: true, message: 'Không được để trống!' },
                   {
                     pattern: /^[1-9][0-9]*$/,
                     message: 'Phải nhập số nguyên dương',
@@ -467,7 +460,7 @@ const UpdateBooking = () => {
 
                 ]}
               >
-                <Input className='w-[250px]' />
+                <InputNumber className='w-[250px]' />
               </Form.Item>
               <Form.Item
                 label="Quốc tịch"
@@ -605,7 +598,7 @@ const UpdateBooking = () => {
                                 </div>
                               </Popconfirm>
                             </div>
-                            <p className=''>Tên phòng : </p>
+                            <p className=''>Tên phòng : { }</p>
                             <p className="text-md">Dịch vụ đã chọn: </p>
                             <ul>
                               {roomData.services.map((serviceId, serviceIndex) => (
@@ -650,6 +643,11 @@ const UpdateBooking = () => {
                         </div>
 
                       ))}
+                      <div className='ml-[210px] items-center'>
+                        <Button className='border border-blue-500 rounded px-4 mt-2  ' onClick={handleUpdateCart}>
+                          Cập nhật cart
+                        </Button>
+                      </div>
                     </Form.Item>
                   )}
                   {isSelectingRooms && selectedRoomIndex !== null && (
@@ -680,14 +678,14 @@ const UpdateBooking = () => {
                           </div>
                         ))}
                       </Radio.Group>
+                      <div className='ml-[210px] items-center'>
+                        <Button className='border border-blue-500 rounded px-4 mt-2  '>
+                          Cập nhật phòng
+                        </Button>
+                      </div>
                     </Form.Item>
                   )}
 
-
-
-                  <Button className='border border-blue-500 rounded px-4 mt-2 w-full ' onClick={handleUpdateCart}>
-                    Cập nhật cart
-                  </Button>
                 </div>
               </div>
             </div>
