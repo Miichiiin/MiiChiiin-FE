@@ -45,10 +45,10 @@ interface FieldType {
   id_user: number;
   phone: string;
   cart: {
+    id_room?: string | number;
     id_cate: number | string;
     services: number[] | string[];
   }[];
-  id_room: string | number;
   promotion: number;
 }
 
@@ -63,7 +63,7 @@ const UpdateBooking = () => {
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const [cartData, setCartData] = useState<FieldType['cart']>([]);
   const [form] = Form.useForm();
-  const [selectedRoomsData, setSelectedRoomsData] = useState<{ id_cate: number; services: number[] }[]>([]);
+  const [selectedRoomsData, setSelectedRoomsData] = useState<{ id_room?: number | "", id_cate: number; services: number[] }[]>([]);
   const [selectedRoomIndex, setSelectedRoomIndex] = useState<number | null>(null);
   const [isRoomsHidden, setIsRoomsHidden] = useState(false);
   const [isServicesHidden, setIsServicesHidden] = useState<boolean>(false);
@@ -73,7 +73,7 @@ const UpdateBooking = () => {
   const [maxRoomQuantity, setMaxRoomQuantity] = useState(0);
   const [availableRoomCounts, setAvailableRoomCounts] = useState<{ [key: number]: number }>({});
   const [listRoomSelected, setListRoomSelected] = useState<any[]>([])
-  const [selectedRoom, setSelectedRoom] = useState<any[]>([])
+  const [selectedRoom, setSelectedRoom] = useState<number | null>()
 
   useEffect(() => {
     if (categories) {
@@ -255,18 +255,40 @@ const UpdateBooking = () => {
   }, [totalAmount]);
 
   const [isSelectingServices, setIsSelectingServices] = useState(false);
+  const [hiddenSelectingServices, setHiddenSelectingServices] = useState(false);
   const [isSelectingRooms, setIsSelectingRooms] = useState(false);
   const [hiddenSelectingRooms, setHiddenSelectingRooms] = useState(false);
-  const [hiddenSelectingServices, setHiddenSelectingServices] = useState(false);
 
+  const getRoomName = (roomId: any) => {
+    const roomData = roomsData?.find((room: any) => room.id === roomId);
+    return roomData ? `Phòng ${roomData.name}` : 'Chưa có phòng';
+  }
   const handleSelectRooms = (roomIndex: any) => {
     setSelectedRoomIndex(roomIndex);
-    console.log(selectedRoomIndex);
+    const rooms = roomsData?.id_room
+    console.log(rooms);
+    setSelectedRoom(rooms);
     setListRoomSelected(roomsData.filter((room: any) => room.id_cate === selectedRoomsData[roomIndex]?.id_cate))
     setIsSelectingRooms(!isSelectingRooms);
     setHiddenSelectingRooms(!hiddenSelectingRooms)
     setIsSelectingServices(false);
   }
+  const handleUpdateRoom = () => {
+    if (selectedRoomIndex !== null) {
+      const updatedCartData = [...cartData];
+      updatedCartData[selectedRoomIndex].id_room = Number(selectedRoom);
+      setSelectedRoom(Number(selectedRoom)); 
+      setCartData(updatedCartData);
+      form.setFieldsValue({ cart: updatedCartData });
+    }
+
+    setIsSelectingRooms(false);
+    setHiddenSelectingRooms(false);
+    setSelectedRoomIndex(null);
+  };
+
+
+
   const handleSelectServices = (roomIndex: any) => {
     setSelectedRoomIndex(roomIndex);
     setIsSelectingServices(!isSelectingServices);
@@ -277,37 +299,24 @@ const UpdateBooking = () => {
 
   };
   const handleUpdateCart = () => {
-    if (selectedRoomIndex !== null && selectedServices.length > 0) {
+    if (selectedRoomIndex !== null) {
       // Tạo một bản sao mới của cartData để tránh thay đổi trực tiếp.
       const updatedCartData = [...cartData];
-      const selectedRoomIdCate = selectedRoomsData[selectedRoomIndex]?.id_cate;
-  
-      // Tìm tất cả các mục có id_cate tương tự trong cartData
-      const itemsToUpdate = updatedCartData.filter((item) => item.id_cate === selectedRoomIdCate);
-      if (itemsToUpdate.length > 0) {
-        // Nếu đã tồn tại, cập nhật dịch vụ của tất cả các mục có id_cate tương tự
-        itemsToUpdate.forEach((item) => {
-          item.services = selectedServices;
-        });
-      }
+      // Cập nhật lại mảng cartData
+      updatedCartData[selectedRoomIndex].services = selectedServices;
       setCartData(updatedCartData);
       form.setFieldsValue({ cart: updatedCartData });
       calculateTotalAmount(updatedCartData);
     }
-  
+
     setIsSelectingServices(false);
     setHiddenSelectingServices(false);
   };
-  
-  
-
-
-
-
   const onFinish = (values: FieldType) => {
 
-    const cart = selectedRoomsData.map((roomData) => ({
-      id_cate: roomData.id_cate, // ID phòng đã chọn
+    const cart = cartData.map((roomData) => ({
+      id_room: roomData?.id_room || "", // ID phòng đã chọn
+      id_cate: roomData.id_cate, // ID loại phòng đã chọn
       services: roomData.services, // Các dịch vụ đã chọn cho phòng
     }));
 
@@ -322,6 +331,9 @@ const UpdateBooking = () => {
 
     updateBooking(formattedValues).unwrap().then(() => {
       message.success('Cập nhật thành công');
+      // if (message) {
+      //   navigate(`/admin/detailbooking/${id}`)
+      // }
     });
   };
 
@@ -577,17 +589,17 @@ const UpdateBooking = () => {
                 <div className="grid grid-cols-2 gap-2">
                   {selectedRoomsData?.map((roomData, index) => {
                     const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
-
+                    
                     return (
                       <React.Fragment key={index}>
                         {((!hiddenSelectingServices || selectedRoomIndex === index) && (!hiddenSelectingRooms || selectedRoomIndex === index)) && (
                           <div
                             className={`px-3 py-2 rounded-md border h-full`}>
-                            <h2 className="font-bold text-xl"> Phòng {index + 1}</h2>
+                            <h2 className="font-bold text-xl text-blue-800"> Phòng số {index + 1}</h2>
 
                             <div className="flex justify-between items-center">
                               <h2 >
-                                <span className='pr-2'>Loại phòng:</span><span className='font-semibold italic'>{selectedCategory?.name}</span></h2>
+                                <span className='pr-2'>Loại phòng:</span><span className='font-semibold italic text-blue-800'>{selectedCategory?.name}</span></h2>
                               <Popconfirm
                                 title="Xoá phòng ?"
                                 description="Bạn có chắc muốn xoá phòng này không ?"
@@ -601,12 +613,13 @@ const UpdateBooking = () => {
                                 </div>
                               </Popconfirm>
                             </div>
-                            <p className=''>Tên phòng : { }</p>
-                            <p className="text-md">Dịch vụ đã chọn: </p>
+                              <p className=''>Tên phòng : <span className='font-semibold text-blue-800'> {getRoomName(roomData?.id_room)} </span></p>
+
+                            <p className="text-md ">Dịch vụ đã chọn: </p>
                             <ul>
                               {roomData.services.map((serviceId, serviceIndex) => (
                                 <li key={serviceIndex}>
-                                  Dịch vụ {serviceIndex + 1}: {getServiceName(serviceId)}
+                                  Dịch vụ {serviceIndex + 1}: <span className='font-semibold text-blue-800'>{getServiceName(serviceId)}</span>
                                 </li>
                               ))}
                             </ul>
@@ -654,26 +667,20 @@ const UpdateBooking = () => {
                     </Form.Item>
                   )}
                   {isSelectingRooms && selectedRoomIndex !== null && (
-                    <Form.Item name="id_room" className=''>
+                    <Form.Item name={['cart', selectedRoomIndex, 'id_room']} className=''>
                       <Radio.Group
                         optionType="button"
                         buttonStyle="solid"
                         onChange={(e) => {
                           const selectedRoomId = e.target.value;
-                          if (selectedRoom.includes(selectedRoomId)) {
-                            // If the room is already selected, remove it
-                            setSelectedRoom(selectedRoom.filter(id => id !== selectedRoomId));
-                          } else {
-                            // If the room is not selected, add it to the selected services
-                            setSelectedRoom([...selectedRoom, selectedRoomId]);
-                          }
+                          setSelectedRoom(selectedRoomId);
                         }}
                       >
                         {listRoomSelected?.map((room: any) => (
                           <div key={room.id} className="my-3 flex items-center text-md w-[600px]">
                             <Radio
                               value={room.id}
-                              checked={selectedRoom.includes(room.id)}
+                              checked={selectedRoom === room.id}
                               className='mr-2'
                             >
                               Phòng {room.name}
@@ -682,7 +689,7 @@ const UpdateBooking = () => {
                         ))}
                       </Radio.Group>
                       <div className='ml-[210px] items-center'>
-                        <Button className='border border-blue-500 rounded px-4 mt-2  '>
+                        <Button className='border border-blue-500 rounded px-4 mt-2' onClick={handleUpdateRoom}>
                           Cập nhật phòng
                         </Button>
                       </div>
