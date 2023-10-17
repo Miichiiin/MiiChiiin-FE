@@ -97,7 +97,7 @@ export const router = createBrowserRouter([
                 element:<Order/>
             },
             {
-                path: '/hotels/rooms/roomtypes',
+                path: '/hotel/:id/rooms/roomtypes',
                 element: <RoomTypes />
             },
             {
