@@ -8,11 +8,11 @@ const authApi = createApi({
     prepareHeaders: async (headers) => {
       try {
         await Promise.resolve(); // Đảm bảo promise đã được giải quyết
-        const token = localStorage.getItem("token");
-        console.log("tokennn", token);
-        if (token) {
-          headers.set("Authorization", `Bearer ${token}`);
-        }
+        // const token = localStorage.getItem("token");
+        // console.log("tokennn", token);
+        // if (token) {
+        //   headers.set("Authorization", `Bearer ${token}`);
+        // }
         headers.set("Accept", "application/json");
         headers.set("Content-Type", "application/json");
 

@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 const MyOrder = () => {
   const [isProductInCart, setIsProductInCart] = useState();
   console.log("isProductInCart", isProductInCart);
-  const storedUser = localStorage.getItem("user") as string;
 
   const [user, setUser] = useState({
     id: "",
@@ -21,7 +20,7 @@ const MyOrder = () => {
 
   const { data: booking } = useGetBokingUserQuery(user?.id);
 
-  console.log("booking", booking);
+  console.log("booking2333", user?.id);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

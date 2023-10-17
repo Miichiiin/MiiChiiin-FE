@@ -16,7 +16,7 @@ const bookingUserApi = createApi({
     }),
     endpoints: (builder) => ({
         getBokingUser: builder.query({
-            query: (id) => `/booking/${id}`,
+            query: (id) => `/booking/${id}/profile`,
             providesTags: ['BookingUser']
         }),
         getBookingDetailUser: builder.query<any,void>({
