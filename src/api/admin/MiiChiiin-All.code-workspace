@@ -1,11 +1,11 @@
 {
-  "folders": [
-	{
-		"path": "../../.."
-	},
-	{
-		"path": "C:/xampp/htdocs/Miichiiin_BE"
-	}
-],
-  "settings": {}
-}
+    "folders": [
+      {
+          "path": "../../.."
+      },
+      {
+          "path": "C:/xampp/htdocs/Miichiiin_BE"
+      }
+  ],
+    "settings": {}
+  }

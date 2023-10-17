@@ -29,7 +29,7 @@ export const SearchQuickHotel = () => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
     console.log("roomDetailsString", roomDetailsString);
-
+    
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
     navigate(url);
   }
@@ -136,7 +136,7 @@ export const SearchQuickHotel = () => {
   //
 
   console.log("user", localStorage.getItem("user"));
-
+  
 
   /*Tăng số lượng phòng*/
   interface RoomDetail {
@@ -197,7 +197,7 @@ export const SearchQuickHotel = () => {
   /*Cuộn trang*/
   const shouldShowScroll = numberOfRooms1 > 1;
   return (
-    <div className="xl:ml-[100px] 2xl:ml-[250px] md:ml-[50px] lg:ml-[75px]">
+    <div className="ml-36">
       <Form
         className="flex items-center w-full flex-wrap" // Thêm lớp flex-wrap để xử lý trường hợp tràn dòng
         name="basic"
@@ -215,13 +215,13 @@ export const SearchQuickHotel = () => {
           // rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <div ref={refCalen} onClick={handleDivClick}>
-              <div onClick={toggleDropdown} className="relative cursor-pointer ">
+              <div onClick={toggleDropdown} className="relative">
                 <div
-                  className="border rounded border-[#e0e0e0] xl:w-[410px] xl:h-[57px] xl:pl-[55px] 
+                  className="border z-0 border-[#e0e0e0] xl:w-[400px] xl:h-[55px] xl:pl-[55px] 
                         lg:w-[200px] lg:h-[55px] xl:text-[16px] lg:text-[11px] lg:pl-[40px] 
-                        sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px] transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md"
+                        sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px]"
                 >
-                  <span className="text-gray-700 absolute pt-[13px]">
+                  <span className="text-[#b0b4b8] absolute top-4">
                     {selectedHotel || "Bạn nhập nơi muốn đến..."}
                   </span>
                 </div>
@@ -230,8 +230,8 @@ export const SearchQuickHotel = () => {
                 </span>
               </div>
               {isDropdownOpen && (
-                <div className="absolute cursor-pointer">
-                  <div className="box-full rounded-md mt-1 bg-white px-6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute transition duration-2000">
+                <div className="absolute">
+                  <div className="box-full rounded-md top-1 bg-white px-6 py 6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute transition duration-2000">
                     {hotelsData.map((hotel: any) => (
                       <div key={hotel.id} className="leading-[45px]">
                         <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
@@ -240,7 +240,10 @@ export const SearchQuickHotel = () => {
                         </span>
                         <button
                           className="text-[12px] hover:text-[#f2ba50]"
-                          onClick={() => { handleHotelSelect([hotel.id, hotel.name]) }}>
+                          onClick={() => {
+                            handleHotelSelect([hotel.id, hotel.name]);
+                          }}
+                        >
                           {hotel.name}
                         </button>
                       </div>
@@ -251,10 +254,15 @@ export const SearchQuickHotel = () => {
             </div>
           </Form.Item>
 
-          <Form.Item className="flex-grow ml-2">
+          <Form.Item className="flex-grow ml-2 ">
             <RangePicker
-              className="w-[280px] text-[16px] h-[57px] border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md"
-              format="DD/MM/YYYY"
+              style={{
+                width: '280px',
+                fontSize: '16px',
+                height: '55px',
+                borderRadius: '0',
+              }}
+              format="DD/MM/YYYY "
               onChange={handleRangeChange}
               disabledDate={(current) => {
                 // Vô hiệu hóa các ngày hôm trước
@@ -264,32 +272,37 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
-            <button className='w-[310px]' >
-              <div className="flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md " >
+            <button>
+              <div className="flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] ">
                 <span className="xl:text-[22px] lg:text-[19px] mr-4">
                   <AiOutlineUser />
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
-                  <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-semibold ">
-                    <label htmlFor="" className='cursor-pointer'>Số phòng </label>
-                    <label htmlFor="" className='cursor-pointer pl-[20px]'>Số người </label>
+                  <div className="xl:text-[12px] xl:space-x-7 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-medium">
+                    <label htmlFor="">Số phòng </label>
+                    <label htmlFor="">Số người </label>
                   </div>
                   <div
                     onClick={toggleDropdown1}
-                    className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46] w-[320px] cursor-pointer "
+                    className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46]"
                   >
-                    <label htmlFor="" className='cursor-pointer pl-0.5'>{numberOfRooms1} phòng</label>
-                    <label htmlFor="" className='cursor-pointer '>
-                      {roomDetails1.reduce((total, room) => total + room.adults, 0)}{" "}
-                      người lớn - {" "}
-                      {roomDetails1.reduce((total, room) => total + room.children, 0)}{" "}
-                      trẻ em
+                    <label htmlFor="">{numberOfRooms1} phòng</label>
+                    <label htmlFor="">
+                      {roomDetails1.reduce(
+                        (total, room) => total + room.adults,
+                        0
+                      )}{" "}
+                      người -
+                      {roomDetails1.reduce(
+                        (total, room) => total + room.children,
+                        0
+                      )}
                     </label>
                   </div>
                 </div>
                 <div ref={refCalen1}>
                   {isDropdownOpen1 && (
-                    <div className="absolute mt-1 lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 hover:block rounded-md">
+                    <div className="absolute  lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 ">
                       <div className="flex items-center justify-between cursor-pointer text-[15px]">
                         <span className="font-medium">Số phòng</span>
                         <div className="flex items-center space-x-4">
@@ -334,22 +347,21 @@ export const SearchQuickHotel = () => {
                                 <div className="flex items-center space-x-3">
                                   <button
                                     onClick={() =>
-                                      handleAdultChange1(index, room.adults - 1)
-                                    }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                                  >
-                                    <AiOutlineMinus />
-                                  </button>
-                                  <a href="">{room.adults}</a>
-                                  <button
-                                    onClick={() =>
                                       handleAdultChange1(index, room.adults + 1)
                                     }
                                     className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
                                   >
                                     <AiOutlinePlus />
                                   </button>
-
+                                  <a href="">{room.adults}</a>
+                                  <button
+                                    onClick={() =>
+                                      handleAdultChange1(index, room.adults - 1)
+                                    }
+                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                  >
+                                    <AiOutlineMinus />
+                                  </button>
                                 </div>
                               </span>
                               <span>
@@ -361,18 +373,6 @@ export const SearchQuickHotel = () => {
                                     onClick={() =>
                                       handleChildrenChange1(
                                         index,
-                                        room.children - 1
-                                      )
-                                    }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                                  >
-                                    <AiOutlineMinus />
-                                  </button>
-                                  <a href="">{room.children}</a>
-                                  <button
-                                    onClick={() =>
-                                      handleChildrenChange1(
-                                        index,
                                         room.children + 1
                                       )
                                     }
@@ -380,7 +380,18 @@ export const SearchQuickHotel = () => {
                                   >
                                     <AiOutlinePlus />
                                   </button>
-
+                                  <a href="">{room.children}</a>
+                                  <button
+                                    onClick={() =>
+                                      handleChildrenChange1(
+                                        index,
+                                        room.children - 1
+                                      )
+                                    }
+                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                  >
+                                    <AiOutlineMinus />
+                                  </button>
                                 </div>
                               </span>
                               <span>
@@ -392,18 +403,6 @@ export const SearchQuickHotel = () => {
                                     onClick={() =>
                                       handleInfantChange1(
                                         index,
-                                        room.infants - 1
-                                      )
-                                    }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
-                                  >
-                                    <AiOutlineMinus />
-                                  </button>
-                                  <a href="">{room.infants}</a>
-                                  <button
-                                    onClick={() =>
-                                      handleInfantChange1(
-                                        index,
                                         room.infants + 1
                                       )
                                     }
@@ -411,7 +410,18 @@ export const SearchQuickHotel = () => {
                                   >
                                     <AiOutlinePlus />
                                   </button>
-
+                                  <a href="">{room.infants}</a>
+                                  <button
+                                    onClick={() =>
+                                      handleInfantChange1(
+                                        index,
+                                        room.infants - 1
+                                      )
+                                    }
+                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                  >
+                                    <AiOutlineMinus />
+                                  </button>
                                 </div>
                               </span>
                             </div>
@@ -428,8 +438,8 @@ export const SearchQuickHotel = () => {
             </button>
           </Form.Item>
 
-          <Form.Item className="flex-grow ml-2">
-            <div className="flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-40 h-[57px] border border-[#e0e0e0] rounded">
+          <Form.Item className="border border-[#e0e0e0] ml-2">
+            <div className="flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-40 h-18">
               <span className="xl:text-[23px] lg:text-[16px] sm:text-[12px] mr-4 ">
                 <AiOutlineIdcard />
               </span>
@@ -440,15 +450,19 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2">
-            <button
-              type="submit"
-              className="border text-white bg-[#e8952f] xl:text-center px-8 h-[57px] font-bold xl:text-[16px] lg:text-[16px] sm:text-[12px]
-            hover:border-[#e8952f] hover:bg-[#f2ba50] transition-all duration-300 ease-in-out flex items-center justify-center rounded"
+            <Button
+              htmlType="submit"
+              className="text-white bg-[#e8952f] px-10 py-7 font-bold text-center xl:text-[16px] lg:text-[16px] sm:text-[12px] "
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "0", // Áp dụng borderRadius thành 0
+              }}
               onClick={onHandSubmit}
             >
-              <span>Tìm</span>
-              <span className="ml-1">kiếm</span>
-            </button>
+              Tìm kiếm
+            </Button>
           </Form.Item>
         </div>
       </Form>

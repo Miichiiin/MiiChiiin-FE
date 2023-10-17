@@ -166,19 +166,19 @@ const HeaderHotelType = () => {
           </div>
           <div className="text-gray-800 text-[21px] leading-[50px] px-10 py-10 font-medium">
             <div className="flex items-center justify-between">
-              <a href="/hoteltype">Khách sạn</a>{" "}
+              <a href="">Khách sạn</a>{" "}
               <span className="mt-1 text-[12px] ">
                 <AiOutlineDown />
               </span>
             </div>
             <p className="flex items-center justify-between">
-              <a href="">Trải nghiệm</a>{" "}
+              <a href="">Trải nghiện</a>{" "}
               <span className="mt-1 text-[12px] ">
                 <AiOutlineDown />
               </span>
             </p>
             <p>
-              <a href="/promotion">Ưu đãi khuyến mãi</a>
+              <a href="">Ưu đãi khuyến mãi</a>
             </p>
             <p>
               <a href="">New</a>

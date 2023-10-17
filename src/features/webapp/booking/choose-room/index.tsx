@@ -131,6 +131,9 @@ const ChooseRoom = () => {
 
     return acc;
   }, []);
+
+  console.log("uniqueSelectedRooms", uniqueSelectedRooms);
+  
   const navigate = useNavigate();
 
   interface Room {
@@ -163,6 +166,7 @@ const ChooseRoom = () => {
       count: room.count,
       name: room.name,
       price: room.price,
+      id_cate: room.id
     }));
     const encodedGuests = numberPeople
       .map((details) => {
@@ -173,17 +177,7 @@ const ChooseRoom = () => {
     const encodedSelectedRooms = encodeURIComponent(
       JSON.stringify(updatedSelectedRooms)
     );
-    // console.log("rômmmm",updatedSelectedRooms);
-    // console.log(
-    //   "hotel",
-    //   hotel,
-    //   "date",
-    //   date,
-    //   "numbeRoom",
-    //   encodedSelectedRooms,
-    //   "numberPeople",
-    //   encodedGuests
-    // );
+
     const newCart = {
       hotel: searchSlide.nameHotel,
       date: date,
@@ -374,7 +368,7 @@ const ChooseRoom = () => {
                 <Button
                   onClick={onHandSubmit}
                   className={`bg-yellow-500 hover:bg-yellow-600 text-white text-lg font-bold rounded-full w-full ${
-                    selectedRoomCount === parseInt(searchSlide.numberRoom, 10)
+                    selectedRoomCount === parseInt(searchSlide?.numberRoom, 10)
                       ? ""
                       : "opacity-50 pointer-events-none" // Ẩn và vô hiệu hóa nút nếu chưa đủ số phòng
                   }`}

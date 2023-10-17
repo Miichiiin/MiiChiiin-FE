@@ -1,132 +1,507 @@
-import { AiOutlineLeft ,AiOutlineCheck,} from "react-icons/ai";
+import {
+  AiOutlineLeft,
+  AiOutlineCheck,
+  AiOutlineArrowRight,
+} from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
+import { useParams } from "react-router-dom";
+import { differenceInDays, parseISO } from "date-fns";
+import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
+import { useForm } from "react-hook-form";
+import localStorage from "redux-persist/es/storage";
+import { useAddBookingUserMutation } from "@/api/bookingUser";
 const BookingInformation = () => {
+  const dataParam = useParams();
+  const { data: serviceData } = useGetService_hotelQuery();
+  console.log("serviceData chooservice", serviceData);
+
+  console.log("dataParam11", dataParam);
+
+  let hotel: string[] = [];
+  if (dataParam && dataParam.hotel) {
+    hotel = dataParam.hotel.split(",");
+  }
+  console.log("hotel", hotel);
+
+  let date: Date[] = [];
+  if (dataParam && dataParam.date) {
+    const timeArray = dataParam.date.split(",");
+    date = timeArray.map((time) => new Date(time));
+  }
+  console.log("date111", date);
+
+  let roomNumber: any[] = [];
+  if (dataParam && dataParam.roomNumber) {
+    roomNumber = JSON.parse(dataParam.roomNumber);
+  }
+  console.log("RoomNumberParam", roomNumber);
+
+  let selectedServices: any[] = [];
+  if (dataParam && dataParam.selectedServices) {
+    selectedServices = JSON.parse(dataParam.selectedServices);
+  }
+  console.log("selectedServicesParam", selectedServices);
+  //Tính số người
+  // Tách chuỗi thành các phần tử riêng biệt
+const individuals = dataParam.people && dataParam.people.split('&');
+
+let totalAdults = 0;
+let totalChildren = 0;
+
+// Lặp qua từng phần tử và tính tổng số người lớn và trẻ em
+individuals.forEach((individual: any) => {
+  // Tách thông tin về người lớn và trẻ em
+  const info = individual.split(',');
+
+  // Lặp qua từng thông tin và tìm số lượng người lớn và trẻ em
+  info.forEach((item: any) => {
+    if (item.includes('adults')) {
+      const count = parseInt(item.split(':')[1]);
+      totalAdults += count;
+    } else if (item.includes('children')) {
+      const count = parseInt(item.split(':')[1]);
+      totalChildren += count;
+    }
+  });
+});
+
+// In kết quả
+console.log("Total adults:", totalAdults);
+console.log("Total children:", totalChildren);
+
+  //Tính tiền
+  const serviceTotalPrice = selectedServices.reduce(
+    (accumulator: any, selectedService: any) => {
+      const { id } = selectedService;
+      const selectedServiceData =
+        serviceData && serviceData.find((item: any) => item.id === id);
+      if (selectedServiceData) {
+        return accumulator + selectedServiceData.price;
+      }
+      return accumulator;
+    },
+    0
+  );
+  console.log("tien dịch vụ", serviceTotalPrice);
+  let totalPrice1 = 0;
+
+  roomNumber.map((item: any) => {
+    const startDate = new Date(date[0]); // Lấy ngày bắt đầu thuê phòng từ date[0]
+    const endDate = new Date(date[1]); // Lấy ngày kết thúc thuê phòng từ date[1]
+    const numberOfDays = Math.ceil(
+      (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
+    ); // Tính số ngày thuê phòng
+
+    totalPrice1 += item.price * numberOfDays * item.count;
+  });
+
+  // Hiển thị tổng tiền
+  console.log("Tổng tiền: ", totalPrice1);
+
+  const sumprice = totalPrice1 + serviceTotalPrice;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  //Add mảng cart
+
+const intermediateCart = [] as any;
+
+// Lặp qua mảng roomNumber để tạo dữ liệu cho cart
+roomNumber?.map((item, index) => {
+  const selectedServicesInRoom = selectedServices.filter(
+    (service) => service.roomIndex === index
+  );
+
+  // Tạo một đối tượng mới đại diện cho mỗi phần tử trong roomNumber
+  const cartItem = {
+    id_cate: item.id_cate, // Giá trị id_cate của mỗi phần tử trong roomNumber
+    services: selectedServicesInRoom.map((selectedService) => selectedService.id) // Mảng chứa các id dịch vụ đã chọn trong roomNumber
+  };
+
+  // Thêm cartItem vào mảng trung gian intermediateCart
+  intermediateCart.push(cartItem);
+});
+
+// Gán dữ liệu từ mảng trung gian vào trạng thái (hoặc sử dụng dữ liệu tương ứng)
+const cart = intermediateCart;
+
+console.log("mảng cart 1111", cart); // Kiểm tra kết quả trong console
+
+  const id_user = localStorage.getItem("user")
+  const [addBookingUser] = useAddBookingUserMutation()
+console.log("id_user", hotel[0]);
+
+  const onSubmit = (data: any) => {
+    const dataBooking = {
+        check_in: date[0].toISOString().slice(0, 10),
+        check_out: date[1].toISOString().slice(0, 10),
+        email: data.email,
+        name: data.firstName + data.lastName,
+        message: "...",
+        people_quantity: totalChildren + totalAdults,
+        total_amount: sumprice,
+        cccd: data.id,
+        nationality: data.country,
+        id_user: 3,
+        phone: data.phone,
+        cart: cart,
+        id_hotel: Number(hotel[0]),
+        promotion: 1
+    }
+    addBookingUser(dataBooking)
+    console.log("data form", data);
+    console.log("newDataBooking", dataBooking);
+    
+  };
   return (
     <div>
-        <HeaderHotelType/>
-        <div className="">
-            <div className="flex items-center w-[1280px] mx-auto mt-[60px] ">
-                <span className="flex items-center mr-[300px] space-x-3 text-[#6181bb]"><AiOutlineLeft/><a href="">Chọn phòng</a></span>
-                <div className="flex items-center space-x-8">
-                    <a className="flex items-center space-x-3 text-[#e8952f]" href=""><span className="bg-[#e8952f] px-2 py-2 text-white rounded-full"><AiOutlineCheck/></span><span className="font-medium text-[14px]">Chọn phòng</span></a>
-                    <a className="flex items-center space-x-3 text-[#e8952f]" href=""><span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">2</span><span className="text-[#6a6971] text-[14px] font-medium">Dịch vụ mua thêm</span></a>
-                    <a className="flex items-center space-x-3 text-[#e8952f]" href=""><span className="bg-[#f5f6fa] px-4 py-2 font-medium text-[#6a6971] rounded-full">3</span><span className="text-[#6a6971] text-[14px] font-medium">Thanh toán</span></a>
-                </div>
-            </div>
-            <div className="w-[1280px] mx-auto mt-10 flex space-x-4" >
-                <div>
-                    <div className="border boder-black  rounded-md w-[800px] pb-10 ">
-                        <div className="border border-b-[#bg-[#f9f9f9]] px-4 py-4 bg-[#f5f6fa]">
-                            <span className="font-medium text-[18px]">Thông tin người đặt chỗ </span>
-                        </div>
-                        <div className="mt-5 mb-5 flex items-center px-5 py-5">
-                            <span className="mr-6">Danh xưng <span className="text-red-500">*</span></span>
-                            <form action="action_page.php" className=" space-x-2">
-                                <span className="items-center "><input type="radio" name="gender" value="male" checked/> Ông</span>
-                                <span className="items-center "><input type="radio" name="gender" value="male" /> Bà</span>
-                                <span className="items-center "><input type="radio" name="gender" value="male" /> Khác</span>
-                            </form>
-                        </div>
-                        <div className=" flex items-center space-x-8 px-5 py-5">
-                            <div>
-                                <label htmlFor="">Họ <span className="text-red-500">*</span></label><br />
-                                <input className="border mt-2 w-[360px] h-[45px] rounded-md  px-3 text-[12px] outline-none " type="text" placeholder="Ex: Nguyen"/>
-                            </div>
-                            <div>
-                                <label htmlFor="">Tên đêm và tên <span className="text-red-500">*</span></label><br />
-                                <input className="border mt-2 w-[360px] h-[45px] rounded-md  px-3 text-[12px] outline-none " type="text" placeholder="Ex: Anh Duy"/>
-                            </div>
-                        </div>
-                        <div className="px-5  py-3 flex items-center space-x-8">
-                            <div>
-                                <label htmlFor="">Email nhận thông tin đơn hàng <span className="text-red-500">*</span></label><br />
-                                <input className="border mt-2 w-[360px] h-[45px] rounded-md  px-3 text-[12px] outline-none " type="text" placeholder="Ex: abc@gmail.com"/>
-                            </div>
-                            <div>
-                                <label htmlFor="">Điện thoại <span className="text-red-500">*</span></label><br />
-                                <input className="border mt-2 w-[360px] h-[45px] rounded-md  px-3 text-[12px] outline-none " type="tel" placeholder="Ex: Anh Duy"/>
-                            </div>
-                        </div>
-                        <div className=" px-5 flex items-center space-x-9">
-                            <div>
-                                <label >Vùng quốc gia<span className="text-red-500">*</span></label><br />
-                                <select name="lang" id="lang-select" className="border w-[360px] h-[45px] mt-4 rounded-md px-3">
-                                    <option value="">Trung Quốc</option>
-                                    <option value="csharp">Hà Lan</option>
-                                    <option value="cpp">Lào</option>
-                                    <option value="php">Thái Lan</option>
-                                    <option value="ruby">Mỹ</option>
-                                    <option value="js">Úc</option>
-                                    <option value="dart" selected>Việt Nam</option>
-                                </select>
-                            </div>
-                            <div className="mt-2">
-                                <label htmlFor="">Căn cước công dân <span className="text-red-500">*</span></label><br />
-                                <input className="border mt-2 w-[360px] h-[45px] rounded-md  px-3 text-[12px] outline-none " type="tel" placeholder="Ex: Anh Duy"/>
-                            </div>
-                        </div>
-                        <span className="flex mt-4 items-center space-x-3 px-5"><span className="bg-[#e8952f] px-1 py-1 rounded-full text-white text-[10px]"><AiOutlineCheck/></span><a className="text-[15px] text-[#e8952f]" href="">Tôi là khách lưu trú</a></span>
-                    </div>
-                    <div className="border boder-black  rounded-md w-[800px] pb-10 mt-4">
-                        <div className="border border-b-[#bg-[#f9f9f9]]  bg-[#f5f6fa] px-5 py-5">
-                            <span className="font-medium text-[18px]">Phương thức thanh toán</span>
-                        </div>
-                        <a href="" className="text-[15px] px-5 text-left">Khi nhấp vào "Thanh toán", bạn đồng ý cung cấp các thông tin trên và đồng ý với các 
-                        <span className="text-[#80c3fa] underline-offset-1 underline">điều khoản,điều kiện  </span> và 
-                        <span className="text-[#80c3fa] underline-offset-1 underline"> chính sách và quyền riêng</span> tư của Vinpearl.</a>
-                        <div>
-                            <a href="" className="bg-[#e8952f] text-white rounded-full px-[50px] pt-3 pb-3 text-[20px] font-medium ml-[500px] " >Thanh toán</a>
-                        </div>
-                    </div>
-                </div>
-                <div className="border boder-black  rounded-md w-[460px] pb-10 h-[400px]">
-                    <div className="border border-b-[#bg-[#f9f9f9]]  bg-[#f5f6fa] px-5 py-5">
-                        <span className="font-medium text-[18px]">Chuyến đi</span>
-                        
-                    </div>
-                    <div className="px-5">
-                        <div className=" mt-4">
-                            <div className="flex items-center justify-between ">
-                                <h2 className="text-[18px] font-medium">VinHolidays Fiesta Phú Quốc</h2>
-                                <a className="text-[12px]" href="">Chỉnh sửa</a>
-                            </div>
-                            <div className="text-[13px] mt-2">
-                                <div className="flex items-center space-x-2">
-                                    <a href="">Chủ Nhật, Th08 27, 2023</a> <BsArrowRight/>
-                                    <a href="">Thứ Ba, Th08 29, 2023</a>
-                                </div>
-                                <a href=""> 02 Đêm</a>
-                            </div>
-                        </div>
-                        <div className=" mt-4 border-t-2 pt-4">
-                            <div className="flex items-center justify-between ">
-                                <h2 className="text-[18px] font-medium">Phòng 1</h2>
-                                <a className="text-[18px] font-medium" href="">12.400.000đ</a>
-                            </div>
-                            <div className="text-[13px] mt-2">
-                                <div className="flex items-center space-x-2">
-                                    <a href="">x1 Biệt Thự 2 Phòng Ngủ</a> 
-                                </div>
-                                <a className="" href=""> 1 Người lớn</a>
-                            </div>
-                        </div>
-                        <div className=" mt-4 border-t-2 pt-4">
-                            <div className="flex items-center justify-between ">
-                                <h2 className="text-[18px] font-medium">Tổng cộng:</h2>
-                                <a className="text-[18px] font-medium text-[#e8952f]" href="">12.400.000 đ</a>
-                            </div>
-                            <div className="text-[13px] mt-2">
-                                <a className="" href="">Bao gồm cả thuế</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
+      <HeaderHotelType />
+      <div className="">
+        <div className="flex items-center w-[1280px] mx-auto mt-[60px] ">
+          <span className="flex items-center mr-[300px] space-x-3 text-[#6181bb]">
+            <AiOutlineLeft />
+            <a href="">Chọn phòng</a>
+          </span>
+          <div className="flex items-center space-x-8">
+            <a className="flex items-center space-x-3 text-[#e8952f]" href="">
+              <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
+                <AiOutlineCheck />
+              </span>
+              <span className="font-medium text-[14px]">Chọn phòng</span>
+            </a>
+            <a className="flex items-center space-x-3 text-[#e8952f]" href="">
+              <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">
+                2
+              </span>
+              <span className="text-[#6a6971] text-[14px] font-medium">
+                Dịch vụ mua thêm
+              </span>
+            </a>
+            <a className="flex items-center space-x-3 text-[#e8952f]" href="">
+              <span className="bg-[#f5f6fa] px-4 py-2 font-medium text-[#6a6971] rounded-full">
+                3
+              </span>
+              <span className="text-[#6a6971] text-[14px] font-medium">
+                Thanh toán
+              </span>
+            </a>
+          </div>
         </div>
-    </div>
-  )
-}
+        <div className="w-[1280px] mx-auto mt-10 flex space-x-4">
+          <div>
+            <div className="border border-b-[#bg-[#f9f9f9]] px-4 py-4 bg-[#f5f6fa]">
+              <span className="font-medium text-[18px]">
+                Thông tin người đặt chỗ{" "}
+              </span>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="border boder-black  rounded-md w-[800px] pb-10 ">
+                <div className="mt-5 mb-5 flex items-center px-5 py-5">
+                  <span className="mr-6">
+                    Danh xưng <span className="text-red-500">*</span>
+                  </span>
+                  <div className="space-x-2">
+                    <span className="items-center">
+                      <label>
+                        <input
+                          type="radio"
+                          value="Ông"
+                          {...register("gender", { required: true })}
+                        />{" "}
+                        Ông
+                      </label>
+                    </span>
+                    <span className="items-center">
+                      <label>
+                        <input
+                          type="radio"
+                          value="Bà"
+                          {...register("gender", { required: true })}
+                        />{" "}
+                        Bà
+                      </label>
+                    </span>
+                    <span className="items-center">
+                      <label>
+                        <input
+                          type="radio"
+                          value="Khác"
+                          {...register("gender", { required: true })}
+                        />{" "}
+                        Khác
+                      </label>
+                    </span>
+                  </div>
+                  {errors.gender && (
+                    <span className="text-red-500">
+                      Vui lòng chọn danh xưng
+                    </span>
+                  )}
+                </div>
 
-export default BookingInformation
+                <div className="flex items-center space-x-8 px-5 py-5">
+                  <div>
+                    <label htmlFor="last-name">
+                      Họ <span className="text-red-500">*</span>
+                    </label>
+                    <br />
+                    <input
+                      id="last-name"
+                      className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
+                      type="text"
+                      placeholder="Ex: Nguyen"
+                      {...register("lastName", { required: true })}
+                    />
+                    {errors.lastName && (
+                      <span className="text-red-500">Vui lòng điền họ</span>
+                    )}
+                  </div>
+                  <div>
+                    <label htmlFor="first-name">
+                      Tên đêm và tên <span className="text-red-500">*</span>
+                    </label>
+                    <br />
+                    <input
+                      id="first-name"
+                      className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
+                      type="text"
+                      placeholder="Ex: Anh Duy"
+                      {...register("firstName", { required: true })}
+                    />
+                    {errors.firstName && (
+                      <span className="text-red-500">
+                        Vui lòng điền tên đệm và tên
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="px-5 py-3 flex items-center space-x-8">
+                  <div>
+                    <label htmlFor="email">
+                      Email nhận thông tin đơn hàng{" "}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <br />
+                    <input
+                      id="email"
+                      className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
+                      type="email"
+                      placeholder="Ex: abc@gmail.com"
+                      {...register("email", { required: true })}
+                    />
+                    {errors.email && (
+                      <span className="text-red-500">Vui lòng điền email</span>
+                    )}
+                  </div>
+                  <div>
+                    <label htmlFor="phone">
+                      Điện thoại <span className="text-red-500">*</span>
+                    </label>
+                    <br />
+                    <input
+                      id="phone"
+                      className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
+                      type="tel"
+                      placeholder="Ex: Anh Duy"
+                      {...register("phone", { required: true })}
+                    />
+                    {errors.phone && (
+                      <span className="text-red-500">
+                        Vui lòng điền số điện thoại
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="px-5 flex items-center space-x-9">
+                  <div>
+                    <label htmlFor="country">
+                      Vùng quốc gia<span className="text-red-500">*</span>
+                    </label>
+                    <br />
+                    <select
+                      id="country"
+                      className="border w-[360px] h-[45px] mt-4 rounded-md px-3"
+                      {...register("country", { required: true })}
+                    >
+                      <option value="vietnam">Việt Nam</option>
+                      <option value="trungquoc">Trung Quốc</option>
+                      <option value="anh">Anh</option>
+                    </select>
+                    {errors.country && (
+                      <span className="text-red-500">
+                        Vui lòng chọn vùng quốc gia
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-2">
+                    <label htmlFor="id">
+                      Căn cước công dân <span className="text-red-500">*</span>
+                    </label>
+                    <br />
+                    <input
+                      id="id"
+                      className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
+                      type="tel"
+                      placeholder="Ex: Anh Duy"
+                      {...register("id", { required: true })}
+                    />
+                    {errors.id && (
+                      <span className="text-red-500">
+                        Vui lòng điền căn cước công dân
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <span className="flex mt-4 items-center space-x-3 px-5">
+                  <span className="bg-[#e8952f] px-1 py-1 rounded-full text-white text-[10px]">
+                    <AiOutlineCheck />
+                  </span>
+                  <a className="text-[15px] text-[#e8952f]" href="">
+                    Tôi là khách lưu trú
+                  </a>
+                </span>
+              </div>
+
+              <div className="border boder-black  rounded-md w-[800px] pb-10 mt-4">
+                <div className="border border-b-[#bg-[#f9f9f9]]  bg-[#f5f6fa] px-5 py-5">
+                  <span className="font-medium text-[18px]">
+                    Phương thức thanh toán
+                  </span>
+                </div>
+                <a href="" className="text-[15px] px-5 text-left">
+                  Khi nhấp vào "Thanh toán", bạn đồng ý cung cấp các thông tin
+                  trên và đồng ý với các
+                  <span className="text-[#80c3fa] underline-offset-1 underline">
+                    điều khoản,điều kiện{" "}
+                  </span>{" "}
+                  và
+                  <span className="text-[#80c3fa] underline-offset-1 underline">
+                    {" "}
+                    chính sách và quyền riêng
+                  </span>{" "}
+                  tư của Vinpearl.
+                </a>
+                <div>
+                  <button
+                    type="submit"
+                    className="bg-[#e8952f] text-white rounded-full px-[50px] pt-3 pb-3 text-[20px] font-medium ml-[500px] "
+                  >
+                    Thanh toán
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            {/* endForm */}
+          </div>
+          <div className="border boder-black  rounded-md w-[460px] pb-10 h-[400px]">
+            <div className="border border-b-[#bg-[#f9f9f9]]  bg-[#f5f6fa] px-5 py-5">
+              <span className="font-medium text-[18px]">Chuyến đi</span>
+            </div>
+            <div className="px-5">
+              <div className=" mt-4">
+                <div className="flex items-center justify-between ">
+                  <h2 className="text-[18px] font-medium">{hotel[1]}</h2>
+                  <a className="text-[12px]" href="">
+                    Chỉnh sửa
+                  </a>
+                </div>
+                <div className="text-[13px] mt-2">
+                  <p className="text-sm pt-3 items-center flex">
+                    {date[0].toISOString().slice(0, 10)}
+                    <AiOutlineArrowRight className="inline-block mx-1" />
+                    {date[1].toISOString().slice(0, 10)}
+                  </p>
+                  <p className="text-sm pb-3">
+                    {differenceInDays(
+                      parseISO(date[1].toISOString().slice(0, 10)),
+                      parseISO(date[0].toISOString().slice(0, 10))
+                    )}{" "}
+                    Đêm
+                  </p>
+                </div>
+              </div>
+              {/* Thông tin phòng đặt */}
+              {roomNumber?.map((item: any, index: number) => {
+                const roomNumber = `Phòng ${index + 1}`;
+                const selectedServicesInRoom = selectedServices.filter(
+                  (service) => service.roomIndex === index
+                );
+
+                return (
+                  <div key={index}>
+                    <div className="flex items-center justify-between">
+                      <h1 className="font-semibold">{roomNumber}</h1>
+                      <button className="text-lg font-semibold italic">
+                        {item?.price}
+                      </button>
+                    </div>
+                    <p className="text-sm pt-3 items-center flex">
+                      <span className="pr-1">x{item?.count}</span>
+                      {item?.name}
+                    </p>
+                    <p className="text-sm pb-3">2 Người lớn, 2 Trẻ em</p>
+                    {/* Dịch vụ đã chọn */}
+                    {selectedServicesInRoom.length > 0 && (
+                      <div className="border-gray-100 bg-gray-100 px-2 rounded">
+                        <p className="text-sm pb-3 font-semibold">
+                          Dịch vụ mua thêm
+                        </p>
+                        <ul className="list-disc px-3">
+                          {selectedServicesInRoom.map((selectedService) => {
+                            const { id, price, roomIndex } = selectedService;
+                            const selectedRoom = roomIndex + 1;
+                            const selectedServiceData =
+                              serviceData &&
+                              serviceData.find((item: any) => item.id === id);
+                            if (selectedServiceData) {
+                              return (
+                                <li className="text-sm pb-2" key={id}>
+                                  <div className="flex justify-between items-center">
+                                    <p>
+                                      {" "}
+                                      Phòng {selectedRoom}:{" "}
+                                      {selectedServiceData.name}
+                                    </p>
+                                    <p>{selectedServiceData.price} vnđ</p>
+                                  </div>
+                                </li>
+                              );
+                            }
+                            return null;
+                          })}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+              <div className=" mt-4 border-t-2 pt-4">
+                <div className="flex items-center justify-between ">
+                  <h2 className="text-[18px] font-medium">Tổng cộng:</h2>
+                  <a className="text-[18px] font-medium text-[#e8952f]" href="">
+                    {sumprice}
+                  </a>
+                </div>
+                <div className="text-[13px] mt-2">
+                  <a className="" href="">
+                    Bao gồm cả thuế
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default BookingInformation;

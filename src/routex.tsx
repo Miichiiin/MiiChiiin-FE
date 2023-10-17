@@ -52,7 +52,9 @@ import Permission from "./features/admin/Permission/Permission";
 import IndexPremission from "./features/admin/Permission/IndexPremission";
 import Promotion from "./features/webapp/Promotion";
 import DetailBooking from "./features/admin/booking/DetailBooking";
-import HotelStatistics from "./features/admin/HotelStatistics";
+import { LayoutProfile } from "./features/webapp/profileUser/component/layoutProfile";
+import MyOrder from "./features/webapp/profileUser/component/myOrder";
+import ProfileUsre from "./features/webapp/profileUser/component/profileUsre";
 import HotelChainStatistic from "./features/admin/HotelChainStatistics";
 
 
@@ -87,7 +89,7 @@ export const router = createBrowserRouter([
                 element: <New />
             },
             {
-                path: "/booking/:hotel/:date/:roomNumber/:selectedServices/",
+                path: "/booking/:hotel/:date/:roomNumber/:selectedServices/:people",
                 element: <BookingInformation />
             },
             {
@@ -95,11 +97,11 @@ export const router = createBrowserRouter([
                 element:<Order/>
             },
             {
-                path: '/hotel/:id/rooms/roomtypes',
+                path: '/hotels/rooms/roomtypes',
                 element: <RoomTypes />
             },
             {
-                path: '/hotel/:id/rooms/detail/:id',
+                path: '/hotel/:idHotel/rooms/detail/:idRoom',
                 element: <DetailTypeofRoom />
             },
             {
@@ -133,7 +135,23 @@ export const router = createBrowserRouter([
         ],
     },
 
+    {
+        path: "/profileUser",
+        element: (
+            <LayoutProfile />
+        ),
+        children: [
+            {
+                index: true,
+                element: <ProfileUsre/>  ,
+            },
+            {
+                path: "myorder",
+                element: <MyOrder /> ,
+            }
 
+        ],
+    },
 
     {
         path: "/admin",
@@ -143,7 +161,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <HotelStatistics/>,
+                element: <HotelChainStatistics />,
             },
             {
                 path: "manageroomtype",

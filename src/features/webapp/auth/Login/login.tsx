@@ -7,32 +7,40 @@ import { useForm } from "react-hook-form";
 import { SigninForm, schemaSignIn } from "@/schema/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
+import GoogleLoginButton from "./loginGoogle";
+import axios from 'axios';
+
 const Login = () => {
   const [Signin] = useSigninMutation();
   const navigate = useNavigate();
   const {register,handleSubmit,formState: { errors }} = useForm<SigninForm>({
     resolver: yupResolver(schemaSignIn),
   });
-  const handleLogin = async (user: SigninForm) => {
-    try {
-      await Signin(user).then(() => {
-        const userLocal = localStorage.getItem('user')
-        console.log("userLocal", userLocal);
-        
-        if(userLocal) {
-          message.success("Đăng nhập thành công");
-          setTimeout(() => {
-            navigate("/");
-          }, 1000);
-        }else{
-          message.error("Thông tin tài khoản hoặc mật khẩu không chính xác !");
+
+const handleLogin = async (user: any) => {
+  try {
+    await Signin(user).then(async () => {
+      const userLocal = localStorage.getItem('user');
+      console.log('userLocal', userLocal);
+
+      if (userLocal) {
+        const token = localStorage.getItem('token');
+        if (token) {
+          // Add the token to the header of subsequent requests
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          message.success('Đăng nhập thành công');
+          navigate('/');
+        } else {
+          message.error('Không tìm thấy token trong lưu trữ!');
         }
-      
-      });
-    } catch (error) {
-     
-    }
-  };
+      } else {
+        message.error('Thông tin tài khoản hoặc mật khẩu không chính xác!');
+      }
+    });
+  } catch (error) {
+    // Handle the error
+  }
+};
   useEffect(() => {
     window.scrollTo(0, 0);
   });
@@ -108,6 +116,7 @@ const Login = () => {
                     <BsGoogle className="text-xl" />
                     <span className="px-2">Login with Google</span>
                   </button>
+                  <GoogleLoginButton/>
                 </div>
               </div>
             </form>

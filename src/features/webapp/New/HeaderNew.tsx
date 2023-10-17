@@ -168,7 +168,7 @@ const HeaderNew = () => {
                                             </div>
                                         </div>
                                     </li>
-                                    <li className="h-[40px] after-4"><a href="/promotion">Ưu đãi khuyến mãi</a></li>
+                                    <li className="h-[40px] after-4"><a href="">Ưu đãi khuyến mãi</a></li>
                                     <li className="h-[40px] after-4">
                                         <a href="">New</a>
                                     </li>
@@ -199,9 +199,9 @@ const HeaderNew = () => {
             </button>
           </div>
           <div  className="text-gray-800 text-[21px] leading-[50px] px-10 py-10 font-medium">
-            <div  className="flex items-center justify-between"><a href="/hoteltype">Khách sạn</a> <span className="mt-1 text-[12px] "><AiOutlineDown/></span></div>
-            <p className="flex items-center justify-between"><a href="">Trải nghiệm</a> <span className="mt-1 text-[12px] "><AiOutlineDown/></span></p>
-            <p><a href="/promotion">Ưu đãi khuyến mãi</a></p>
+            <div  className="flex items-center justify-between"><a href="">Khách sạn</a> <span className="mt-1 text-[12px] "><AiOutlineDown/></span></div>
+            <p className="flex items-center justify-between"><a href="">Trải nghiện</a> <span className="mt-1 text-[12px] "><AiOutlineDown/></span></p>
+            <p><a href="">Ưu đãi khuyến mãi</a></p>
             <p><a href="">New</a></p>
           </div>
         </div>
