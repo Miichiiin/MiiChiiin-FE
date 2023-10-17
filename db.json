@@ -1614,7 +1614,7 @@
   ],
   "HotelChainStatisticsv": [
     {
-      "id": "1",
+      "id": 1,
       "hotel": "Khách sạn 1",
       "serviceA": 30,
       "serviceB": 20,
@@ -1623,7 +1623,7 @@
       "year": "2023"
     },
     {
-      "id": "2",
+      "id": 2,
       "hotel": "Khách sạn 2",
       "serviceA": 25,
       "serviceB": 22,
@@ -1632,7 +1632,7 @@
       "year": "2023"
     },
     {
-      "id": "3",
+      "id": 3,
       "hotel": "Khách sạn 3",
       "serviceA": 35,
       "serviceB": 15,
@@ -1641,7 +1641,7 @@
       "year": "2023"
     },
     {
-      "id": "4",
+      "id": 4,
       "hotel": "Khách sạn 4",
       "serviceA": 28,
       "serviceB": 24,
@@ -1650,7 +1650,7 @@
       "year": "2023"
     },
     {
-      "id": "5",
+      "id": 5,
       "hotel": "Khách sạn 5",
       "serviceA": 40,
       "serviceB": 18,
@@ -1659,7 +1659,7 @@
       "year": "2023"
     },
     {
-      "id": "6",
+      "id": 6,
       "hotel": "Khách sạn 1",
       "serviceA": 25,
       "serviceB": 15,
@@ -1668,7 +1668,7 @@
       "year": "2023"
     },
     {
-      "id": "7",
+      "id": 7,
       "hotel": "Khách sạn 2",
       "serviceA": 30,
       "serviceB": 18,
@@ -1677,7 +1677,7 @@
       "year": "2023"
     },
     {
-      "id": "8",
+      "id": 8,
       "hotel": "Khách sạn 3",
       "serviceA": 22,
       "serviceB": 19,
@@ -1686,7 +1686,7 @@
       "year": "2023"
     },
     {
-      "id": "9",
+      "id": 9,
       "hotel": "Khách sạn 4",
       "serviceA": 32,
       "serviceB": 12,
@@ -1695,7 +1695,7 @@
       "year": "2023"
     },
     {
-      "id": "10",
+      "id": 10,
       "hotel": "Khách sạn 5",
       "serviceA": 26,
       "serviceB": 21,
@@ -1704,7 +1704,7 @@
       "year": "2023"
     },
     {
-      "id": "11",
+      "id": 11,
       "hotel": "Khách sạn 1",
       "serviceA": 30,
       "serviceB": 20,
@@ -1713,7 +1713,7 @@
       "year": "2023"
     },
     {
-      "id": "12",
+      "id": 12,
       "hotel": "Khách sạn 2",
       "serviceA": 15,
       "serviceB": 12,
@@ -1722,7 +1722,7 @@
       "year": "2023"
     },
     {
-      "id": "13",
+      "id": 13,
       "hotel": "Khách sạn 3",
       "serviceA": 45,
       "serviceB": 15,
@@ -1731,7 +1731,7 @@
       "year": "2023"
     },
     {
-      "id": "15",
+      "id": 15,
       "hotel": "Khách sạn 4",
       "serviceA": 28,
       "serviceB": 14,
@@ -1740,7 +1740,7 @@
       "year": "2023"
     },
     {
-      "id": "16",
+      "id": 16,
       "hotel": "Khách sạn 5",
       "serviceA": 40,
       "serviceB": 18,
@@ -1749,7 +1749,7 @@
       "year": "2023"
     },
     {
-      "id": "17",
+      "id": 17,
       "hotel": "Khách sạn 1",
       "serviceA": 25,
       "serviceB": 15,
@@ -1758,7 +1758,7 @@
       "year": "2022"
     },
     {
-      "id": "18",
+      "id": 18,
       "hotel": "Khách sạn 2",
       "serviceA": 30,
       "serviceB": 18,
@@ -1767,7 +1767,7 @@
       "year": "2022"
     },
     {
-      "id": "19",
+      "id": 19,
       "hotel": "Khách sạn 3",
       "serviceA": 22,
       "serviceB": 19,
@@ -1776,7 +1776,7 @@
       "year": "2022"
     },
     {
-      "id": "20",
+      "id": 20,
       "hotel": "Khách sạn 4",
       "serviceA": 32,
       "serviceB": 12,
@@ -1785,7 +1785,7 @@
       "year": "2022"
     },
     {
-      "id": "21",
+      "id": 21,
       "hotel": "Khách sạn 5",
       "serviceA": 26,
       "serviceB": 21,

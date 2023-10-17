@@ -210,7 +210,7 @@ export const SearchQuickHotel = () => {
       >
         <div className="flex items-center w-full">
           <Form.Item<FieldType>
-            name="nameHotel"
+            name="nameHotel" 
             className="flex-grow"
           // rules={[{ required: true, message: 'Please input your username!' }]}
           >
