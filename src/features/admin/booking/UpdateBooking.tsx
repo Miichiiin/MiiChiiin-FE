@@ -277,26 +277,29 @@ const UpdateBooking = () => {
 
   };
   const handleUpdateCart = () => {
-  if (selectedRoomIndex !== null && selectedServices.length > 0) {
-    // Tạo một bản sao mới của cartData để tránh thay đổi trực tiếp.
-    const updatedCartData = [...cartData];
-    const selectedRoomIdCate = selectedRoomsData[selectedRoomIndex]?.id_cate;
-
-    // Tìm mục trong cartData có id_cate tương tự
-    const existingItem = updatedCartData.find((item) => item.id_cate === selectedRoomIdCate);
-    
-    if (existingItem) {
-      // Nếu đã tồn tại, thêm dịch vụ vào mục đó mà không ghi đè
-      existingItem.services = [...new Set([...existingItem.services, ...selectedServices])];
-    } 
-    setCartData(updatedCartData);
-    form.setFieldsValue({ cart: updatedCartData });
-    calculateTotalAmount(updatedCartData);
-  }
-
-  setIsSelectingServices(false);
-  setHiddenSelectingServices(false);
-};
+    if (selectedRoomIndex !== null && selectedServices.length > 0) {
+      // Tạo một bản sao mới của cartData để tránh thay đổi trực tiếp.
+      const updatedCartData = [...cartData];
+      const selectedRoomIdCate = selectedRoomsData[selectedRoomIndex]?.id_cate;
+  
+      // Tìm tất cả các mục có id_cate tương tự trong cartData
+      const itemsToUpdate = updatedCartData.filter((item) => item.id_cate === selectedRoomIdCate);
+      if (itemsToUpdate.length > 0) {
+        // Nếu đã tồn tại, cập nhật dịch vụ của tất cả các mục có id_cate tương tự
+        itemsToUpdate.forEach((item) => {
+          item.services = selectedServices;
+        });
+      }
+      setCartData(updatedCartData);
+      form.setFieldsValue({ cart: updatedCartData });
+      calculateTotalAmount(updatedCartData);
+    }
+  
+    setIsSelectingServices(false);
+    setHiddenSelectingServices(false);
+  };
+  
+  
 
 
 
