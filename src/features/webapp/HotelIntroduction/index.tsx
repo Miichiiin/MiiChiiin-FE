@@ -23,6 +23,8 @@ const HotelIntroduction = () => {
   const { data: service } = useGetService_hotelQuery();
   const {id:idHotel} = useParams<{id:string}>();
 
+  // Lưu dữ liệu và local
+
   let settings = {
     dots: false,
     infinite: true,
