@@ -16,7 +16,7 @@ const statisticalApi = createApi({
     }),
     endpoints: (builder) => ({
         getStatistical: builder.query<any, void>({
-            query: () => `/statistical`,
+            query: () => `statistical`,
             providesTags: ['Statistical']
         }),
         getStatisticalById: builder.query({
