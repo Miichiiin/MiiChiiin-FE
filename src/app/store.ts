@@ -39,6 +39,10 @@ import statisticalApi, { statisticalReducer } from '@/api/admin/statistical';
 import statistical_ServiceApi, { statisticalServiceReducer } from '@/api/admin/statistical_Service';
 import hotelchainstatisticsApi, { hotelchainstatisticsReducer } from '@/api/admin/HotelChainStatistics';
 import hotelchainstatisticsvApi, { hotelchainstatisticsvReducer } from '@/api/admin/HotelChainStatisticsSv';
+import admin_admin_AdminApi, { Admin_admin_AdminReducer } from '@/api/admin/admin_admin_admin';
+import role1Api, { role1Reducer } from '@/api/admin/role1_admin';
+import permission1Api, { permission1Reducer } from '@/api/admin/permisstion1_admin';
+import admin_AdminApi1, { Admin_AdminReducer1 } from '@/api/admin/admin_admin1';
 
 const persistConfig = {
     key: 'root',
@@ -70,7 +74,11 @@ const rootReducer = combineReducers({
     statistical:statisticalReducer,
     statistical_service: statisticalServiceReducer,
     hotelchainstatistics: hotelchainstatisticsReducer,
-    hotelchainstatisticsv: hotelchainstatisticsvReducer
+    hotelchainstatisticsv: hotelchainstatisticsvReducer,
+    admin_admin_admin: Admin_admin_AdminReducer,
+    roles1_admin: role1Reducer,
+    permission1_admin: permission1Reducer,
+    admin_admin1: Admin_AdminReducer1,
 })
 const middleware = [
     room_adminApi.middleware, 
@@ -95,6 +103,10 @@ const middleware = [
     statistical_ServiceApi.middleware,
     hotelchainstatisticsApi.middleware,
     hotelchainstatisticsvApi.middleware,
+    admin_admin_AdminApi.middleware,
+    role1Api.middleware,
+    permission1Api.middleware,
+    admin_AdminApi1.middleware
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

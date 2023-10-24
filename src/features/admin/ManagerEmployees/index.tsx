@@ -1,33 +1,14 @@
 
-import { useGetAdmin_AdminQuery, useRemoveAdmin_AdminMutation } from "@/api/admin/admin_admin";
+import { useGetAdmin_admin_AdminQuery, useRemoveAdmin_admin_AdminMutation } from "@/api/admin/admin_admin_admin";
 import { Table, Divider, Radio, Input, Select, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 
-const users = [
-  {
-   token: "haha",
-   admin:{
-     id: 2,
-     id_hotel: 1,
-     name: "Augustus Mitchell",
-     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-     role: "",
-     permissions: [
-       'add user',
-       'update user',
-       'delete user',
-       'add voucher',
-     ]
-   },
-  }
- 
-];
 export const ManagerEmployee = () => {
-  const { data: emploData } = useGetAdmin_AdminQuery({})
-  const [removeEployee] = useRemoveAdmin_AdminMutation()
+  const { data: emploData } = useGetAdmin_admin_AdminQuery({})
+  const [removeEployee] = useRemoveAdmin_admin_AdminMutation()
   const dataSource = emploData?.map(({ id, name, id_role, email, password, image, description, gender, date, address, status, phone }: DataType) => ({
     key: id,
     id_role,
@@ -52,8 +33,6 @@ export const ManagerEmployee = () => {
     password: number | string;
     image: string;
     description: string;
-    // national:string;
-    // position:string;
     gender: string;
     date: string;
     address: string;
@@ -86,7 +65,11 @@ export const ManagerEmployee = () => {
       key: "image",
       render: (image) => <img src={image} alt="Hình ảnh" width="100" />,
     },
-
+    {
+      title: "Chức vụ",
+      dataIndex: "id_role",
+      key: "id_role",
+    },
     {
       title: "Giới tính",
       dataIndex: "gender",
@@ -134,12 +117,12 @@ export const ManagerEmployee = () => {
       });
     }
   };
-  // Khởi tạo biến trạng thái để kiểm tra quyền "add user"
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add user") &&
-    users[0].admin.permissions.includes("update user") &&
-    users[0].admin.permissions.includes("delete user")
-  );
+  // phân quyền
+  const dataPermission = localStorage.getItem('userAdmin')
+  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+  const hasAddUserPermission = (permissions:any) => {
+    return currentUserPermissions.includes(permissions);
+  };
   return (
     <div>
       <div
@@ -185,14 +168,14 @@ export const ManagerEmployee = () => {
             }}
           />
         </div>
-        {hasAddUserPermission && (
+        {hasAddUserPermission('add user') && (
           <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
                 <Link to={`/admin/addemployee`}>Thêm Nhân Viên</Link>
           </button>
           )}
       </div>
       <div>
-        {hasAddUserPermission && (
+        {hasAddUserPermission('delete user') && (
             <Button type="primary" className='mx-5' danger
               onClick={() => {
                 selectedRows.forEach((row) => confirmDelete(row.key));
@@ -202,7 +185,7 @@ export const ManagerEmployee = () => {
             xóa
           </Button>
         )}
-        {hasAddUserPermission && (
+        {hasAddUserPermission('update user') && (
           <Button type="primary" danger className="mt-1 ml-1">
             
               <Link to={`/admin/updateemployee`}>Sửa</Link>
