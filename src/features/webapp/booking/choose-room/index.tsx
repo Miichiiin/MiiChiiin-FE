@@ -21,7 +21,7 @@ const ChooseRoom = () => {
   const [totalPrice, setTotalPrice] = useState<any>(0);
   const searchSlide = useParams();
   console.log("search", searchSlide)
-  const [isRoomSelected, setIsRoomSelected] = useState(false);
+  // const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [selectedRoomCount, setSelectedRoomCount] = useState(0);
   console.log("hotelds", hotels);
 
@@ -59,33 +59,36 @@ const ChooseRoom = () => {
 
   console.log("khách sạn", hotel);
 
-  const handleRoomSelect = (selectedHotel: any) => {
-    // Kiểm tra xem số lượng phòng đã chọn có vượt quá giới hạn không
-    if (
-      searchSlide &&
-      typeof searchSlide.numberRoom === "string" &&
-      /^\d+$/.test(searchSlide.numberRoom)
-    ) {
-      const numberRoom = parseInt(searchSlide.numberRoom, 10); // Chuyển đổi chuỗi thành số nguyên
-      if (selectedRooms.length < numberRoom) {
-        setSelectedRooms([...selectedRooms, selectedHotel]);
-        const price = selectedHotel.price;
-        setTotalPrice(totalPrice + price);
-        setSelectedRoomCount(selectedRooms.length + 1); // Tăng số lượng phòng đã chọn
-        // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage
-        localStorage.setItem(
-          "selectedRooms",
-          JSON.stringify([...selectedRooms, selectedHotel])
-        );
-        localStorage.setItem("totalPrice", (totalPrice + price).toString());
-        // Đánh dấu rằng đã chọn phòng
-      } else {
-        // Xử lý trường hợp khi đã đạt đến giới hạn phòng
-        // Ở đây bạn có thể thêm thông báo hoặc xử lý tùy ý
-      }
+// Lấy dữ liệu từ localStorage
+
+const handleRoomSelect = (selectedHotel: any) => {
+  // Kiểm tra xem số lượng phòng đã chọn có vượt quá giới hạn không
+  if (
+    searchSlide &&
+    typeof searchSlide.numberRoom === 'string' &&
+    /^\d+$/.test(searchSlide.numberRoom)
+  ) {
+    const numberRoom = parseInt(searchSlide.numberRoom, 10); // Chuyển đổi chuỗi thành số nguyên
+
+    if (selectedRooms.length < numberRoom) {
+      setSelectedRooms([...selectedRooms, selectedHotel]);
+      const price = selectedHotel.price;
+      setTotalPrice(totalPrice + price);
+      setSelectedRoomCount(selectedRooms.length + 1); // Tăng số lượng phòng đã chọn
+      // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage
+      localStorage.setItem(
+        'selectedRooms',
+        JSON.stringify([...selectedRooms, selectedHotel])
+      );
+      localStorage.setItem('totalPrice', (totalPrice + price).toString());
+      // Đánh dấu rằng đã chọn phòng
+    } else {
+      // Xử lý trường hợp khi đã đạt đến giới hạn phòng
+      // Ở đây bạn có thể thêm thông báo hoặc xử lý tùy ý
     }
-    // Không thực hiện gì nếu đã đạt đến giới hạn, không cần thông báo
-  };
+  }
+  // Không thực hiện gì nếu đã đạt đến giới hạn, không cần thông báo
+};
 
   const handleRemoveRoom = (room: any) => {
     // Tìm vị trí của phòng trong danh sách đã chọn
@@ -120,7 +123,7 @@ const ChooseRoom = () => {
   const uniqueSelectedRooms = selectedRooms.reduce((acc: any, room: any) => {
     // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
     const existingRoom = acc.find((r: any) => r.id === room.id);
-
+  
     // Nếu phòng đã tồn tại, tăng số lượng
     if (existingRoom) {
       existingRoom.count++;
@@ -128,9 +131,18 @@ const ChooseRoom = () => {
       // Nếu không, thêm phòng vào danh sách mới
       acc.push({ ...room, count: 1 });
     }
-
+  
     return acc;
   }, []);
+  
+// Lấy dữ liệu từ local storage
+const savedRoomInfoJSON = localStorage.getItem('roomInfo');
+const savedRoomInfo = savedRoomInfoJSON ? JSON.parse(savedRoomInfoJSON) : [];
+
+
+
+// Sử dụng dữ liệu từ local storage nếu có hoặc fallback là uniqueSelectedRooms
+const roomsToDisplay = uniqueSelectedRooms.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
   const navigate = useNavigate();
 console.log("uniqueSelectedRooms", uniqueSelectedRooms);
 
@@ -175,17 +187,7 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
     const encodedSelectedRooms = encodeURIComponent(
       JSON.stringify(updatedSelectedRooms)
     );
-    // console.log("rômmmm",updatedSelectedRooms);
-    // console.log(
-    //   "hotel",
-    //   hotel,
-    //   "date",
-    //   date,
-    //   "numbeRoom",
-    //   encodedSelectedRooms,
-    //   "numberPeople",
-    //   encodedGuests
-    // );
+
     const newCart = {
       hotel: searchSlide.nameHotel,
       date: date,
@@ -342,37 +344,61 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
                 </div>
                 <hr className="my-4" />
                 <div className="pb-6">
-                  <h1 className="font-semibold">Danh sách phòng đã chọn:</h1>
-                  <ul>
-                    {uniqueSelectedRooms.map((room: any, index: any) => (
-                      <li key={index} className="flex flex-col">
-                        <div className="flex items-center justify-between">
-                          <span className="basis-2/3">
-                            {room.name} - {room.price}vnđ{" "}
-                            {room.count > 1 ? `x${room.count}` : ""}
-                          </span>
-                          <button
-                            onClick={() => handleRemoveRoom(room)}
-                            className="text-red-500 hover:text-red-500 focus:outline-none"
-                          >
-                            x
-                          </button>
-                        </div>
-                        <span className="basis-1/3">
-                          <p className="text-sm pt-3">2 Người lớn, 2 Trẻ em</p>
-                          <hr className="my-4" />
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <hr className="my-2" />
-                  <div className="flex items-center justify-between">
-                    <h1 className="font-semibold">Tổng cộng:</h1>
-                    <h1 className="text-xl font-bold text-yellow-500">
-                      {totalPrice}vnđ
-                    </h1>
-                  </div>
-                </div>
+    <h1 className="font-semibold">Danh sách phòng đã chọn:</h1>
+    {roomsToDisplay.length > 0 ? (
+      <ul>
+        {roomsToDisplay.map((room: any, index: any) => (
+          <li key={index} className="flex flex-col">
+            <div className="flex items-center justify-between">
+              <span className="basis-2/3">
+                {room.name} - {room.price}vnđ{" "}
+                {room.count > 1 ? `x${room.count}` : ""}
+              </span>
+              <button
+                onClick={() => handleRemoveRoom(room)}
+                className="text-red-500 hover:text-red-500 focus:outline-none"
+              >
+                x
+              </button>
+            </div>
+            <span className="basis-1/3">
+              <p className="text-sm pt-3">2 Người lớn, 2 Trẻ em</p>
+              <hr className="my-4" />
+            </span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      // Hiển thị dữ liệu từ local storage nếu không có phòng nào được chọn
+      <div>
+        {savedRoomInfo ? (
+          <p>{savedRoomInfo.name} - {savedRoomInfo.price}vnđ</p>
+        ) : (
+          <p>Không có phòng nào được chọn.</p>
+        )}
+      </div>
+    )}
+    <hr className="my-2" />
+    <div className="flex items-center justify-between">
+  <h1 className="font-semibold">Tổng cộng:</h1>
+  {totalPrice ? (
+    <h1 className="text-xl font-bold text-yellow-500">
+      {totalPrice * differenceInDays(
+        parseISO(date[1].toISOString().slice(0, 10)),
+        parseISO(date[0].toISOString().slice(0, 10))
+      )}vnđ
+    </h1>
+  ) : (
+    <h1 className="text-xl font-bold text-yellow-500">
+      {savedRoomInfo.price * differenceInDays(
+        parseISO(date[1].toISOString().slice(0, 10)),
+        parseISO(date[0].toISOString().slice(0, 10))
+      )}vnđ
+    </h1>
+  )}
+</div>
+  </div>
+
                 <Button
                   onClick={onHandSubmit}
                   className={`bg-yellow-500 hover:bg-yellow-600 text-white text-lg font-bold rounded-full w-full ${selectedRoomCount === parseInt(searchSlide?.numberRoom, 10)

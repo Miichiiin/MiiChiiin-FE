@@ -4,12 +4,16 @@ import { MdOutlineBed } from "react-icons/md";
 import { DatePicker, message } from 'antd';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
+import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 
 const { RangePicker } = DatePicker;
 
 const RoomTypes = () => {
   const { id:idHotel } = useParams();
-  const { data, isLoading } = useGetCategory_homeQuery();
+  
+  const {data:hotelData} = useGetHotel_homeByIdQuery(idHotel);
+
+  const { data } = useGetCategory_homeQuery();
   console.log("data", data);
   const navigate = useNavigate()
 
@@ -46,7 +50,7 @@ const RoomTypes = () => {
       const encodedGuests = [`adults:1,children:0,infants:0`];
       const encodedSelectedRooms = 1;
   
-      const hotel = `${data[1].hotel_id}, ${data[1].nameHotel}`
+      const hotel = `${idHotel}, ${hotelData?.name}`
       console.log("hoteldl:",hotel)
       const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
       console.log("url", url);
@@ -57,9 +61,6 @@ const RoomTypes = () => {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="max-w-7xl mx-auto my-5">

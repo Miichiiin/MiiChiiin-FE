@@ -110,6 +110,11 @@ const DetailTypeofRoom = () => {
     }
   };
 
+  const saveRoomInfoToLocalStorage = (name:any, price:any,hotel_id:any,id:any) => {
+    const roomInfo = { hotel_id,id,name, price };
+    localStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+  };
+
 
   interface Room {
     count: number;
@@ -124,13 +129,16 @@ const DetailTypeofRoom = () => {
         name: data?.name,
         price: data?.price
       }];
-      const encodedGuests = [`adults:1,children:0,infants:0`];
-      const encodedSelectedRooms = encodeURIComponent(JSON.stringify(updatedSelectedRooms));
-  
+      const numberOfRooms1 = [`adults:1,children:0,infants:0`];
+      const encodedSelectedRooms = 1
+      
       const hotel = `${data.hotel_id}, ${hotelData?.name}`
       
-      const url = `/choose-service/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
+      const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${numberOfRooms1}`;
+     
       console.log("url", url);
+
+      saveRoomInfoToLocalStorage(data.name, data.price,data.id,data.hotel_id);
   
       navigate(url);
     } else {
