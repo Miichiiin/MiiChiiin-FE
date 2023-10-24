@@ -4,7 +4,13 @@ import { CloudUploadOutlined, ArrowLeftOutlined, PlusOutlined} from '@ant-design
 import { Link ,useNavigate,useParams} from 'react-router-dom';
 import { useGetUserIdQuery, useUpdateUserMutation } from '@/api/users';
 
-const { Option } = Select;
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/locale/vi';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const UpdateUserPage = () => {
   const navigate = useNavigate()
@@ -20,7 +26,7 @@ const UpdateUserPage = () => {
         email: userData?.email,
         image: userData?.image,
         gender: userData?.gender,
-        date: userData?.date,
+        date: dayjs(userData?.date).tz('Asia/Ho_Chi_Minh'),
         address: userData?.address,
         phone: userData?. phone,
         cccd: userData?.cccd,
@@ -91,100 +97,103 @@ const normFile = (e: any) => {
             autoComplete="off"
             className="flex"
         >
-  {/* Form fields on the left */}
-  <div className="w-1/2 p-4 bg-white">
-    <Form.Item<FieldType>
-                    label="Họ và tên"
-                    name="name"
-                    rules={[{ required: true, message: 'Hãy nhập tên dịch Tên!' }]}
-                >
-                    <Input allowClear />
-                </Form.Item>
+          <div className="w-1/2 p-4 bg-white">
+            <Form.Item<FieldType>
+                label="Họ và tên"
+                name="name"
+                rules={[{ required: true, message: 'Hãy nhập tên dịch Tên!' }]}
+            >
+                <Input allowClear />
+            </Form.Item>
 
-                <Form.Item<FieldType>
-                    label="Email"
-                    name="email"
-                    rules={[{ required: false, message: 'Hãy nhập tên dịch Email!' },
-                    { type: "email", message: 'Email không đúng định dạng' }
-                    ]}
-                >
-                    <Input allowClear />
-                </Form.Item>
+            <Form.Item<FieldType>
+                label="Email"
+                name="email"
+                rules={[{ required: false, message: 'Hãy nhập tên dịch Email!' },
+                { type: "email", message: 'Email không đúng định dạng' }
+                ]}
+            >
+                <Input allowClear />
+            </Form.Item>
 
-                <Form.Item label="Ảnh" valuePropName="image" getValueFromEvent={normFile}>
-                    <Upload action="/upload.do" listType="picture-card">
-                        <div>
-                            <PlusOutlined />
-                            <div style={{ marginTop: 8 }}>Upload</div>
-                        </div>
-                    </Upload>
-                </Form.Item>
+            <Form.Item label="Ảnh" valuePropName="image" getValueFromEvent={normFile}>
+                <Upload action="/upload.do" listType="picture-card">
+                    <div>
+                        <PlusOutlined />
+                        <div style={{ marginTop: 8 }}>Upload</div>
+                    </div>
+                </Upload>
+            </Form.Item>
 
 
-                <Form.Item<FieldType>
-                    label="Giới tính"
-                    name="gender"
-                >
-                    <Select defaultValue="all" style={{ width: '150px' }}>
-                        <Select.Option value="all">Nam</Select.Option>
-                        <Select.Option value="available">Nữ</Select.Option>
-                        <Select.Option value="occupied">Khác</Select.Option>
-                    </Select>
-                </Form.Item>
+            <Form.Item<FieldType>
+                label="Giới tính"
+                name="gender"
+            >
+                <Select defaultValue="all" style={{ width: '150px' }}>
+                    <Select.Option value="all">Nam</Select.Option>
+                    <Select.Option value="available">Nữ</Select.Option>
+                    <Select.Option value="occupied">Khác</Select.Option>
+                </Select>
+            </Form.Item>
 
-                {/* <Form.Item
-                    label="Ngày sinh"
-                    name="date"
-                    initialValue={userData ? moment(userData.date) : null}
-                >
-                    <DatePicker />
-                </Form.Item> */}
+            <Form.Item
+                label="Ngày sinh"
+                name="date"
+            >
+                <DatePicker
+                  format="YYYY-MM-DD"
+                  placeholder="Chọn ngày và giờ"
+                  className='w-[250px]'
+                  value={form.getFieldValue('date')}
+                />
+            </Form.Item>
 
-                <Form.Item<FieldType>
-                    label="Địa chỉ"
-                    name="address"
-                >
-                    <Input allowClear/>
-                </Form.Item>
+            <Form.Item<FieldType>
+                label="Địa chỉ"
+                name="address"
+            >
+                <Input allowClear/>
+            </Form.Item>
 
-                <Form.Item<FieldType>
-                    label="Sdt"
-                    name="phone"
-                >
-                    <Input allowClear/>
-                </Form.Item>
+            <Form.Item<FieldType>
+                label="Sdt"
+                name="phone"
+            >
+                <Input allowClear/>
+            </Form.Item>
 
-                <Form.Item<FieldType>
-                    label="CCCD"
-                    name="cccd"
-                >
-                    <Input allowClear/>
-                </Form.Item>
+            {/* <Form.Item<FieldType>
+                label="CCCD"
+                name="cccd"
+            >
+                <Input allowClear/>
+            </Form.Item>
 
-                <Form.Item<FieldType>
-                    label="Quốc tịch"
-                    name="nationality"
-                >
-                    <Input allowClear/>
-                </Form.Item>
-    
-    <Form.Item<FieldType> 
-    label="Image" 
-    name="image">
-      <Upload
-        action="/api/upload" // Replace with your image upload API endpoint
-        showUploadList={false}
-        onChange={handleImageUpload}
-      >
-        <Button icon={<CloudUploadOutlined />}>Upload Image</Button>
-      </Upload>
-      {imageUrl && <img src={imageUrl} alt="Voucher" className="mt-2 max-w-full h-32 object-contain" />}
-    </Form.Item>
-    <Form.Item>
-      <Button type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>Update User</Button>
-    </Form.Item>
-  </div>
-</Form>
+            <Form.Item<FieldType>
+                label="Quốc tịch"
+                name="nationality"
+            >
+                <Input allowClear/>
+            </Form.Item> */}
+            
+            {/* <Form.Item<FieldType> 
+            label="Image" 
+            name="image">
+              <Upload
+                action="/api/upload" // Replace with your image upload API endpoint
+                showUploadList={false}
+                onChange={handleImageUpload}
+              >
+                <Button icon={<CloudUploadOutlined />}>Upload Image</Button>
+              </Upload>
+              {imageUrl && <img src={imageUrl} alt="Voucher" className="mt-2 max-w-full h-32 object-contain" />}
+            </Form.Item> */}
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>Update User</Button>
+            </Form.Item>
+          </div>
+        </Form>
     </div>
     
   );

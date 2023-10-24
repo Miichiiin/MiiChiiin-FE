@@ -57,6 +57,7 @@ import MyOrder from "./features/webapp/profileUser/component/myOrder";
 import ProfileUsre from "./features/webapp/profileUser/component/profileUsre";
 import HotelChainStatistic from "./features/admin/HotelChainStatistics";
 import LoginAdmin from "./features/webapp/LoginAdmin/Login";
+import AddPermission from "./features/admin/Permission/AddPermission";
 
 
 
@@ -298,7 +299,7 @@ export const router = createBrowserRouter([
                 element: <AddUtilities/>
             },
             {
-                path: "admininfo",
+                path: "admininfo/:id",
                 element:<AdminInfoPage/>
             },
 
@@ -309,6 +310,10 @@ export const router = createBrowserRouter([
             {
                 path:"indexPermission",
                 element:<IndexPremission/>
+            },
+            {
+                path: "addpermission",
+                element:<AddPermission/>
             },
             {
                 path:"HotelChainStatistics",
