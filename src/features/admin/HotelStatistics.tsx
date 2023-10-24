@@ -17,12 +17,12 @@ import {
 import { useGetStatisticalQuery } from "../../api/admin/statistical";
 import { useGetStatisticalServiceQuery } from "@/api/admin/statistical_Service";
 import { useGetStatisticalRoomtypeQuery } from "@/api/admin/statistical_RoomType";
+import { AnyIfEmpty } from "react-redux";
 
 const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f0e", "#99CCFF"];
 
 const HotelChainStatistics = () => {
-  const dataLogin = localStorage.getItem("user");
-  console.log("dataLogin",dataLogin)
+
   const dataHotel = [
     {
       hotelName: "Hotel A",
@@ -97,35 +97,52 @@ const HotelChainStatistics = () => {
   }, []);
 
   const [selectedYear, setSelectedYear] = useState("2023");
-  const { data: statisticalData } = useGetStatisticalQuery<any>();
-  const [filteredData1, setFilteredData1] = useState([]);
+
+  const { data: statisticalData1 } = useGetStatisticalQuery<any>();
+
+  let statisticalData:any;
+
+  if (statisticalData1) {
+    statisticalData = statisticalData1.booking_data_by_month;
+    console.log("statisticalData", statisticalData);
+  } else {
+    console.log("Không có dữ liệu thống kê.");
+  }
+  
+  // statisticalData có thể được truy cập trong phạm vi hiện tại sau đây
+  console.log("statisticalData ngoài", statisticalData);
+
+  const [filteredData1, setFilteredData1] = useState<any>([]);
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const handleTitleClick = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-  const dataofYear =
-    statisticalData &&
-    statisticalData.filter((item: any) => item.year == selectedYear);
-  console.log("thang", dataofYear);
+  const dataofYear = Array.isArray(statisticalData)
+  ? statisticalData.filter((item: any) => item.Year == selectedYear)
+  : [];
+
+console.log("thang", dataofYear);
 
   // Nếu trùng năm thì không hiện
   const uniqueYears = [
     ...new Set(
-      statisticalData && statisticalData.map((item: any) => item.year)
+      statisticalData && statisticalData.map((item:any) => item.Year)
     ),
   ];
 
-  useEffect(() => {
-    if (statisticalData) {
-      // Lọc dữ liệu dựa trên năm được chọn
-      const filtered = statisticalData.filter(
-        (item: any) => item.year === selectedYear
-      );
-      setFilteredData1(filtered);
-    }
-  }, [statisticalData, selectedYear]);
+console.log("uniqueYears", uniqueYears);
+
+useEffect(() => {
+  if (statisticalData) {
+    // Lọc dữ liệu dựa trên năm được chọn
+    const filtered = statisticalData.filter(
+      (item: any) => item.Year === selectedYear
+    );
+    setFilteredData1(filtered);
+  }
+}, [statisticalData, selectedYear]);
 
   const handleYearChange1 = (event: any) => {
     const selectedYear = event.target.value;
@@ -232,7 +249,7 @@ const HotelChainStatistics = () => {
     setIsDropdownVisibleRt(!isDropdownVisibleRt);
   };
 
-
+  console.log("uniqueryear",uniqueYears)
   return (
     <div>
       <Row gutter={16} className="mb-5">
@@ -358,11 +375,12 @@ const HotelChainStatistics = () => {
                     </option>
                   ))}
                 </select>
+                
               </div>
 
               <ResponsiveContainer width={1200} height={400}>
                 <LineChart data={filteredData1}>
-                  <XAxis dataKey="month" allowDuplicatedCategory={false} />
+                  <XAxis dataKey="Month" allowDuplicatedCategory={false} />
                   <YAxis
                     yAxisId="left"
                     label={{

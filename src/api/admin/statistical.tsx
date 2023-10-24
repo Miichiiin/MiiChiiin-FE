@@ -5,7 +5,8 @@ const statisticalApi = createApi({
     reducerPath: 'statistical',
     tagTypes: ['Statistical'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -16,7 +17,8 @@ const statisticalApi = createApi({
     }),
     endpoints: (builder) => ({
         getStatistical: builder.query<any, void>({
-            query: () => `statistical`,
+
+            query: () => `/statictical_total_booking_month_in_hotel/2/2023`,
             providesTags: ['Statistical']
         }),
         getStatisticalById: builder.query({
@@ -26,7 +28,7 @@ const statisticalApi = createApi({
         addStatistical: builder.mutation({
             query: (product) => ({
                 url: `/statistical`,
-                method: "POST",
+                method: "GET",
                 body: product
             }),
             invalidatesTags: ['Statistical']

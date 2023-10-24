@@ -23,11 +23,12 @@ const HotelChainStatistic = () => {
 
   // Thêm dữ liệu cho các khách sạn và tháng/năm khác theo nhu cầu của bạn
   const { data: HotelChainStatistics } = useGetHotelChainStatisticsQuery();
+  console.log("HotelChainStatistics",HotelChainStatistics)
   const [selectedMonth, setSelectedMonth] = useState("Tháng 1");
   const [selectedYear, setSelectedYear] = useState("2023");
   const [uniqueMonths, setUniqueMonths] = useState<any>([]);
   const [uniqueYears, setUniqueYears] = useState<any>([]);
-  const [filteredData1, setFilteredData1] = useState([]);
+  const [filteredData1, setFilteredData1] = useState<any>([]);
   console.log("filteredData1",filteredData1)
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const handleTitleClick1 = () => {
@@ -46,23 +47,23 @@ const HotelChainStatistic = () => {
     setChartMode("roomtype");
   };
   useEffect(() => {
-    if (HotelChainStatistics) {
+    if (HotelChainStatistics && Array.isArray(HotelChainStatistics)) {
       // Trích xuất danh sách các tháng và năm duy nhất từ dữ liệu
       const uniqueMonths = Array.from(
-        new Set(HotelChainStatistics.map((item: any) => item.month))
+        new Set(HotelChainStatistics.map((item) => item.month))
       );
       const uniqueYears = Array.from(
-        new Set(HotelChainStatistics.map((item: any) => item.year))
+        new Set(HotelChainStatistics.map((item) => item.year))
       );
-
+  
       setUniqueMonths(uniqueMonths);
       setUniqueYears(uniqueYears);
-
+  
       // Lọc dữ liệu dựa trên tháng và năm đã chọn
-      const filteredData = HotelChainStatistics.filter((item: any) => {
+      const filteredData = HotelChainStatistics.filter((item) => {
         return item.month === selectedMonth && item.year === selectedYear;
       });
-
+  
       setFilteredData1(filteredData);
     }
   }, [HotelChainStatistics, selectedMonth, selectedYear]);
