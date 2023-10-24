@@ -132,6 +132,7 @@ const ChooseRoom = () => {
     return acc;
   }, []);
   const navigate = useNavigate();
+console.log("uniqueSelectedRooms", uniqueSelectedRooms);
 
   interface Room {
     count: number;
@@ -160,6 +161,7 @@ const ChooseRoom = () => {
 
   const onHandSubmit = () => {
     const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
+      id_cate: room.id,
       count: room.count,
       name: room.name,
       price: room.price,

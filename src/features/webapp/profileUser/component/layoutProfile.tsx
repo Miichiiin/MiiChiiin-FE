@@ -30,9 +30,9 @@ export const LayoutProfile = () => {
   return (
    <div className='bg-gray-100'>
        <HeaderHotelType/>
-     <div className="w-[1200px] mx-auto">
-      <div className="grid grid-cols-4 h-screen sticky">
-        <div className="bg-[#f2ba50] col-span-1">
+     <div className="w-[1200px] mx-auto my-2">
+      <div className="grid grid-cols-4  sticky">
+        <div className="bg-[#f2ba50] h-screen col-span-1">
           <div className="ml-8 p-5 text-center">
             <img
               src={user.image}
