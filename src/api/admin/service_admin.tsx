@@ -1,11 +1,11 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const services_adminApi = createApi({
-    reducerPath: 'services_admin',
-    tagTypes: ['Services_admin'],
+const service_AdminApi = createApi({
+    reducerPath: 'service_admin',
+    tagTypes: ['Service_admin'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -15,41 +15,41 @@ const services_adminApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getServices_Admin: builder.query<any, void>({
-            query: () => `/services_admin`,
-            providesTags: ['Services_admin']
+        getService_admin: builder.query<any,void>({
+            query: () => `/services`,
+            providesTags: ['Service_admin']
         }),
-        getServices_AdminById: builder.query({
-            query: (id) => `/services_admin/${id}`,
-            providesTags: ['Services_admin']
+        getService_adminId: builder.query({
+            query: (id) => `/service/${id}`,
+            providesTags: ['Service_admin']
         }),
-        addServices_Admin: builder.mutation({
+        addService_admin: builder.mutation({
             query: (product) => ({
-                url: `/services_admin`,
+                url: `/service`,
                 method: "POST",
                 body: product
             }),
-            invalidatesTags: ['Services_admin']
+            invalidatesTags: ['Service_admin']
         }),
-        updateServices_Admin: builder.mutation({
+        updateService_admin: builder.mutation({
             query: (product) => ({
-                url: `/services_admin/${product.id}`,
+                url: `/service/${product.id}`,
                 method: "PATCH",
                 body: product
             }),
-            invalidatesTags: ['Services_admin']
+            invalidatesTags: ['Service_admin']
         }),
-        removeServices_Admin: builder.mutation<void, number | string>({
+        removeService_admin: builder.mutation<void, number | string>({
             query: (id: number) => ({
-                url: `/services_admin/${id}`,
+                url: `/service/${id}`,
                 method: "DELETE"
             }),
-            invalidatesTags: ['Services_admin']
+            invalidatesTags: ['Service_admin']
         })
     })
 })
 export const { 
-    useAddServices_AdminMutation, useGetServices_AdminByIdQuery, useGetServices_AdminQuery, useRemoveServices_AdminMutation, useUpdateServices_AdminMutation
- } = services_adminApi;
-export const services_AdminReducer = services_adminApi.reducer;
-export default services_adminApi;
+    useAddService_adminMutation, useGetService_adminIdQuery, useGetService_adminQuery, useRemoveService_adminMutation, useUpdateService_adminMutation
+ } = service_AdminApi;
+export const service_AdminReducer = service_AdminApi.reducer;
+export default service_AdminApi;

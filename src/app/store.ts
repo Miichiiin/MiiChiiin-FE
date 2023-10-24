@@ -8,7 +8,7 @@ import districtApi, { districtReducer } from '@/api/district';
 import hotel_AdminApi, { hotel_AdminReducer } from '@/api/admin/hotel_admin';
 import hotel_HomeApi, { hotel_HomeReducer } from '@/api/webapp/hotel_home';
 import room_adminApi, { room_AdminReducer } from '@/api/admin/room_admin';
-import services_adminApi, { services_AdminReducer } from '@/api/admin/service_admin';
+import service_AdminApi, { service_AdminReducer } from '@/api/admin/service_admin';
 import service_HotelApi, { service_Reducer } from '@/api/webapp/service_hotel';
 import { sliceReducer } from '@/api/searchSlice';
 import userApi, { useReducer } from '@/api/users';
@@ -57,7 +57,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     room_admin: room_AdminReducer,
-    services_admin: services_AdminReducer,
+    service_admin: service_AdminReducer,
     hotel_admin: hotel_AdminReducer,
     banner_admin: banner_AdminReducer,
     admin_admin: Admin_AdminReducer,
@@ -93,7 +93,7 @@ const rootReducer = combineReducers({
 })
 const middleware = [
     room_adminApi.middleware, 
-    services_adminApi.middleware,
+    service_AdminApi.middleware,
     hotel_AdminApi.middleware,
     banner_AdminApi.middleware,
     admin_AdminApi.middleware,

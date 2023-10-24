@@ -1,5 +1,6 @@
 
-import { useGetServices_AdminQuery } from "@/api/admin/service_admin";
+
+import { useGetService_adminQuery } from "@/api/admin/service_admin";
 import {
   Table,
   Divider,
@@ -35,7 +36,7 @@ const users = [
  
 ];
 export const ServiceManagement = () => {
-  const { data: visibleItems } = useGetServices_AdminQuery();
+  const { data: visibleItems } = useGetService_adminQuery();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
 

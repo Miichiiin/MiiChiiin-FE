@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Select, Radio } from 'antd';
-import { useGetCategory_homeQuery } from '@/api/webapp/category_home';
-import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
+import { useGetCategory_adminQuery } from '@/api/admin/category_admin';
+import { useGetService_adminQuery } from '@/api/admin/service_admin';
 import { useGetBooking_adminByIdQuery, useUpdateBooking_adminMutation } from '@/api/admin/booking_admin';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -65,8 +65,8 @@ interface RoomData {
 }
 
 const UpdateBooking = () => {
-  const { data: categories } = useGetCategory_homeQuery(); // Lấy danh sách loại phòng
-  const { data: services } = useGetService_hotelQuery(); // Lấy danh sách dịch vụ
+  const { data: categories } = useGetCategory_adminQuery() // Lấy danh sách loại phòng
+  const { data: services } = useGetService_adminQuery() // Lấy danh sách dịch vụ
   const { data: roomsData } = useGetRoom_AdminsQuery({}) // Lấy danh sách phòng
 
   const navigate = useNavigate();
@@ -251,6 +251,7 @@ const UpdateBooking = () => {
     if (typeof value === 'number') {
       setMaxRoomQuantity(value);// Cập nhật maxRoomQuantity khi có thay đổi
     }
+    setIsUpdateRoom(true);
   };
   const getServiceName = (serviceId: number) => {
     const serviceData = services?.find((service: any) => service.id === serviceId);

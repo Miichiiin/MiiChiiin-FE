@@ -3,7 +3,6 @@ import { Table, Divider, Radio, Button, Select, Input, Space } from 'antd';
 const { Search } = Input;
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import 'dayjs/plugin/utc';
@@ -82,15 +81,6 @@ export const BookingManagement = () => {
             title: 'Tên khách hàng',
             dataIndex: 'name',
             key: 'name',
-            render: (text: any, item: any) => {
-                return (
-                    <>
-                        {hasAddUserPermission && (
-                            <Link to={`/admin/updatebooking/${item.key}`}>{text}</Link>
-                        )}
-                    </>
-                )
-            }
         },
         {
             title: 'Email',
@@ -145,7 +135,7 @@ export const BookingManagement = () => {
             key: "action",
             render: (_, record) => (
 
-                <Link to={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</Link>
+                <a href={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</a>
 
             )
         }
@@ -218,7 +208,7 @@ export const BookingManagement = () => {
 
                 </div>
                 {hasAddUserPermission && (
-                <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/addbooking'}>Thêm booking</Link></button>
+                <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><a href={'/admin/addbooking'}>Thêm booking</a></button>
                 )}
             </div>
             {/* Phần CSS tùy chỉnh cho bảng */}
