@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import 'dayjs/plugin/utc';
 import 'dayjs/plugin/timezone';
-import { AiOutlineSearch } from 'react-icons/ai';
+
 dayjs.locale('vi');
 
 const users = [
@@ -118,7 +118,7 @@ export const BookingManagement = () => {
             title: 'Ngày đặt',
             dataIndex: 'check_in',
             key: 'check_in',
-            render: (text, record) => {
+            render: (_, record) => {
                 const formattedDate = dayjs(record.check_in)
                     .format('DD/MM/YYYY HH:mm:ss'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
@@ -128,7 +128,7 @@ export const BookingManagement = () => {
             title: 'Ngày trả',
             dataIndex: 'check_out',
             key: 'check_out',
-            render: (text, record) => {
+            render: (_, record) => {
                 const formattedDate = dayjs(record.check_out)
                     .format('DD/MM/YYYY HH:mm:ss'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
@@ -143,7 +143,7 @@ export const BookingManagement = () => {
         {
             title: "Hành động",
             key: "action",
-            render: (text, record) => (
+            render: (_, record) => (
 
                 <Link to={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</Link>
 

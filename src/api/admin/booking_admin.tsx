@@ -5,7 +5,7 @@ const booking_AdminApi = createApi({
     reducerPath: 'booking_admin',
     tagTypes: ['Booking_admin'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -16,16 +16,16 @@ const booking_AdminApi = createApi({
     }),
     endpoints: (builder) => ({
         getBooking_admin: builder.query({
-            query: () => `/booking_admin`,
+            query: () => `/bookings`,
             providesTags: ['Booking_admin']
         }),
         getBooking_adminById: builder.query({
-            query: (id) => `/booking_admin/${id}`,
+            query: (id) => `/booking/${id}`,
             providesTags: ['Booking_admin']
         }),
         addBooking_admin: builder.mutation({
             query: (product) => ({
-                url: `/booking_admin`,
+                url: `/booking`,
                 method: "POST",
                 body: product
             }),
@@ -33,15 +33,15 @@ const booking_AdminApi = createApi({
         }),
         updateBooking_admin: builder.mutation({
             query: (product) => ({
-                url: `/booking_admin/${product.id}`,
-                method: "PATCH",
+                url: `/booking/${product.id}`,
+                method: "PUT",
                 body: product
             }),
             invalidatesTags: ['Booking_admin']
         }),
         removeBooking_admin: builder.mutation<void, number | string>({
             query: (id: number) => ({
-                url: `/booking_admin/${id}`,
+                url: `/booking/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Booking_admin']
