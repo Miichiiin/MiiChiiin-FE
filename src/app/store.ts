@@ -39,6 +39,9 @@ import statisticalApi, { statisticalReducer } from '@/api/admin/statistical';
 import statistical_ServiceApi, { statisticalServiceReducer } from '@/api/admin/statistical_Service';
 import hotelchainstatisticsApi, { hotelchainstatisticsReducer } from '@/api/admin/HotelChainStatistics';
 import hotelchainstatisticsvApi, { hotelchainstatisticsvReducer } from '@/api/admin/HotelChainStatisticsSv';
+import rating_HomeApi, { rating_HomeReducer } from '@/api/webapp/rates_home';
+import rating_Hotel_HomeApi, { rating_hotel_HomeReducer } from '@/api/webapp/rate_hotel_home';
+import rate_HomeApi, { rate_HomeReducer } from '@/api/webapp/comment_home';
 
 const persistConfig = {
     key: 'root',
@@ -70,7 +73,10 @@ const rootReducer = combineReducers({
     statistical:statisticalReducer,
     statistical_service: statisticalServiceReducer,
     hotelchainstatistics: hotelchainstatisticsReducer,
-    hotelchainstatisticsv: hotelchainstatisticsvReducer
+    hotelchainstatisticsv: hotelchainstatisticsvReducer,
+    rating_home:rating_HomeReducer,
+    rating_hotel_home:rating_hotel_HomeReducer,
+    rate_home: rate_HomeReducer,
 })
 const middleware = [
     room_adminApi.middleware, 
@@ -95,6 +101,9 @@ const middleware = [
     statistical_ServiceApi.middleware,
     hotelchainstatisticsApi.middleware,
     hotelchainstatisticsvApi.middleware,
+    rate_HomeApi.middleware,
+    rating_HomeApi.middleware,
+    rating_Hotel_HomeApi.middleware
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

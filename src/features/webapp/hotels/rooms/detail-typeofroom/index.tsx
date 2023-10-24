@@ -11,6 +11,8 @@ import { FaUser } from 'react-icons/fa';
 import { DatePicker,  message } from 'antd';
 import { useGetCategory_homeByIdQuery } from '@/api/webapp/category_home';
 import { useGetHotel_homeByIdQuery } from '@/api/webapp/hotel_home';
+import { useAddRate_homeMutation } from '@/api/webapp/comment_home';
+import { useGetRating_homeQuery } from '@/api/webapp/rates_home';
 
 const { RangePicker } = DatePicker;
 
@@ -22,13 +24,75 @@ const images = [
 ];
 
 const DetailTypeofRoom = () => {
-
+  const [roomRating, setRoomRating] = useState(0);// đánh giá
   const { idHotel, idRoom } = useParams()
   const {data:hotelData} = useGetHotel_homeByIdQuery(idHotel);
   const { data } = useGetCategory_homeByIdQuery(idRoom);
   // const dispatch = useAppDispatch();
   const navigate = useNavigate()
+  const [addRate] = useAddRate_homeMutation();
+    const dataLogin = localStorage.getItem("user");
+    const isLoggedIn = !!dataLogin;// kiểm tra login
+    const dataToken = localStorage.getItem("token");    
+    const {data:dataRate} = useGetRating_homeQuery(idRoom);
+    const dataComment = dataRate?.filter((comment:any) => comment.id_category === parseInt(String(idRoom)));
 
+    // Check xem có token chưa
+    const [commentText, setCommentText] = useState("");
+    const canComment = !!dataToken
+
+    // Danh sách từ không thích hợp
+    const inappropriateWords = ["mẹ", "rác rưởi", "súc vật", "ngu","cứt","buồi","cặc","dái","óc chó"]; 
+
+    // Hàm kiểm tra từ không thích hợp
+    const containsInappropriateWords = (text:any) => {
+      const regex = new RegExp(`\\b(${inappropriateWords.join("|")})\\b`, "gi");
+      return regex.test(text);
+    };
+    // thêm bình luận
+    const handleCommentSubmit = async (e: any) => {
+      e.preventDefault();
+    
+      if (canComment) {
+        const hasInappropriateWords = containsInappropriateWords(commentText);
+    
+        if (hasInappropriateWords) {
+          message.error('Bình luận của bạn chứa từ không thích hợp.');
+        } else {
+          if (dataLogin !== null) { // Kiểm tra xem dataLogin không phải null
+            const userData = JSON.parse(dataLogin);
+            
+            
+            try {
+              const response = await addRate({
+                  id_user: userData.id, // Sử dụng id từ userData
+                  id_category: idRoom,
+                  rating: roomRating,
+                  content: commentText,
+                  status: 0 // Tùy thuộc vào cách bạn quản lý trạng thái
+              });
+    
+              if (response.data) {
+                message.success('Bình luận đã được thêm thành công.');
+                setCommentText('');
+                setRoomRating(0);
+              } else {
+                message.error('Đã xảy ra lỗi khi thêm bình luận.');
+              }
+            } catch (error) {
+              console.error('Error adding comment:', error);
+              message.error('Đã xảy ra lỗi khi thêm bình luận.');
+            }
+          } else {
+            message.error('Dữ liệu người dùng không tồn tại. Vui lòng đăng nhập để bình luận.');
+            navigate("/login");
+          }
+        }
+      } else {
+        message.error('Vui lòng đăng nhập để bình luận.');
+        navigate("/login");
+      }
+    };
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
 
   const handleRangeChange = (dates: any) => {
@@ -218,45 +282,108 @@ const DetailTypeofRoom = () => {
         </div>
         <div className='pb-2'>
           <h1 className='text-xl font-semibold pb-4'>Đánh giá</h1>
-          {/*Show ra đánh giá*/}
-          <div className='comment-list grid grid-cols-2 gap-4 pb-5'>
-            <div className='comment column'>
-              <div className="small-column py-2 flex items-center">
-                <div className="border rounded-full bg-blue-300 w-16 h-16 flex justify-center items-center">
-                  <span className="text-xl">Q</span>
-                </div>
-                <h1 className="text-xl px-3">31/08/2023
-                  <br />
-                  Khách Hàng : <span className="font-bold ">T****n</span>
-                </h1>
-                <h1 className="text-xl px-3"><span className='font-semibold italic'>Biệt thự 2 phòng ngủ</span>
-                  <br />
-                </h1>
-              </div>
-              <h1>Phòng thoáng mát sạch sẽ, tiện nghi đầy đủ máy sấy, bọc che tóc khi tắm, tủ lạnh lạnh sẵn, free 2 nước khoáng. Quá tuyệt vời với giá này</h1>
+        {/* Show ra đánh giá */}
+        <div className='comment-list grid grid-cols-2 gap-4 pb-5'>
+            {dataComment?.map((item: any) => {
+               const createdAtDate = new Date(item.created_at);
+               const formattedDate = createdAtDate.toLocaleDateString('vi-VN');
+               const firstLetterOfName = item.user_name.charAt(0);
+                return (
+                  <div key={item.id} className='comment column'>
+                   <div className='comment column'>
+                      <div className="small-column py-2 flex items-center">
+                        <div className="border rounded-full bg-blue-300 w-16 h-16 flex justify-center items-center">
+                          <span className="text-xl font-bold">{firstLetterOfName}</span>
+                        </div>
+                        <h1 className="text-[17px] px-3">{formattedDate}
+                          <br />
+                          <span className="font-bold ">{item.user_name}</span>
+                        </h1>
+                        <h1 className="text-[17px] ml-5 mb-[-5px]"><span className='font-semibold italic'>{data?.name}</span>
+                        <h1 className='text-yellow-400 text-[20px]  mt-[-5px]'>{'★'.repeat(item.rating)}</h1>
+                        </h1>
+                      </div>
+                      <h1 className='ml-[75px]'>{item.content}</h1>
+                    </div>
+                  </div>
+                );
+              })}
+              
             </div>
-          </div>
 
           {/*Form đánh giá */}
           <div className="flex items-center justify-start shadow-lg mb-4 w-full">
-            <form className="bg-white rounded-lg pt-2 w-full">
+            <form onSubmit={handleCommentSubmit} className="bg-white rounded-lg pt-2 w-full">
               <div className="flex flex-wrap mx-3 mb-6">
-                <h2 className="px-4 pt-3 pb-2 text-gray-800 text-lg font-semibold">Thêm đánh giá mới </h2>
-                <div className="md:w-full px-3 mb-2 mt-2">
-                  <textarea className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 placeholder-gray-700 focus:outline-none focus:bg-white" name="body" placeholder='Viết một đánh giá mới' required></textarea>
+                <div className="flex items-center justify-between">
+                  <div className=''>
+                    <h2 className="px-4 pt-3 pb-2 text-gray-800 text-lg font-semibold">Thêm đánh giá mới</h2>
+                  </div>
+                  <div className="flex items-center space-x-2 mt-1 ml-[800px]">
+                      <p className="text-lg font-semibold">Đánh giá sao :</p>
+                      {[1, 2, 3, 4, 5].map((rating) => (
+                        <label key={rating} className="cursor-pointer">
+                          <input
+                            type="radio"
+                            name="roomRating"
+                            value={rating.toString()}
+                            onChange={(e) => setRoomRating(Number(e.target.value))}
+                            className="hidden"
+                          />
+                          <span className={`text-2xl ${roomRating >= rating ? 'text-yellow-400' : 'text-gray-400'}`}>&#9733;</span>
+                        </label>
+                      ))}
+                    </div>
                 </div>
+                {isLoggedIn && (
+                    <div className="w-full md:w-full flex items-start px-3 mb-2">
+                      <textarea
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 placeholder-gray-700 focus:outline-none focus-bg-white"
+                        name="body"
+                        placeholder="Viết một đánh giá mới"
+                        required
+                      ></textarea>
+                    </div>
+                  )}
+                  {!isLoggedIn && (
+                    <div className="w-full md:w-full flex items-start px-3 mb-2">
+                      <textarea
+                        className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 placeholder-gray-700 focus:outline-none focus-bg-white"
+                        name="body"
+                        placeholder="Đăng nhập để bình luận"
+                        disabled
+                      ></textarea>
+                    </div>
+                  )}
                 <div className="w-full md:w-full flex items-start px-3">
                   <div className="flex items-center text-gray-700 mr-auto">
                     <AiOutlineInfoCircle />
                     <p className="text-xs md:text-sm pt-px px-2">Hãy đánh giá lịch sự.</p>
                   </div>
+             
                   <div className="flex justify-end">
-                    <button type='submit' className="text-blue-700 font-semibold py-2 px-4 border border-blue-400 rounded-lg tracking-wide hover:bg-blue-500 hover:text-white text-lg" >Đăng bình luận</button>
+                    {isLoggedIn ? (
+                        <button
+                          onClick={onHandSubmit}
+                          className="text-blue-700 font-semibold py-2 px-4 border border-blue-400 rounded-lg tracking-wide hover:bg-blue-500 hover:text-white text-lg"
+                        >
+                          Đăng bình luận
+                        </button>
+                      ) : (
+                        <Link to="/login" className="text-blue-700 font-semibold py-2 px-4 border border-blue-400 rounded-lg tracking-wide hover:bg-blue-500 hover:text-white text-lg">
+                          Đăng nhập
+                        </Link>
+                      )}
                   </div>
+                 
                 </div>
+                
               </div>
             </form>
-          </div>
+
+        </div>
 
         </div>
       </div>
