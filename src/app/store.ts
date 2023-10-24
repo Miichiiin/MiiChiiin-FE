@@ -39,6 +39,13 @@ import statistical_ServiceApi, { statisticalServiceReducer } from '@/api/admin/s
 import hotelchainstatisticsApi, { hotelchainstatisticsReducer } from '@/api/admin/HotelChainStatistics';
 import hotelchainstatisticsvApi, { hotelchainstatisticsvReducer } from '@/api/admin/HotelChainStatisticsSv';
 import bookingDetail_AdminApi, { bookingDetail_AdminReducer } from '@/api/admin/bookingdetail_admin';
+import admin_admin_AdminApi, { Admin_admin_AdminReducer } from '@/api/admin/admin_admin_admin';
+import role1Api, { role1Reducer } from '@/api/admin/role1_admin';
+import permission1Api, { permission1Reducer } from '@/api/admin/permisstion1_admin';
+import admin_AdminApi1, { Admin_AdminReducer1 } from '@/api/admin/admin_admin1';
+import rate_HomeApi, { rate_HomeReducer } from '@/api/webapp/comment_home';
+import rating_HomeApi, { rating_HomeReducer } from '@/api/webapp/rates_home';
+import rating_Hotel_HomeApi, { rating_hotel_HomeReducer } from '@/api/webapp/rate_hotel_home';
 
 const persistConfig = {
     key: 'root',
@@ -72,6 +79,13 @@ const rootReducer = combineReducers({
     hotelchainstatistics: hotelchainstatisticsReducer,
     hotelchainstatisticsv: hotelchainstatisticsvReducer,
     bookingDetail_admin: bookingDetail_AdminReducer,
+    admin_admin_admin: Admin_admin_AdminReducer,
+    roles1_admin: role1Reducer,
+    permission1_admin: permission1Reducer,
+    admin_admin1: Admin_AdminReducer1,
+    rating_home:rating_HomeReducer,
+    rating_hotel_home:rating_hotel_HomeReducer,
+    rate_home: rate_HomeReducer,
 })
 const middleware = [
     room_adminApi.middleware, 
@@ -97,6 +111,13 @@ const middleware = [
     hotelchainstatisticsApi.middleware,
     hotelchainstatisticsvApi.middleware,
     bookingDetail_AdminApi.middleware,
+    admin_admin_AdminApi.middleware,
+    role1Api.middleware,
+    permission1Api.middleware,
+    admin_AdminApi1.middleware,
+    rate_HomeApi.middleware,
+    rating_HomeApi.middleware,
+    rating_Hotel_HomeApi.middleware
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -48,11 +48,11 @@
       "name": "102",
       "id_hotel": 1,
       "status": 1,
-      "id_cate": 2,
+      "id_cate": 1,
       "created_at": "2023-08-29T17:15:52.000000Z",
       "updated_at": "2023-08-29T17:15:52.000000Z",
       "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng View Biển"
+      "name_category": "Phòng Đôi"
     },
     {
       "id": 3,
@@ -63,14 +63,14 @@
       "created_at": "2023-08-29T17:15:52.000000Z",
       "updated_at": "2023-08-29T17:15:52.000000Z",
       "name_hotel": "Khách sạn MiiChi",
-      "name_category": "Phòng View Biển"
+      "name_category": "Phòng Đôi"
     },
     {
       "id": 4,
       "name": "104",
       "id_hotel": 1,
       "status": 1,
-      "id_cate": 1,
+      "id_cate": 3,
       "created_at": "2023-08-29T17:15:52.000000Z",
       "updated_at": "2023-08-29T17:15:52.000000Z",
       "name_hotel": "Khách sạn MiiChi",
@@ -93,24 +93,22 @@
       "id": 1,
       "name": "Nihil natus impedit qui ea blanditiis. ff",
       "lever": 1,
-      "guard_name": "web",
+      "guard_name": "admins",
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z",
       "had_permissions": [
-        31,
-        25,
-        24,
         23,
         14,
         12,
-        18
+        18,
+        26
       ]
     },
     {
       "id": 2,
-      "name": "Quyền ông tướng",
+      "name": "Quyền ông tướng update",
       "lever": 2,
-      "guard_name": "web",
+      "guard_name": "admins",
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z",
       "had_permissions": [
@@ -121,16 +119,14 @@
         12,
         23,
         24,
-        25,
-        26,
-        31
+        25
       ]
     },
     {
       "id": 3,
       "name": "Dicta id beatae quaerat non.",
       "lever": 3,
-      "guard_name": "web",
+      "guard_name": "admins",
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z",
       "had_permissions": [
@@ -146,14 +142,14 @@
       "id": 4,
       "name": "Quasi perferendis veniam impedit optio.",
       "lever": 2,
-      "guard_name": "web",
+      "guard_name": "admins",
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z"
     },
     {
       "id": 5,
       "name": "Esse maiores quia odit et.",
-      "guard_name": "web",
+      "guard_name": "admins",
       "lever": 1,
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z"
@@ -161,7 +157,7 @@
     {
       "id": 6,
       "name": "Itaque et asperiores aut quisquam repellendus.",
-      "guard_name": "web",
+      "guard_name": "admins",
       "lever": 3,
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z",
@@ -174,7 +170,7 @@
     {
       "id": 7,
       "name": "Ad eum explicabo facilis qui eius.",
-      "guard_name": "web",
+      "guard_name": "admins",
       "lever": 1,
       "created_at": "2023-09-23T14:19:02.000000Z",
       "updated_at": "2023-09-23T14:19:02.000000Z",
@@ -492,9 +488,9 @@
   ],
   "admin_admin": [
     {
-      "id": 21,
-      "id_role": 0,
-      "name": "Prof. Joanny Pfannerstill",
+      "id": 1,
+      "id_role": 3,
+      "name": "Prof. Joanny Pfannerstill hay",
       "email": "braden11@example.org",
       "password": "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
       "image": "https://via.placeholder.com/640x480.png/00bb11?text=quisquam",
@@ -503,14 +499,14 @@
       "address": "125 Briana Forest Apt. 711\nSouth Amalia, AR 07701-0073",
       "status": 0,
       "gender": 2,
-      "date": "2008-08-04",
+      "date": "2008-08-13T11:24:33.000Z",
       "remember_token": "MwKb3nhx2O",
       "created_at": "2023-08-31T14:00:56.000000Z",
       "updated_at": "2023-08-31T14:00:56.000000Z"
     },
     {
       "id": 22,
-      "id_role": 2,
+      "id_role": 3,
       "name": "Rubye Schroeder",
       "email": "zachary.koelpin@example.org",
       "password": "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
@@ -527,7 +523,7 @@
     },
     {
       "id": 23,
-      "id_role": 1,
+      "id_role": 4,
       "name": "Rodger Gusikowski",
       "email": "harvey.shana@example.org",
       "password": "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
@@ -541,6 +537,58 @@
       "remember_token": "qq0GWnuVVe",
       "created_at": "2023-08-31T14:00:56.000000Z",
       "updated_at": "2023-08-31T14:00:56.000000Z"
+    },
+    {
+      "name": "fff",
+      "gender": "male",
+      "date": "2023-10-13",
+      "id_role": 2,
+      "address": "Hải Dương",
+      "phone": "0375509193",
+      "email": "chien22tuoi@gmail.com",
+      "image": {
+        "file": {
+          "uid": "rc-upload-1697033650879-3",
+          "lastModified": 1658735073097,
+          "lastModifiedDate": "2022-07-25T07:44:33.097Z",
+          "name": "Ảnh chụp màn hình (2).png",
+          "size": 656687,
+          "type": "image/png",
+          "percent": 0,
+          "originFileObj": {
+            "uid": "rc-upload-1697033650879-3"
+          },
+          "error": {
+            "status": 404,
+            "method": "post",
+            "url": ""
+          },
+          "response": "",
+          "status": "error"
+        },
+        "fileList": [
+          {
+            "uid": "rc-upload-1697033650879-3",
+            "lastModified": 1658735073097,
+            "lastModifiedDate": "2022-07-25T07:44:33.097Z",
+            "name": "Ảnh chụp màn hình (2).png",
+            "size": 656687,
+            "type": "image/png",
+            "percent": 0,
+            "originFileObj": {
+              "uid": "rc-upload-1697033650879-3"
+            },
+            "error": {
+              "status": 404,
+              "method": "post",
+              "url": ""
+            },
+            "response": "",
+            "status": "error"
+          }
+        ]
+      },
+      "id": 24
     }
   ],
   "category_admin": [
@@ -592,319 +640,132 @@
   ],
   "booking_admin": [
     {
-      "name": "aaaâ",
-      "cccd": "4012412412",
-      "phone": "0412412412",
-      "email": "aaaaa",
-      "check_in": "2023-10-01 12:38:39",
-      "check_out": "2023-10-03 12:38:41",
-      "people_quantity": 12,
-      "nationality": "VN",
-      "total_rooms": 5,
-      "total_amount": 4531,
-      "cart": [
-        {
-          "id_cate": 2,
-          "services": [
-            2
-          ]
-        },
-        {
-          "id_cate": 5,
-          "services": [
-            1,
-            2
-          ]
-        }
-      ],
-      "id": 13
-    },
-    {
-      "name": "abcxyz xxxx",
-      "cccd": "3123123123",
-      "phone": "123123123",
-      "email": "adu@gmail.com",
-      "check_in": "2023-10-03 08:40:18",
-      "check_out": "2023-10-05 20:59:33",
-      "people_quantity": 12,
+      "id": 1,
+      "check_in": "2023-09-05",
+      "check_out": "2023-09-07",
+      "email": "ntt091103@gmail.com",
+      "name": "tung",
+      "message": "kfgahsgad",
+      "people_quantity": 8,
+      "total_amount": 100,
+      "status": 1,
+      "cccd": "1123",
       "nationality": "vn",
-      "total_rooms": 5,
-      "total_amount": 2000,
+      "id_user": 1,
+      "phone": "111",
       "cart": [
         {
           "id_cate": 1,
-          "services": []
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            1,
-            2
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": []
-        }
-      ],
-      "id": 14
-    },
-    {
-      "name": "adu",
-      "cccd": "123",
-      "phone": "123",
-      "email": "123",
-      "check_in": "2023-10-05 09:53:10",
-      "check_out": "2023-10-06 09:53:11",
-      "people_quantity": 12,
-      "nationality": "vn",
-      "total_rooms": 6,
-      "status": "2",
-      "total_amount": 4968,
-      "cart": [
-        {
-          "id_cate": 1,
-          "services": [
-            1,
-            2
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            1
-          ]
-        },
-        {
-          "id_cate": 5,
-          "services": [
-            1
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            1
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            3
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": []
-        }
-      ],
-      "id": 16
-    },
-    {
-      "name": "thiên khoai to",
-      "cccd": "0402313123",
-      "phone": "0123453123",
-      "email": "thien@gmail.com",
-      "check_in": "2023-10-06 11:51:56",
-      "check_out": "2023-10-07 11:51:58",
-      "people_quantity": "3",
-      "nationality": "VN",
-      "total_rooms": 2,
-      "total_amount": 1703,
-      "cart": [
-        {
-          "id_cate": 1,
-          "services": [
-            1
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            1,
-            3
-          ]
-        }
-      ],
-      "id": 18
-    },
-    {
-      "name": "aduvip anh oi",
-      "cccd": "123",
-      "phone": "123",
-      "email": "adu@gmail.com",
-      "check_in": "2023-10-06 12:38:59",
-      "check_out": "2023-10-08 12:39:01",
-      "people_quantity": "12",
-      "nationality": "vn",
-      "total_rooms": 4,
-      "total_amount": 4865,
-      "cart": [
-        {
-          "id_cate": 1,
-          "services": [
-            1
-          ]
-        },
-        {
-          "id_cate": 3,
-          "services": [
-            1,
-            2,
-            4
-          ]
-        },
-        {
-          "id_cate": 2,
-          "services": [
-            1,
-            2,
-            5,
-            4
-          ]
-        }
-      ],
-      "id": 19
-    },
-    {
-      "name": "lẫm ",
-      "cccd": "0404404040",
-      "phone": "034444",
-      "email": "lam@gmail.com",
-      "check_in": "2023-10-07 12:41:16",
-      "check_out": "2023-10-09 12:41:18",
-      "people_quantity": "12",
-      "nationality": "vn",
-      "total_rooms": 4,
-      "total_amount": 4865,
-      "cart": [
-        {
-          "id_cate": 1,
-          "services": [
-            1
-          ]
-        },
-        {
-          "id_cate": 5,
-          "services": [
-            1,
-            2
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": []
-        },
-        {
-          "id_cate": 1,
-          "services": []
-        }
-      ],
-      "id": 20
-    },
-    {
-      "name": "nguyễn nhật thiên",
-      "cccd": "040204001446",
-      "phone": "0344891321",
-      "email": "thien@gmail.com.vn",
-      "check_in": "2023-10-16 21:48:55",
-      "check_out": "2023-10-18 21:48:57",
-      "people_quantity": "12",
-      "nationality": "VN",
-      "total_rooms": 4,
-      "total_amount": 7633,
-      "cart": [
-        {
-          "id_room": 5,
-          "id_cate": 1,
-          "services": [
-            1
-          ]
-        },
-        {
-          "id_room": 1,
-          "id_cate": 1,
-          "services": [
-            2,
-            1
-          ]
-        },
-        {
-          "id_room": 3,
-          "id_cate": 2,
           "services": [
             1,
             3,
-            2
-          ]
-        },
-        {
-          "id_room": "",
-          "id_cate": 5,
-          "services": [
-            2
-          ]
-        }
-      ],
-      "id": 21,
-      "status": "1"
-    },
-    {
-      "name": "lý tự lẫm",
-      "cccd": "03403123",
-      "phone": "03123124",
-      "email": "lamll@gmail.com",
-      "check_in": "2023-10-06 13:15:14",
-      "check_out": "2023-10-08 13:15:16",
-      "people_quantity": "4",
-      "nationality": "VN",
-      "total_rooms": 4,
-      "status": "1",
-      "total_amount": 7004,
-      "cart": [
-        {
-          "id_cate": 1,
-          "services": [
-            1
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            1,
-            2
-          ]
-        },
-        {
-          "id_cate": 1,
-          "services": [
-            1,
-            2,
-            3
+            5
           ]
         },
         {
           "id_cate": 2,
           "services": [
-            1,
-            3
+            5
           ]
         }
       ],
-      "id": 22
+      "promotion": 1
+    },
+    {
+      "name": "adu chiên béo",
+      "cccd": "012034012",
+      "phone": "121312412",
+      "email": "thien@gmail.com",
+      "check_in": "2023-09-19 11:35:11",
+      "check_out": "2023-09-19 11:29:45",
+      "people_quantity": 12,
+      "nationality": "VN",
+      "total_amount": 806,
+      "cart": [
+        {
+          "id_cate": 2,
+          "services": [
+            41,
+            42
+          ]
+        }
+      ],
+      "id": 9
+    },
+    {
+      "name": "adu",
+      "cccd": "3yu124y23784",
+      "phone": "3123123",
+      "email": "admin@gmail.com",
+      "check_in": "2023-09-17 22:16:59",
+      "check_out": "2023-09-18 22:17:01",
+      "people_quantity": 8,
+      "nationality": "VN",
+      "cart": [
+        {
+          "id_cate": 1,
+          "services": [
+            42,
+            43
+          ]
+        },
+        {
+          "id_cate": 1,
+          "services": [
+            41
+          ]
+        }
+      ],
+      "total_amount": 1212,
+      "id": 10
+    },
+    {
+      "name": "chien",
+      "cccd": "2222",
+      "phone": "222",
+      "email": "chien@gmail.com",
+      "check_in": "2023-09-20 23:00:00",
+      "check_out": "2023-09-22 23:00:00",
+      "people_quantity": 22,
+      "nationality": "vn",
+      "cart": [
+        {
+          "id_cate": 1,
+          "services": [
+            41,
+            42,
+            43
+          ]
+        },
+        {
+          "id_cate": 1,
+          "services": [
+            41,
+            42
+          ]
+        },
+        {
+          "id_cate": 2,
+          "services": [
+            42,
+            41
+          ]
+        }
+      ],
+      "total_amount": 2624,
+      "id": 11
     }
   ],
   "vouchers": [
     {
       "id": 1,
       "name": "Mùa hè sôi động",
-      "name_hotel": "Khách sạn MiiChi - Đà Nẵng",
       "slug": "Qui.",
-      "image": "https://statics.vinpearl.com/styles/365x240/public/2023_09/trung-thu-2023-tai-vinpearl-banner_1695893719.jpg.webp?itok=3tuRInjl",
+      "image": "https://via.placeholder.com/640x480.png/00dd99?text=accusamus",
       "quantity": 6,
       "discount": 30,
-      "start_at": "10/9",
-      "expire_at": "18/11/2023",
+      "start_at": "2010-10-15 20:03:04",
+      "expire_at": "2011-07-18 22:15:39",
       "status": 0,
       "meta": "Mùa hè sôi động nóng vãi",
       "description": "Giảm giá 30% tổng bill tội gì mà không áp dụng",
@@ -913,14 +774,13 @@
     },
     {
       "id": 2,
-      "name_hotel": "Khách sạn MiiChi - Hội An",
       "name": "Mùa hè náo nhiệt",
       "slug": "Qui.",
-      "image": "https://statics.vinpearl.com/styles/365x240/public/2023_07/uu-dai-vinpearl-techcombank_1689590957.jpg.webp?itok=DrRVNwkB",
+      "image": "https://via.placeholder.com/640x480.png/00dd99?text=accusamus",
       "quantity": 6,
       "discount": 30,
-      "start_at": "10/9",
-      "expire_at": "18/11/2023",
+      "start_at": "2010-10-15 20:03:04",
+      "expire_at": "2011-07-18 22:15:39",
       "status": 0,
       "meta": "Mùa hè sôi động nóng vãi",
       "description": "Giảm giá 30% tổng bill tội gì mà không áp dụng",
@@ -929,30 +789,13 @@
     },
     {
       "id": 3,
-      "name_hotel": "Khách sạn MiiChi - Quảng Ninh",
       "name": "Mùa hè đi biển",
       "slug": "Qui.",
-      "image": "https://statics.vinpearl.com/styles/365x240/public/2023_06/uu-dai-vinpearl-danh-cho-nhom-ban-thumb_1686133190.jpg.webp?itok=n6FNM-V2",
+      "image": "https://via.placeholder.com/640x480.png/00dd99?text=accusamus",
       "quantity": 16,
       "discount": 20,
-      "start_at": "10/9",
-      "expire_at": "18/11/2023",
-      "status": 0,
-      "meta": "Mùa hè sôi động nóng vãi",
-      "description": "Giảm giá 30% tổng bill tội gì mà không áp dụng",
-      "created_at": "2023-08-27T17:59:42.000000Z",
-      "updated_at": "2023-08-27T17:59:42.000000Z"
-    },
-    {
-      "id": 4,
-      "name_hotel": "Khách sạn MiiChi -Nha Trang",
-      "name": "Hè rồi đi thôi",
-      "slug": "Qui.",
-      "image": "https://statics.vinpearl.com/styles/365x240/public/2023_06/uu-dai-vinpearl-danh-cho-nhom-ban-thumb_1686133190.jpg.webp?itok=n6FNM-V2",
-      "quantity": 16,
-      "discount": 20,
-      "start_at": "10/9",
-      "expire_at": "18/11/2023",
+      "start_at": "2010-10-15 20:03:04",
+      "expire_at": "2011-07-18 22:15:39",
       "status": 0,
       "meta": "Mùa hè sôi động nóng vãi",
       "description": "Giảm giá 30% tổng bill tội gì mà không áp dụng",
@@ -1106,7 +949,7 @@
       "quantity": 580,
       "image": "https://booking-static.vinpearl.com/hotels/amenity/9d1b2f4b552c43418d3c83a4525512a6_VAP%20PQ.jpg",
       "price": 133,
-      "status": 1,
+      "status": 0,
       "created_at": "2023-08-27T17:59:42.000000Z",
       "updated_at": "2023-08-27T17:59:42.000000Z"
     },
@@ -1124,7 +967,7 @@
     },
     {
       "id_hotel": 1,
-      "id": 3,
+      "id": 4,
       "name": "Dịch vụ thuê xe đạp",
       "description": "Consequatur qui hic.",
       "image": "https://booking-static.vinpearl.com/hotels/amenity/9d1b2f4b552c43418d3c83a4525512a6_VAP%20PQ.jpg",
@@ -1173,13 +1016,13 @@
       "views": 1500,
       "created_at": "2023-08-27T17:59:42.000000Z",
       "updated_at": "2023-08-27T17:59:42.000000Z",
-      "nameHotel": "Michii- Hội An",
+      "nameHotel": "Brando Trantow",
       "total_rooms": 3,
       "total_comfort": 1,
       "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
     },
     {
-      "id": 5,
+      "id": 3,
       "name": "Phòng View Biển 2",
       "description": "Phòng view biển với khung cảnh đẹp của bãi biểm có thể đón mình binh bao trọn view khắp thành phố",
       "image": "https://booking-static.vinpearl.com/room_types/964a61f90cdb42db95b61263a7fdc74b_VH1PQ_Suite%20Room4.jpg",
@@ -1193,28 +1036,8 @@
       "views": 1500,
       "created_at": "2023-08-27T17:59:42.000000Z",
       "updated_at": "2023-08-27T17:59:42.000000Z",
-      "nameHotel": "Michii-Đà Nẵng",
-      "total_rooms": 5,
-      "total_comfort": 1,
-      "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
-    },
-    {
-      "id": 4,
-      "name": "Phòng View Biển 3",
-      "description": "Phòng view biển với khung cảnh đẹp của bãi biểm có thể đón mình binh bao trọn view khắp thành phố",
-      "image": "https://booking-static.vinpearl.com/room_types/964a61f90cdb42db95b61263a7fdc74b_VH1PQ_Suite%20Room4.jpg",
-      "short_description": "Phòng đơn một giường đầy đủ tiện ích cơ bản đảm bảo sự thoải mái trong quá trình nghỉ dưỡng",
-      "quantity_of_people": 14,
-      "price": 800,
-      "reduced_price": 650,
-      "acreage": 150,
-      "floor": 4,
-      "likes": 200,
-      "views": 1500,
-      "created_at": "2023-08-27T17:59:42.000000Z",
-      "updated_at": "2023-08-27T17:59:42.000000Z",
       "nameHotel": "Brando Trantow",
-      "total_rooms": 0,
+      "total_rooms": 5,
       "total_comfort": 1,
       "image_urls": "[https://via.placeholder.com/640x480.png/0022cc?text=nihil,https://via.placeholder.com/640x480.png/00ff00?text=libero]"
     }
@@ -1928,5 +1751,174 @@
       "month": "Tháng 4",
       "year": "2022"
     }
-  ]
+  ],
+  "bookingTest": [
+    {
+        "id": 1,
+        "check_in": "2023-10-05 00:00:00",
+        "check_out": "2023-10-10 00:00:00",
+        "people_quantity": 8,
+        "total_amount": 100,
+        "status": 1,
+        "nationality": "vn",
+        "cccd": "1123",
+        "message": "sua",
+        "phone": "111",
+        "email": "ntt091103@gmail.com",
+        "deleted_at": null,
+        "name": "tung",
+        "id_user": 1,
+        "created_at": "2023-10-06T16:22:11.000000Z",
+        "updated_at": "2023-10-06T16:31:07.000000Z",
+        "hotel": {
+            "name": "Mr. Koby West DDS",
+            "image": "https://via.placeholder.com/640x480.png/003355?text=quia",
+            "alt": "http://wiza.com/"
+        },
+        "categories": [
+            {
+                "id": 1,
+                "name": "Selena Kemmer",
+                "image": "https://via.placeholder.com/640x480.png/009988?text=officia",
+                "rooms": [
+                    {
+                        "id": 3,
+                        "name": "Darby Little",
+                        "id_hotel": 5,
+                        "id_cate": 1,
+                        "services": [
+                            {
+                                "name": "Quam hic esse.",
+                                "price": 571
+                            },
+                            {
+                                "name": "Veritatis.",
+                                "price": 993
+                            },
+                            {
+                                "name": "Commodi suscipit.",
+                                "price": 523
+                            },
+                            {
+                                "name": "Quam hic esse.",
+                                "price": 571
+                            },
+                            {
+                                "name": "Veritatis.",
+                                "price": 993
+                            },
+                            {
+                                "name": "Commodi suscipit.",
+                                "price": 523
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "total_room": 1,
+        "total_service": 6
+    },
+    {
+        "id": 3,
+        "check_in": "2023-10-10 00:00:00",
+        "check_out": "2023-10-12 00:00:00",
+        "people_quantity": 8,
+        "total_amount": 100,
+        "status": 1,
+        "nationality": "vn",
+        "cccd": "1123",
+        "message": "kfgahsgad",
+        "phone": "111",
+        "email": "ntt091103@gmail.com",
+        "deleted_at": null,
+        "name": "tung",
+        "id_user": 1,
+        "created_at": "2023-10-09T14:53:26.000000Z",
+        "updated_at": "2023-10-09T14:53:26.000000Z",
+        "hotel": {
+            "name": "Prof. Carmen Cummerata III",
+            "image": "https://via.placeholder.com/640x480.png/003366?text=nesciunt",
+            "alt": "http://www.abernathy.com/voluptatem-omnis-sit-commodi-est-quis.html"
+        },
+        "categories": [
+            {
+                "id": 1,
+                "name": "Selena Kemmer",
+                "image": "https://via.placeholder.com/640x480.png/009988?text=officia",
+                "rooms": [
+                    {
+                        "id": 1,
+                        "name": "Scotty Konopelski",
+                        "id_hotel": 5,
+                        "id_cate": 1,
+                        "services": [
+                            {
+                                "name": "Quam hic esse.",
+                                "price": 571
+                            },
+                            {
+                                "name": "Veritatis.",
+                                "price": 993
+                            },
+                            {
+                                "name": "Commodi suscipit.",
+                                "price": 523
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Ada Boehm",
+                "image": "https://via.placeholder.com/640x480.png/00ff99?text=consequatur",
+                "rooms": [
+                    {
+                        "id": 1,
+                        "name": "Scotty Konopelski",
+                        "id_hotel": 5,
+                        "id_cate": 1,
+                        "services": [
+                            {
+                                "name": "Quam hic esse.",
+                                "price": 571
+                            },
+                            {
+                                "name": "Veritatis.",
+                                "price": 993
+                            },
+                            {
+                                "name": "Commodi suscipit.",
+                                "price": 523
+                            }
+                        ]
+                    },
+                    {
+                        "id": 5,
+                        "name": "Icie O'Kon",
+                        "id_hotel": 6,
+                        "id_cate": 2,
+                        "services": [
+                            {
+                                "name": "Quam hic esse.",
+                                "price": 571
+                            },
+                            {
+                                "name": "Veritatis.",
+                                "price": 993
+                            },
+                            {
+                                "name": "Commodi suscipit.",
+                                "price": 523
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "total_room": 2,
+        "total_service": 6
+    }
+]
 }
