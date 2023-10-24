@@ -1,4 +1,3 @@
-
 import admin_AdminApi, { Admin_AdminReducer } from '@/api/admin/admin_admin';
 import banner_AdminApi, { banner_AdminReducer } from '@/api/admin/banner_admin';
 import booking_AdminApi, { booking_AdminReducer } from '@/api/admin/booking_admin';
@@ -39,6 +38,7 @@ import statisticalApi, { statisticalReducer } from '@/api/admin/statistical';
 import statistical_ServiceApi, { statisticalServiceReducer } from '@/api/admin/statistical_Service';
 import hotelchainstatisticsApi, { hotelchainstatisticsReducer } from '@/api/admin/HotelChainStatistics';
 import hotelchainstatisticsvApi, { hotelchainstatisticsvReducer } from '@/api/admin/HotelChainStatisticsSv';
+import bookingDetail_AdminApi, { bookingDetail_AdminReducer } from '@/api/admin/bookingdetail_admin';
 
 const persistConfig = {
     key: 'root',
@@ -70,7 +70,8 @@ const rootReducer = combineReducers({
     statistical:statisticalReducer,
     statistical_service: statisticalServiceReducer,
     hotelchainstatistics: hotelchainstatisticsReducer,
-    hotelchainstatisticsv: hotelchainstatisticsvReducer
+    hotelchainstatisticsv: hotelchainstatisticsvReducer,
+    bookingDetail_admin: bookingDetail_AdminReducer,
 })
 const middleware = [
     room_adminApi.middleware, 
@@ -95,6 +96,7 @@ const middleware = [
     statistical_ServiceApi.middleware,
     hotelchainstatisticsApi.middleware,
     hotelchainstatisticsvApi.middleware,
+    bookingDetail_AdminApi.middleware,
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

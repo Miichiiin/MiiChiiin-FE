@@ -19,7 +19,7 @@ interface Category {
   id: number;
   name: string;
   price: number;
-  total_rooms: number;
+  total_rooms_available: number;
   quantity_of_people: number;
 }
 
@@ -45,11 +45,23 @@ interface FieldType {
   id_user: number;
   phone: string;
   cart: {
-    id_room?: string | number;
-    id_cate: number | string;
-    services: number[] | string[];
+    id_room?: number;
+    id_cate: number;
+    services: {
+      id_service: number;
+      quantity: number;
+    }[];
   }[];
-  promotion: number;
+  id_promotions: number;
+  flag: boolean;
+}
+interface RoomData {
+  id_room?: number;
+  id_cate: number;
+  services: {
+    id_service: number;
+    quantity: number;
+  }[];
 }
 
 const UpdateBooking = () => {
@@ -63,23 +75,27 @@ const UpdateBooking = () => {
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const [cartData, setCartData] = useState<FieldType['cart']>([]);
   const [form] = Form.useForm();
-  const [selectedRoomsData, setSelectedRoomsData] = useState<{ id_room?: number | "", id_cate: number; services: number[] }[]>([]);
+  const [selectedRoomsData, setSelectedRoomsData] = useState<RoomData[]>([]);
   const [selectedRoomIndex, setSelectedRoomIndex] = useState<number | null>(null);
   const [isRoomsHidden, setIsRoomsHidden] = useState(false);
   const [isServicesHidden, setIsServicesHidden] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>()
   const { data: bookingData } = useGetBooking_adminByIdQuery(id || "")
+
   const [roomCount, setRoomCount] = useState(0);
   const [maxRoomQuantity, setMaxRoomQuantity] = useState(0);
   const [availableRoomCounts, setAvailableRoomCounts] = useState<{ [key: number]: number }>({});
   const [listRoomSelected, setListRoomSelected] = useState<any[]>([])
   const [selectedRoom, setSelectedRoom] = useState<number | null>()
+  const [selectedServicesQuantity, setSelectedServicesQuantity] = useState<{ [key: number]: number }>({});
+  const [isUpdateRoom, setIsUpdateRoom] = useState(false);
 
+  // Cập nhật lại số lượng phòng còn trống khi categories thay đổi
   useEffect(() => {
     if (categories) {
       const initialAvailableRoomCounts: { [key: number]: number } = {};
       categories.forEach((category: Category) => {
-        initialAvailableRoomCounts[category.id] = category.total_rooms;
+        initialAvailableRoomCounts[category.id] = category.total_rooms_available;
       });
       setAvailableRoomCounts(initialAvailableRoomCounts);
     }
@@ -89,16 +105,12 @@ const UpdateBooking = () => {
   const calculateTotalAmount = (cart: FieldType['cart']) => {
     let totalRoom = 0
     let totalService = 0
-
     // Lấy ngày check-in và ngày check-out từ form
     const checkInDate = form.getFieldValue('check_in');
     const checkOutDate = form.getFieldValue('check_out');
-
-
     // Tính tổng giá tiền của các loại phòng đã chọn
     if (checkInDate && checkOutDate) {
       const days = checkOutDate.diff(checkInDate, 'days');
-
       // Tính tổng giá tiền của các loại phòng đã chọn dựa trên số ngày thuê
       cart.forEach((roomData) => {
         const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
@@ -109,9 +121,10 @@ const UpdateBooking = () => {
 
         // Tính tổng giá tiền của các dịch vụ đã chọn cho từng phòng
         roomData.services.forEach((serviceId) => {
-          const selectedService = services?.find((service: any) => service.id === serviceId);
+          const selectedService = services?.find((service: any) => service.id === serviceId.id_service);
+          const quantity = serviceId.quantity;
           if (selectedService) {
-            totalService += selectedService?.price
+            totalService += (selectedService?.price * quantity)
           }
         });
       });
@@ -121,12 +134,11 @@ const UpdateBooking = () => {
     // Cập nhật giá trị tổng thanh toán
     setTotalAmount(total);
   };
-
   //set giá trị phòng cũ vào form
   useEffect(() => {
     if (bookingData) {
-      setMaxRoomQuantity(bookingData?.total_rooms || 0);
-      setRoomCount(bookingData.cart?.length || 0);
+      setMaxRoomQuantity(bookingData?.total_room || 0);
+      setRoomCount(bookingData.room?.length || 0);
       form.setFieldsValue({
         name: bookingData?.name,
         cccd: bookingData?.cccd,
@@ -136,18 +148,21 @@ const UpdateBooking = () => {
         check_out: dayjs(bookingData?.check_out)?.tz('Asia/Ho_Chi_Minh'),
         people_quantity: bookingData?.people_quantity,
         nationality: bookingData?.nationality,
-        total_rooms: bookingData?.total_rooms,
+        total_room: bookingData?.total_room,
         status: bookingData?.status,
       });
 
       // Lấy danh sách các phòng đã chọn từ bookingData và cập nhật vào selectedRoomsData
-      const selectedRoomsFromBooking = bookingData?.cart || [];
-
-      const updatedSelectedRoomsData = selectedRoomsFromBooking?.map((item: any) => {
-        const id_cate = item?.id_cate;
+      const updatedSelectedRoomsData = bookingData?.room?.map((item: any) => {
         return {
-          id_cate,
-          services: item.services || [],
+          id_room : item.id,
+          id_cate: item.id_category,
+          services:
+            item.services?.map((service: any) => ({
+              id_service: service.id,
+              quantity: service.quantity_service,
+            })) || [],
+
         };
       });
       setSelectedRoomsData(updatedSelectedRoomsData);
@@ -155,6 +170,20 @@ const UpdateBooking = () => {
       calculateTotalAmount(updatedSelectedRoomsData);
     }
   }, [bookingData]);
+
+  const handleCheckboxChange = (service: Service) => { 
+    if (selectedServices.includes(service.id)) {
+        // Nếu dịch vụ đã được chọn, hủy chọn nó
+        setSelectedServices(selectedServices.filter((id) => id !== service.id));
+        // Xóa thông tin số lượng
+        delete selectedServicesQuantity[service.id];
+    } else {
+        // Nếu dịch vụ chưa được chọn, chọn nó
+        setSelectedServices([...selectedServices, service.id]);
+        // Đặt số lượng ban đầu là 1 cho dịch vụ được chọn
+        selectedServicesQuantity[service.id] =  1;
+    }
+};
 
   const handleCheckInDateChange = (selectedDate: dayjs.Dayjs | null) => {
     form.setFieldsValue({ check_in: selectedDate });
@@ -179,28 +208,30 @@ const UpdateBooking = () => {
           // Phòng đã có trong mảng, tạo một bản sao của nó và cập nhật dịch vụ cho phòng mới
           const updatedSelectedRoomsData = [...selectedRoomsData];
           const newRoom = { ...updatedSelectedRoomsData[roomIndex] };
-          newRoom.services = selectedServices;
+          newRoom.services = selectedServices.map((serviceId) => ({ id_service: serviceId, quantity: selectedServicesQuantity[serviceId] }));
 
           // Thêm phòng mới cùng loại vào mảng
           updatedSelectedRoomsData.push(newRoom);
           setSelectedRoomsData(updatedSelectedRoomsData);
         } else {
           // Phòng chưa có trong mảng, thêm nó vào
-          setSelectedRoomsData([...selectedRoomsData, { id_cate: selectedRoomIndex, services: selectedServices }]);
+          setSelectedRoomsData([...selectedRoomsData, { id_cate: selectedRoomIndex, services: selectedServices.map((serviceId) => ({ id_service: serviceId, quantity: selectedServicesQuantity[serviceId] })) }]);
         }
 
         // Cập nhật giá trị cart trong form antd
-        const updatedCart = [...cartData, { id_cate: selectedRoomIndex, services: selectedServices }];
+        const updatedCart = [...cartData, { id_cate: selectedRoomIndex, services: selectedServices.map((serviceId) => ({ id_service: serviceId, quantity: selectedServicesQuantity[serviceId] })) }];
         setCartData(updatedCart);
         form.setFieldsValue({ cart: updatedCart });
         calculateTotalAmount(updatedCart);
-
+        setIsUpdateRoom(true);
       }
     }
+    
     setSelectedServices([]);
     setSelectedRoomIndex(null);
     setIsRoomsHidden(false);
     setIsServicesHidden(false);
+    setSelectedServicesQuantity({});
   };
   // Hàm hiện dịch vụ khi click vào phòng
   const handleRoomClick = (roomIndex: number) => {
@@ -218,21 +249,19 @@ const UpdateBooking = () => {
   const handleEnterPress = (value: number | undefined) => {
     // Xử lý giá trị khi có sự thay đổi trong InputNumber
     if (typeof value === 'number') {
-      setMaxRoomQuantity(value); // Cập nhật maxRoomQuantity khi có thay đổi
+      setMaxRoomQuantity(value);// Cập nhật maxRoomQuantity khi có thay đổi
     }
   };
-  const getServiceName = (serviceId: any) => {
-    // Điều này chỉ là một ví dụ đơn giản, bạn cần thay thế bằng cách lấy tên dịch vụ từ dữ liệu thực tế của bạn.
+  const getServiceName = (serviceId: number) => {
     const serviceData = services?.find((service: any) => service.id === serviceId);
     return serviceData ? serviceData.name : 'Dịch vụ không tồn tại';
   };
   const handleRemoveRoom = (roomIndex: number) => {
-    // Cập nhật lại mảng selectedRoomsData
-    const updatedSelectedRoomsData = [...selectedRoomsData];
+    const updatedSelectedRoomsData = [...cartData];
     // Xóa phòng đã chọn khỏi mảng
     updatedSelectedRoomsData.splice(roomIndex, 1);
     // Cập nhật lại mảng selectedRoomsData
-    setSelectedRoomsData(updatedSelectedRoomsData);
+    setCartData(updatedSelectedRoomsData);
     const selectedCategory = categories?.find((category: any) => category.id === selectedRoomIndex);
     if (selectedCategory && selectedRoomIndex !== null) {
       const updatedAvailableRoomCounts = { ...availableRoomCounts };
@@ -243,16 +272,13 @@ const UpdateBooking = () => {
     setRoomCount(roomCount - 1);
     // Cập nhật lại tổng giá
     calculateTotalAmount(updatedSelectedRoomsData);
+    setIsUpdateRoom(true);
   };
   const handleCancelRemoveRoom = (e: React.MouseEvent<HTMLElement>) => {
     console.log(e);
     message.error('Click on No');
   };
-  useEffect(() => {
-    form.setFieldsValue({
-      total_amount: totalAmount,
-    });
-  }, [totalAmount]);
+
 
   const [isSelectingServices, setIsSelectingServices] = useState(false);
   const [hiddenSelectingServices, setHiddenSelectingServices] = useState(false);
@@ -266,7 +292,6 @@ const UpdateBooking = () => {
   const handleSelectRooms = (roomIndex: any) => {
     setSelectedRoomIndex(roomIndex);
     const rooms = roomsData?.id_room
-    console.log(rooms);
     setSelectedRoom(rooms);
     setListRoomSelected(roomsData.filter((room: any) => room.id_cate === selectedRoomsData[roomIndex]?.id_cate))
     setIsSelectingRooms(!isSelectingRooms);
@@ -277,44 +302,54 @@ const UpdateBooking = () => {
     if (selectedRoomIndex !== null) {
       const updatedCartData = [...cartData];
       updatedCartData[selectedRoomIndex].id_room = Number(selectedRoom);
-      setSelectedRoom(Number(selectedRoom)); 
+      console.log(updatedCartData);
+      
+      setSelectedRoom(Number(selectedRoom));
       setCartData(updatedCartData);
       form.setFieldsValue({ cart: updatedCartData });
+      setIsUpdateRoom(true);
     }
-
     setIsSelectingRooms(false);
     setHiddenSelectingRooms(false);
     setSelectedRoomIndex(null);
+    
+    
   };
-
-
-
   const handleSelectServices = (roomIndex: any) => {
     setSelectedRoomIndex(roomIndex);
     setIsSelectingServices(!isSelectingServices);
-    const selectedServices = selectedRoomsData[roomIndex]?.services || [];
-    setSelectedServices(selectedServices);
+    const selectedServices = selectedRoomsData[roomIndex]?.services?.map((service) => service.id_service) || [];
+    if(selectedServices.length > 0){
+      selectedServices.forEach((serviceId) => {
+        selectedServicesQuantity[serviceId] = selectedRoomsData[roomIndex]?.services?.find((service) => service.id_service === serviceId)?.quantity || 1;
+      });
+      setSelectedServices(selectedServices);
+    };
     setHiddenSelectingServices(!hiddenSelectingServices)
     setIsSelectingRooms(false);
-
+    
   };
   const handleUpdateCart = () => {
     if (selectedRoomIndex !== null) {
       // Tạo một bản sao mới của cartData để tránh thay đổi trực tiếp.
       const updatedCartData = [...cartData];
       // Cập nhật lại mảng cartData
-      updatedCartData[selectedRoomIndex].services = selectedServices;
+      updatedCartData[selectedRoomIndex].services = selectedServices.map((serviceId) => ({
+        id_service: serviceId,
+        quantity: selectedServicesQuantity[serviceId] || 1,
+      }));
       setCartData(updatedCartData);
       form.setFieldsValue({ cart: updatedCartData });
       calculateTotalAmount(updatedCartData);
+      setIsUpdateRoom(true);
     }
-
     setIsSelectingServices(false);
     setHiddenSelectingServices(false);
   };
+
   const onFinish = (values: FieldType) => {
 
-    const cart = cartData.map((roomData) => ({
+    const cart = cartData?.map((roomData) => ({
       id_room: roomData?.id_room || "", // ID phòng đã chọn
       id_cate: roomData.id_cate, // ID loại phòng đã chọn
       services: roomData.services, // Các dịch vụ đã chọn cho phòng
@@ -325,7 +360,9 @@ const UpdateBooking = () => {
       id: id,
       check_in: values.check_in?.format('YYYY-MM-DD HH:mm:ss'),
       check_out: values.check_out?.format('YYYY-MM-DD HH:mm:ss'),
-      cart: cart
+      cart: cart,
+      promotion: 1,
+      flag: isUpdateRoom
     };
     console.log(formattedValues);
 
@@ -341,11 +378,15 @@ const UpdateBooking = () => {
     console.log('Failed:', errorInfo);
     message.error('Cập nhật thất bại');
   };
-
+  useEffect(() => {
+    form.setFieldsValue({
+      total_amount: totalAmount,
+    });
+  }, [totalAmount]);
 
   return (
     <div className="mx-auto overflow-auto scroll-smooth">
-      <h1 className='text-xl font-semibold pb-5'>Cập nhật Booking: <span className='font-bold text-blue-800 text-2xl'>{bookingData?.name}</span></h1>
+      <h1 className='text-xl font-semibold pb-5'>Cập nhật Booking: <span className='font-bold text-blue-800 text-2xl'>{bookingData?.slug}</span></h1>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -426,6 +467,7 @@ const UpdateBooking = () => {
                   },
 
                 ]}
+
               >
                 <DatePicker
                   value={form.getFieldValue('check_in')}
@@ -437,6 +479,7 @@ const UpdateBooking = () => {
                     // Vô hiệu hóa các ngày hôm trước
                     return current && current.isBefore(new Date(), 'day');
                   }}
+
                 />
               </Form.Item>
               <Form.Item
@@ -491,7 +534,7 @@ const UpdateBooking = () => {
               </Form.Item>
               <Form.Item
                 label="Số lượng phòng"
-                name="total_rooms"
+                name="total_room"
                 rules={[
                   { required: true, message: 'Hãy nhập!' },
                   {
@@ -501,7 +544,6 @@ const UpdateBooking = () => {
                 labelCol={{ span: 24 }}
               >
                 <InputNumber className='w-[250px]'
-
                   onChange={(value: any) => {
                     handleEnterPress(value);
                   }}
@@ -529,15 +571,15 @@ const UpdateBooking = () => {
                           className={`px-3 py-2 rounded-md cursor-pointer border h-full
                           ${selectedRoomIndex === category?.id
                               ? 'bg-blue-500 text-white border border-black'
-                              : category.total_rooms < 1
-                                ? 'bg-red-500 text-white cursor-not-allowed'
+                              : category.total_rooms_available < 1
+                                ? 'hidden'
                                 : availableRoomCounts[category?.id] === 0
                                   ? 'bg-red-500 text-white cursor-not-allowed'
                                   : 'bg-[#15803d] '
 
                             }`}
                           onClick={() => {
-                            if (category.total_rooms >= 1) {
+                            if (category.total_rooms_available >= 1) {
                               handleRoomClick(category?.id);
                             }
                           }}
@@ -553,29 +595,48 @@ const UpdateBooking = () => {
                 </div>
                 <div className="">
                   {isServicesHidden && selectedRoomIndex !== null && (
-                    <Form.Item name={['cart', selectedRoomIndex, 'services']} className=''>
-                      {services?.map((service: Service) => (
+                    <Form.Item name={['room', selectedRoomIndex, 'services']} className=''>
+                      {services?.map((service: Service,) => (
                         <div key={service.id} className="my-3 flex items-center text-md w-[600px]">
                           <Checkbox
-                            className=''
+                            className=""
                             value={service.id}
                             checked={selectedServices.includes(service.id)}
-                            onChange={(e) => {
-                              const selectedServiceId = service.id;
-                              if (e.target.checked) {
-                                setSelectedServices([...selectedServices, selectedServiceId]);
-                              } else {
-                                setSelectedServices(selectedServices.filter((id) => id !== selectedServiceId));
-                              }
-                            }}
+                            onChange={() => handleCheckboxChange(service)}
                           />
 
                           <div className='ml-1'>
                             <span className='text-xl font-semibold text-blue-900 pl-2'>{service.name}</span>
                             <span className='font-semibold px-5 text-md'>Giá : {service?.price} vnđ</span>
+                            {selectedServices.includes(service.id) && (
+                              <div className='ml-2'>
+                                <Button
+                                  onClick={() => {
+                                    if (selectedServicesQuantity[service.id] && selectedServicesQuantity[service.id] > 1) {
+                                      setSelectedServicesQuantity((prev) => ({
+                                        ...prev,
+                                        [service.id]: prev[service.id] - 1,
+                                      }));
+                                    }
+                                  }}
+                                >
+                                  -
+                                </Button>
+                                <span className='mx-2'>{selectedServicesQuantity[service.id]}</span>
+                                <Button
+                                  onClick={() => {
+                                    setSelectedServicesQuantity((prev) => ({
+                                      ...prev,
+                                      [service.id]: (prev[service.id] || 0) + 1,
+                                    }));
+                                  }}
+                                >
+                                  +
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         </div>
-
                       ))}
                     </Form.Item>
 
@@ -587,9 +648,8 @@ const UpdateBooking = () => {
               <div className='p-3 rounded-md mt-3 ' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
                 <div className='text-md col-span-2'><h1>Các loại phòng đã chọn</h1></div>
                 <div className="grid grid-cols-2 gap-2">
-                  {selectedRoomsData?.map((roomData, index) => {
-                    const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
-                    
+                  {cartData?.map((roomData, index) => {
+                    const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);             
                     return (
                       <React.Fragment key={index}>
                         {((!hiddenSelectingServices || selectedRoomIndex === index) && (!hiddenSelectingRooms || selectedRoomIndex === index)) && (
@@ -613,13 +673,13 @@ const UpdateBooking = () => {
                                 </div>
                               </Popconfirm>
                             </div>
-                              <p className=''>Tên phòng : <span className='font-semibold text-blue-800'> {getRoomName(roomData?.id_room)} </span></p>
+                            <p className=''>Tên phòng : <span className='font-semibold text-blue-800'>{getRoomName(roomData.id_room)} </span></p>
 
                             <p className="text-md ">Dịch vụ đã chọn: </p>
                             <ul>
-                              {roomData.services.map((serviceId, serviceIndex) => (
+                              {roomData?.services?.map((serviceId, serviceIndex) => (
                                 <li key={serviceIndex}>
-                                  Dịch vụ {serviceIndex + 1}: <span className='font-semibold text-blue-800'>{getServiceName(serviceId)}</span>
+                                  Dịch vụ {serviceIndex + 1}: <span className='font-semibold text-blue-800'>{getServiceName(serviceId.id_service)} x{serviceId.quantity}</span>
                                 </li>
                               ))}
                             </ul>
@@ -636,28 +696,47 @@ const UpdateBooking = () => {
                 <div className="">
                   {isSelectingServices && selectedRoomIndex !== null && (
                     <Form.Item name={['cart', selectedRoomIndex, 'services']} className=''>
-                      {services?.map((service: Service) => (
+                      {services?.map((service: Service,) => (
                         <div key={service.id} className="my-3 flex items-center text-md w-[600px]">
                           <Checkbox
-                            className=''
+                            className=""
                             value={service.id}
                             checked={selectedServices.includes(service.id)}
-                            onChange={(e) => {
-                              const selectedServiceId = service.id;
-                              if (e.target.checked) {
-                                setSelectedServices([...selectedServices, selectedServiceId]);
-                              } else {
-                                setSelectedServices(selectedServices.filter((id) => id !== selectedServiceId));
-                              }
-                            }}
+                            onChange={() => handleCheckboxChange(service)}
                           />
 
                           <div className='ml-1'>
                             <span className='text-xl font-semibold text-blue-900 pl-2'>{service.name}</span>
                             <span className='font-semibold px-5 text-md'>Giá : {service?.price} vnđ</span>
+                            {selectedServices.includes(service.id) && (
+                              <div className='ml-2'>
+                                <Button
+                                  onClick={() => {
+                                    if (selectedServicesQuantity[service.id] && selectedServicesQuantity[service.id] > 1) {
+                                      setSelectedServicesQuantity((prev) => ({
+                                        ...prev,
+                                        [service.id]: prev[service.id] - 1,
+                                      }));
+                                    }
+                                  }}
+                                >
+                                  -
+                                </Button>
+                                <span className='mx-2'>{selectedServicesQuantity[service.id] || 1}</span>
+                                <Button
+                                  onClick={() => {
+                                    setSelectedServicesQuantity((prev) => ({
+                                      ...prev,
+                                      [service.id]: (prev[service.id] || 0) + 1,
+                                    }));
+                                  }}
+                                >
+                                  +
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         </div>
-
                       ))}
                       <div className='ml-[210px] items-center'>
                         <Button className='border border-blue-500 rounded px-4 mt-2  ' onClick={handleUpdateCart}>
