@@ -5,8 +5,8 @@ const bookingUserApi = createApi({
     reducerPath: 'bookingUser',
     tagTypes: ['BookingUser'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
-        // baseUrl: "http://127.0.0.1:8000/api",
+        // baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
