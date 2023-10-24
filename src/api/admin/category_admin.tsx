@@ -1,11 +1,10 @@
-
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const category_AdminApi = createApi({
     reducerPath: 'category_admin',
     tagTypes: ['Category_admin'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -15,17 +14,23 @@ const category_AdminApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getCategory_admin: builder.query({
-            query: () => `/category_admin`,
+        getCategory_admin: builder.query<any, void>({
+            query: () => {
+                const id = JSON.parse(localStorage.getItem("userAdmin") || '{}');
+                console.log(id.id_hotel);
+                
+                // Lấy ID khách sạn từ Local Storage
+                return `/listRoom/hotels=${id.id_hotel}`;
+            },
             providesTags: ['Category_admin']
         }),
         getCategory_adminById: builder.query({
-            query: (id) => `/admin_admin/${id}`,
+            query: (id) => `/category/${id}`,
             providesTags: ['Category_admin']
         }),
         addCategory_admin: builder.mutation({
             query: (product) => ({
-                url: `/category_admin`,
+                url: `/category`,
                 method: "POST",
                 body: product
             }),
@@ -33,7 +38,7 @@ const category_AdminApi = createApi({
         }),
         updateCategory_admin: builder.mutation({
             query: (product) => ({
-                url: `/category_admin/${product.id}`,
+                url: `/category/${product.id}`,
                 method: "PATCH",
                 body: product
             }),
@@ -41,7 +46,7 @@ const category_AdminApi = createApi({
         }),
         removeCategory_admin: builder.mutation<void, number | string>({
             query: (id: number) => ({
-                url: `/category_admin/${id}`,
+                url: `/category/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Category_admin']

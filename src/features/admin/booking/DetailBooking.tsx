@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetBooking_adminByIdQuery } from "@/api/admin/booking_admin";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 import { Button } from 'antd';
@@ -48,7 +48,7 @@ const DetailBooking = () => {
         <Button type="primary" className='bg-green-500 mx-2'>
           Export PDF
         </Button>
-        <Button type="primary" className='bg-blue-500'> <Link to={`/admin/updatebooking/${booking?.id}`}>Sửa</Link></Button>
+        <Button type="primary" className='bg-blue-500'> <a href={`/admin/updatebooking/${booking?.id}`}>Sửa</a></Button>
       </div>
       <section className='grid grid-cols-2 gap-8'>
 

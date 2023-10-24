@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Select, Popconfirm, message } from 'antd';
-import { useGetCategory_homeQuery } from '@/api/webapp/category_home';
-import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
 import { useAddBooking_adminMutation } from '@/api/admin/booking_admin';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 import { BsTrash3 } from 'react-icons/bs';
@@ -10,6 +8,9 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
+import { useGetCategory_adminQuery } from '@/api/admin/category_admin';
+import { useGetService_adminQuery } from '@/api/admin/service_admin';
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -61,8 +62,8 @@ interface RoomData {
 }
 
 const AddBooking = () => {
-  const { data: categories } = useGetCategory_homeQuery(); // Lấy danh sách loại phòng
-  const { data: services } = useGetService_hotelQuery(); // Lấy danh sách dịch vụ
+  const { data: categories } = useGetCategory_adminQuery() // Lấy danh sách loại phòng
+  const { data: services } = useGetService_adminQuery() // Lấy danh sách dịch vụ
   const [addBooking] = useAddBooking_adminMutation(); // Thêm booking
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
@@ -93,7 +94,6 @@ const AddBooking = () => {
       
     }
   };
-
   useEffect(() => {
     if (categories) {
       const initialAvailableRoomCounts: { [key: number]: number } = {};

@@ -1,5 +1,4 @@
-
-import { useAddServices_AdminMutation } from '@/api/admin/service_admin';
+import { useAddService_adminMutation } from '@/api/admin/service_admin';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export const AddService = () => {
   
   const navigate = useNavigate();
-  const [addServiceAdmin] = useAddServices_AdminMutation();
+  const [addServiceAdmin] = useAddService_adminMutation();
 
   const onFinish = (values:any) => {
     addServiceAdmin(values).unwrap()

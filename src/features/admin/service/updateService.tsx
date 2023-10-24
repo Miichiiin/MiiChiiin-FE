@@ -1,4 +1,5 @@
-import { useGetServices_AdminByIdQuery, useUpdateServices_AdminMutation } from '@/api/admin/service_admin';
+
+import { useGetService_adminIdQuery, useUpdateService_adminMutation } from '@/api/admin/service_admin';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -6,10 +7,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 export const UpdateService = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [updateServiceAdmin] = useUpdateServices_AdminMutation();
+  const [updateServiceAdmin] = useUpdateService_adminMutation();
 
   // Sử dụng useGetServices_AdminByIdQuery để lấy thông tin dịch vụ
-  const { data, isLoading, isError } = useGetServices_AdminByIdQuery(id);
+  const { data, isLoading, isError } = useGetService_adminIdQuery(id)
 
   const onFinish = (values: any) => {
     // Gửi yêu cầu cập nhật dịch vụ bằng API updateServices_Admin

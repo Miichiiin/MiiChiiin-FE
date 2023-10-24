@@ -1,11 +1,9 @@
-
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
 const service_HotelApi = createApi({
     reducerPath: 'service_hotel',
     tagTypes: ['Service_hotel'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/admin",
+        baseUrl: "http://localhost:3000",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -16,16 +14,16 @@ const service_HotelApi = createApi({
     }),
     endpoints: (builder) => ({
         getService_hotel: builder.query<any,void>({
-            query: () => `/services`,
+            query: () => `/service_of_hotel`,
             providesTags: ['Service_hotel']
         }),
         getService_hotelId: builder.query({
-            query: (id) => `/service/${id}`,
+            query: (id) => `/service_of_hotel/${id}`,
             providesTags: ['Service_hotel']
         }),
         addService_hotel: builder.mutation({
             query: (product) => ({
-                url: `/service`,
+                url: `/service_of_hotel`,
                 method: "POST",
                 body: product
             }),
@@ -33,7 +31,7 @@ const service_HotelApi = createApi({
         }),
         updateService_hotel: builder.mutation({
             query: (product) => ({
-                url: `/service/${product.id}`,
+                url: `/service_of_hotel/${product.id}`,
                 method: "PATCH",
                 body: product
             }),
@@ -41,7 +39,7 @@ const service_HotelApi = createApi({
         }),
         removeService_hotel: builder.mutation<void, number | string>({
             query: (id: number) => ({
-                url: `/service/${id}`,
+                url: `/service_of_hotel/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Service_hotel']
