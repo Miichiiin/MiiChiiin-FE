@@ -38,6 +38,8 @@ import statisticalApi, { statisticalReducer } from '@/api/admin/statistical';
 import statistical_ServiceApi, { statisticalServiceReducer } from '@/api/admin/statistical_Service';
 import hotelchainstatisticsApi, { hotelchainstatisticsReducer } from '@/api/admin/HotelChainStatistics';
 import hotelchainstatisticsvApi, { hotelchainstatisticsvReducer } from '@/api/admin/HotelChainStatisticsSv';
+import statisticalRoomTypeApi, {statisticalRoomTypeReducer} from '@/api/admin/statistical_RoomType';
+import hotelchainstatisticRtApi, { hotelchainstatisticRtReducer } from '@/api/admin/HotelChainStatistics_Roomtype';
 import bookingDetail_AdminApi, { bookingDetail_AdminReducer } from '@/api/admin/bookingdetail_admin';
 import admin_admin_AdminApi, { Admin_admin_AdminReducer } from '@/api/admin/admin_admin_admin';
 import role1Api, { role1Reducer } from '@/api/admin/role1_admin';
@@ -78,6 +80,8 @@ const rootReducer = combineReducers({
     statistical_service: statisticalServiceReducer,
     hotelchainstatistics: hotelchainstatisticsReducer,
     hotelchainstatisticsv: hotelchainstatisticsvReducer,
+    statistical_roomtype:statisticalRoomTypeReducer,
+    hotelchainstatisticrt:hotelchainstatisticRtReducer,
     bookingDetail_admin: bookingDetail_AdminReducer,
     admin_admin_admin: Admin_admin_AdminReducer,
     roles1_admin: role1Reducer,
@@ -110,6 +114,8 @@ const middleware = [
     statistical_ServiceApi.middleware,
     hotelchainstatisticsApi.middleware,
     hotelchainstatisticsvApi.middleware,
+    statisticalRoomTypeApi.middleware,
+    hotelchainstatisticRtApi.middleware,
     bookingDetail_AdminApi.middleware,
     admin_admin_AdminApi.middleware,
     role1Api.middleware,
@@ -118,6 +124,7 @@ const middleware = [
     rate_HomeApi.middleware,
     rating_HomeApi.middleware,
     rating_Hotel_HomeApi.middleware
+
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

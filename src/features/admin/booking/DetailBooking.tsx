@@ -19,7 +19,7 @@ const DetailBooking = () => {
   //const { data: services } = useGetService_hotelQuery();
   const { id } = useParams<{ id: string }>();
   const { data: booking } = useGetBooking_adminByIdQuery(id);
-  console.log(booking);
+  console.log("booking",booking);
   
   const [isServicesVisible, setIsServicesVisible] = useState<{ [key: number]: boolean }>({});
   // const getRoomName = (roomId: any) => {

@@ -1161,7 +1161,7 @@
       "month": "Tháng 1",
       "bookings": 120,
       "revenue": 25000,
-      "occupancyRate": 75
+      "cancelroom": 75
     },
     {
       "id": 2,
@@ -1169,7 +1169,7 @@
       "month": "Tháng 2",
       "bookings": 90,
       "revenue": 18000,
-      "occupancyRate": 60
+      "cancelroom": 60
     },
     {
       "id": 3,
@@ -1177,7 +1177,7 @@
       "month": "Tháng 3",
       "bookings": 150,
       "revenue": 32000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 4,
@@ -1185,7 +1185,7 @@
       "month": "Tháng 4",
       "bookings": 192,
       "revenue": 62000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 5,
@@ -1193,7 +1193,7 @@
       "month": "Tháng 5",
       "bookings": 80,
       "revenue": 162000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 6,
@@ -1201,7 +1201,7 @@
       "month": "Tháng 6",
       "bookings": 60,
       "revenue": 16200,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 7,
@@ -1209,7 +1209,7 @@
       "month": "Tháng 7",
       "bookings": 120,
       "revenue": 162000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 8,
@@ -1217,7 +1217,7 @@
       "month": "Tháng 8",
       "bookings": 85,
       "revenue": 162000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 9,
@@ -1225,7 +1225,7 @@
       "month": "Tháng 9",
       "bookings": 420,
       "revenue": 1262000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 10,
@@ -1233,7 +1233,7 @@
       "month": "Tháng 10",
       "bookings": 230,
       "revenue": 2620030,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 11,
@@ -1241,7 +1241,7 @@
       "month": "Tháng 11",
       "bookings": 167,
       "revenue": 162000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 12,
@@ -1249,7 +1249,7 @@
       "month": "Tháng 12",
       "bookings": 180,
       "revenue": 162003,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 13,
@@ -1257,7 +1257,7 @@
       "month": "Tháng 1",
       "bookings": 2120,
       "revenue": 25000,
-      "occupancyRate": 75
+      "cancelroom": 75
     },
     {
       "id": 14,
@@ -1265,7 +1265,7 @@
       "month": "Tháng 2",
       "bookings": 920,
       "revenue": 18000,
-      "occupancyRate": 60
+      "cancelroom": 60
     },
     {
       "id": 15,
@@ -1273,7 +1273,7 @@
       "month": "Tháng 3",
       "bookings": 170,
       "revenue": 32000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 16,
@@ -1281,7 +1281,7 @@
       "month": "Tháng 4",
       "bookings": 190,
       "revenue": 62000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 17,
@@ -1289,7 +1289,7 @@
       "month": "Tháng 5",
       "bookings": 820,
       "revenue": 162000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 18,
@@ -1297,7 +1297,7 @@
       "month": "Tháng 6",
       "bookings": 620,
       "revenue": 16200,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 19,
@@ -1305,7 +1305,7 @@
       "month": "Tháng 7",
       "bookings": 220,
       "revenue": 162000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 20,
@@ -1313,7 +1313,7 @@
       "month": "Tháng 8",
       "bookings": 185,
       "revenue": 162004,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 21,
@@ -1321,7 +1321,7 @@
       "month": "Tháng 9",
       "bookings": 420,
       "revenue": 1232000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 22,
@@ -1329,7 +1329,7 @@
       "month": "Tháng 10",
       "bookings": 1230,
       "revenue": 2120030,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 23,
@@ -1337,7 +1337,7 @@
       "month": "Tháng 11",
       "bookings": 1267,
       "revenue": 62000,
-      "occupancyRate": 90
+      "cancelroom": 90
     },
     {
       "id": 24,
@@ -1345,7 +1345,7 @@
       "month": "Tháng 12",
       "bookings": 1840,
       "revenue": 162003,
-      "occupancyRate": 90
+      "cancelroom": 90
     }
   ],
   "statistical_service": [
@@ -1455,7 +1455,8 @@
       "month": "Tháng 1",
       "year": "2023",
       "booking": 100,
-      "revenue": 15000
+      "revenue": 15000,
+      "cancelroom":14
     },
     {
       "id": 2,
@@ -1463,7 +1464,8 @@
       "month": "Tháng 2",
       "year": "2023",
       "booking": 120,
-      "revenue": 15200
+      "revenue": 15200,
+      "cancelroom":18
     },
     {
       "id": 3,
@@ -1471,7 +1473,8 @@
       "month": "Tháng 3",
       "year": "2023",
       "booking": 130,
-      "revenue": 15500
+      "revenue": 15500,
+      "cancelroom":22
     },
     {
       "id": 4,
@@ -1479,7 +1482,8 @@
       "month": "Tháng 1",
       "year": "2023",
       "booking": 190,
-      "revenue": 18400
+      "revenue": 18400,
+      "cancelroom":9
     },
     {
       "id": 5,
@@ -1487,7 +1491,8 @@
       "month": "Tháng 2",
       "year": "2023",
       "booking": 210,
-      "revenue": 14003
+      "revenue": 14003,
+      "cancelroom":20
     },
     {
       "id": 6,
@@ -1495,7 +1500,8 @@
       "month": "Tháng 3",
       "year": "2023",
       "booking": 256,
-      "revenue": 13500
+      "revenue": 13500,
+      "cancelroom":8
     },
     {
       "id": 7,
@@ -1503,7 +1509,8 @@
       "month": "Tháng 1",
       "year": "2023",
       "booking": 200,
-      "revenue": 12110
+      "revenue": 12110,
+      "cancelroom":13
     },
     {
       "id": 8,
@@ -1511,7 +1518,8 @@
       "month": "Tháng 2",
       "year": "2023",
       "booking": 84,
-      "revenue": 18200
+      "revenue": 18200,
+      "cancelroom":10
     },
     {
       "id": 9,
@@ -1519,7 +1527,8 @@
       "month": "Tháng 3",
       "year": "2023",
       "booking": 156,
-      "revenue": 35500
+      "revenue": 35500,
+      "cancelroom":11
     },
     {
       "id": 10,
@@ -1527,7 +1536,8 @@
       "month": "Tháng 1",
       "year": "2023",
       "booking": 175,
-      "revenue": 18100
+      "revenue": 18100,
+      "cancelroom":20
     },
     {
       "id": 11,
@@ -1535,7 +1545,8 @@
       "month": "Tháng 2",
       "year": "2023",
       "booking": 195,
-      "revenue": 14200
+      "revenue": 14200,
+      "cancelroom":16
     },
     {
       "id": 12,
@@ -1543,7 +1554,8 @@
       "month": "Tháng 3",
       "year": "2023",
       "booking": 207,
-      "revenue": 15200
+      "revenue": 15200,
+      "cancelroom":14
     },
     {
       "id": 13,
@@ -1551,7 +1563,8 @@
       "month": "Tháng 1",
       "year": "2023",
       "booking": 180,
-      "revenue": 16500
+      "revenue": 16500,
+      "cancelroom":22
     },
     {
       "id": 14,
@@ -1559,7 +1572,8 @@
       "month": "Tháng 2",
       "year": "2023",
       "booking": 215,
-      "revenue": 18300
+      "revenue": 18300,
+      "cancelroom":29
     },
     {
       "id": 15,
@@ -1567,7 +1581,8 @@
       "month": "Tháng 3",
       "year": "2023",
       "booking": 230,
-      "revenue": 15500
+      "revenue": 15500,
+      "cancelroom":24
     }
   ],
   "HotelChainStatisticsv": [
@@ -1622,7 +1637,7 @@
       "serviceA": 25,
       "serviceB": 15,
       "serviceC": 20,
-      "month": "Tháng 3",
+      "month": "Tháng 9",
       "year": "2023"
     },
     {
@@ -1631,7 +1646,7 @@
       "serviceA": 30,
       "serviceB": 18,
       "serviceC": 12,
-      "month": "Tháng 3",
+      "month": "Tháng 9",
       "year": "2023"
     },
     {
@@ -1640,7 +1655,7 @@
       "serviceA": 22,
       "serviceB": 19,
       "serviceC": 16,
-      "month": "Tháng 3",
+      "month": "Tháng 9",
       "year": "2023"
     },
     {
@@ -1649,7 +1664,7 @@
       "serviceA": 32,
       "serviceB": 12,
       "serviceC": 14,
-      "month": "Tháng 3",
+      "month": "Tháng 9",
       "year": "2023"
     },
     {
@@ -1658,7 +1673,7 @@
       "serviceA": 26,
       "serviceB": 21,
       "serviceC": 13,
-      "month": "Tháng 3",
+      "month": "Tháng 9",
       "year": "2023"
     },
     {
@@ -1752,6 +1767,142 @@
       "year": "2022"
     }
   ],
+  "statistical_roomtype":[
+      { "roomType": "Single", "month": "Tháng 1", "year": "2023", "bookingCount": 50, "rating": 4.5 },
+      { "roomType": "Double", "month": "Tháng 1", "year": "2023", "bookingCount": 80, "rating": 4.2 },
+      { "roomType": "Suite", "month": "Tháng 1", "year": "2023", "bookingCount": 30, "rating": 4.7 },
+      { "roomType": "Single", "month": "Tháng 2", "year": "2023", "bookingCount": 60, "rating": 4.6 },
+      { "roomType": "Double", "month": "Tháng 2", "year": "2023", "bookingCount": 90, "rating": 4.3 },
+      { "roomType": "Suite", "month": "Tháng 2", "year": "2023", "bookingCount": 35, "rating": 4.8 },
+      { "roomType": "Single", "month": "Tháng 3", "year": "2022", "bookingCount": 55, "rating": 4.4 },
+      { "roomType": "Double", "month": "Tháng 3", "year": "2022", "bookingCount": 85, "rating": 4.1 },
+      { "roomType": "Suite", "month": "Tháng 3", "year": "2022", "bookingCount": 25, "rating": 4.6 },
+      { "roomType": "Single", "month": "Tháng 4", "year": "2022", "bookingCount": 65, "rating": 4.3 },
+      { "roomType": "Double", "month": "Tháng 4", "year": "2022", "bookingCount": 95, "rating": 4.0 },
+      { "roomType": "Suite", "month": "Tháng 4", "year": "2022", "bookingCount": 40, "rating": 4.5 }
+],
+"HotelChainStatisticRt":[
+  {
+    "hotel": "Hotel A",
+    "roomType": "Single",
+    "rating": 4,
+    "month": "tháng 1",
+    "year": "2023",
+    "bookings": 25
+  },
+  {
+    "hotel": "Hotel A",
+    "roomType": "Double",
+    "rating": 4.5,
+    "month": "tháng 2",
+    "year": "2023",
+    "bookings": 30
+  },
+  {
+    "hotel": "Hotel A",
+    "roomType": "Suite",
+    "rating": 5,
+    "month": "tháng 1",
+    "year": "2023",
+    "bookings": 15
+  },
+  {
+    "hotel": "Hotel B",
+    "roomType": "Single",
+    "rating": 3.5,
+    "month": "tháng 2",
+    "year": "2023",
+    "bookings": 20
+  },
+  {
+    "hotel": "Hotel B",
+    "roomType": "Double",
+    "rating": 4,
+    "month": "tháng 1",
+    "year": "2023",
+    "bookings": 35
+  },
+  {
+    "hotel": "Hotel B",
+    "roomType": "Suite",
+    "rating": 4.5,
+    "month": "tháng 2",
+    "year": "2023",
+    "bookings": 10
+  },
+  {
+    "hotel": "Hotel C",
+    "roomType": "Single",
+    "rating": 4,
+    "month": "tháng 1",
+    "year": "2023",
+    "bookings": 22
+  },
+  {
+    "hotel": "Hotel C",
+    "roomType": "Double",
+    "rating": 4.3,
+    "month": "tháng 2",
+    "year": "2023",
+    "bookings": 28
+  },
+  {
+    "hotel": "Hotel C",
+    "roomType": "Suite",
+    "rating": 4.8,
+    "month": "tháng 2",
+    "year": "2023",
+    "bookings": 18
+  },
+  {
+    "hotel": "Hotel D",
+    "roomType": "Single",
+    "rating": 3.8,
+    "month": "tháng 1",
+    "year": "2023",
+    "bookings": 15
+  },
+  {
+    "hotel": "Hotel D",
+    "roomType": "Double",
+    "rating": 4.2,
+    "month": "tháng 2",
+    "year": "2023",
+    "bookings": 32
+  },
+  {
+    "hotel": "Hotel D",
+    "roomType": "Suite",
+    "rating": 4.6,
+    "month": "tháng 1",
+    "year": "2023",
+    "bookings": 12
+  },
+  {
+    "hotel": "Hotel E",
+    "roomType": "Single",
+    "rating": 3.5,
+    "month": "tháng 2",
+    "year": "2023",
+    "bookings": 17
+  },
+  {
+    "hotel": "Hotel E",
+    "roomType": "Double",
+    "rating": 4,
+    "month": "tháng 1",
+    "year": "2023",
+    "bookings": 28
+  },
+  {
+    "hotel": "Hotel E",
+    "roomType": "Suite",
+    "rating": 4.2,
+    "month": "tháng 1",
+    "year": "2023",
+    "bookings": 14
+  }
+],
   "bookingTest": [
     {
         "id": 1,
@@ -1922,3 +2073,4 @@
     }
 ]
 }
+
