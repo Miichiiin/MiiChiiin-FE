@@ -31,6 +31,7 @@ export const SearchQuickHotel = () => {
     console.log("roomDetailsString", roomDetailsString);
 
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
+    console.log("url",url)
     navigate(url);
   }
 
