@@ -57,6 +57,7 @@ import MyOrder from "./features/webapp/profileUser/component/myOrder";
 import ProfileUsre from "./features/webapp/profileUser/component/profileUsre";
 import HotelChainStatistic from "./features/admin/HotelChainStatistics";
 import LoginAdmin from "./features/webapp/LoginAdmin/Login";
+import BookingSuccess from "./features/webapp/order";
 
 
 
@@ -157,7 +158,10 @@ export const router = createBrowserRouter([
 
         ],
     },
-
+    {
+        path: "/order",
+        element: <BookingSuccess/>
+    },
     {
         path: "/admin",
         element: (

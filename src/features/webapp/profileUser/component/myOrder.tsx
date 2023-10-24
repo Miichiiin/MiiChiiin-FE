@@ -1,9 +1,13 @@
-import { useGetBokingUserQuery } from "@/api/bookingUser";
+import {
+  useGetBokingUserQuery,
+  useGetBokingUserTestQuery,
+} from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import dayjs from "dayjs";
+import { differenceInDays, parseISO } from "date-fns";
 const MyOrder = () => {
   const [isProductInCart, setIsProductInCart] = useState();
   console.log("isProductInCart", isProductInCart);
@@ -19,7 +23,8 @@ const MyOrder = () => {
     address: "",
   });
 
-  const { data: booking } = useGetBokingUserQuery(user?.id);
+  // const { data: booking } = useGetBokingUserQuery(user?.id);
+  const { data: booking } = useGetBokingUserTestQuery();
 
   console.log("booking2333", booking);
 
@@ -80,9 +85,11 @@ const MyOrder = () => {
                     className="border flex px-3 py-3 space-x-4 rounded-md mt-2"
                   >
                     <img
-                      className="w-[240px] h-[140px] rounded"
+                      className=" rounded"
                       src="https://booking-static.vinpearl.com/room_types/216b0990ea2a44079494e7a994a24d61_Hinh-anh-VinHolidays-1-Phu-Quoc-Phong-Standard-Twin-3x2-so-2.png"
                       alt=""
+                      width={240}
+                      height={140}
                     />
                     <div className="leading-10">
                       <div className="grid grid-cols-2 font-medium space-x-10">
@@ -124,8 +131,10 @@ const MyOrder = () => {
                             },
                             content: {
                               width: "1100px",
-                              height: "450px",
+                              maxHeight: "auto", 
+                              overflowY: "auto", 
                               margin: "auto",
+                              paddingTop: "180px",
                               display: "flex",
                               flexDirection: "column",
                               justifyContent: "center",
@@ -196,15 +205,20 @@ const MyOrder = () => {
                                     <p className="font-semibold">
                                       Số phòng:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.total_rooms}
+                                        {item?.total_room}
                                       </span>
                                     </p>
-                                    <p className="font-semibold">
+                                    {/* <p className="font-semibold">
                                       Số đêm:{" "}
-                                      {/* <span className="text-lg font-medium text-blue-900">
-                                        {numberOfNights}
-                                      </span> */}
-                                    </p>
+                                      {differenceInDays(
+                                        parseISO(
+                                          item.check_out.toISOString().slice(0, 10)
+                                        ),
+                                        parseISO(
+                                          item.check_in.toISOString().slice(0, 10)
+                                        )
+                                      )}{" "}
+                                    </p> */}
                                     <p className="font-semibold">
                                       Tổng tiền:{" "}
                                       <span className="text-lg font-medium text-blue-900">
@@ -218,75 +232,77 @@ const MyOrder = () => {
                                 <h1 className="text-lg font-semibold mb-2 ml-4">
                                   Danh sách phòng và dịch vụ đã đặt
                                 </h1>
-                                {/* <ul>
-                                  {booking?.cart?.map(
+                                <ul>
+                                  {item?.categories?.map(
                                     (item: any, index: any) => {
-                                      const room = categories?.find(
-                                        (category: any) =>
-                                          category.id === item.id_cate
-                                      );
                                       return (
                                         <li key={index} className="ml-3 my-2">
                                           <div className="border flex justify-between px-2 py-3">
                                             <div className="">
-                                              {room && (
+                                              {item && (
                                                 <>
-                                                  <span className="font-bold text-md">
-                                                    Phòng:{" "}
-                                                  </span>
-                                                  <span className="text-blue-800 font-semibold">
-                                                    {room.name}
-                                                  </span>
+                                                  <div className="border grid grid-cols-4 px-3 py-3 space-x-2 rounded-md mt-2">
+                                                    <img
+                                                      src={item?.image}
+                                                      alt=""
+                                                      width={"80px"}
+                                                      height={"80px"}
+                                                      className="col-span-1"
+                                                    />
+                                                    <span className="font-bold text-md col-span-3">
+                                                      {item?.rooms.map(
+                                                        (room: any) => {
+                                                          return (
+                                                            <>
+                                                              Phòng:{" "}
+                                                              <span className="text-blue-800 font-semibold">
+                                                                {room?.name} -{" "}
+                                                                {item?.name}
+                                                              </span>
+                                                              <span>
+                                                                <ul className="">
+                                                                  Dịch vụ:{" "}
+                                                                  {room.services.map(
+                                                                    (
+                                                                      service: any
+                                                                    ) => {
+                                                                      return (
+                                                                        <>
+                                                                          <li>
+                                                                            {
+                                                                              service.name
+                                                                            }
+                                                                          </li>
+                                                                        </>
+                                                                      );
+                                                                    }
+                                                                  )}
+                                                                </ul>
+                                                              </span>
+                                                            </>
+                                                          );
+                                                        }
+                                                      )}
+                                                    </span>
+                                                  </div>
                                                 </>
                                               )}
                                             </div>
-                                            <button
-                                              onClick={() =>
-                                                toggleServicesVisibility(index)
-                                              }
-                                              type="button"
-                                            >
-                                              {isServicesVisible[index] ? (
-                                                <span className="flex items-center">
-                                                  Ẩn dịch vụ <AiOutlineUp />
-                                                </span>
-                                              ) : (
-                                                <span className="flex items-center">
-                                                  Hiện dịch vụ <AiOutlineDown />
-                                                </span>
-                                              )}
-                                            </button>
                                           </div>
-                                          {isServicesVisible[index] && (
-                                            <ul className="border-b border-x">
-                                              {item.services.map(
-                                                (
-                                                  serviceId: any,
-                                                  serviceIndex: any
-                                                ) => (
-                                                  <li
-                                                    key={serviceIndex}
-                                                    className="pt-1"
-                                                  >
-                                                    <span className="text-md  font-bold px-2">
-                                                      Dịch vụ {serviceIndex + 1}
-                                                      :{" "}
-                                                    </span>{" "}
-                                                    {getServiceName(serviceId)}
-                                                  </li>
-                                                )
-                                              )}
-                                            </ul>
-                                          )}
                                         </li>
                                       );
                                     }
                                   )}
-                                </ul> */}
+                                </ul>
                               </div>
                             </section>
                           </div>
-                          <button className="text-red-500" onClick={handleCloseModal}>Đóng</button>
+                          <button
+                            className="text-white bg-blue-500 px-3 py-1 rounded mt-3"
+                            onClick={handleCloseModal}
+                          >
+                            Đóng
+                          </button>
                         </Modal>
                       </div>
                     </div>
