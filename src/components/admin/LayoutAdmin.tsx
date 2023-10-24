@@ -32,41 +32,17 @@ export const LayoutAdmin = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const users = [
-    {
-      token: "haha",
-      admin: {
-        id: 2,
-        id_hotel: 1,
-        name: "Augustus Mitchell",
-        image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-        role: "",
-        permissions: [
-          'get banner',
-          'add banner',
-          'update banner',
-          'get voucher',
-          'add voucher',
-          'get statisticshotels',
-          'get manageroomtype',
-          'get manageremployee',
-          'get room',
-          'get comfort',
-          'get comment',
-          'get service',
-          'get booking',
-          'get user',
-          'get hotel',
-          'get permission',
-          'get hotelchainstatistics'
-        ]
-      },
-    }
-  ];
+  const userAdminLocal = localStorage.getItem('userAdmin')
+  let imageLC = ""
+ if(userAdminLocal) {
+  const data = JSON.parse(userAdminLocal);
+  imageLC = data.image; 
+  // id = data.id,
+ }
 
   // Lấy quyền hạn của người dùng hiện tại (lấy ví dụ từ người dùng đầu tiên trong danh sách)
-  const currentUserPermissions = users.length > 0 ? users[0].admin.permissions : [];
-
+  const currentUserPermissions = (userAdminLocal && JSON.parse(userAdminLocal).permissions) || [];
+  
   // Tạo menu dựa trên quyền hạn của người dùng
   const getMenuItems = () => {
     const menuItems = [];
@@ -74,30 +50,18 @@ export const LayoutAdmin = () => {
     if (currentUserPermissions.includes('get statisticshotels')) {
       menuItems.push(
         getItem(
-          <Link to={"statisticshotels"}>Thống kê theo khách sạn</Link>,
+          <Link to={"statisticshotels"}>Thống kê theo chuỗi</Link>,
           "1",
           <AiFillSignal />
         )
       );
     }
 
-    if (currentUserPermissions.includes('get hotelchainstatistics')) {
-      menuItems.push(
-        getItem(
-          <Link to={"HotelChainStatistics"}>Thống kê chuỗi khách sạn</Link>,
-          "2",
-          <AiFillSignal />
-        )
-      );
-    }
-
-    
-
-    if (currentUserPermissions.includes('get manageroomtype')) {
+    if (currentUserPermissions.includes('get category')) {
       menuItems.push(
         getItem(
           <Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>,
-          "3",
+          "2",
           <BiSolidBed />
         )
       );
@@ -107,17 +71,17 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"managervouchers"}>Quản lý Vouchers</Link>,
-          "4",
+          "3",
           <AiOutlineCreditCard />
         )
       );
     }
 
-    if (currentUserPermissions.includes('get manageremployee')) {
+    if (currentUserPermissions.includes('get admin')) {
       menuItems.push(
         getItem(
           <Link to={"manageremployee"}>Quản lý Nhân Viên</Link>,
-          "5",
+          "4",
           <UserOutlined />
         )
       );
@@ -127,7 +91,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"managerroom"}>Quản lý Phòng</Link>,
-          "6",
+          "5",
           <BiHotel />
         )
       );
@@ -137,7 +101,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
-          "7",
+          "6",
           <UserOutlined />
         )
       );
@@ -147,7 +111,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"commentmanagement"}>Quản lý comment</Link>,
-          "8",
+          "7",
           <BiCommentDetail />
         )
       );
@@ -157,7 +121,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"service"}>Quản lý dịch vụ</Link>,
-          "9",
+          "8",
           <MdMedicalServices />
         )
       );
@@ -167,7 +131,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>,
-          "10",
+          "9",
           <TbBrandBooking />
         )
       );
@@ -177,7 +141,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"usermanagement"}>Quản lý khách hàng</Link>,
-          "11",
+          "10",
           <AiOutlineUser />
         )
       );
@@ -187,7 +151,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"hotelmanagement"}>Quản lý khách sạn</Link>,
-          "12",
+          "11",
           <FaHotel />
         )
       );
@@ -197,7 +161,7 @@ export const LayoutAdmin = () => {
       menuItems.push(
         getItem(
           <Link to={"indexPermission"}>Quản lý quyền</Link>,
-          "13",
+          "12",
           <FaHotel />
         )
       );
@@ -214,11 +178,11 @@ export const LayoutAdmin = () => {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="flex flex-col items-center justify-center my-5 text-white">
-          <Link to="admininfo" className="flex items-center">
+          <Link to={`admininfo/`} className="flex items-center">
             <img
-              src="https://media.istockphoto.com/id/1256768065/vi/vec-to/logo-linh-v%E1%BA%ADt-esport-h%E1%BB%95-tr%E1%BA%AFng.jpg?s=612x612&w=is&k=20&c=_kzP2cuB-s76LYATE2I9RIGp_6vFeqs08PDQKa0EaoU="
+              src={imageLC}
               alt="Logo"
-              className="rounded-full"
+              className="rounded-full w-[100px] h-[100px]"
               width={100}
             />
           </Link>

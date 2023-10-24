@@ -1,8 +1,13 @@
-import { useGetBokingUserQuery } from "@/api/bookingUser";
+import {
+  useGetBokingUserQuery,
+  useGetBokingUserTestQuery,
+} from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
+import dayjs from "dayjs";
+import { differenceInDays, parseISO } from "date-fns";
 const MyOrder = () => {
   const [isProductInCart, setIsProductInCart] = useState();
   console.log("isProductInCart", isProductInCart);
@@ -18,7 +23,8 @@ const MyOrder = () => {
     address: "",
   });
 
-  const { data: booking } = useGetBokingUserQuery(user?.id);
+  // const { data: booking } = useGetBokingUserQuery(user?.id);
+  const { data: booking } = useGetBokingUserTestQuery();
 
   console.log("booking2333", booking);
 
@@ -79,9 +85,11 @@ const MyOrder = () => {
                     className="border flex px-3 py-3 space-x-4 rounded-md mt-2"
                   >
                     <img
-                      className="w-[240px] h-[140px] rounded"
+                      className=" rounded"
                       src="https://booking-static.vinpearl.com/room_types/216b0990ea2a44079494e7a994a24d61_Hinh-anh-VinHolidays-1-Phu-Quoc-Phong-Standard-Twin-3x2-so-2.png"
                       alt=""
+                      width={240}
+                      height={140}
                     />
                     <div className="leading-10">
                       <div className="grid grid-cols-2 font-medium space-x-10">
@@ -122,9 +130,11 @@ const MyOrder = () => {
                               backgroundColor: "rgba(0, 0, 0, 0.5)",
                             },
                             content: {
-                              width: "800px",
-                              height: "500px",
+                              width: "1100px",
+                              maxHeight: "auto", 
+                              overflowY: "auto", 
                               margin: "auto",
+                              paddingTop: "180px",
                               display: "flex",
                               flexDirection: "column",
                               justifyContent: "center",
@@ -132,10 +142,167 @@ const MyOrder = () => {
                             },
                           }}
                         >
-                          {/* Nội dung màn hình nổi */}
-                          <h2>Chi tiết</h2>
-                          <p>Đây là nội dung chi tiết trong màn hình nổi.</p>
-                          <button onClick={handleCloseModal}>Đóng</button>
+                          <div className="w-[100%] mx-auto">
+                            <section className="grid grid-cols-2 gap-8">
+                              <div key={item?.id} className="">
+                                <h1 className="font-semibold text-lg mb-2">
+                                  Thông tin Đặt phòng
+                                </h1>
+                                <div className="flex flex-col border rounded-lg px-2 mb-4 py-3 leading-[25px] ">
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <p className="font-semibold">
+                                      Tên khách hàng:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.name}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Căn cước công dân:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.cccd}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Số điện thoại:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.phone}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Email:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.email}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Check in:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {dayjs(item?.check_in).format(
+                                          "YYYY-MM-DD "
+                                        )}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Check out:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {dayjs(item?.check_out).format(
+                                          "YYYY-MM-DD"
+                                        )}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Quốc tịch:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.nationality}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Tổng số người:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.people_quantity}
+                                      </span>
+                                    </p>
+                                    <p className="font-semibold">
+                                      Số phòng:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.total_room}
+                                      </span>
+                                    </p>
+                                    {/* <p className="font-semibold">
+                                      Số đêm:{" "}
+                                      {differenceInDays(
+                                        parseISO(
+                                          item.check_out.toISOString().slice(0, 10)
+                                        ),
+                                        parseISO(
+                                          item.check_in.toISOString().slice(0, 10)
+                                        )
+                                      )}{" "}
+                                    </p> */}
+                                    <p className="font-semibold">
+                                      Tổng tiền:{" "}
+                                      <span className="text-lg font-medium text-blue-900">
+                                        {item?.total_amount}
+                                      </span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="">
+                                <h1 className="text-lg font-semibold mb-2 ml-4">
+                                  Danh sách phòng và dịch vụ đã đặt
+                                </h1>
+                                <ul>
+                                  {item?.categories?.map(
+                                    (item: any, index: any) => {
+                                      return (
+                                        <li key={index} className="ml-3 my-2">
+                                          <div className="border flex justify-between px-2 py-3">
+                                            <div className="">
+                                              {item && (
+                                                <>
+                                                  <div className="border grid grid-cols-4 px-3 py-3 space-x-2 rounded-md mt-2">
+                                                    <img
+                                                      src={item?.image}
+                                                      alt=""
+                                                      width={"80px"}
+                                                      height={"80px"}
+                                                      className="col-span-1"
+                                                    />
+                                                    <span className="font-bold text-md col-span-3">
+                                                      {item?.rooms.map(
+                                                        (room: any) => {
+                                                          return (
+                                                            <>
+                                                              Phòng:{" "}
+                                                              <span className="text-blue-800 font-semibold">
+                                                                {room?.name} -{" "}
+                                                                {item?.name}
+                                                              </span>
+                                                              <span>
+                                                                <ul className="">
+                                                                  Dịch vụ:{" "}
+                                                                  {room.services.map(
+                                                                    (
+                                                                      service: any
+                                                                    ) => {
+                                                                      return (
+                                                                        <>
+                                                                          <li>
+                                                                            {
+                                                                              service.name
+                                                                            }
+                                                                          </li>
+                                                                        </>
+                                                                      );
+                                                                    }
+                                                                  )}
+                                                                </ul>
+                                                              </span>
+                                                            </>
+                                                          );
+                                                        }
+                                                      )}
+                                                    </span>
+                                                  </div>
+                                                </>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </li>
+                                      );
+                                    }
+                                  )}
+                                </ul>
+                              </div>
+                            </section>
+                          </div>
+                          <button
+                            className="text-white bg-blue-500 px-3 py-1 rounded mt-3"
+                            onClick={handleCloseModal}
+                          >
+                            Đóng
+                          </button>
                         </Modal>
                       </div>
                     </div>

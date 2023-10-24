@@ -5,7 +5,7 @@ const category_HomeApi = createApi({
     reducerPath: 'category_home',
     tagTypes: ['Category_home'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -16,16 +16,22 @@ const category_HomeApi = createApi({
     }),
     endpoints: (builder) => ({
         getCategory_home: builder.query<any, void>({
-            query: () => `/category_home`,
+            query: () => {
+                const id = JSON.parse(localStorage.getItem("userAdmin") || '{}');
+                console.log(id.id_hotel);
+                
+                // Lấy ID khách sạn từ Local Storage
+                return `/listRoom/hotels=${id.id_hotel}`;
+            },
             providesTags: ['Category_home']
         }),
         getCategory_homeById: builder.query({
-            query: (id) => `/category_home/${id}`,
+            query: (id) => `/category/${id}`,
             providesTags: ['Category_home']
         }),
         addCategory_home: builder.mutation({
             query: (product) => ({
-                url: `/category_home`,
+                url: `/category`,
                 method: "POST",
                 body: product
             }),
@@ -33,7 +39,7 @@ const category_HomeApi = createApi({
         }),
         updateCategory_home: builder.mutation({
             query: (product) => ({
-                url: `/category_home/${product.id}`,
+                url: `/category/${product.id}`,
                 method: "PATCH",
                 body: product
             }),
@@ -41,7 +47,7 @@ const category_HomeApi = createApi({
         }),
         removeCategory_home: builder.mutation<void, number | string>({
             query: (id: number) => ({
-                url: `/category_home/${id}`,
+                url: `/category/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Category_home']

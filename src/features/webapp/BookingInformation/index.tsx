@@ -2,22 +2,32 @@ import {
   AiOutlineLeft,
   AiOutlineCheck,
   AiOutlineArrowRight,
+  AiOutlineHome,
 } from "react-icons/ai";
-import { BsArrowRight } from "react-icons/bs";
+import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";
 import localStorage from "redux-persist/es/storage";
 import { useAddBookingUserMutation } from "@/api/bookingUser";
+import { useState } from "react";
+import { Button } from "antd";
+import { BsCartCheck } from "react-icons/bs";
 const BookingInformation = () => {
   const dataParam = useParams();
+  const [order, setOrder] = useState<any>([]);
   const { data: serviceData } = useGetService_hotelQuery();
   console.log("serviceData chooservice", serviceData);
 
   console.log("dataParam11", dataParam);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+  };
   let hotel: string[] = [];
   if (dataParam && dataParam.hotel) {
     hotel = dataParam.hotel.split(",");
@@ -27,7 +37,7 @@ const BookingInformation = () => {
   let date: Date[] = [];
   if (dataParam && dataParam.date) {
     const timeArray = dataParam.date.split(",");
-    date = timeArray.map((time) => new Date(time));
+    date = timeArray?.map((time) => new Date(time));
   }
   console.log("date111", date);
 
@@ -44,13 +54,13 @@ const BookingInformation = () => {
   console.log("selectedServicesParam", selectedServices);
   //Tính số người
   // Tách chuỗi thành các phần tử riêng biệt
-  const individuals = dataParam.people && dataParam.people.split("&");
+  const individuals:any = dataParam.people && dataParam.people.split("&");
 
   let totalAdults = 0;
   let totalChildren = 0;
 
   // Lặp qua từng phần tử và tính tổng số người lớn và trẻ em
-  individuals.forEach((individual: any) => {
+  individuals?.forEach((individual: any) => {
     // Tách thông tin về người lớn và trẻ em
     const info = individual.split(",");
 
@@ -86,7 +96,7 @@ const BookingInformation = () => {
   console.log("tien dịch vụ", serviceTotalPrice);
   let totalPrice1 = 0;
 
-  roomNumber.map((item: any) => {
+  roomNumber?.map((item: any) => {
     const startDate = new Date(date[0]); // Lấy ngày bắt đầu thuê phòng từ date[0]
     const endDate = new Date(date[1]); // Lấy ngày kết thúc thuê phòng từ date[1]
     const numberOfDays = Math.ceil(
@@ -109,35 +119,30 @@ const BookingInformation = () => {
 
   //Add mảng cart
 
-  const intermediateCart = [] as any;
-
   // Lặp qua mảng roomNumber để tạo dữ liệu cho cart
-  roomNumber?.map((item, index) => {
+  const cart = roomNumber?.map((item, index) => {
     const selectedServicesInRoom = selectedServices.filter(
       (service) => service.roomIndex === index
     );
 
-    // Tạo một đối tượng mới đại diện cho mỗi phần tử trong roomNumber
-    const cartItem = {
-      id_cate: item.id_cate, // Giá trị id_cate của mỗi phần tử trong roomNumber
-      services: selectedServicesInRoom.map(
-        (selectedService) => selectedService.id
-      ), // Mảng chứa các id dịch vụ đã chọn trong roomNumber
-    };
+    const services = selectedServicesInRoom?.map((selectedService) => ({
+      id_service: selectedService.id,
+      quantity: 1,
+      // quantity: selectedService.quantity
+    }));
 
-    // Thêm cartItem vào mảng trung gian intermediateCart
-    intermediateCart.push(cartItem);
+    return {
+      id_cate: item.id_cate,
+      services: services,
+    };
   });
 
-  // Gán dữ liệu từ mảng trung gian vào trạng thái (hoặc sử dụng dữ liệu tương ứng)
-  const cart = intermediateCart;
-
-  console.log("mảng cart 1111", cart); // Kiểm tra kết quả trong console
+  console.log("cart", cart);
 
   const [addBookingUser] = useAddBookingUserMutation();
   console.log("id_user", hotel[0]);
 
-  let userData:any = null; // Biến bên ngoài
+  let userData: any = null; // Biến bên ngoài
 
   const userPromise = localStorage.getItem("user");
   userPromise.then((user: any) => {
@@ -165,6 +170,17 @@ const BookingInformation = () => {
       promotion: 1,
     };
     addBookingUser(dataBooking)
+      .unwrap()
+      .then((res) => {
+        console.log("respon", res);
+        if (res) {
+          const {detail} = res
+          setOrder(detail)
+          setModalIsOpen(true);
+        }
+
+      });
+
     console.log("data form", data);
     console.log("newDataBooking", dataBooking);
   };
@@ -465,12 +481,12 @@ const BookingInformation = () => {
                           Dịch vụ mua thêm
                         </p>
                         <ul className="list-disc px-3">
-                          {selectedServicesInRoom.map((selectedService) => {
+                          {selectedServicesInRoom?.map((selectedService) => {
                             const { id, price, roomIndex } = selectedService;
                             const selectedRoom = roomIndex + 1;
                             const selectedServiceData =
                               serviceData &&
-                              serviceData.find((item: any) => item.id === id);
+                              serviceData?.find((item: any) => item?.id === id);
                             if (selectedServiceData) {
                               return (
                                 <li className="text-sm pb-2" key={id}>
@@ -478,9 +494,9 @@ const BookingInformation = () => {
                                     <p>
                                       {" "}
                                       Phòng {selectedRoom}:{" "}
-                                      {selectedServiceData.name}
+                                      {selectedServiceData?.name}
                                     </p>
-                                    <p>{selectedServiceData.price} vnđ</p>
+                                    <p>{selectedServiceData?.price} vnđ</p>
                                   </div>
                                 </li>
                               );
@@ -510,6 +526,126 @@ const BookingInformation = () => {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        // onRequestClose={handleCloseModal}
+        contentLabel="Chi tiết"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            width: "1100px",
+            maxHeight: "auto",
+            overflowY: "auto",
+            margin: "auto",
+            paddingTop: "250px",
+            paddingBlockStart: "250px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+        }}
+      >
+        <div className="bg-gray-100 min-h-screen">
+          <div className="max-w-3xl mx-auto py-5 bg-white p-6 shadow-md rounded-md">
+            <div className=" flex justify-center text-center bg-white">
+              <img
+                src="https://hieumobile.com/wp-content/uploads/tich-xanh.png"
+                alt=""
+                width={50}
+                height={50}
+                style={{ display: "block" }}
+              />
+            </div>
+            <h2 className="text-center text-xl font-semibold mb-5">
+              Đặt phòng thành công
+            </h2>
+            <h2 className=" mb-4 text-center">
+              Chúng tôi xin gửi lời cảm ơn chân thành đến quý khách vì đã lựa
+              chọn đặt phòng khách sạn của chúng tôi. Chúng tôi rất trân trọng
+              sự tin tưởng và ủng hộ của quý khách.
+            </h2>
+            <h3 className=" font-semibold mb-4 text-center">
+              Thông tin đơn hàng:
+            </h3>
+            <div className="grid grid-cols-2 pl-10">
+              <div className="">
+                <h1 className=" font-semibold mb-2">
+                  Danh sách phòng và dịch vụ
+                </h1>
+                <p className="mb-2">
+                  <span className="">Tên khách hàng:</span>{" "}
+                  <span className="text-orange-400">{order && order?.name}</span>
+                </p>
+                <p className="mb-2">
+                  <span className="">Email:</span>{" "}
+                  <span className="text-orange-400">{order && order?.email}</span>
+                </p>
+                <p className="mb-2">
+                  <span className="">Số điện thoại:</span>{" "}
+                  <span className="text-orange-400">{order && order?.phone}</span>
+                </p>
+                <p className="mb-2">
+                  <span className="">Ngày nhận phòng:</span>{" "}
+                  <span className="text-orange-400">{order && order?.check_in}</span>
+                </p>
+                <p className="mb-2">
+                  <span className="">Ngày trả phòng:</span>{" "}
+                  <span className="text-orange-400"> { order && order?.check_out}</span>
+                </p>
+                <p className="mb-2">
+                  <span className="">Số người:</span>{" "}
+                  <span className="text-orange-400">{order && order?.people_quantity}</span>
+                </p>
+                <p className="mb-2">
+                  <span className="">CCCD</span>{" "}
+                  <span className="text-orange-400">{order && order?.cccd}</span>
+                </p>
+                <p className="mb-2">
+                  <span className="">Quốc tịch</span>{" "}
+                  <span className="text-orange-400">{order && order?.nationality}</span>
+                </p>
+                <p className="mb-2">
+                  <span className="">Tổng số tiền:</span>{" "}
+                  <span className="text-orange-400 font-semibold">{order && order?.total_amount}</span>
+                </p>
+                {/* Thêm thông tin khác của đơn hàng nếu cần */}
+              </div>
+              <div>
+                <h1 className=" font-semibold mb-2">
+                  Danh sách phòng và dịch vụ
+                </h1>
+                <ul>
+                  {order?.room?.map((room: any, index: any) => (
+                    <li key={index} className="mb-2">
+                      <p className="font-semibold text-blue-800">
+                        Phòng: {room?.name}
+                      </p>
+                      <ul className="list-disc ml-6">
+                        {room?.services?.map((service:any, index: any) => (
+                          <li key={index}>{service?.name}</li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="flex space-x-8 justify-center mt-5 ">
+              <button className="flex space-x-2 items-center bg-orange-400 px-3 py-1 rounded-md hover:bg-orange-600 hover:text-white">
+                <AiOutlineHome />
+                <Link to={"/homepage"}>Quay lại trang chủ</Link>
+              </button>
+              <button className="flex space-x-2 items-center bg-blue-500 px-3 py-1 rounded-md hover:bg-blue-600 hover:text-white">
+                <BsCartCheck />
+                <Link to={"/profileUser/myorder"}>Lịch sử đặt hàng</Link>
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

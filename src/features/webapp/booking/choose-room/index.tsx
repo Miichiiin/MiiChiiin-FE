@@ -144,6 +144,7 @@ const savedRoomInfo = savedRoomInfoJSON ? JSON.parse(savedRoomInfoJSON) : [];
 // Sử dụng dữ liệu từ local storage nếu có hoặc fallback là uniqueSelectedRooms
 const roomsToDisplay = uniqueSelectedRooms.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
   const navigate = useNavigate();
+console.log("uniqueSelectedRooms", uniqueSelectedRooms);
 
   interface Room {
     count: number;
@@ -172,6 +173,7 @@ const roomsToDisplay = uniqueSelectedRooms.length > 0 ? uniqueSelectedRooms : sa
 
   const onHandSubmit = () => {
     const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
+      id_cate: room.id,
       count: room.count,
       name: room.name,
       price: room.price,
