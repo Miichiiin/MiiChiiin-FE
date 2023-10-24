@@ -1,86 +1,48 @@
 import { useGetPermissions1Query } from '@/api/admin/permisstion1_admin';
-import { useAddRole1Mutation, useGetRole1ByIdQuery, useUpdateRole1Mutation} from '@/api/admin/role1_admin';
+import { useAddRole1Mutation} from '@/api/admin/role1_admin';
 // import { CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Transfer ,message} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { TransferDirection } from 'antd/es/transfer';
 import { useEffect, useState } from 'react';
-import {  useNavigate ,useParams} from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 interface RecordType {
   key: string;
   title: string;
+  description: string;
   chosen: boolean;
   guard_name: string;
-  name:string;
-  id:number
 }
 
-const Permission = () => {
+const AddPermission = () => {
   // const [oneWay, setOneWay] = useState(false);
   const [targetKeys, setTargetKeys] = useState<string[]>([]);
-  const [sourceData, setSourceData] = useState<RecordType[]>([]);  
-      
+  const [sourceData, setSourceData] = useState<RecordType[]>([]);
   const [form] = useForm();
-  const {id} = useParams();
   const navigate = useNavigate();
-  const [updateRole] = useUpdateRole1Mutation();
-  const {data: dataRole} = useGetRole1ByIdQuery(id);
-    
+  const [addRole] = useAddRole1Mutation();
+  const { data: perData } = useGetPermissions1Query({});
+  
   // Lưu danh sách các quyền đã chọn
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
-
   useEffect(() => {
-    form.setFieldsValue({
-      name: dataRole?.name,
-    });
-  }, [dataRole]);
-  //hiển thi các quyền còn lại
-  useEffect(() => {
-    if (dataRole && dataRole.list_permissions) {
-      const unauthorizedPermissions = dataRole.list_permissions.map((permission:RecordType) => ({
-        key: permission.id.toString(), 
-        name: permission.name,
-        chosen: false,
+    if (perData) {
+      // Tạo mảng sourceData từ perData
+        const sourceDataArray: RecordType[] = perData.map((item: any) => ({
+        key: item.id.toString(),
+        title: item.name,
+        guard_name: "admins",
+        chosen: targetKeys.includes(item.id.toString()),
       }));
-      const authorizedPermissions = dataRole.had_permissions.map((permission:RecordType) => ({
-        key: permission.id.toString(), 
-        name: permission.name,
-        chosen: true,
-      }));
-      setSourceData([...unauthorizedPermissions, ...authorizedPermissions]);                        
+      // Cập nhật trạng thái sourceData
+      setSourceData(sourceDataArray);      
     }
-  }, [dataRole]);
-  // cập nhập quyền đã chọn
-  useEffect(() => {
-    if (dataRole && dataRole.had_permissions) {
-      const initialTargetKeys = dataRole.had_permissions.map((permission:RecordType) => permission.id.toString());
-      setTargetKeys(initialTargetKeys);   
-    }    
-  }, [dataRole]);
-  
+  }, [perData, targetKeys]);
 
-  //update role
-  const onFinish = (values: any) => {
-    const numericTargetKeys = targetKeys.map(Number);
-    const updatedData = {
-      id: id,
-      name: values.name,
-      guard_name: "admins",
-      permissions: numericTargetKeys,
-    };
-  
-    console.log("numericTargetKeys",numericTargetKeys )
-     // Gửi dữ liệu cập nhật lên máy chủ
-    updateRole(updatedData).unwrap().then(() => {
-      console.log("data",updatedData);
-      message.success('Cập nhật chức vụ thành công!');
-      navigate("/admin/indexPermission");
-    });
-  };
   // Hàm xử lý việc thêm quyền 
   const handleAddPermissions = () => {
-    const newTargetKeys = [...targetKeys, ...selectedPermissions];    
+    const newTargetKeys = [...targetKeys, ...selectedPermissions];
     setTargetKeys(newTargetKeys);
     const updatedSourceData = sourceData.map((item) => ({
       ...item,
@@ -89,15 +51,29 @@ const Permission = () => {
     setSourceData(updatedSourceData);
     setSelectedPermissions([]); // Đặt lại danh sách các quyền đã chọn
   };
+ 
+  const onFinish = (values: any) => {
+    const numericTargetKeys = targetKeys.map(Number);
+    values.guard_name = "admins";
+    values.permissions = numericTargetKeys;
+    // Gửi dữ liệu cập nhật lên máy chủ, bao gồm 'guard_name' và 'permissions'
+    addRole(values).unwrap().then(() => {
+      console.log("values thêm:", values);
+      navigate("/admin/indexPermission");
+      message.success('Thêm chức vụ thành công!');
+    });
+  };
   // search
   const handleSearch = (dir: TransferDirection, value: string) => {
     console.log('search:', dir, value);
   };
-  console.log('sourceData', sourceData)
-  console.log('targetKeys', targetKeys)
-
   return (
     <>
+        {/* <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
+          <Link to={`/admin/managervouchers`}>
+            <ArrowLeftOutlined /> Quay lại
+          </Link>
+      </Button> */}
       <Form form={form} layout="vertical" onFinish={onFinish}>
 
         <Form.Item
@@ -111,7 +87,7 @@ const Permission = () => {
           dataSource={sourceData}
           targetKeys={targetKeys}
           onChange={setTargetKeys} // Sử dụng hàm setTargetKeys để cập nhật targetKeys
-          render={(item) => item.name}
+          render={(item) => item.title}
           oneWay={true}
           pagination
           showSearch
@@ -122,17 +98,25 @@ const Permission = () => {
           }}
           listStyle={{
             width: '500px',
-            height: '460px',
+            height: '420px',
           }}
         />
         <br />
-        <div className='flex space-x-[850px] items-center'>
+        <div className='flex space-x-[875px] items-center'>
+          {/* <Switch
+            unCheckedChildren="one way"
+            checkedChildren="one way"
+            checked={oneWay}
+            onChange={setOneWay}
+            className='mt-1 bg-gray-500'
+          /> */}
+           {/* Nút để thêm quyền từ trái sang phải */}
            <Button
             type="primary"
             htmlType="submit"
             className=' bg-blue-600 text-white rounded-md mt-3'
           >
-            Update
+            Add
           </Button>
            <Button className='bg-gray-500 text-white' onClick={handleAddPermissions}>Thêm quyền</Button>
            
@@ -143,4 +127,4 @@ const Permission = () => {
   );
 };
 
-export default Permission;
+export default AddPermission;

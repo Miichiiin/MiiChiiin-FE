@@ -1,67 +1,140 @@
-import { Card, Form, Button, Upload, message, Typography } from "antd";
-import { UploadOutlined,CloudUploadOutlined  } from "@ant-design/icons";
-import { Link } from "react-router-dom"; // Import thư viện react-router-dom
+import { Card, Form, Button, Upload, message ,Input} from "antd";
+// import { UploadOutlined,CloudUploadOutlined  } from "@ant-design/icons";
+import { Link } from "react-router-dom"; 
+import {  useGetAdmin_AdminById1Query, useUpdateAdmin_Admin1Mutation } from "@/api/admin/admin_admin1";
+import { useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+// const { Text } = Typography;
 
-const { Text } = Typography;
 
 const AdminInfoPage = () => {
-  const adminInfo = {
-    name: "Tên Admin",
-    age: 30,
-    workplace: "Cơ sở A",
-    position: "Chức danh XYZ",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv95H4EPRO6t-QWfECFA7hTCW5Lw2fLlHTKS6JScPsLJZsefRVbTiKJSIh9k0WSwZ6ilw&usqp=CAU",
+  const {id} = useParams()
+  const dataUser = useGetAdmin_AdminById1Query(id);
+  const [updateProfile] = useUpdateAdmin_Admin1Mutation();
+  const [form] = Form.useForm();
+  const userAdminLocal = localStorage.getItem('userAdmin');  
+  
+  const idLC = userAdminLocal ? JSON.parse(userAdminLocal)?.id : null;
+  const data = idLC === dataUser?.data?.id;
+  console.log("dđ",userAdminLocal);
+  
+  const list = data ? dataUser.data : null;
+  console.log("data",list);
+  
+  useEffect(() =>{
+    form.setFieldsValue({
+      role: userAdminLocal ? JSON.parse(userAdminLocal)?.role : null,
+    })
+  })
+  useEffect(() => {
+    if (list) {
+      // tuổi
+      const currentYear = new Date().getFullYear();
+      const listYear = new Date(list.date).getFullYear();
+      const age = listYear ? currentYear - listYear : null;
+      form.setFieldsValue({
+        name: list?.name,
+        description: list?.description,
+        address: list?.address,
+        email: list?.email,
+        phone: list?.phone,
+        id_hotel: list?.id_hotel,
+        date: age !== null ? age.toString() : '',
+        // image
+      });
+    }
+  }, [list, form]);
+  
+  const onFinish = (values:any) => {
+      updateProfile({...values,id:id}).unwrap().then(() =>{
+      // navigate("/admin/manageroomtype")
+      message.success("Update thành công loại thông tin!")
+    })
+    console.log('Form values:', values);
   };
-
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
   return (
     <div className="">
       <Card title="Thông tin Admin">
+      <Form
+            form={form}
+            name="basic"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+        >
         <div className="flex">
-          <div className="w-1/3 p-4 border-r">
-            {adminInfo.image ? (
-              <img
-                src={adminInfo.image}
-                alt="Admin"
-                style={{ maxWidth: "100%" }}
-              />
-            ) : (
-              <Text type="secondary">Không có hình ảnh</Text>
-            )}
-            <Form.Item label="Image" name="image" className="mt-5">
-              <Upload
-                action="/api/upload" // Replace with your image upload API endpoint
-                showUploadList={false}
-               
-              >
-                <Button icon={<CloudUploadOutlined />}>Upload Image</Button>
-              </Upload>
-             
-            
+          <div className="w-1/3 p-4 border-r flex flex-col items-center justify-center space-y-3">
+          <Form.Item label="" name="image" className="mt-5">
+            <Upload
+              action="/api/upload" // Thay thế bằng đường dẫn API của bạn cho việc tải file lên
+              showUploadList={false}
+              beforeUpload={(file) => false} // Ngăn việc tải lên tự động khi bấm vào ảnh
+            >
+              
+              <div className="cursor-pointer">
+                {/* {adminInfo.image ? ( */}
+                  <img
+                    src={list?.image}
+                    alt="Admin"
+                    className="rounded-full w-[150px] h-[150px]"
+                    style={{ boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px' }}
+                  />
+                {/* ) : (
+                  <Text type="secondary">Không có hình ảnh</Text>
+                )} */}
+              </div>
+            </Upload>
+          </Form.Item>
+            <Form.Item label="Địa chỉ" name="address" className="mt-5">
+                <Input/>
+            </Form.Item>
+            <Form.Item label="Email" name="email" className="mt-5">
+                 <Input/>
+            </Form.Item>
+            <Form.Item label="Phone" name="phone" className="mt-5">
+               <Input/>
             </Form.Item>
           </div>
-          <div className="w-2/3 p-4">
-            <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              <Form.Item label="Tên" className="mb-4">
-                <Text strong>{adminInfo.name}</Text>
-                <div className="border-t mt-2"></div>
+          <div className="w-2/3 p-4" >
+              <Form.Item label="Tên" name="name" className="mb-4">
+                <Input  className="border-b-2"
+                 
+                />
               </Form.Item>
-              <Form.Item label="Tuổi" className="mb-4">
-                <Text strong>{adminInfo.age}</Text>
-                <div className="border-t mt-2"></div>
+              <Form.Item label="Tuổi" name="date" className="mb-4">
+                <Input className="border-b-2"
+                 
+                />
               </Form.Item>
-              <Form.Item label="Cơ sở làm việc:" className="mb-4">
-                <Text strong>{adminInfo.workplace}</Text>
-                <div className="border-t mt-2"></div>
+              <Form.Item label="Cơ sở làm việc:" name="id_hotel" className="mb-4">
+                <Input className="border-b-2"
+                
+                />
               </Form.Item>
-              <Form.Item label="Chức danh" className="mb-4">
-                <Text strong>{adminInfo.position}</Text>
-                <div className="border-t mt-2"></div>
+              <Form.Item label="Chức danh" name="role" className="mb-4">
+                <Input className="border-b-2"
+                 
+                />
+              </Form.Item>
+              <Form.Item 
+                label="Mô tả" 
+                name="description"
+                className="mb-4">
+                <Input className="border-b-2"
+               
+                />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8, span: 16 }} className="mb-4">
                 <Button
                   type="primary"
+                  htmlType="submit"
                   onClick={() => message.success("Thông tin đã được lưu")}
+                  className="bg-[#0ea5e9]"
                 >
                   Lưu
                 </Button>
@@ -70,9 +143,9 @@ const AdminInfoPage = () => {
                 <Link to="/quen-mat-khau">Quên mật khẩu</Link> |{" "}
                 <Link to="/thay-doi-mat-khau">Thay đổi mật khẩu</Link>
               </div>
-            </Form>
           </div>
         </div>
+        </Form>
       </Card>
     </div>
   );
