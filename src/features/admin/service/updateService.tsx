@@ -1,6 +1,6 @@
 
 import { useGetService_adminIdQuery, useUpdateService_adminMutation } from '@/api/admin/service_admin';
-import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
+import { Button, Form, Image, Input, InputNumber, Select, Upload, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
@@ -47,7 +47,7 @@ export const UpdateService = () => {
   return (
     <div>
       <header className="flex justify-between items-center my-5 mx-3">
-        <h2 className="text-2xl text-blue-700">Cập nhật dịch vụ</h2>
+        <h2 className="text-2xl ">Cập nhật dịch vụ: <span className='text-blue-700 font-semibold'>{data?.name}</span></h2>
       </header>
       <Form
         name="basic"
@@ -70,14 +70,15 @@ export const UpdateService = () => {
         <Form.Item label="Ảnh" name="image" valuePropName="image" getValueFromEvent={normFile}>
           <Upload action="/upload.do" listType="picture-card">
             {/* Hiển thị ảnh hiện tại hoặc cho phép người dùng tải lên ảnh mới */}
+            <Image src={data?.image} alt="Ảnh dịch vụ" className='w-full h-full' />
           </Upload>
         </Form.Item>
 
-        <Form.Item label="Trạng thái" name="status" rules={[{ required: true, message: 'Hãy chọn trạng thái dịch vụ!' }]}>
+        <Form.Item label="Trạng thái" name="status" >
           <Select style={{ width: '150px' }}>
             <Select.Option value="all">Đang dùng</Select.Option>
-            <Select.Option value="available">Có sẵn</Select.Option>
-            <Select.Option value="occupied">Đã thuê</Select.Option>
+            <Select.Option value={1}>Có sẵn</Select.Option>
+            <Select.Option value={2}>Đã thuê</Select.Option>
           </Select>
         </Form.Item>
 

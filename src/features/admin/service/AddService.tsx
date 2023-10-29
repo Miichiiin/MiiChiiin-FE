@@ -1,37 +1,55 @@
 import { useAddService_adminMutation } from '@/api/admin/service_admin';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
 export const AddService = () => {
-  
   const navigate = useNavigate();
   const [addServiceAdmin] = useAddService_adminMutation();
+  const [file, setFile] = useState();
 
-  const onFinish = (values:any) => {
-    addServiceAdmin(values).unwrap()
-      .then(() => {
-        
-        message.success('Thêm dịch vụ thành công');
-        navigate('/admin/service');
-      })
-      .catch((error: any) => {
-        console.error('Failed:', error);
-        message.error('Thêm dịch vụ thất bại');
-      });
-  };
-
-  const onFinishFailed = (errorInfo:any) => {
-    console.log('Failed:', errorInfo);
-  };
-
-  const normFile = (e:any) => {
+  const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
     }
-    return e?.fileList;
+    return e && e.file;
   };
+
+  const onFileChange = ({ file }: any) => {
+    setFile(file);
+  };
+  const props = {
+    action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+    onChange: onFileChange,
+    multiple: true,
+  };
+
+  const onFinish = (values: any) => {
+    if (file) {
+      const image = file;
+      addServiceAdmin({ ...values, image: image as File }).unwrap()
+        .then(() => { 
+          message.success('Thêm dịch vụ thành công');
+          navigate('/admin/service');
+        })
+        .catch((error: any) => {
+          console.error('Failed:', error);
+          message.error('Thêm dịch vụ thất bại');
+        });
+    } else {
+      // Xử lý trường hợp khi biến 'file' là null
+      console.error('Không có tệp ảnh được chọn');
+    }
+  };
+
+
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
+
 
   return (
     <div>
@@ -55,7 +73,6 @@ export const AddService = () => {
         >
           <Input allowClear />
         </Form.Item>
-
         <Form.Item
           label="Giá"
           name="price"
@@ -63,32 +80,39 @@ export const AddService = () => {
         >
           <InputNumber />
         </Form.Item>
-
-        <Form.Item label="Ảnh" name="image" valuePropName="image" getValueFromEvent={normFile}>
-          <Upload action="/upload.do" listType="picture-card">
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
-            </div>
+        <Form.Item
+          label="Ảnh"
+          name="image"
+          valuePropName="image"
+          getValueFromEvent={normFile}>
+          <Upload
+            name="image"
+            maxCount={1}
+            {...props}
+          >
+            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
           </Upload>
         </Form.Item>
-
+        <Form.Item
+          label="Số lượng"
+          name="quantity"
+          rules={[{ required: true, message: 'Hãy nhập số lượng dịch vụ!' }]}
+        >
+          <InputNumber />
+        </Form.Item>
         <Form.Item
           label="Trạng thái"
           name="status"
-          rules={[{ required: true, message: 'Hãy chọn trạng thái dịch vụ!' }]}
         >
           <Select defaultValue="all" style={{ width: '150px' }}>
-            <Select.Option value="all">Đang dùng</Select.Option>
-            <Select.Option value="available">Có sẵn</Select.Option>
-            <Select.Option value="occupied">Đã thuê</Select.Option>
+            <Select.Option value="all">Chọn trạng thái</Select.Option>
+            <Select.Option value={1} >Có sẵn</Select.Option>
+            <Select.Option value={0}>Đã thuê</Select.Option>
           </Select>
         </Form.Item>
-
         <Form.Item label="Mô tả" name="description">
           <Input.TextArea placeholder="Nội dung" allowClear />
         </Form.Item>
-
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
             Submit
