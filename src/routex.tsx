@@ -61,8 +61,20 @@ import AddPermission from "./features/admin/Permission/AddPermission";
 import BookingSuccess from "./features/webapp/order";
 
 
-
+const isAuthenticated = () => {
+    return !!localStorage.getItem('tokenAdmin');
+  };
+const image401 = () =>{
+    return (
+        <img 
+            className="mx-auto object-cover" 
+            src="https://geekflare.com/wp-content/uploads/2023/07/Common-Reasons-Behind-The-401-Unauthorized-Error.png" 
+            alt="" 
+        />
+    )
+}
 export const router = createBrowserRouter([
+    
     {
         path: "/",
         element: (
@@ -164,9 +176,11 @@ export const router = createBrowserRouter([
         element: <BookingSuccess/>
     },
     {
-        path: "/admin",
-        element: (
-            <LayoutAdmin />
+        path: "/admin/*",
+         element: isAuthenticated() ? (
+          <LayoutAdmin />
+        ) : (
+            image401()
         ),
         children: [
             {
@@ -312,7 +326,7 @@ export const router = createBrowserRouter([
                 element:<Permission/>
             },
             {
-                path:"indexPermission",
+                path:"indexpermission",
                 element:<IndexPremission/>
             },
             {

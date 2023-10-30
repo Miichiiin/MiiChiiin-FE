@@ -1,5 +1,5 @@
 import { BsGoogle } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { message } from "antd";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,8 @@ import { SigninForm, schemaSignIn } from "@/schema/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { useSigninMutation } from "@/api/auth/authAdmin";
+
+
 const LoginAdmin = () => {
   const [SigninAdmin] = useSigninMutation();
   const navigate = useNavigate();
@@ -20,10 +22,15 @@ const LoginAdmin = () => {
         console.log("userAdminLocal", userAdminLocal);
         
         if(userAdminLocal) {
-          message.success("Đăng nhập thành công!");
-          setTimeout(() => {
-            navigate("/admin");
-          }, 2000);
+          const tokenAdmin = localStorage.getItem('tokenAdmin')          
+          if(tokenAdmin) {
+              message.success("Đăng nhập thành công!");
+              setTimeout(() => {
+                navigate("/admin");
+              }, 2000);
+          }else {
+            message.error("Không tồn tại token vui lòng kiểm tra lại thông tin đăng nhập!")
+          }
         }else{
           message.error("Thông tin tài khoản hoặc mật khẩu không chính xác !");
         }
