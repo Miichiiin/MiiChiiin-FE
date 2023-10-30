@@ -103,9 +103,9 @@ export const AddService = () => {
         <Form.Item
           label="Trạng thái"
           name="status"
+          rules={[{ required: true, message: 'Chọn trạng thái đi ' }]}
         >
-          <Select defaultValue="all" style={{ width: '150px' }}>
-            <Select.Option value="all">Chọn trạng thái</Select.Option>
+          <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
             <Select.Option value={1} >Có sẵn</Select.Option>
             <Select.Option value={0}>Đã thuê</Select.Option>
           </Select>

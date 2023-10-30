@@ -37,11 +37,9 @@ const users = [
 ];
 export const ServiceManagement = () => {
   const { data: visibleItems } = useGetService_adminQuery();
-  console.log(visibleItems);
-  
+  const [removeService] = useRemoveService_adminMutation();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
-  const [removeService] = useRemoveService_adminMutation();
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -115,7 +113,8 @@ export const ServiceManagement = () => {
         return (
           <>
             {hasAddUserPermission && (
-              <Popconfirm
+             <div className="flex items-center">
+               <Popconfirm
                 title="Xóa sản phẩm"
                 description="Bạn có muốn xóa không??"
                 onConfirm={() => {
@@ -128,6 +127,8 @@ export const ServiceManagement = () => {
               >
                 <Button danger>Xóa</Button>
               </Popconfirm>
+              <Link className="mx-2 px-4 py-1 border border-blue-700 rounded" to={`/admin/updateservice/${item.id}`}>Sửa</Link>
+             </div>
             )}
 
           </>
@@ -197,20 +198,20 @@ export const ServiceManagement = () => {
             }
             options={[
               {
-                value: "0",
+                value: "all",
                 label: "Tất cả",
               },
               {
-                value: "1",
-                label: "Không hiển thị",
+                value: 1,
+                label: "Có sẵn",
               },
               {
-                value: "2",
-                label: "Hiển thị",
+                value: 0,
+                label: "Đã thuê",
               },
             ]}
             onChange={(value) => {
-              if (value === "0") {
+              if (value === "all") {
                 setSelectedStatus(undefined); // Xóa bộ lọc
               } else {
                 setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
@@ -237,7 +238,7 @@ export const ServiceManagement = () => {
           columns={columns}
           dataSource={filteredData}
           className="custom-table"
-          pagination={false} // Tắt phân trang mặc định của Table
+          pagination={false}
         />
         <Pagination
           current={currentPage}

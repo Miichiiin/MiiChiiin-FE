@@ -18,7 +18,7 @@ const DetailBooking = () => {
   const { data: categories } = useGetCategory_homeQuery();
   //const { data: services } = useGetService_hotelQuery();
   const { id } = useParams<{ id: string }>();
-  const { data: booking } = useGetBooking_adminByIdQuery(id);
+  const { data: booking, isLoading, isError } = useGetBooking_adminByIdQuery(id);
   console.log("booking",booking);
   
   const [isServicesVisible, setIsServicesVisible] = useState<{ [key: number]: boolean }>({});
@@ -37,7 +37,14 @@ const DetailBooking = () => {
   const checkIn = dayjs(booking?.check_in);
   const checkOut = dayjs(booking?.check_out);
   const numberOfNights = checkOut.diff(checkIn, 'day');
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
+  if (isError) {
+    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
 
   return (
     <div className="w-[100%] mx-auto">

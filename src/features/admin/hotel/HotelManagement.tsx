@@ -25,6 +25,8 @@ const users = [
   ];
 export const HotelManagement = () => {
     const { data: HotelData } = useGetHotel_adminsQuery({})
+    console.log(HotelData);
+    
     const [removeHotel] = useRemoveHotel_adminMutation({})
 
     const [searchText, setSearchText] = useState("");
@@ -124,36 +126,14 @@ export const HotelManagement = () => {
             key: 'email',
         },
         {
-            title: 'Ngày tạo',
-            dataIndex: 'created_at',
-            key: 'created_at',
-        },
-        {
-            title: 'Ngày cập nhật',
-            dataIndex: 'updated_at',
-            key: 'updated_at',
-        },
-        {
             title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
         },
 
     ];
-
-    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [addressFilter, setAddressFilter] = useState<string | undefined>(undefined);
-
-    const confirmDelete = (id: number) => {
-        const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
-        if (isConfirmed) {
-            removeHotel(id).unwrap().then(() => {
-                setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
-            });
-        }
-    };
-
 
     const handleAddressFilterChange = (value: string) => {
         setAddressFilter(value);
@@ -185,8 +165,6 @@ export const HotelManagement = () => {
                         onChange={handleAddressFilterChange}
                         value={addressFilter}
                     >
-                        <Select.Option>
-                        </Select.Option>
                         {data?.map((item: any) => (
                             <Select.Option key={item.key} value={item.name_cities}>
                                 {item.name_cities}
@@ -210,14 +188,6 @@ export const HotelManagement = () => {
                     }
                     `}
             </style>
-           {hasAddUserPermission && (
-                <Button type="primary" className='mx-5' danger
-                onClick={() => {
-                    selectedRows.forEach((row) => confirmDelete(row.key));
-                }}
-                disabled={selectedRows.length === 0}
-            >Xóa</Button>
-           )}
             <Radio.Group
                 onChange={({ target: { value } }) => {
                     setSelectionType(value);
@@ -229,14 +199,6 @@ export const HotelManagement = () => {
             <Divider />
             <div className="table-container">
                 <Table
-                    rowSelection={{
-                        type: selectionType,
-                        selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
-                        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-                            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                            setSelectedRows(selectedRows);
-                        },
-                    }}
                     columns={columns}
                     dataSource={filteredData}
                     className="custom-table"

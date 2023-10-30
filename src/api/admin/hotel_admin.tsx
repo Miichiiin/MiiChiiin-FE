@@ -5,7 +5,7 @@ const hotel_AdminApi = createApi({
     reducerPath: 'hotel_admin',
     tagTypes: ['Hotel_admin'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {

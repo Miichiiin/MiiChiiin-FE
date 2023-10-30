@@ -80,7 +80,7 @@ const UpdateBooking = () => {
   const [isRoomsHidden, setIsRoomsHidden] = useState(false);
   const [isServicesHidden, setIsServicesHidden] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>()
-  const { data: bookingData } = useGetBooking_adminByIdQuery(id || "")
+  const { data: bookingData, isLoading, isError } = useGetBooking_adminByIdQuery(id)
 
   const [roomCount, setRoomCount] = useState(0);
   const [maxRoomQuantity, setMaxRoomQuantity] = useState(0);
@@ -384,6 +384,14 @@ const UpdateBooking = () => {
       total_amount: totalAmount,
     });
   }, [totalAmount]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
 
   return (
     <div className="mx-auto overflow-auto scroll-smooth">

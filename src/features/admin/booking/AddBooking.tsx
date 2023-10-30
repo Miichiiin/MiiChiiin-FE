@@ -62,7 +62,7 @@ interface RoomData {
 }
 
 const AddBooking = () => {
-  const { data: categories } = useGetCategory_adminQuery() // Lấy danh sách loại phòng
+  const { data: categories, isLoading, isError } = useGetCategory_adminQuery() // Lấy danh sách loại phòng
   const { data: services } = useGetService_adminQuery() // Lấy danh sách dịch vụ
   const [addBooking] = useAddBooking_adminMutation(); // Thêm booking
   const [totalAmount, setTotalAmount] = useState<number>(0);
@@ -275,6 +275,14 @@ const AddBooking = () => {
     console.log('Failed:', errorInfo);
     message.error('Thêm thất bại');
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
 
   return (
 
