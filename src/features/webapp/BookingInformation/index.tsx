@@ -14,6 +14,7 @@ import localStorage from "redux-persist/es/storage";
 import { useAddBookingUserMutation } from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
+import { divide } from "lodash";
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
@@ -23,7 +24,6 @@ const BookingInformation = () => {
   const [userData, setUserData] = useState<any>({});
   console.log("iduserData", userData);
 
-  const {id} = userData
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -145,7 +145,7 @@ const BookingInformation = () => {
       total_amount: sumprice,
       cccd: data.id,
       nationality: data.country,
-      id_user: id,
+      id_user: userData?.id || null,
       phone: data.phone,
       cart: cart,
       id_hotel: Number(hotel[0]),
@@ -621,10 +621,12 @@ const BookingInformation = () => {
                 <AiOutlineHome />
                 <Link to={"/homepage"}>Quay lại trang chủ</Link>
               </button>
-              <button className="flex space-x-2 items-center bg-blue-500 px-3 py-1 rounded-md hover:bg-blue-600 hover:text-white">
-                <BsCartCheck />
-                <Link to={"/profileUser/myorder"}>Lịch sử đặt hàng</Link>
-              </button>
+           {userData?.id ? (
+               <button className="flex space-x-2 items-center bg-blue-500 px-3 py-1 rounded-md hover:bg-blue-600 hover:text-white">
+               <BsCartCheck />
+               <Link to={"/profileUser/myorder"}>Lịch sử đặt hàng</Link>
+             </button>
+           ) : ( <div></div> )}
             </div>
           </div>
         </div>

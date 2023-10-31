@@ -111,7 +111,6 @@ const Header = () => {
       localStorage.removeItem("user");
       setLoggedIn(null);
     }
-
   };
 
   return (
