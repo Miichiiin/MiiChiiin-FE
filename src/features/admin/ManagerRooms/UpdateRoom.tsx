@@ -45,7 +45,7 @@ const UpdateRoomPage = () => {
         initialValues={data} 
        onFinish={onFinish}>
         <div className="flex justify-center">
-          <div className="w-1/2 p-4 bg-white pr-2">
+          <div className="w-1/2 p-4 bg-white ">
             <Form.Item label="Tên Phòng" name="name" rules={[{ required: true, message: 'Nhập tên phòng' }]}>
               <Input />
             </Form.Item>

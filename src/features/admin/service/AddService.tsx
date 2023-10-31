@@ -1,6 +1,6 @@
 import { useAddService_adminMutation } from '@/api/admin/service_admin';
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
+
+import { Button, Form, Input, InputNumber, Select, message } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,40 +8,27 @@ import { useNavigate } from 'react-router-dom';
 export const AddService = () => {
   const navigate = useNavigate();
   const [addServiceAdmin] = useAddService_adminMutation();
-  const [file, setFile] = useState();
-
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.file;
-  };
-
-  const onFileChange = ({ file }: any) => {
-    setFile(file);
-  };
-  const props = {
-    action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-    onChange: onFileChange,
-    multiple: true,
-  };
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   const onFinish = (values: any) => {
-    if (file) {
-      const image = file;
-      addServiceAdmin({ ...values, image: image as File }).unwrap()
-        .then(() => { 
-          message.success('Thêm dịch vụ thành công');
-          navigate('/admin/service');
-        })
-        .catch((error: any) => {
-          console.error('Failed:', error);
-          message.error('Thêm dịch vụ thất bại');
-        });
-    } else {
-      // Xử lý trường hợp khi biến 'file' là null
-      console.error('Không có tệp ảnh được chọn');
-    }
+    const body = new FormData()
+    body.append('name', values.name)
+    body.append('image', selectedFile as File)
+    body.append('description', values.description)
+    body.append('quantity', values.quantity)
+    body.append('price', values.price)
+    body.append('status', values.status)
+    console.log('body', body)
+    addServiceAdmin(body).unwrap().then(() => {
+      navigate("/admin/service")
+      message.success("Thêm dịch vụ thành công!")
+    })
+
+  };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target
+    const selectedFiles = files as FileList
+    setSelectedFile(selectedFiles?.[0])
   };
 
 
@@ -81,17 +68,10 @@ export const AddService = () => {
           <InputNumber />
         </Form.Item>
         <Form.Item
-          label="Ảnh"
           name="image"
-          valuePropName="image"
-          getValueFromEvent={normFile}>
-          <Upload
-            name="image"
-            maxCount={1}
-            {...props}
-          >
-            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-          </Upload>
+          label="Upload"
+        >
+          <input type='file' onChange={handleChange} />
         </Form.Item>
         <Form.Item
           label="Số lượng"

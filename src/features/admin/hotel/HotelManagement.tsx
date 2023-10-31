@@ -1,8 +1,8 @@
 import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { Table, Divider, Radio, Button, Select, Input, Image } from 'antd';
+import { Table, Divider, Radio, Button, Select, Input, Popconfirm, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const users = [
     {
@@ -24,14 +24,18 @@ const users = [
    
   ];
 export const HotelManagement = () => {
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5,
+      });
     const { data: HotelData } = useGetHotel_adminsQuery({})
     console.log(HotelData);
     
     const [removeHotel] = useRemoveHotel_adminMutation({})
-
+    const navigate = useNavigate();
     const [searchText, setSearchText] = useState("");
 
-    const data = HotelData?.map(({ id, name, email, description, quantity_of_room, star, phone, quantity_floor, created_at, updated_at, status, id_city, name_cities, image_urls }: DataType) => ({
+    const data = HotelData?.map(({ id, name, email, description, quantity_of_room, star, phone, quantity_floor, status, name_cities,address }: DataType) => ({
         key: id,
         name,
         email,
@@ -40,12 +44,9 @@ export const HotelManagement = () => {
         star,
         phone,
         quantity_floor,
-        created_at,
-        updated_at,
         status,
-        id_city,
         name_cities,
-        image_urls,
+        address
     }))
     interface DataType {
         key: number;
@@ -57,12 +58,9 @@ export const HotelManagement = () => {
         phone: string,
         star: number,
         quantity_floor: number,
-        created_at: string,
-        updated_at: string,
         status: number,
-        id_city: number,
         name_cities: string,
-        image_urls: string,
+        address: string
     }
 
     const columns: ColumnsType<DataType> = [
@@ -71,41 +69,35 @@ export const HotelManagement = () => {
             dataIndex: 'key',
         },
         {
-            title: 'Tên khách sạn',
+            title: 'Hotel',
             dataIndex: 'name',
             key: 'name',
-            render: (text: any, item: any) => {
-                return (
-                    <>
-                        {hasAddUserPermission && (
-                            <Link to={`/admin/updatehotel/${item.key}`}>{text}</Link>
-                        )}
-                    </>
-                )
-            }
+            render: (text) => <span>{text.length > 5 ? `${text.slice(0, 5)}...` : text}</span>
         },
         {
-            title: 'Tên thành phố',
+            title: 'City',
             dataIndex: 'name_cities',
             key: 'name_cities',
+            render: (text) => <span>{text.length > 5 ? `${text.slice(0, 5)}...` : text}</span>
         },
         {
-            title: 'Số sao',
+            title: 'Star',
             dataIndex: 'star',
             key: 'star',
         },
         {
-            title: 'Số tầng',
+            title: 'Floor',
             dataIndex: 'quantity_floor',
             key: 'quantity_floor',
         },
         {
-            title: 'Số điện thoại',
+            title: 'SĐT',
             dataIndex: 'phone',
             key: 'phone',
+            render: (text) => <span>{text.length > 10 ? `${text.slice(0, 5)}...` : text}</span>
         },
         {
-            title: 'Số phòng',
+            title: 'Rooms',
             dataIndex: 'quantity_of_room',
             key: 'quantity_of_room',
         },
@@ -113,24 +105,52 @@ export const HotelManagement = () => {
             title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
+            render: (text) => <span>{text.length > 10 ? `${text.slice(0, 5)}...` : text}</span>
         },
         {
-            title: 'Ảnh',
-            dataIndex: 'image_urls',
-            key: 'image_urls',
-            render: (text) => <Image src={text} width={50} />
-        },
-        {
-            title: 'Email khách sạn',
+            title: 'Email',
             dataIndex: 'email',
             key: 'email',
         },
         {
-            title: 'Trạng thái',
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+            render: (text) => <span>{text.length > 30 ? `${text.slice(0, 5)}...` : text}</span>
+        },
+        {
+            title: 'Status',
             dataIndex: 'status',
             key: 'status',
         },
-
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_: any, item: any) => {
+                return (
+                    <>
+                      {hasAddUserPermission && (
+                        <div>
+                          <Popconfirm
+                            title="Xóa Khách sạn"
+                            description="Bạn có muốn xóa không??"
+                            onConfirm={() => {
+                              removeHotel(item.key).unwrap().then(() => {
+                                message.success("Xóa thành công");
+                              })
+                            }}
+                            okText="Có"
+                            cancelText="Không"
+                          >
+                            <Button danger>Xóa</Button>
+                          </Popconfirm>
+                          <Button className="mx-2 px-4 py-1 border border-blue-700 rounded" onClick={()=>navigate(`/admin/updatehotel/${item.key}`)}>Sửa</Button>
+                        </div>
+                      )}
+                    </>
+                  )
+            }
+        }
     ];
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [addressFilter, setAddressFilter] = useState<string | undefined>(undefined);
@@ -166,7 +186,7 @@ export const HotelManagement = () => {
                         value={addressFilter}
                     >
                         {data?.map((item: any) => (
-                            <Select.Option key={item.key} value={item.name_cities}>
+                            <Select.Option key={item.id} value={item.name_cities}>
                                 {item.name_cities}
                             </Select.Option>
                         ))}
@@ -184,7 +204,7 @@ export const HotelManagement = () => {
                     .table-container {
                         background-color: #f4f4f4;
                         border-radius: 8px;
-                        padding: 16px;
+                        padding: 12px;
                     }
                     `}
             </style>
@@ -202,6 +222,12 @@ export const HotelManagement = () => {
                     columns={columns}
                     dataSource={filteredData}
                     className="custom-table"
+                    pagination={{
+                        ...pagination,
+                        onChange: (page) => {
+                          setPagination({ ...pagination, current: page });
+                        },
+                      }}
                 />
             </div>
         </div>

@@ -33,7 +33,7 @@ const service_AdminApi = createApi({
         }),
         updateService_admin: builder.mutation({
             query: (product) => ({
-                url: `/service/${product.id}`,
+                url: `/service/${product.get('id')}`,
                 method: "PUT",
                 body: product
             }),
