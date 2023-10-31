@@ -301,7 +301,7 @@ export const router = createBrowserRouter([
                 element: <AddRoomPage />
             },
             {
-                path: "updateroom",
+                path: "updateroom/:id",
                 element: <UpdateRoomPage />
             },
             {

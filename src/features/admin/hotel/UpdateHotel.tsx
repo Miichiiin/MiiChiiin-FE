@@ -1,19 +1,9 @@
 import { useGetHotel_adminByIdQuery, useUpdateHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Spin, Upload, message } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const UpdateHotel = () => {
-    const [messageApi, contextHolder] = message.useMessage();
-
-    const success = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Update product successfully',
-        });
-    };
-
     const navigate = useNavigate()
     const [updateHotel, {isLoading}] = useUpdateHotel_adminMutation()
 
@@ -21,8 +11,9 @@ const UpdateHotel = () => {
         updateHotel({ ...values, id: id }).unwrap().then(() => navigate('/admin/hotelManagement'));
     };
     const { id } = useParams<{ id: string }>()
-    const { data: hotelData } = useGetHotel_adminByIdQuery(id || "")
-
+    const { data: hotelData } = useGetHotel_adminByIdQuery(id)
+    console.log(hotelData);
+    
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
@@ -40,7 +31,7 @@ const UpdateHotel = () => {
             updated_at: hotelData?.updated_at,
             status: hotelData?.status,
             id_city: hotelData?.id_city,
-            name_cities: hotelData?.name_cities,
+            address: hotelData?.address,
             image_urls: hotelData?.image_urls,
         })
     }, [hotelData])
@@ -57,33 +48,25 @@ const UpdateHotel = () => {
         updated_at: string,
         status: number,
         id_city: number,
-        name_cities: string,
+        address: string,
         image_urls: string,
-    };
-    const normFile = (e: any) => {
-        if (Array.isArray(e)) {
-            return e;
-        }
-        return e?.fileList;
     };
     return (
         <div>
 
             <header className="flex justify-between items-center my-5 mx-3">
-                <h2 className="text-2xl  text-blue-700">Sửa khách sạn : <span className='font-semibold'>{hotelData?.name}</span></h2>
+                <h2 className="text-xl font-semibold ">Sửa khách sạn : <span className='text-2xl font-semibold text-blue-800'>{hotelData?.name}</span></h2>
             </header>
-            {contextHolder}
             <Form
                 name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                style={{ maxWidth: 600 }}
-                initialValues={{ remember: true }}
+                initialValues={hotelData}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
                 form={form}
             >
+                <div className='flex justify-center '>
+                <div className='w-[500px] p-4 bg-white mr-4'>
                 <Form.Item<FieldType>
                     label="Tên Khách sạn"
                     name="name"
@@ -95,21 +78,21 @@ const UpdateHotel = () => {
 
                 <Form.Item<FieldType>
                     label="Địa chỉ khách sạn"
-                    name="name_cities"
+                    name="address"
                     rules={[{ required: true, message: 'Hãy nhập địa chỉ khách sạn!' },
                     { whitespace: true, message: 'Không được để trống!' }]}
                 >
                     <Input />
                 </Form.Item>
 
-                <Form.Item label="Ảnh" name="image_urls" getValueFromEvent={normFile}>
+                {/* <Form.Item label="Ảnh" name="image_urls" getValueFromEvent={normFile}>
                     <Upload action="/upload.do" listType="picture-card">
                         <div>
                             <PlusOutlined />
                             <div style={{ marginTop: 8 }}>Upload</div>
                         </div>
                     </Upload>
-                </Form.Item>
+                </Form.Item> */}
 
                 <Form.Item<FieldType>
                     label="Email khách sạn"
@@ -122,7 +105,24 @@ const UpdateHotel = () => {
                 >
                     <Input />
                 </Form.Item>
-
+                <Form.Item<FieldType>
+                    label="Số điện thoại"
+                    name="phone"
+                    rules={[{ required: true, message: 'Hãy nhập số điện thoại!' },
+                    { whitespace: true, message: 'Không được để trống!' }]}
+                >
+                    <Input/>
+                </Form.Item>
+                <Form.Item
+                    label="Mô tả"
+                    name="description"
+                    rules={[{ required: true, message: 'Hãy nhập mô tả!' },
+                    { whitespace: true, message: 'Không được để trống!' }]}
+                >
+                    <Input.TextArea placeholder="Nội dung" allowClear />
+                </Form.Item>
+                </div>
+                <div className='w-[500px] p-4 bg-white mr-4'>
                 <Form.Item<FieldType>
                     label="Số lượng phòng"
                     name="quantity_of_room"
@@ -139,14 +139,6 @@ const UpdateHotel = () => {
                     <InputNumber />
                 </Form.Item>
                 <Form.Item<FieldType>
-                    label="Số điện thoại"
-                    name="phone"
-                    rules={[{ required: true, message: 'Hãy nhập số điện thoại!' },
-                    { whitespace: true, message: 'Không được để trống!' }]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item<FieldType>
                     label="Số sao"
                     name="star"
                     rules={[{ required: true, message: 'Hãy nhập số sao!' }]}
@@ -158,9 +150,9 @@ const UpdateHotel = () => {
                     label="Trạng thái"
                     name="status"
                 >
-                    <Select defaultValue="0" style={{ width: '150px' }}>
-                        <Select.Option value="1">Đang dùng</Select.Option>
-                        <Select.Option value="2">Có sẵn</Select.Option>
+                    <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
+                        <Select.Option value={1}>Còn</Select.Option>
+                        <Select.Option value={0}>Hết</Select.Option>
                     </Select>
                 </Form.Item>
                 <Form.Item<FieldType>
@@ -168,31 +160,25 @@ const UpdateHotel = () => {
                     name="id_city"
                     rules={[{ required: true, message: 'Hãy nhập chọn id city!' }]}
                 >
-                    <Select defaultValue="0" style={{ width: '150px' }}>
-                        <Select.Option value="1">City 1</Select.Option>
-                        <Select.Option value="2">City 2</Select.Option>
+                    <Select placeholder="Chọn thành phố" style={{ width: '150px' }}>
+                        <Select.Option value={1}>{hotelData?.name_cities}</Select.Option>
                     </Select>
                 </Form.Item>
-
-                <Form.Item
-                    label="Mô tả"
-                    name="description"
-                    rules={[{ required: true, message: 'Hãy nhập mô tả!' },
-                    { whitespace: true, message: 'Không được để trống!' }]}
-                >
-                    <Input.TextArea placeholder="Nội dung" allowClear />
-                </Form.Item>
+                </div>
+                </div>
 
 
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" className='bg-blue-500 text-white' htmlType="submit" onClick={() => success()}>
+                <Form.Item>
+                    <Button type="primary" className='bg-blue-500 text-white' htmlType="submit">
                         {isLoading ? (
                             <Spin />
                         ) : (
                             "Update"
                         )}
                     </Button>
+                    <Button danger className="mx-2" onClick={()=>navigate("/admin/hotelmanagement")}>Quay lại</Button>  
                 </Form.Item>
+                
             </Form>
         </div>
     )
