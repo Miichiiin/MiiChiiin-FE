@@ -5,7 +5,7 @@ const  statisticalRoomTypeApi = createApi({
     reducerPath: 'statistical_roomtype',
     tagTypes: ['StatisticalRoomtype'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -15,10 +15,10 @@ const  statisticalRoomTypeApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getStatisticalRoomtype: builder.query<any, void>({
-            query: () => `/statistical_roomtype`,
+        getStatisticalRoomtype: builder.query<any, { month: number, year: number }>({ 
+            query: ({ month, year }) => `/statistical_rates_in_hotel/1/${month}/${year}`, // Sử dụng
             providesTags: ['StatisticalRoomtype']
-        }),
+          }),
         getStatisticalByIdRoomtype: builder.query({
             query: (id) => `/statistical_roomtype/${id}`,
             providesTags: ['StatisticalRoomtype']

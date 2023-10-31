@@ -5,7 +5,7 @@ const  statistical_ServiceApi = createApi({
     reducerPath: 'statistical_service',
     tagTypes: ['StatisticalService'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -15,8 +15,8 @@ const  statistical_ServiceApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getStatisticalService: builder.query<any, void>({
-            query: () => `/statistical_service`,
+        getStatisticalService: builder.query<any,{month:number, year:number}>({
+            query: ({month,year}) => `statistical_services/${month}/${year}/1`,
             providesTags: ['StatisticalService']
         }),
         getStatisticalByIdService: builder.query({
