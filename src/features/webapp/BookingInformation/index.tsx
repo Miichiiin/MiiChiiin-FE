@@ -12,46 +12,49 @@ import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";
 import localStorage from "redux-persist/es/storage";
 import { useAddBookingUserMutation } from "@/api/bookingUser";
-import { useState } from "react";
-import { Button } from "antd";
+import { useEffect, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
   const { data: serviceData } = useGetService_hotelQuery();
   console.log("serviceData chooservice", serviceData);
+  const [addBookingUser] = useAddBookingUserMutation();
+  const [userData, setUserData] = useState<any>({});
+  console.log("iduserData", userData);
 
-  console.log("dataParam11", dataParam);
+  const {id} = userData
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  
+  useEffect(() => {
+    const userPromise = localStorage.getItem("user");
+    userPromise.then((user:any) => {
+      setUserData(JSON.parse(user));
+    });
+  }, []);
 
-  const handleCloseModal = () => {
-    setModalIsOpen(false);
-  };
   let hotel: string[] = [];
   if (dataParam && dataParam.hotel) {
     hotel = dataParam.hotel.split(",");
   }
-  console.log("hotel", hotel);
 
   let date: Date[] = [];
   if (dataParam && dataParam.date) {
     const timeArray = dataParam.date.split(",");
     date = timeArray?.map((time) => new Date(time));
   }
-  console.log("date111", date);
 
   let roomNumber: any[] = [];
   if (dataParam && dataParam.roomNumber) {
     roomNumber = JSON.parse(dataParam.roomNumber);
   }
-  console.log("RoomNumberParam", roomNumber);
 
   let selectedServices: any[] = [];
   if (dataParam && dataParam.selectedServices) {
     selectedServices = JSON.parse(dataParam.selectedServices);
   }
-  console.log("selectedServicesParam", selectedServices);
   //Tính số người
   // Tách chuỗi thành các phần tử riêng biệt
   const individuals:any = dataParam.people && dataParam.people.split("&");
@@ -77,8 +80,6 @@ const BookingInformation = () => {
   });
 
   // In kết quả
-  console.log("Total adults:", totalAdults);
-  console.log("Total children:", totalChildren);
 
   //Tính tiền
   const serviceTotalPrice = selectedServices.reduce(
@@ -93,7 +94,6 @@ const BookingInformation = () => {
     },
     0
   );
-  console.log("tien dịch vụ", serviceTotalPrice);
   let totalPrice1 = 0;
 
   roomNumber?.map((item: any) => {
@@ -106,8 +106,6 @@ const BookingInformation = () => {
     totalPrice1 += item.price * numberOfDays * item.count;
   });
 
-  // Hiển thị tổng tiền
-  console.log("Tổng tiền: ", totalPrice1);
 
   const sumprice = totalPrice1 + serviceTotalPrice;
 
@@ -136,22 +134,6 @@ const BookingInformation = () => {
       services: services,
     };
   });
-
-  console.log("cart", cart);
-
-  const [addBookingUser] = useAddBookingUserMutation();
-  console.log("id_user", hotel[0]);
-
-  let userData: any = null; // Biến bên ngoài
-
-  const userPromise = localStorage.getItem("user");
-  userPromise.then((user: any) => {
-    userData = JSON.parse(user);
-    console.log("userData", userData);
-  });
-
-  console.log("userData bên ngoài", userData);
-
   const onSubmit = (data: any) => {
     const dataBooking = {
       check_in: date[0].toISOString().slice(0, 10),
@@ -163,7 +145,7 @@ const BookingInformation = () => {
       total_amount: sumprice,
       cccd: data.id,
       nationality: data.country,
-      id_user: userData?.id || null,
+      id_user: id,
       phone: data.phone,
       cart: cart,
       id_hotel: Number(hotel[0]),
@@ -172,18 +154,19 @@ const BookingInformation = () => {
     addBookingUser(dataBooking)
       .unwrap()
       .then((res) => {
-        console.log("respon", res);
         if (res) {
-          const {detail} = res
-          setOrder(detail)
+          // const {detail} = res
+          setOrder(res);
           setModalIsOpen(true);
         }
-
       });
-
+  
     console.log("data form", data);
     console.log("newDataBooking", dataBooking);
   };
+
+  
+
   return (
     <div>
       <HeaderHotelType />

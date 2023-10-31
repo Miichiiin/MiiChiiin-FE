@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Button, Form, DatePicker } from 'antd';
+import {Form, DatePicker } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
   AiOutlineEnvironment,
@@ -8,8 +8,8 @@ import {
   AiOutlinePlus,
   AiOutlineUser,
 } from 'react-icons/ai';
-import axios from 'axios';
 import { isYesterday } from 'date-fns';
+import { useGetHotel_homesQuery } from '@/api/webapp/hotel_home';
 
 
 const { RangePicker } = DatePicker;
@@ -19,7 +19,9 @@ export const SearchQuickHotel = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState('');
   const [divClicked, setDivClicked] = useState(false);
-  const [hotelsData, setHotelsData] = useState([]);
+  // const [hotelsData, setHotelsData] = useState([]);
+  const {data: hotelsData} = useGetHotel_homesQuery()
+  
   // const dispatch = useAppDispatch();
   const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
   const navigate = useNavigate();
@@ -78,16 +80,16 @@ export const SearchQuickHotel = () => {
   }, [divClicked]);
 
   // Sử dụng useEffect để gọi API khi component được mount
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/hotel_home") // Thay đổi đường dẫn dựa vào cấu hình của bạn
-      .then((response) => {
-        setHotelsData(response.data); // Lưu dữ liệu từ API vào state
-      })
-      .catch((error) => {
-        console.error("Error fetching hotels data:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:3000/hotel_home") // Thay đổi đường dẫn dựa vào cấu hình của bạn
+  //     .then((response) => {
+  //       setHotelsData(response.data); // Lưu dữ liệu từ API vào state
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching hotels data:", error);
+  //     });
+  // }, []);
   //chọn ngày đặt
   const handleRangeChange = (dates: any) => {
     const selectedStartDate = dates[0]?.toDate() || null;

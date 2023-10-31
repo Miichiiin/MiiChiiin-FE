@@ -10,7 +10,7 @@ import {
 } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
-import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
+import { useGetService_hotelIdQuery, useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { Button } from "antd";
 import HeaderHotelType from "../../HotelType/HeaderHotelType";
 
@@ -51,7 +51,7 @@ const ChooseService = () => {
       ]);
     }
   };
-  const { data: serviceData } = useGetService_hotelQuery();
+
   // const carts = useAppSelector((state: any) => state.cart?.items);
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ const ChooseService = () => {
   if (dataParam && dataParam.nameHotel) {
     hotel = dataParam.nameHotel.split(",");
   }
-
+  const { data: serviceData } = useGetService_hotelIdQuery(hotel[0]);
   console.log("hotel", hotel);
 
   let date: Date[] = [];
@@ -94,11 +94,6 @@ const ChooseService = () => {
     // navigate(`/booking`)
   };
   
-  // interface RoomDetail {
-  //   adults: number;
-  //   children: number;
-  //   infants: number;
-  // }
 
 
   let roomDetailsString = "";
