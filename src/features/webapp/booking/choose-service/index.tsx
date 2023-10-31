@@ -57,9 +57,6 @@ const ChooseService = () => {
 
   const dataParam = useParams();
 
-  console.log("dataParam", dataParam);
-  console.log("numbegeRoom", dataParam.numberRoom);
-
   let hotel: string[] = [];
   if (dataParam && dataParam.nameHotel) {
     hotel = dataParam.nameHotel.split(",");
@@ -77,16 +74,10 @@ const ChooseService = () => {
   if (dataParam && dataParam.numberRoom) {
     roomNumber = JSON.parse(dataParam.numberRoom);
   }
-
-  console.log("RoomNumberParam", roomNumber);
   
-
   const numberOfRooms = roomNumber.length;
 
   const onhanldeSubmit = () => {
-    console.log("submitroomNumber", roomNumber);
-    console.log("submitdate", date);
-    console.log("submitsermist", selectedServices);
     const service = JSON.stringify(selectedServices);
     console.log("submithotel", hotel);
     const url = `/booking/${hotel}/${date}/${JSON.stringify(roomNumber)}/${service}/${dataParam.numberPeople}`;

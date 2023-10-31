@@ -29,7 +29,7 @@ const handleLogin = async (user: any) => {
           // Add the token to the header of subsequent requests
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           message.success('Đăng nhập thành công');
-          // navigate('/');
+          navigate('/');
         } else {
           message.error('Không tìm thấy token trong lưu trữ!');
         }
