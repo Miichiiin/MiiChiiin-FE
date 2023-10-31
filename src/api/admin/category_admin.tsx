@@ -4,7 +4,7 @@ const category_AdminApi = createApi({
     reducerPath: 'category_admin',
     tagTypes: ['Category_admin'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -18,7 +18,6 @@ const category_AdminApi = createApi({
             query: () => {
                 const id = JSON.parse(localStorage.getItem("userAdmin") || '{}');
                 console.log(id.id_hotel);
-                
                 // Lấy ID khách sạn từ Local Storage
                 return `/listRoom/hotels=${id.id_hotel}`;
             },
