@@ -17,12 +17,10 @@ import {
 import { useGetStatisticalQuery } from "../../api/admin/statistical";
 import { useGetStatisticalServiceQuery } from "@/api/admin/statistical_Service";
 import { useGetStatisticalRoomtypeQuery } from "@/api/admin/statistical_RoomType";
-import { AnyIfEmpty } from "react-redux";
 
 const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f0e", "#99CCFF"];
 
 const HotelChainStatistics = () => {
-
   const dataHotel = [
     {
       hotelName: "Hotel A",
@@ -79,8 +77,6 @@ const HotelChainStatistics = () => {
     },
   ];
 
-
-
   const [onlineVisitors, setOnlineVisitors] = useState(0);
   const [revenueGrowth, setRevenueGrowth] = useState(0);
   const [todaysRevenue, setTodaysRevenue] = useState(0);
@@ -96,11 +92,16 @@ const HotelChainStatistics = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const [selectedYear, setSelectedYear] = useState("2023");
 
-  const { data: statisticalData1 } = useGetStatisticalQuery<any>();
 
-  let statisticalData:any;
+  // Biểu đồ 1
+
+  const [selectedYear, setSelectedYear] = useState(2023);
+
+  const { data: statisticalData1, refetch } =
+    useGetStatisticalQuery(selectedYear);
+
+  let statisticalData: any;
 
   if (statisticalData1) {
     statisticalData = statisticalData1.booking_data_by_month;
@@ -108,7 +109,7 @@ const HotelChainStatistics = () => {
   } else {
     console.log("Không có dữ liệu thống kê.");
   }
-  
+
   // statisticalData có thể được truy cập trong phạm vi hiện tại sau đây
   console.log("statisticalData ngoài", statisticalData);
 
@@ -120,33 +121,38 @@ const HotelChainStatistics = () => {
   };
 
   const dataofYear = Array.isArray(statisticalData)
-  ? statisticalData.filter((item: any) => item.Year == selectedYear)
-  : [];
+    ? statisticalData.filter((item: any) => item.Year == selectedYear)
+    : [];
 
-console.log("thang", dataofYear);
+  console.log("thang", dataofYear);
 
   // Nếu trùng năm thì không hiện
   const uniqueYears = [
     ...new Set(
-      statisticalData && statisticalData.map((item:any) => item.Year)
+      statisticalData && statisticalData.map((item: any) => item.Year)
     ),
   ];
 
-console.log("uniqueYears", uniqueYears);
+  console.log("uniqueYears", uniqueYears);
 
-useEffect(() => {
-  if (statisticalData) {
-    // Lọc dữ liệu dựa trên năm được chọn
-    const filtered = statisticalData.filter(
-      (item: any) => item.Year === selectedYear
-    );
-    setFilteredData1(filtered);
-  }
-}, [statisticalData, selectedYear]);
+  useEffect(() => {
+    // Gọi lại API khi selectedYear thay đổi
+    refetch();
+  }, [selectedYear, refetch]);
+
+  useEffect(() => {
+    if (statisticalData) {
+      // Lọc dữ liệu dựa trên năm được chọn
+      const filtered = statisticalData.filter(
+        (item: any) => item.Year === selectedYear
+      );
+      setFilteredData1(filtered);
+    }
+  }, [statisticalData, selectedYear]);
 
   const handleYearChange1 = (event: any) => {
-    const selectedYear = event.target.value;
-    setSelectedYear(selectedYear);
+    const newYear = parseInt(event.target.value);
+    setSelectedYear(newYear);
   };
   // Ẩn hiện biểu đồ theo select
   const [chartMode, setChartMode] = useState("revenue");
@@ -162,45 +168,36 @@ useEffect(() => {
     setChartMode("roomtype");
   };
   // Biểu đồ 2
+  
+  const [selectedMonthSv, setSelectedMonthSv] = useState(10);
+  const [selectedYearSv, setSelectedYearSv] = useState(2023);
   const [filteredData2, setFilteredData2] = useState([]); // State để lưu trữ dữ liệu từ API
-  const { data: statisticalServiceData } = useGetStatisticalServiceQuery();
-
-  const [selectedMonthSv, setSelectedMonthSv] = useState("Tháng 1");
-  const [selectedYearSv, setSelectedYearSv] = useState("2023");
-  const [uniqueMonthsSv, setUniqueMonthsSv] = useState<any>([]);
-  const [uniqueYearsSv, setUniqueYearsSv] = useState<any>([]);
+  const { data: statisticalServiceData } = useGetStatisticalServiceQuery({
+    month: selectedMonthSv,
+    year: selectedYearSv,
+  });
 
   useEffect(() => {
-    if (statisticalServiceData) {
-      // Trích xuất danh sách các tháng và năm duy nhất từ dữ liệu
-      const uniqueMonthsSv = Array.from(
-        new Set(statisticalServiceData.map((item: any) => item.month))
-      );
-      const uniqueYearsSv = Array.from(
-        new Set(statisticalServiceData.map((item: any) => item.year))
-      );
-
-      setUniqueMonthsSv(uniqueMonthsSv);
-      setUniqueYearsSv(uniqueYearsSv);
-
+    if (statisticalServiceData && Array.isArray(statisticalServiceData)) {
       // Lọc dữ liệu dựa trên tháng và năm đã chọn
-      const filteredData = statisticalServiceData.filter((item: any) => {
+      const filteredData = statisticalServiceData.filter((item) => {
         return item.month === selectedMonthSv && item.year === selectedYearSv;
       });
-
+  
       setFilteredData2(filteredData);
     }
   }, [statisticalServiceData, selectedMonthSv, selectedYearSv]);
-  const handleMonthChangeSv = (event: any) => {
+
+  const handleMonthChangeSv = (event:any) => {
     const selectedMonth = event.target.value;
     setSelectedMonthSv(selectedMonth);
+  
   };
 
-  const handleYearChangeSv = (event: any) => {
+  const handleYearChangeSv = (event:any) => {
     const selectedYear = event.target.value;
     setSelectedYearSv(selectedYear);
   };
-
   const [isDropdownVisibleSv, setIsDropdownVisibleSv] = useState(false);
   const handleh1Click = () => {
     setIsDropdownVisibleSv(!isDropdownVisibleSv);
@@ -208,48 +205,61 @@ useEffect(() => {
   console.log("click", handleh1Click);
 
   // Biểu đồ 3
-  const [selectedYearRt, setSelectedYearRt] = useState("2023");
-  const [selectedMonthRt, setSelectedMonthRt] = useState("Tháng 1");
+  const [selectedYearRt, setSelectedYearRt] = useState(2023);
+  const [selectedMonthRt, setSelectedMonthRt] = useState(10);
   const [filteredRoomTypeData, setFilteredRoomTypeData] = useState<any>([]);
-  const { data: statisticalroomtype} = useGetStatisticalRoomtypeQuery<any>();
-  const [uniqueMonthsRt, setUniqueMonthsRt] = useState<any>([]);
-  const [uniqueYearsRt, setUniqueYearsRt] = useState<any>([]);
+  const { data: statisticalroomtype1 } = useGetStatisticalRoomtypeQuery({
+    month: selectedMonthRt,
+    year: selectedYearRt,
+  });
 
-  const handleYearChangeRt = (event:any) => {
-    setSelectedYearRt(event.target.value);
+  const handleYearChangeRt = (event: any) => {
+    setSelectedYearRt(parseInt(event.target.value));
   };
 
-  const handleMonthChangeRt = (event:any) => {
-    setSelectedMonthRt(event.target.value);
+  const handleMonthChangeRt = (event: any) => {
+    setSelectedMonthRt(parseInt(event.target.value));
   };
+
+  // Sử dụng kiểu dữ liệu đã định nghĩa
+
+  let statisticalroomtype: any;
+
+  if (statisticalroomtype1) {
+    statisticalroomtype = statisticalroomtype1.rating_comment_booking;
+  } else {
+    console.log("Không có dữ liệu thống kê.");
+  }
+
+  console.log("statisticalData", statisticalroomtype);
+  
+  const statisticalRoom =
+    statisticalroomtype &&
+    statisticalroomtype.map((item: any) => ({
+      roomType: item.roomType,
+      bookingCount: item.bookingCount,
+      rating: item.rating,
+    }));
+  console.log("statisticalRoom", statisticalRoom);
+
+  console.log("statisticalroomtype1", statisticalroomtype1);
+
+  console.log("statisticalroomtype", statisticalroomtype);
 
   useEffect(() => {
-    if (statisticalroomtype) {
-      // Trích xuất danh sách các tháng và năm duy nhất từ dữ liệu
-      const uniqueMonthsRt = Array.from(
-        new Set(statisticalroomtype.map((item: any) => item.month))
-      );
-      const uniqueYearsRt = Array.from(
-        new Set(statisticalroomtype.map((item: any) => item.year))
-      );
-
-      setUniqueMonthsRt(uniqueMonthsRt);
-      setUniqueYearsRt(uniqueYearsRt);
-
-      // Lọc dữ liệu dựa trên tháng và năm đã chọn
-      const FilteredRoomTypeData = statisticalroomtype.filter((item: any) => {
+    if (statisticalroomtype && Array.isArray(statisticalroomtype)) {
+      // Cập nhật dữ liệu dựa trên kết quả từ API
+      const FilteredRoomTypeData = statisticalroomtype.filter((item) => {
         return item.month === selectedMonthRt && item.year === selectedYearRt;
       });
-
       setFilteredRoomTypeData(FilteredRoomTypeData);
     }
   }, [statisticalroomtype, selectedMonthRt, selectedYearRt]);
   const [isDropdownVisibleRt, setIsDropdownVisibleRt] = useState(false);
+
   const handleh3Click = () => {
     setIsDropdownVisibleRt(!isDropdownVisibleRt);
   };
-
-  console.log("uniqueryear",uniqueYears)
   return (
     <div>
       <Row gutter={16} className="mb-5">
@@ -332,11 +342,11 @@ useEffect(() => {
 
         <button
           className={`py-2 px-4 rounded ${
-            chartMode === "roomtype" 
+            chartMode === "roomtype"
               ? "bg-blue-500 text-white"
               : "bg-gray-300 text-gray-700"
           } hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out`}
-          onClick={handleRoomTypeChartModeChange} 
+          onClick={handleRoomTypeChartModeChange}
         >
           RoomType Statistics
         </button>
@@ -362,29 +372,31 @@ useEffect(() => {
                 className={`relative ${isDropdownVisible ? "block" : "hidden"}`}
               >
                 <label>
-                  <span className="bg-blue-200 p-2 ">Chọn năm:</span>
+                  <span className="bg-blue-200 p-2">Chọn năm:</span>
                 </label>
                 <select
                   className="border rounded p-2"
                   onChange={handleYearChange1}
                   value={selectedYear}
                 >
-                  {uniqueYears.map((year: any) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
+                  {Array.from({ length: 4 }, (_, index) => {
+                    const Year = 2020 + index;
+                    return (
+                      <option key={Year} value={Year}>
+                        {Year}
+                      </option>
+                    );
+                  })}
                 </select>
-                
               </div>
 
               <ResponsiveContainer width={1200} height={400}>
-                <LineChart data={filteredData1}>
+                <LineChart data={statisticalData}>
                   <XAxis dataKey="Month" allowDuplicatedCategory={false} />
                   <YAxis
                     yAxisId="left"
                     label={{
-                      value: "Bookings",
+                      value: "bookings",
                       angle: -90,
                       position: "insideLeft",
                     }}
@@ -393,7 +405,7 @@ useEffect(() => {
                     yAxisId="right"
                     orientation="right"
                     label={{
-                      value: "Revenue",
+                      value: "revenue",
                       angle: -90,
                       position: "insideRight",
                     }}
@@ -416,7 +428,6 @@ useEffect(() => {
                     yAxisId="left"
                     stroke={colors[0]}
                     name="Bookings"
-                    
                   />
                   <Line
                     type="monotone"
@@ -447,62 +458,68 @@ useEffect(() => {
       {/* bieu do 2 */}
       {chartMode === "service" && (
         <div>
-      <h1
-        className="text-2xl font-semibold text-blue-600 mb-4 "
-        onClick={handleh1Click}
-      >
-        Thống kê số lượng dịch vụ của khách sạn
-      </h1>
+          <h1
+            className="text-2xl font-semibold text-blue-600 mb-4 "
+            onClick={handleh1Click}
+          >
+            Thống kê số lượng dịch vụ của khách sạn
+          </h1>
           <div
             className={`relative ${isDropdownVisibleSv ? "block" : "hidden"}`}
           >
             <div className="flex space-x-4">
-              <div className="bg-blue-200">
-                <label>Chọn tháng: </label>
-                <select
-                  className="border rounded p-2"
-                  onChange={handleMonthChangeSv}
-                  value={selectedMonthSv}
-                >
-                  {uniqueMonthsSv.map((month: any) => (
-                    <option key={month} value={month}>
-                      {month}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="bg-green-200">
-                <label>Chọn năm: </label>
-                <select
-                  className="border rounded p-2"
-                  onChange={handleYearChangeSv}
-                  value={selectedYearSv}
-                >
-                  {uniqueYearsSv.map((year: any) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+  <div className="bg-blue-200">
+    <label>Chọn tháng: </label>
+    <select
+      className="border rounded p-2"
+      onChange={handleMonthChangeSv}
+      value={selectedMonthSv}
+    >
+      {Array.from({ length: 12 }, (_, index) => {
+        const monthNumber = index + 1;
+        return (
+          <option key={monthNumber} value={monthNumber}>
+            {monthNumber}
+          </option>
+        );
+      })}
+    </select>
+  </div>
+  <div className="bg-green-200">
+    <label>Chọn năm: </label>
+    <select
+      className="border rounded p-2"
+      onChange={handleYearChangeSv}
+      value={selectedYearSv}
+    >
+      {Array.from({ length: 4 }, (_, i) => {
+        const yearNumber = 2020 + i;
+        return (
+          <option key={yearNumber} value={yearNumber}>
+            {yearNumber}
+          </option>
+        );
+      })}
+    </select>
+  </div>
+</div>
           </div>
 
-          {filteredData2.length > 0 ? (
+          {statisticalServiceData.length > 0 ? (
             <div>
               <h2>
                 Dữ liệu cho tháng {selectedMonthSv} năm {selectedYearSv}:
               </h2>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={filteredData2}>
+                <BarChart data={statisticalServiceData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="serviceName" />
-                  <YAxis 
-                  label={{
-                    value: "Service",
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
+                  <YAxis
+                    label={{
+                      value: "Service",
+                      angle: -90,
+                      position: "insideLeft",
+                    }}
                   />
                   <Tooltip />
                   <Legend />
@@ -518,86 +535,98 @@ useEffect(() => {
         </div>
       )}
 
-
-
       {/* Biểu đồ 3 */}
       <div>
-  {chartMode === "roomtype" && (
-    <div>
-      <h1
-        className="text-2xl font-semibold text-blue-600 mb-4 "
-        onClick={handleh3Click}
-      >
-        Thống kê số loại phòng
-      </h1>
-
-      <div className={`relative ${isDropdownVisibleRt ? "block" : "hidden"} flex space-x-4`}>
-        <div className="bg-blue-200">
-          <label>Chọn tháng: </label>
-          <select
-            className="border rounded p-2"
-            onChange={handleMonthChangeRt}
-            value={selectedMonthRt}
-          >
-            {uniqueMonthsRt.map((month: any) => (
-              <option key={month} value={month}>
-                {month}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="bg-green-200">
-          <label>Chọn năm: </label>
-          <select
-            className="border rounded p-2"
-            onChange={handleYearChangeRt}
-            value={selectedYearRt}
-          >
-            {uniqueYearsRt.map((year: any) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
+        {chartMode === "roomtype" && (
+          <div>
+            <h1
+              className="text-2xl font-semibold text-blue-600 mb-4"
+              onClick={handleh3Click}
+            >
+              Thống kê số loại phòng
+            </h1>
+            <div
+              className={`relative ${
+                isDropdownVisibleRt ? "block" : "hidden"
+              } flex space-x-4`}
+            >
+              <div className="bg-blue-200">
+                <label>Chọn tháng: </label>
+                <select
+                  className="border rounded p-2"
+                  onChange={handleMonthChangeRt}
+                  value={selectedMonthRt}
+                >
+                  {Array.from({ length: 12 }, (_, index) => {
+                    const month = index + 1;
+                    return (
+                      <option key={month} value={month}>
+                        {month}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="bg-green-200">
+                <label>Chọn năm: </label>
+                <select
+                  className="border rounded p-2"
+                  onChange={handleYearChangeRt}
+                  value={selectedYearRt}
+                >
+                  {Array.from({ length: 4 }, (_, index) => {
+                    const year = 2020 + index;
+                    return (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+            <h2 className="mt-3">
+              Dữ liệu cho tháng {selectedMonthRt} năm {selectedYearRt}:
+            </h2>
+            {statisticalRoom ? (
+              statisticalRoom.length === 0 ? (
+                <p className="font-bold">
+                  Không có dữ liệu cho tháng và năm đã chọn.
+                </p>
+              ) : (
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={statisticalRoom}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="roomType" />
+                    <YAxis
+                      label={{
+                        value: "rating & bookingCount",
+                        angle: -90,
+                        position: "insideLeft",
+                      }}
+                    />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="bookingCount"
+                      fill="steelblue"
+                      name="bookingCount"
+                    />
+                    <Bar dataKey="rating" fill="orange" name="rating" />
+                  </BarChart>
+                </ResponsiveContainer>
+              )
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
+        )}
       </div>
-      <h2 className="mt-3">
-        Dữ liệu cho tháng {selectedMonthRt} năm {selectedYearRt}:
-      </h2>
-
-      {filteredRoomTypeData.length === 0 ? (
-        <p className="font-bold">Không có dữ liệu cho tháng và năm đã chọn.</p>
-      ) : (
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={filteredRoomTypeData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="roomType" />
-            <YAxis
-              label={{
-                value: "Booking & Rating",
-                angle: -90,
-                position: "insideLeft",
-              }}
-            />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="bookingCount" fill="steelblue" name="Bookings" />
-            <Bar dataKey="rating" fill="orange" name="Rating" />
-          </BarChart>
-        </ResponsiveContainer>
-      )}
-    </div>
-  )}
-</div>
-
-
-      
 
       {/* Biểu đồ 4 */}
       <Card title="Hotel Statistics" style={{ marginTop: "16px" }}>
         <Table columns={columns} dataSource={dataHotel} />
       </Card>
-
     </div>
   );
 };

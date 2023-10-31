@@ -5,7 +5,7 @@ const hotelchainstatisticsApi = createApi({
     reducerPath: 'hotelchainstatistics',
     tagTypes: ['HotelChainStatistics'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -15,10 +15,10 @@ const hotelchainstatisticsApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getHotelChainStatistics: builder.query<any, void>({
-            query: () => `/hotelchainstatistics`,
-            providesTags: ['HotelChainStatistics']
-        }),
+        getHotelChainStatistics: builder.query<any, { month: number, year: number }>({
+            query: ({ month, year }) => `statictical_total_booking_monthl/${month}/${year}`,
+            providesTags: ['HotelChainStatistics'],
+          }),
         getHotelChainStatisticsById: builder.query({
             query: (id) => `/hotelchainstatistics/${id}`,
             providesTags: ['HotelChainStatistics']

@@ -801,6 +801,30 @@
       "description": "Giảm giá 30% tổng bill tội gì mà không áp dụng",
       "created_at": "2023-08-27T17:59:42.000000Z",
       "updated_at": "2023-08-27T17:59:42.000000Z"
+    },
+    {
+      "slug": "abcd",
+      "name": "voucher",
+      "discount": "discount",
+      "meta": "aaaaaaaaaa",
+      "description": "aaaaaaaaaaaaaaaa",
+      "start_at": "2023-10-27T14:36:13.546Z",
+      "expire_at": "2023-10-28T14:36:16.061Z",
+      "quantity": 20,
+      "status": "inactive",
+      "id": 4
+    },
+    {
+      "slug": "abcd",
+      "name": "Iphone 11",
+      "discount": "discount",
+      "meta": "aaaaaaaaaaaaa",
+      "description": "aaaaaaaaaaaaaaaaaaaaaa",
+      "start_at": "2023-10-27T14:39:39.454Z",
+      "expire_at": "2023-10-27T14:39:41.869Z",
+      "quantity": 1,
+      "status": "active",
+      "id": 5
     }
   ],
   "district": [
@@ -1456,7 +1480,7 @@
       "year": "2023",
       "booking": 100,
       "revenue": 15000,
-      "cancelroom":14
+      "cancelroom": 14
     },
     {
       "id": 2,
@@ -1465,7 +1489,7 @@
       "year": "2023",
       "booking": 120,
       "revenue": 15200,
-      "cancelroom":18
+      "cancelroom": 18
     },
     {
       "id": 3,
@@ -1474,7 +1498,7 @@
       "year": "2023",
       "booking": 130,
       "revenue": 15500,
-      "cancelroom":22
+      "cancelroom": 22
     },
     {
       "id": 4,
@@ -1483,7 +1507,7 @@
       "year": "2023",
       "booking": 190,
       "revenue": 18400,
-      "cancelroom":9
+      "cancelroom": 9
     },
     {
       "id": 5,
@@ -1492,7 +1516,7 @@
       "year": "2023",
       "booking": 210,
       "revenue": 14003,
-      "cancelroom":20
+      "cancelroom": 20
     },
     {
       "id": 6,
@@ -1501,7 +1525,7 @@
       "year": "2023",
       "booking": 256,
       "revenue": 13500,
-      "cancelroom":8
+      "cancelroom": 8
     },
     {
       "id": 7,
@@ -1510,7 +1534,7 @@
       "year": "2023",
       "booking": 200,
       "revenue": 12110,
-      "cancelroom":13
+      "cancelroom": 13
     },
     {
       "id": 8,
@@ -1519,7 +1543,7 @@
       "year": "2023",
       "booking": 84,
       "revenue": 18200,
-      "cancelroom":10
+      "cancelroom": 10
     },
     {
       "id": 9,
@@ -1528,7 +1552,7 @@
       "year": "2023",
       "booking": 156,
       "revenue": 35500,
-      "cancelroom":11
+      "cancelroom": 11
     },
     {
       "id": 10,
@@ -1537,7 +1561,7 @@
       "year": "2023",
       "booking": 175,
       "revenue": 18100,
-      "cancelroom":20
+      "cancelroom": 20
     },
     {
       "id": 11,
@@ -1546,7 +1570,7 @@
       "year": "2023",
       "booking": 195,
       "revenue": 14200,
-      "cancelroom":16
+      "cancelroom": 16
     },
     {
       "id": 12,
@@ -1555,7 +1579,7 @@
       "year": "2023",
       "booking": 207,
       "revenue": 15200,
-      "cancelroom":14
+      "cancelroom": 14
     },
     {
       "id": 13,
@@ -1564,7 +1588,7 @@
       "year": "2023",
       "booking": 180,
       "revenue": 16500,
-      "cancelroom":22
+      "cancelroom": 22
     },
     {
       "id": 14,
@@ -1573,7 +1597,7 @@
       "year": "2023",
       "booking": 215,
       "revenue": 18300,
-      "cancelroom":29
+      "cancelroom": 29
     },
     {
       "id": 15,
@@ -1582,7 +1606,7 @@
       "year": "2023",
       "booking": 230,
       "revenue": 15500,
-      "cancelroom":24
+      "cancelroom": 24
     }
   ],
   "HotelChainStatisticsv": [
@@ -1767,310 +1791,381 @@
       "year": "2022"
     }
   ],
-  "statistical_roomtype":[
-      { "roomType": "Single", "month": "Tháng 1", "year": "2023", "bookingCount": 50, "rating": 4.5 },
-      { "roomType": "Double", "month": "Tháng 1", "year": "2023", "bookingCount": 80, "rating": 4.2 },
-      { "roomType": "Suite", "month": "Tháng 1", "year": "2023", "bookingCount": 30, "rating": 4.7 },
-      { "roomType": "Single", "month": "Tháng 2", "year": "2023", "bookingCount": 60, "rating": 4.6 },
-      { "roomType": "Double", "month": "Tháng 2", "year": "2023", "bookingCount": 90, "rating": 4.3 },
-      { "roomType": "Suite", "month": "Tháng 2", "year": "2023", "bookingCount": 35, "rating": 4.8 },
-      { "roomType": "Single", "month": "Tháng 3", "year": "2022", "bookingCount": 55, "rating": 4.4 },
-      { "roomType": "Double", "month": "Tháng 3", "year": "2022", "bookingCount": 85, "rating": 4.1 },
-      { "roomType": "Suite", "month": "Tháng 3", "year": "2022", "bookingCount": 25, "rating": 4.6 },
-      { "roomType": "Single", "month": "Tháng 4", "year": "2022", "bookingCount": 65, "rating": 4.3 },
-      { "roomType": "Double", "month": "Tháng 4", "year": "2022", "bookingCount": 95, "rating": 4.0 },
-      { "roomType": "Suite", "month": "Tháng 4", "year": "2022", "bookingCount": 40, "rating": 4.5 }
-],
-"HotelChainStatisticRt":[
-  {
-    "hotel": "Hotel A",
-    "roomType": "Single",
-    "rating": 4,
-    "month": "tháng 1",
-    "year": "2023",
-    "bookings": 25
-  },
-  {
-    "hotel": "Hotel A",
-    "roomType": "Double",
-    "rating": 4.5,
-    "month": "tháng 2",
-    "year": "2023",
-    "bookings": 30
-  },
-  {
-    "hotel": "Hotel A",
-    "roomType": "Suite",
-    "rating": 5,
-    "month": "tháng 1",
-    "year": "2023",
-    "bookings": 15
-  },
-  {
-    "hotel": "Hotel B",
-    "roomType": "Single",
-    "rating": 3.5,
-    "month": "tháng 2",
-    "year": "2023",
-    "bookings": 20
-  },
-  {
-    "hotel": "Hotel B",
-    "roomType": "Double",
-    "rating": 4,
-    "month": "tháng 1",
-    "year": "2023",
-    "bookings": 35
-  },
-  {
-    "hotel": "Hotel B",
-    "roomType": "Suite",
-    "rating": 4.5,
-    "month": "tháng 2",
-    "year": "2023",
-    "bookings": 10
-  },
-  {
-    "hotel": "Hotel C",
-    "roomType": "Single",
-    "rating": 4,
-    "month": "tháng 1",
-    "year": "2023",
-    "bookings": 22
-  },
-  {
-    "hotel": "Hotel C",
-    "roomType": "Double",
-    "rating": 4.3,
-    "month": "tháng 2",
-    "year": "2023",
-    "bookings": 28
-  },
-  {
-    "hotel": "Hotel C",
-    "roomType": "Suite",
-    "rating": 4.8,
-    "month": "tháng 2",
-    "year": "2023",
-    "bookings": 18
-  },
-  {
-    "hotel": "Hotel D",
-    "roomType": "Single",
-    "rating": 3.8,
-    "month": "tháng 1",
-    "year": "2023",
-    "bookings": 15
-  },
-  {
-    "hotel": "Hotel D",
-    "roomType": "Double",
-    "rating": 4.2,
-    "month": "tháng 2",
-    "year": "2023",
-    "bookings": 32
-  },
-  {
-    "hotel": "Hotel D",
-    "roomType": "Suite",
-    "rating": 4.6,
-    "month": "tháng 1",
-    "year": "2023",
-    "bookings": 12
-  },
-  {
-    "hotel": "Hotel E",
-    "roomType": "Single",
-    "rating": 3.5,
-    "month": "tháng 2",
-    "year": "2023",
-    "bookings": 17
-  },
-  {
-    "hotel": "Hotel E",
-    "roomType": "Double",
-    "rating": 4,
-    "month": "tháng 1",
-    "year": "2023",
-    "bookings": 28
-  },
-  {
-    "hotel": "Hotel E",
-    "roomType": "Suite",
-    "rating": 4.2,
-    "month": "tháng 1",
-    "year": "2023",
-    "bookings": 14
-  }
-],
-  "bookingTest": [
+  "statistical_roomtype": [
     {
-        "id": 1,
-        "check_in": "2023-10-05 00:00:00",
-        "check_out": "2023-10-10 00:00:00",
-        "people_quantity": 8,
-        "total_amount": 100,
-        "status": 1,
-        "nationality": "vn",
-        "cccd": "1123",
-        "message": "sua",
-        "phone": "111",
-        "email": "ntt091103@gmail.com",
-        "deleted_at": null,
-        "name": "tung",
-        "id_user": 1,
-        "created_at": "2023-10-06T16:22:11.000000Z",
-        "updated_at": "2023-10-06T16:31:07.000000Z",
-        "hotel": {
-            "name": "Mr. Koby West DDS",
-            "image": "https://via.placeholder.com/640x480.png/003355?text=quia",
-            "alt": "http://wiza.com/"
-        },
-        "categories": [
-            {
-                "id": 1,
-                "name": "Selena Kemmer",
-                "image": "https://via.placeholder.com/640x480.png/009988?text=officia",
-                "rooms": [
-                    {
-                        "id": 3,
-                        "name": "Darby Little",
-                        "id_hotel": 5,
-                        "id_cate": 1,
-                        "services": [
-                            {
-                                "name": "Quam hic esse.",
-                                "price": 571
-                            },
-                            {
-                                "name": "Veritatis.",
-                                "price": 993
-                            },
-                            {
-                                "name": "Commodi suscipit.",
-                                "price": 523
-                            },
-                            {
-                                "name": "Quam hic esse.",
-                                "price": 571
-                            },
-                            {
-                                "name": "Veritatis.",
-                                "price": 993
-                            },
-                            {
-                                "name": "Commodi suscipit.",
-                                "price": 523
-                            }
-                        ]
-                    }
-                ]
-            }
-        ],
-        "total_room": 1,
-        "total_service": 6
+      "roomType": "Single",
+      "month": "Tháng 1",
+      "year": "2023",
+      "bookingCount": 50,
+      "rating": 4.5
     },
     {
-        "id": 3,
-        "check_in": "2023-10-10 00:00:00",
-        "check_out": "2023-10-12 00:00:00",
-        "people_quantity": 8,
-        "total_amount": 100,
-        "status": 1,
-        "nationality": "vn",
-        "cccd": "1123",
-        "message": "kfgahsgad",
-        "phone": "111",
-        "email": "ntt091103@gmail.com",
-        "deleted_at": null,
-        "name": "tung",
-        "id_user": 1,
-        "created_at": "2023-10-09T14:53:26.000000Z",
-        "updated_at": "2023-10-09T14:53:26.000000Z",
-        "hotel": {
-            "name": "Prof. Carmen Cummerata III",
-            "image": "https://via.placeholder.com/640x480.png/003366?text=nesciunt",
-            "alt": "http://www.abernathy.com/voluptatem-omnis-sit-commodi-est-quis.html"
-        },
-        "categories": [
+      "roomType": "Double",
+      "month": "Tháng 1",
+      "year": "2023",
+      "bookingCount": 80,
+      "rating": 4.2
+    },
+    {
+      "roomType": "Suite",
+      "month": "Tháng 1",
+      "year": "2023",
+      "bookingCount": 30,
+      "rating": 4.7
+    },
+    {
+      "roomType": "Single",
+      "month": "Tháng 2",
+      "year": "2023",
+      "bookingCount": 60,
+      "rating": 4.6
+    },
+    {
+      "roomType": "Double",
+      "month": "Tháng 2",
+      "year": "2023",
+      "bookingCount": 90,
+      "rating": 4.3
+    },
+    {
+      "roomType": "Suite",
+      "month": "Tháng 2",
+      "year": "2023",
+      "bookingCount": 35,
+      "rating": 4.8
+    },
+    {
+      "roomType": "Single",
+      "month": "Tháng 3",
+      "year": "2022",
+      "bookingCount": 55,
+      "rating": 4.4
+    },
+    {
+      "roomType": "Double",
+      "month": "Tháng 3",
+      "year": "2022",
+      "bookingCount": 85,
+      "rating": 4.1
+    },
+    {
+      "roomType": "Suite",
+      "month": "Tháng 3",
+      "year": "2022",
+      "bookingCount": 25,
+      "rating": 4.6
+    },
+    {
+      "roomType": "Single",
+      "month": "Tháng 4",
+      "year": "2022",
+      "bookingCount": 65,
+      "rating": 4.3
+    },
+    {
+      "roomType": "Double",
+      "month": "Tháng 4",
+      "year": "2022",
+      "bookingCount": 95,
+      "rating": 4
+    },
+    {
+      "roomType": "Suite",
+      "month": "Tháng 4",
+      "year": "2022",
+      "bookingCount": 40,
+      "rating": 4.5
+    }
+  ],
+  "HotelChainStatisticRt": [
+    {
+      "hotel": "Hotel A",
+      "roomType": "Single",
+      "rating": 4,
+      "month": "tháng 1",
+      "year": "2023",
+      "bookings": 25
+    },
+    {
+      "hotel": "Hotel A",
+      "roomType": "Double",
+      "rating": 4.5,
+      "month": "tháng 2",
+      "year": "2023",
+      "bookings": 30
+    },
+    {
+      "hotel": "Hotel A",
+      "roomType": "Suite",
+      "rating": 5,
+      "month": "tháng 1",
+      "year": "2023",
+      "bookings": 15
+    },
+    {
+      "hotel": "Hotel B",
+      "roomType": "Single",
+      "rating": 3.5,
+      "month": "tháng 2",
+      "year": "2023",
+      "bookings": 20
+    },
+    {
+      "hotel": "Hotel B",
+      "roomType": "Double",
+      "rating": 4,
+      "month": "tháng 1",
+      "year": "2023",
+      "bookings": 35
+    },
+    {
+      "hotel": "Hotel B",
+      "roomType": "Suite",
+      "rating": 4.5,
+      "month": "tháng 2",
+      "year": "2023",
+      "bookings": 10
+    },
+    {
+      "hotel": "Hotel C",
+      "roomType": "Single",
+      "rating": 4,
+      "month": "tháng 1",
+      "year": "2023",
+      "bookings": 22
+    },
+    {
+      "hotel": "Hotel C",
+      "roomType": "Double",
+      "rating": 4.3,
+      "month": "tháng 2",
+      "year": "2023",
+      "bookings": 28
+    },
+    {
+      "hotel": "Hotel C",
+      "roomType": "Suite",
+      "rating": 4.8,
+      "month": "tháng 2",
+      "year": "2023",
+      "bookings": 18
+    },
+    {
+      "hotel": "Hotel D",
+      "roomType": "Single",
+      "rating": 3.8,
+      "month": "tháng 1",
+      "year": "2023",
+      "bookings": 15
+    },
+    {
+      "hotel": "Hotel D",
+      "roomType": "Double",
+      "rating": 4.2,
+      "month": "tháng 2",
+      "year": "2023",
+      "bookings": 32
+    },
+    {
+      "hotel": "Hotel D",
+      "roomType": "Suite",
+      "rating": 4.6,
+      "month": "tháng 1",
+      "year": "2023",
+      "bookings": 12
+    },
+    {
+      "hotel": "Hotel E",
+      "roomType": "Single",
+      "rating": 3.5,
+      "month": "tháng 2",
+      "year": "2023",
+      "bookings": 17
+    },
+    {
+      "hotel": "Hotel E",
+      "roomType": "Double",
+      "rating": 4,
+      "month": "tháng 1",
+      "year": "2023",
+      "bookings": 28
+    },
+    {
+      "hotel": "Hotel E",
+      "roomType": "Suite",
+      "rating": 4.2,
+      "month": "tháng 1",
+      "year": "2023",
+      "bookings": 14
+    }
+  ],
+  "bookingTest": [
+    {
+      "id": 1,
+      "check_in": "2023-10-05 00:00:00",
+      "check_out": "2023-10-10 00:00:00",
+      "people_quantity": 8,
+      "total_amount": 100,
+      "status": 1,
+      "nationality": "vn",
+      "cccd": "1123",
+      "message": "sua",
+      "phone": "111",
+      "email": "ntt091103@gmail.com",
+      "deleted_at": null,
+      "name": "tung",
+      "id_user": 1,
+      "created_at": "2023-10-06T16:22:11.000000Z",
+      "updated_at": "2023-10-06T16:31:07.000000Z",
+      "hotel": {
+        "name": "Mr. Koby West DDS",
+        "image": "https://via.placeholder.com/640x480.png/003355?text=quia",
+        "alt": "http://wiza.com/"
+      },
+      "categories": [
+        {
+          "id": 1,
+          "name": "Selena Kemmer",
+          "image": "https://via.placeholder.com/640x480.png/009988?text=officia",
+          "rooms": [
             {
-                "id": 1,
-                "name": "Selena Kemmer",
-                "image": "https://via.placeholder.com/640x480.png/009988?text=officia",
-                "rooms": [
-                    {
-                        "id": 1,
-                        "name": "Scotty Konopelski",
-                        "id_hotel": 5,
-                        "id_cate": 1,
-                        "services": [
-                            {
-                                "name": "Quam hic esse.",
-                                "price": 571
-                            },
-                            {
-                                "name": "Veritatis.",
-                                "price": 993
-                            },
-                            {
-                                "name": "Commodi suscipit.",
-                                "price": 523
-                            }
-                        ]
-                    }
-                ]
+              "id": 3,
+              "name": "Darby Little",
+              "id_hotel": 5,
+              "id_cate": 1,
+              "services": [
+                {
+                  "name": "Quam hic esse.",
+                  "price": 571
+                },
+                {
+                  "name": "Veritatis.",
+                  "price": 993
+                },
+                {
+                  "name": "Commodi suscipit.",
+                  "price": 523
+                },
+                {
+                  "name": "Quam hic esse.",
+                  "price": 571
+                },
+                {
+                  "name": "Veritatis.",
+                  "price": 993
+                },
+                {
+                  "name": "Commodi suscipit.",
+                  "price": 523
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "total_room": 1,
+      "total_service": 6
+    },
+    {
+      "id": 3,
+      "check_in": "2023-10-10 00:00:00",
+      "check_out": "2023-10-12 00:00:00",
+      "people_quantity": 8,
+      "total_amount": 100,
+      "status": 1,
+      "nationality": "vn",
+      "cccd": "1123",
+      "message": "kfgahsgad",
+      "phone": "111",
+      "email": "ntt091103@gmail.com",
+      "deleted_at": null,
+      "name": "tung",
+      "id_user": 1,
+      "created_at": "2023-10-09T14:53:26.000000Z",
+      "updated_at": "2023-10-09T14:53:26.000000Z",
+      "hotel": {
+        "name": "Prof. Carmen Cummerata III",
+        "image": "https://via.placeholder.com/640x480.png/003366?text=nesciunt",
+        "alt": "http://www.abernathy.com/voluptatem-omnis-sit-commodi-est-quis.html"
+      },
+      "categories": [
+        {
+          "id": 1,
+          "name": "Selena Kemmer",
+          "image": "https://via.placeholder.com/640x480.png/009988?text=officia",
+          "rooms": [
+            {
+              "id": 1,
+              "name": "Scotty Konopelski",
+              "id_hotel": 5,
+              "id_cate": 1,
+              "services": [
+                {
+                  "name": "Quam hic esse.",
+                  "price": 571
+                },
+                {
+                  "name": "Veritatis.",
+                  "price": 993
+                },
+                {
+                  "name": "Commodi suscipit.",
+                  "price": 523
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Ada Boehm",
+          "image": "https://via.placeholder.com/640x480.png/00ff99?text=consequatur",
+          "rooms": [
+            {
+              "id": 1,
+              "name": "Scotty Konopelski",
+              "id_hotel": 5,
+              "id_cate": 1,
+              "services": [
+                {
+                  "name": "Quam hic esse.",
+                  "price": 571
+                },
+                {
+                  "name": "Veritatis.",
+                  "price": 993
+                },
+                {
+                  "name": "Commodi suscipit.",
+                  "price": 523
+                }
+              ]
             },
             {
-                "id": 2,
-                "name": "Ada Boehm",
-                "image": "https://via.placeholder.com/640x480.png/00ff99?text=consequatur",
-                "rooms": [
-                    {
-                        "id": 1,
-                        "name": "Scotty Konopelski",
-                        "id_hotel": 5,
-                        "id_cate": 1,
-                        "services": [
-                            {
-                                "name": "Quam hic esse.",
-                                "price": 571
-                            },
-                            {
-                                "name": "Veritatis.",
-                                "price": 993
-                            },
-                            {
-                                "name": "Commodi suscipit.",
-                                "price": 523
-                            }
-                        ]
-                    },
-                    {
-                        "id": 5,
-                        "name": "Icie O'Kon",
-                        "id_hotel": 6,
-                        "id_cate": 2,
-                        "services": [
-                            {
-                                "name": "Quam hic esse.",
-                                "price": 571
-                            },
-                            {
-                                "name": "Veritatis.",
-                                "price": 993
-                            },
-                            {
-                                "name": "Commodi suscipit.",
-                                "price": 523
-                            }
-                        ]
-                    }
-                ]
+              "id": 5,
+              "name": "Icie O'Kon",
+              "id_hotel": 6,
+              "id_cate": 2,
+              "services": [
+                {
+                  "name": "Quam hic esse.",
+                  "price": 571
+                },
+                {
+                  "name": "Veritatis.",
+                  "price": 993
+                },
+                {
+                  "name": "Commodi suscipit.",
+                  "price": 523
+                }
+              ]
             }
-        ],
-        "total_room": 2,
-        "total_service": 6
+          ]
+        }
+      ],
+      "total_room": 2,
+      "total_service": 6
     }
-]
+  ]
 }
-
