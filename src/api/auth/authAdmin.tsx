@@ -5,11 +5,18 @@ const authAdminApi = createApi({
   tagTypes: ["UserAdmin"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://127.0.0.1:8000/api/auth/admin",
-    prepareHeaders(headers) {
-      headers.set("Accept", "application/json");
-      headers.set("Content-Type", "application/json");
-      return headers;
-    },
+    prepareHeaders: async (headers) => {
+      try {
+        await Promise.resolve(); // Đảm bảo promise đã được giải quyết
+        headers.set("Accept", "application/json");
+        headers.set("Content-Type", "application/json");
+
+        return headers;
+      } catch (error) {
+        console.error("Error in prepareHeaders:", error);
+        throw error;
+      }
+    }
   }),
   endpoints: (builder) => ({
     Signin: builder.mutation({
@@ -18,16 +25,21 @@ const authAdminApi = createApi({
         method: "POST",
         body: userAdmin,
       }),
-      transformResponse: (response: any) => {
-        console.log("res",response.userAdmin);
-        
-        const token = response.token; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
-        const userAdmin = response.admin; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
-        if (token) {
-          localStorage.setItem("token", token); // Lưu token vào localStorage
+      async transformResponse(response: any) {
+        try {
+          const tokenAdmin = response?.token; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
+          const userAdmin = response?.admin; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
+          if (tokenAdmin) {
+            localStorage.setItem("tokenAdmin", tokenAdmin); // Lưu token vào localStorage
+          }
+          localStorage.setItem("userAdmin", JSON.stringify(userAdmin));
+          await Promise.resolve(); // Đảm bảo promise đã được giải quyết
+
+          return response;
+        } catch (error) {
+          console.error("Error in transformResponse:", error);
+          throw error;
         }
-        localStorage.setItem("userAdmin",JSON.stringify(userAdmin))
-        return response;
       },
       
       invalidatesTags: ["UserAdmin"],

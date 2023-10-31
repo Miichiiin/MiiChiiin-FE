@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FileOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { AiFillSignal, AiOutlineCreditCard } from "react-icons/ai";
 import { BiSolidBed, BiHotel } from "react-icons/bi";
 import type { MenuProps } from "antd";
@@ -33,6 +33,8 @@ export const LayoutAdmin = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const userAdminLocal = localStorage.getItem('userAdmin')
+  const idLC = userAdminLocal ? JSON.parse(userAdminLocal)?.id : null;
+  console.log("user",userAdminLocal);
   let imageLC = ""
  if(userAdminLocal) {
   const data = JSON.parse(userAdminLocal);
@@ -107,7 +109,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get comment')) {
+    if (currentUserPermissions.includes('get rate')) {
       menuItems.push(
         getItem(
           <Link to={"commentmanagement"}>Quản lý comment</Link>,
@@ -178,7 +180,7 @@ export const LayoutAdmin = () => {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="flex flex-col items-center justify-center my-5 text-white">
-          <Link to={`admininfo/`} className="flex items-center">
+          <Link to={`admininfo/${idLC}`} className="flex items-center">
             <img
               src={imageLC}
               alt="Logo"
