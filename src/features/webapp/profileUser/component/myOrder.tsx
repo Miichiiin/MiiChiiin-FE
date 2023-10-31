@@ -9,8 +9,8 @@ import Modal from "react-modal";
 import dayjs from "dayjs";
 import { differenceInDays, parseISO } from "date-fns";
 const MyOrder = () => {
-  const [isProductInCart, setIsProductInCart] = useState();
-  console.log("isProductInCart", isProductInCart);
+  // const [isProductInCart, setIsProductInCart] = useState();
+  // console.log("isProductInCart", isProductInCart);
 
   const [user, setUser] = useState({
     id: "",
@@ -22,9 +22,10 @@ const MyOrder = () => {
     nationality: "",
     address: "",
   });
+console.log("user111", user);
 
-  // const { data: booking } = useGetBokingUserQuery(user?.id);
-  const { data: booking } = useGetBokingUserTestQuery();
+  const { data: booking } = useGetBokingUserQuery(user?.id);
+  // const { data: booking } = useGetBokingUserTestQuery();
 
   console.log("booking2333", booking);
 
@@ -78,7 +79,7 @@ const MyOrder = () => {
           </div>
           <div>
             {booking ? (
-              booking.map((item: any, index: number) => {
+              booking?.map((item: any, index: number) => {
                 return (
                   <div
                     key={index}
@@ -250,7 +251,7 @@ const MyOrder = () => {
                                                       className="col-span-1"
                                                     />
                                                     <span className="font-bold text-md col-span-3">
-                                                      {item?.rooms.map(
+                                                      {item?.rooms?.map(
                                                         (room: any) => {
                                                           return (
                                                             <>
@@ -262,7 +263,7 @@ const MyOrder = () => {
                                                               <span>
                                                                 <ul className="">
                                                                   Dịch vụ:{" "}
-                                                                  {room.services.map(
+                                                                  {room?.services?.map(
                                                                     (
                                                                       service: any
                                                                     ) => {
@@ -270,7 +271,7 @@ const MyOrder = () => {
                                                                         <>
                                                                           <li>
                                                                             {
-                                                                              service.name
+                                                                              service?.name
                                                                             }
                                                                           </li>
                                                                         </>

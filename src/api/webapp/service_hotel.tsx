@@ -3,7 +3,7 @@ const service_HotelApi = createApi({
     reducerPath: 'service_hotel',
     tagTypes: ['Service_hotel'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -17,8 +17,8 @@ const service_HotelApi = createApi({
             query: () => `/service_of_hotel`,
             providesTags: ['Service_hotel']
         }),
-        getService_hotelId: builder.query({
-            query: (id) => `/service_of_hotel/${id}`,
+        getService_hotelId: builder.query<any,any>({
+            query: (id) => `/services/id_hotel=${id}`,
             providesTags: ['Service_hotel']
         }),
         addService_hotel: builder.mutation({
