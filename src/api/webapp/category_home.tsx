@@ -3,13 +3,15 @@ const category_HomeApi = createApi({
     reducerPath: 'category_home',
     tagTypes: ['Category_home'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api",
         prepareHeaders(headers) {
-            const token = localStorage.getItem("token");
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`)
-            }
-            return headers;
+            // const token = localStorage.getItem("token");
+            // if (token) {
+            //     headers.set('Authorization', `Bearer ${token}`)
+            // }
+            // return headers;
+            headers.set("Accept", "application/json");
+            headers.set("Content-Type", "application/json");
         }
     }),
     endpoints: (builder) => ({
@@ -17,8 +19,8 @@ const category_HomeApi = createApi({
             query: () => `/category_home`,
             providesTags: ['Category_home']
         }),
-        getCategory_homeById: builder.query({
-            query: (id) => `/category_home/${id}`,
+        getCategory_homeById: builder.query<any,any>({
+        query: (hotel) => `/find/hotels=${hotel.id}/${hotel.check_in}/${hotel.check_out}/${hotel?.number_people}/${hotel?.total_room}`,
             providesTags: ['Category_home']
         }),
         addCategory_home: builder.mutation({
