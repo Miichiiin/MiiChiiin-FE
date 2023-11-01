@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export const ManagerEmployee = () => {
   const { data: emploData } = useGetAdmin_admin_AdminQuery({})
-  const [removeEployee] = useRemoveAdmin_admin_AdminMutation()
+  const [removeEployee,{isLoading: isRemoveEmployee}] = useRemoveAdmin_admin_AdminMutation()
   const dataSource = emploData?.map(({ id, name, id_role, email, password, image, description, gender, date, address, status, phone }: DataType) => ({
     key: id,
     id_role,
@@ -60,20 +60,25 @@ export const ManagerEmployee = () => {
       }
     },
     {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
-      render: (image) => <img src={image} alt="Hình ảnh" width="100" />,
+      render: (image) => <img src={image} alt="Hình ảnh" width="70" />,
     },
+    // {
+    //   title: "Chức vụ",
+    //   dataIndex: "description",
+    //   key: "description",
+    // },
     {
-      title: "Chức vụ",
-      dataIndex: "id_role",
-      key: "id_role",
-    },
-    {
-      title: "Giới tính",
-      dataIndex: "gender",
-      key: "gender",
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
     },
     {
       title: "Ngày sinh",
@@ -91,9 +96,26 @@ export const ManagerEmployee = () => {
       key: "phone",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Thao tác",
+      dataIndex: "action",
+      key: "action",
+      render: (text, item) => (
+        <div className="flex space-x-2">
+          {hasAddUserPermission("delete user") && (
+            <Button loading={isRemoveEmployee}
+              className='px-4 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md'
+              onClick={() => confirmDelete(item.key)}
+            >
+              Xóa
+            </Button>
+          )}
+          {hasAddUserPermission("update user") && (
+            <Button type="primary" className='bg-[#3b82f6]'>
+              <Link to={`/admin/updateemployee/${item.key}`}>Sửa</Link>
+            </Button>
+          )}
+        </div >
+      ),
     },
   ];
 
@@ -151,11 +173,11 @@ export const ManagerEmployee = () => {
                 label: "Tất cả",
               },
               {
-                value: "1",
+                value: 1,
                 label: "Không hiển thị",
               },
               {
-                value: "2",
+                value: 2,
                 label: "Hiển thị",
               },
             ]}
@@ -174,27 +196,6 @@ export const ManagerEmployee = () => {
           </button>
           )}
       </div>
-      <div>
-        {hasAddUserPermission('delete user') && (
-            <Button type="primary" className='mx-5' danger
-              onClick={() => {
-                selectedRows.forEach((row) => confirmDelete(row.key));
-              }}
-              disabled={selectedRows.length === 0}
-            >
-            xóa
-          </Button>
-        )}
-        {hasAddUserPermission('update user') && (
-          <Button type="primary" danger className="mt-1 ml-1">
-            
-              <Link to={`/admin/updateemployee`}>Sửa</Link>
-            
-          </Button>
-        )}
-      </div>
-
-
       <Radio.Group
         onChange={({ target: { value } }) => {
           setSelectionType(value);
@@ -204,17 +205,8 @@ export const ManagerEmployee = () => {
 
       <Divider />
       <Table
-        rowSelection={{
-          type: selectionType,
-          selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
-          onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-            setSelectedRows(selectedRows);
-          },
-        }}
         columns={columns}
         dataSource={filteredData}
-        scroll={{ x: 1500 }}
       />
     </div>
   );
