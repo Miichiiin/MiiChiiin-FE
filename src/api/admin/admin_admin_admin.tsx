@@ -7,7 +7,7 @@ const admin_admin_AdminApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8000/api",
         prepareHeaders(headers) {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("tokenAdmin");
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`)
             }
@@ -33,8 +33,8 @@ const admin_admin_AdminApi = createApi({
         }),
         updateAdmin_admin_Admin: builder.mutation({
             query: (product) => ({
-                url: `/admin/admin/${product.id}`,
-                method: "PUT",
+                url: `/admin/admin/${product.get('id')}`,
+                method: "POST",
                 body: product
             }),
             invalidatesTags: ['Admin_admin1']

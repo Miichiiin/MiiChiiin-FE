@@ -5,9 +5,9 @@ const voucherApi = createApi({
     reducerPath: 'voucher',
     tagTypes: ['Voucher'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("tokenAdmin");
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`)
             }
@@ -20,12 +20,12 @@ const voucherApi = createApi({
             providesTags: ['Voucher']
         }),
         getVoucherById: builder.query({
-            query: (id) => `/vouchers/${id}`,
+            query: (id) => `/voucher/${id}`,
             providesTags: ['Voucher']
         }),
         addVoucher: builder.mutation({
             query: (product) => ({
-                url: `/vouchers`,
+                url: `/voucher`,
                 method: "POST",
                 body: product
             }),
@@ -33,15 +33,15 @@ const voucherApi = createApi({
         }),
         updateVoucher: builder.mutation({
             query: (product) => ({
-                url: `/vouchers/${product.id}`,
-                method: "PATCH",
+                url: `/voucher/${product.get('id')}`,
+                method: "POST",
                 body: product
             }),
             invalidatesTags: ['Voucher']
         }),
         removeVoucher: builder.mutation<void, number | string>({
             query: (id: number) => ({
-                url: `/vouchers/${id}`,
+                url: `/voucher/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Voucher']
