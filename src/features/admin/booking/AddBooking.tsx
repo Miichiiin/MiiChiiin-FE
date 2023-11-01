@@ -181,12 +181,12 @@ const AddBooking = () => {
     updatedSelectedRoomsData.splice(roomIndex, 1);
     // Cập nhật lại mảng selectedRoomsData
     setSelectedRoomsData(updatedSelectedRoomsData);
-    const selectedCategory = categories?.find((category: any) => category.id === selectedRoomIndex);
-    if (selectedCategory && selectedRoomIndex !== null) {
-      const updatedAvailableRoomCounts = { ...availableRoomCounts };
-      updatedAvailableRoomCounts[selectedRoomIndex] += 1;
-      setAvailableRoomCounts(updatedAvailableRoomCounts);
-    }
+    // Lấy id_cate của phòng vừa xoá
+    const removedRoomId = selectedRoomsData[roomIndex].id_cate;
+    // Cập nhật lại số lượng phòng còn lại trong availableRoomCounts
+    const updatedAvailableRoomCounts = { ...availableRoomCounts };
+    updatedAvailableRoomCounts[removedRoomId] += 1;
+    setAvailableRoomCounts(updatedAvailableRoomCounts);
     // Giảm số lượng phòng đã chọn đi 1
     setRoomCount(roomCount - 1);
     // Cập nhật lại tổng giá
