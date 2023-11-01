@@ -1,17 +1,19 @@
 
 import { useGetService_adminIdQuery, useUpdateService_adminMutation } from '@/api/admin/service_admin';
-import { Button, Form, Image, Input, InputNumber, Select, Upload, message } from 'antd';
+import { Button, Form, Image, Input, InputNumber, Select, message,Skeleton, Spin} from 'antd';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
 export const UpdateService = () => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string}>()
+  const { id } = useParams<{ id: string }>()
   const { data, isLoading, isError } = useGetService_adminIdQuery(id)
   const [updateServiceAdmin] = useUpdateService_adminMutation();
   const [selectedFile, setSelectedFile] = useState<File>();
   const [isImageChanged, setIsImageChanged] = useState(false);
+  const [isUploading, setIsUploading] = useState(false)
+
   const onFinish = (values: any) => {
     const body = new FormData()
     if (id) {
@@ -27,17 +29,20 @@ export const UpdateService = () => {
     } else {
       body.append('image', data?.image);
     }
-    console.log('body', body);
-    
+    setIsUploading(true);
+
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
 
     updateServiceAdmin(body).unwrap()
       .then(() => {
-        message.success('Cập nhật dịch vụ thành công');
-        navigate('/admin/service');
+          message.success({ content: 'Cập nhật dịch vụ thành công', key: 'uploading' });
+          navigate('/admin/service');
       })
-      .catch((error: any) => {
-        console.error('Failed:', error);
-        message.error('Cập nhật dịch vụ thất bại');
+      .catch(() => {
+        message.error({ content: 'Cập nhật dịch vụ thất bại', key: 'uploading' });
+      })
+      .finally(() => {
+        setIsUploading(false);
       });
   };
 
@@ -53,15 +58,17 @@ export const UpdateService = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+      return <Skeleton active/>
   }
 
   if (isError) {
-    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+    message.error('Tải dịch vụ thất bại')
   }
+
 
   return (
     <div>
+      {isUploading && <Spin className='animate' />}
       <header className="flex justify-between items-center my-5 mx-3">
         <h2 className="text-2xl ">Cập nhật dịch vụ: <span className='text-blue-700 font-semibold'>{data?.name}</span></h2>
       </header>
@@ -88,7 +95,7 @@ export const UpdateService = () => {
           label="Upload"
         >
           <input type='file' onChange={handleChange} />
-          <img src={data?.image} className='w-[100px] h-[100px] my-2' />
+          <Image src={data?.image} className='w-[100px] h-[100px] my-2' />
         </Form.Item>
         <Form.Item
           label="Số lượng"
@@ -99,10 +106,9 @@ export const UpdateService = () => {
         </Form.Item>
 
         <Form.Item label="Trạng thái" name="status" >
-          <Select style={{ width: '150px' }}>
-            <Select.Option value="all">Đang dùng</Select.Option>
+          <Select placeholder="Chọn trạng thái " style={{ width: '150px' }}>
             <Select.Option value={1}>Có sẵn</Select.Option>
-            <Select.Option value={2}>Đã thuê</Select.Option>
+            <Select.Option value={0}>Đã thuê</Select.Option>
           </Select>
         </Form.Item>
 
@@ -113,6 +119,9 @@ export const UpdateService = () => {
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
             Cập nhật
+          </Button>
+          <Button type="primary" danger className='mx-2' onClick={()=>navigate("/admin/service")}>
+            Quay lại
           </Button>
         </Form.Item>
       </Form>
