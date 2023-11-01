@@ -1,6 +1,6 @@
 import { useAddService_adminMutation } from '@/api/admin/service_admin';
 
-import { Button, Form, Input, InputNumber, Select, message } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Spin, message } from 'antd';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ export const AddService = () => {
   const navigate = useNavigate();
   const [addServiceAdmin, {isLoading}] = useAddService_adminMutation();
   const [selectedFile, setSelectedFile] = useState<File>();
-
+  const [isUploading, setIsUploading] = useState(false)
   const onFinish = (values: any) => {
     const body = new FormData()
     body.append('name', values.name)
@@ -19,10 +19,16 @@ export const AddService = () => {
     body.append('quantity', values.quantity)
     body.append('price', values.price)
     body.append('status', values.status)
-    console.log('body', body)
+    setIsUploading(true);
+
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
     addServiceAdmin(body).unwrap().then(() => {
       navigate("/admin/service")
-      message.success("Thêm dịch vụ thành công!")
+      message.success({content: 'Thêm dịch vụ thành công', key: 'uploading'})
+    }).catch(() => {
+      message.error({content: 'Thêm dịch vụ thất bại', key: 'uploading'})
+    }).finally(() => {
+      setIsUploading(false);
     })
 
   };
@@ -39,6 +45,7 @@ export const AddService = () => {
 
   return (
     <div>
+      {isUploading && <Spin className='animate'/>}
       <header className="flex justify-between items-center my-5 mx-3">
         <h2 className="text-2xl text-blue-700">Thêm dịch vụ</h2>
       </header>

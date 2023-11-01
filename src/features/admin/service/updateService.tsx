@@ -1,6 +1,6 @@
 
 import { useGetService_adminIdQuery, useUpdateService_adminMutation } from '@/api/admin/service_admin';
-import { Button, Form, Image, Input, InputNumber, Select, message,Skeleton} from 'antd';
+import { Button, Form, Image, Input, InputNumber, Select, message,Skeleton, Spin} from 'antd';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ export const UpdateService = () => {
   const [updateServiceAdmin] = useUpdateService_adminMutation();
   const [selectedFile, setSelectedFile] = useState<File>();
   const [isImageChanged, setIsImageChanged] = useState(false);
+  const [isUploading, setIsUploading] = useState(false)
 
   const onFinish = (values: any) => {
     const body = new FormData()
@@ -28,15 +29,20 @@ export const UpdateService = () => {
     } else {
       body.append('image', data?.image);
     }
-    console.log('body', body);
+    setIsUploading(true);
+
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
 
     updateServiceAdmin(body).unwrap()
       .then(() => {
-        message.success('Cập nhật dịch vụ thành công');
-        navigate('/admin/service');
+          message.success({ content: 'Cập nhật dịch vụ thành công', key: 'uploading' });
+          navigate('/admin/service');
       })
       .catch(() => {
-        message.error('Cập nhật dịch vụ thất bại');
+        message.error({ content: 'Cập nhật dịch vụ thất bại', key: 'uploading' });
+      })
+      .finally(() => {
+        setIsUploading(false);
       });
   };
 
@@ -52,9 +58,7 @@ export const UpdateService = () => {
   };
 
   if (isLoading) {
-
       return <Skeleton active/>
-
   }
 
   if (isError) {
@@ -64,6 +68,7 @@ export const UpdateService = () => {
 
   return (
     <div>
+      {isUploading && <Spin className='animate' />}
       <header className="flex justify-between items-center my-5 mx-3">
         <h2 className="text-2xl ">Cập nhật dịch vụ: <span className='text-blue-700 font-semibold'>{data?.name}</span></h2>
       </header>
