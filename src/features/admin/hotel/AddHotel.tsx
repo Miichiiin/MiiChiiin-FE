@@ -119,9 +119,9 @@ export const AddHotel = () => {
                             label="Trạng thái"
                             name="status"
                         >
-                            <Select defaultValue="0" style={{ width: '150px' }}>
-                                <Select.Option value="1">Đang dùng</Select.Option>
-                                <Select.Option value="0">Có sẵn</Select.Option>
+                            <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
+                                <Select.Option value={1}>Đang dùng</Select.Option>
+                                <Select.Option value={0}>Có sẵn</Select.Option>
                             </Select>
                         </Form.Item>
                         <Form.Item
@@ -141,7 +141,7 @@ export const AddHotel = () => {
                         {isLoading ? (
                             <AiOutlineLoading3Quarters className="animate-spin" />
                         ) : (
-                            "Add new product"
+                            "Add new hotel"
                         )}
                     </Button>
                     <Button danger className='mx-2' onClick={() => navigate("/admin/hotelmanagement")}>Quay lại</Button>

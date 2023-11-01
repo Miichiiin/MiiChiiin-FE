@@ -2,12 +2,13 @@ import { useAddService_adminMutation } from '@/api/admin/service_admin';
 
 import { Button, Form, Input, InputNumber, Select, message } from 'antd';
 import { useState } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 
 export const AddService = () => {
   const navigate = useNavigate();
-  const [addServiceAdmin] = useAddService_adminMutation();
+  const [addServiceAdmin, {isLoading}] = useAddService_adminMutation();
   const [selectedFile, setSelectedFile] = useState<File>();
 
   const onFinish = (values: any) => {
@@ -31,9 +32,7 @@ export const AddService = () => {
     setSelectedFile(selectedFiles?.[0])
   };
 
-
-
-  const onFinishFailed = (errorInfo: any) => {
+   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -71,7 +70,7 @@ export const AddService = () => {
           name="image"
           label="Upload"
         >
-          <input type='file' onChange={handleChange} />
+          <input type='file' multiple onChange={handleChange} />
         </Form.Item>
         <Form.Item
           label="Số lượng"
@@ -95,8 +94,13 @@ export const AddService = () => {
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
-            Submit
+          {isLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              "Add"
+            )}
           </Button>
+          <Button type='primary' danger className='mx-2' onClick={()=>navigate("/admin/service")}>Quay lại</Button>
         </Form.Item>
       </Form>
     </div>

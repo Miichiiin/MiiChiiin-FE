@@ -88,7 +88,7 @@ export const ServiceManagement = () => {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
-      render: (text: any) => <Image src={text} width={80} />,
+      render: (text: any) => <Image src={text} className="w-[80px] h-[50px]" />,
     },
     {
       title: "Số lượng",
