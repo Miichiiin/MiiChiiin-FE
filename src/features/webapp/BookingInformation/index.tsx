@@ -134,10 +134,13 @@ const BookingInformation = () => {
       services: services,
     };
   });
+  console.log("cart111", cart);
+  
   const onSubmit = (data: any) => {
     const dataBooking = {
       check_in: date[0].toISOString().slice(0, 10),
       check_out: date[1].toISOString().slice(0, 10),
+      id_user: userData?.id || null,
       email: data.email,
       name: data.firstName + data.lastName,
       message: "...",
@@ -145,11 +148,10 @@ const BookingInformation = () => {
       total_amount: sumprice,
       cccd: data.id,
       nationality: data.country,
-      id_user: userData?.id || null,
       phone: data.phone,
       cart: cart,
       id_hotel: Number(hotel[0]),
-      promotion: 1,
+      // promotion: 1,
     };
     addBookingUser(dataBooking)
       .unwrap()
