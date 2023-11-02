@@ -7,7 +7,7 @@ const bookingDetail_AdminApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("tokenAdmin");
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`)
             }
