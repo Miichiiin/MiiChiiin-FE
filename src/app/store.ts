@@ -48,6 +48,8 @@ import admin_AdminApi1, { Admin_AdminReducer1 } from '@/api/admin/admin_admin1';
 import rate_HomeApi, { rate_HomeReducer } from '@/api/webapp/comment_home';
 import rating_HomeApi, { rating_HomeReducer } from '@/api/webapp/rates_home';
 import rating_Hotel_HomeApi, { rating_hotel_HomeReducer } from '@/api/webapp/rate_hotel_home';
+import category_BookingApi, { category_BookingReducer } from '@/api/admin/category_booking';
+import category_Api, { category_Reducer } from '@/api/admin/category';
 
 const persistConfig = {
     key: 'root',
@@ -90,6 +92,8 @@ const rootReducer = combineReducers({
     rating_home:rating_HomeReducer,
     rating_hotel_home:rating_hotel_HomeReducer,
     rate_home: rate_HomeReducer,
+    category_booking:category_BookingReducer,
+    category_admin1: category_Reducer,
 })
 const middleware = [
     room_adminApi.middleware, 
@@ -123,8 +127,9 @@ const middleware = [
     admin_AdminApi1.middleware,
     rate_HomeApi.middleware,
     rating_HomeApi.middleware,
-    rating_Hotel_HomeApi.middleware
-
+    rating_Hotel_HomeApi.middleware,
+    category_BookingApi.middleware,
+    category_Api.middleware
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

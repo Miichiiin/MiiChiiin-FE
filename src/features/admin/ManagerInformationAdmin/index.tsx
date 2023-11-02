@@ -1,32 +1,22 @@
 import { Card, Form, Button, Upload, message ,Input} from "antd";
-// import { UploadOutlined,CloudUploadOutlined  } from "@ant-design/icons";
-import { Link } from "react-router-dom"; 
-import {  useGetAdmin_AdminById1Query, useUpdateAdmin_Admin1Mutation } from "@/api/admin/admin_admin1";
 import { useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-// const { Text } = Typography;
+import { useGetAdmin_admin_AdminByIdQuery, useRemoveAdmin_admin_AdminMutation } from "@/api/admin/admin_admin_admin";
 
 
 const AdminInfoPage = () => {
   const {id} = useParams()
-  const dataUser = useGetAdmin_AdminById1Query(id);
-  const [updateProfile] = useUpdateAdmin_Admin1Mutation();
+  const dataUser = useGetAdmin_admin_AdminByIdQuery(id);
+  const [updateProfile] = useRemoveAdmin_admin_AdminMutation();
   const [form] = Form.useForm();
-  const userAdminLocal = localStorage.getItem('userAdmin');  
-  
+  const userAdminLocal = localStorage.getItem('userAdmin') || "";  
+  const dataLogin = JSON.parse(userAdminLocal);  
   const idLC = userAdminLocal ? JSON.parse(userAdminLocal)?.id : null;
   const data = idLC === dataUser?.data?.id;
-  console.log("dđ",userAdminLocal);
+  const list = data ? dataUser.data : null;  
+console.log("k",dataUser);
+
   
-  const list = data ? dataUser.data : null;
-  console.log("data",list);
-  
-  useEffect(() =>{
-    form.setFieldsValue({
-      role: userAdminLocal ? JSON.parse(userAdminLocal)?.role : null,
-    })
-  })
   useEffect(() => {
     if (list) {
       // tuổi
@@ -39,7 +29,8 @@ const AdminInfoPage = () => {
         address: list?.address,
         email: list?.email,
         phone: list?.phone,
-        id_hotel: list?.id_hotel,
+        name_hotel: dataLogin?.name_hotel,
+        role:dataLogin?.role,
         date: age !== null ? age.toString() : '',
         // image
       });
@@ -111,7 +102,7 @@ const AdminInfoPage = () => {
                  
                 />
               </Form.Item>
-              <Form.Item label="Cơ sở làm việc:" name="id_hotel" className="mb-4">
+              <Form.Item label="Cơ sở làm việc:" name="name_hotel" className="mb-4">
                 <Input className="border-b-2"
                 
                 />
@@ -139,10 +130,10 @@ const AdminInfoPage = () => {
                   Lưu
                 </Button>
               </Form.Item>
-              <div className="text-center">
+              {/* <div className="text-center">
                 <Link to="/quen-mat-khau">Quên mật khẩu</Link> |{" "}
                 <Link to="/thay-doi-mat-khau">Thay đổi mật khẩu</Link>
-              </div>
+              </div> */}
           </div>
         </div>
         </Form>

@@ -1,40 +1,51 @@
 import { useAddService_adminMutation } from '@/api/admin/service_admin';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
+
+import { Button, Form, Input, InputNumber, Select, Spin, message } from 'antd';
+import { useState } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 
 export const AddService = () => {
-  
   const navigate = useNavigate();
-  const [addServiceAdmin] = useAddService_adminMutation();
+  const [addServiceAdmin, {isLoading}] = useAddService_adminMutation();
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const [isUploading, setIsUploading] = useState(false)
+  const onFinish = (values: any) => {
+    const body = new FormData()
+    body.append('name', values.name)
+    body.append('image', selectedFile as File)
+    body.append('description', values.description)
+    body.append('quantity', values.quantity)
+    body.append('price', values.price)
+    body.append('status', values.status)
+    setIsUploading(true);
 
-  const onFinish = (values:any) => {
-    addServiceAdmin(values).unwrap()
-      .then(() => {
-        
-        message.success('Thêm dịch vụ thành công');
-        navigate('/admin/service');
-      })
-      .catch((error: any) => {
-        console.error('Failed:', error);
-        message.error('Thêm dịch vụ thất bại');
-      });
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
+    addServiceAdmin(body).unwrap().then(() => {
+      navigate("/admin/service")
+      message.success({content: 'Thêm dịch vụ thành công', key: 'uploading'})
+    }).catch(() => {
+      message.error({content: 'Thêm dịch vụ thất bại', key: 'uploading'})
+    }).finally(() => {
+      setIsUploading(false);
+    })
+
+  };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target
+    const selectedFiles = files as FileList
+    setSelectedFile(selectedFiles?.[0])
   };
 
-  const onFinishFailed = (errorInfo:any) => {
+   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
-  const normFile = (e:any) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
 
   return (
     <div>
+      {isUploading && <Spin className='animate'/>}
       <header className="flex justify-between items-center my-5 mx-3">
         <h2 className="text-2xl text-blue-700">Thêm dịch vụ</h2>
       </header>
@@ -55,7 +66,6 @@ export const AddService = () => {
         >
           <Input allowClear />
         </Form.Item>
-
         <Form.Item
           label="Giá"
           name="price"
@@ -63,36 +73,41 @@ export const AddService = () => {
         >
           <InputNumber />
         </Form.Item>
-
-        <Form.Item label="Ảnh" name="image" valuePropName="image" getValueFromEvent={normFile}>
-          <Upload action="/upload.do" listType="picture-card">
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
-            </div>
-          </Upload>
+        <Form.Item
+          name="image"
+          label="Upload"
+        >
+          <input type='file' multiple onChange={handleChange} />
         </Form.Item>
-
+        <Form.Item
+          label="Số lượng"
+          name="quantity"
+          rules={[{ required: true, message: 'Hãy nhập số lượng dịch vụ!' }]}
+        >
+          <InputNumber />
+        </Form.Item>
         <Form.Item
           label="Trạng thái"
           name="status"
-          rules={[{ required: true, message: 'Hãy chọn trạng thái dịch vụ!' }]}
+          rules={[{ required: true, message: 'Chọn trạng thái đi ' }]}
         >
-          <Select defaultValue="all" style={{ width: '150px' }}>
-            <Select.Option value="all">Đang dùng</Select.Option>
-            <Select.Option value="available">Có sẵn</Select.Option>
-            <Select.Option value="occupied">Đã thuê</Select.Option>
+          <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
+            <Select.Option value={1} >Có sẵn</Select.Option>
+            <Select.Option value={0}>Đã thuê</Select.Option>
           </Select>
         </Form.Item>
-
         <Form.Item label="Mô tả" name="description">
           <Input.TextArea placeholder="Nội dung" allowClear />
         </Form.Item>
-
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
-            Submit
+          {isLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              "Add"
+            )}
           </Button>
+          <Button type='primary' danger className='mx-2' onClick={()=>navigate("/admin/service")}>Quay lại</Button>
         </Form.Item>
       </Form>
     </div>

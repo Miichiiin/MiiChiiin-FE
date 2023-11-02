@@ -8,22 +8,23 @@ import {
 } from "react-icons/ai";
 import HeaderHotelType from "src/features/webapp/HotelType/HeaderHotelType";
 import { SearchHotel } from "./searchHotel";
-import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
+import { useGetCategory_homeByIdQuery, } from "@/api/webapp/category_home";
 // import { useAppSelector } from "@/app/hook";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { Button } from "antd";
+import moment from 'moment';
 
 const ChooseRoom = () => {
-  const { data: hotels } = useGetCategory_homeQuery();
+ 
+  
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
   const [totalPrice, setTotalPrice] = useState<any>(0);
   const searchSlide = useParams();
-  console.log("search", searchSlide)
+  console.log("search", searchSlide);
   // const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [selectedRoomCount, setSelectedRoomCount] = useState(0);
-  console.log("hotelds", hotels);
 
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
@@ -57,38 +58,37 @@ const ChooseRoom = () => {
 
   const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
 
-  console.log("khách sạn", hotel);
 
-// Lấy dữ liệu từ localStorage
+  // Lấy dữ liệu từ localStorage
 
-const handleRoomSelect = (selectedHotel: any) => {
-  // Kiểm tra xem số lượng phòng đã chọn có vượt quá giới hạn không
-  if (
-    searchSlide &&
-    typeof searchSlide.numberRoom === 'string' &&
-    /^\d+$/.test(searchSlide.numberRoom)
-  ) {
-    const numberRoom = parseInt(searchSlide.numberRoom, 10); // Chuyển đổi chuỗi thành số nguyên
+  const handleRoomSelect = (selectedHotel: any) => {
+    // Kiểm tra xem số lượng phòng đã chọn có vượt quá giới hạn không
+    if (
+      searchSlide &&
+      typeof searchSlide.numberRoom === "string" &&
+      /^\d+$/.test(searchSlide.numberRoom)
+    ) {
+      const numberRoom = parseInt(searchSlide.numberRoom, 10); // Chuyển đổi chuỗi thành số nguyên
 
-    if (selectedRooms.length < numberRoom) {
-      setSelectedRooms([...selectedRooms, selectedHotel]);
-      const price = selectedHotel.price;
-      setTotalPrice(totalPrice + price);
-      setSelectedRoomCount(selectedRooms.length + 1); // Tăng số lượng phòng đã chọn
-      // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage
-      localStorage.setItem(
-        'selectedRooms',
-        JSON.stringify([...selectedRooms, selectedHotel])
-      );
-      localStorage.setItem('totalPrice', (totalPrice + price).toString());
-      // Đánh dấu rằng đã chọn phòng
-    } else {
-      // Xử lý trường hợp khi đã đạt đến giới hạn phòng
-      // Ở đây bạn có thể thêm thông báo hoặc xử lý tùy ý
+      if (selectedRooms.length < numberRoom) {
+        setSelectedRooms([...selectedRooms, selectedHotel]);
+        const price = selectedHotel.price;
+        setTotalPrice(totalPrice + price);
+        setSelectedRoomCount(selectedRooms.length + 1); // Tăng số lượng phòng đã chọn
+        // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage
+        localStorage.setItem(
+          "selectedRooms",
+          JSON.stringify([...selectedRooms, selectedHotel])
+        );
+        localStorage.setItem("totalPrice", (totalPrice + price).toString());
+        // Đánh dấu rằng đã chọn phòng
+      } else {
+        // Xử lý trường hợp khi đã đạt đến giới hạn phòng
+        // Ở đây bạn có thể thêm thông báo hoặc xử lý tùy ý
+      }
     }
-  }
-  // Không thực hiện gì nếu đã đạt đến giới hạn, không cần thông báo
-};
+    // Không thực hiện gì nếu đã đạt đến giới hạn, không cần thông báo
+  };
 
   const handleRemoveRoom = (room: any) => {
     // Tìm vị trí của phòng trong danh sách đã chọn
@@ -123,7 +123,7 @@ const handleRoomSelect = (selectedHotel: any) => {
   const uniqueSelectedRooms = selectedRooms.reduce((acc: any, room: any) => {
     // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
     const existingRoom = acc.find((r: any) => r.id === room.id);
-  
+
     // Nếu phòng đã tồn tại, tăng số lượng
     if (existingRoom) {
       existingRoom.count++;
@@ -131,20 +131,45 @@ const handleRoomSelect = (selectedHotel: any) => {
       // Nếu không, thêm phòng vào danh sách mới
       acc.push({ ...room, count: 1 });
     }
-  
+
     return acc;
   }, []);
+  const individuals:any = searchSlide.numberPeople && searchSlide.numberPeople.split("&");
+
+  let totalAdults = 0;
+  let totalChildren = 0;
+
+  // Lặp qua từng phần tử và tính tổng số người lớn và trẻ em
+  individuals?.forEach((individual: any) => {
+    // Tách thông tin về người lớn và trẻ em
+    const info = individual.split(",");
+
+    // Lặp qua từng thông tin và tìm số lượng người lớn và trẻ em
+    info.forEach((item: any) => {
+      if (item.includes("adults")) {
+        const count = parseInt(item.split(":")[1]);
+        totalAdults += count;
+      } else if (item.includes("children")) {
+        const count = parseInt(item.split(":")[1]);
+        totalChildren += count;
+      }
+    });
+  });
+  console.log("totalAdults" , totalAdults+ totalChildren);
   
-// Lấy dữ liệu từ local storage
-const savedRoomInfoJSON = localStorage.getItem('roomInfo');
-const savedRoomInfo = savedRoomInfoJSON ? JSON.parse(savedRoomInfoJSON) : [];
+  const { data: hotels } = useGetCategory_homeByIdQuery({id:hotel?.[0],check_in: moment(date[0]).format('YYYY-MM-DD'), check_out: moment(date[1]).format('YYYY-MM-DD'), number_people: totalAdults+ totalChildren, total_room: searchSlide.numberRoom});
+  console.log("hotels", hotels);
+  // console.log("dữ liệu khách sạn", hotel?.[0],moment(date[0]).format('YYYY-MM-DD'), moment(date[1]).format('YYYY-MM-DD'), totalAdults+ totalChildren,searchSlide.numberRoom );
+  
 
+  // Lấy dữ liệu từ local storage
+  const savedRoomInfoJSON = localStorage.getItem("roomInfo");
+  const savedRoomInfo = savedRoomInfoJSON ? JSON.parse(savedRoomInfoJSON) : [];
 
-
-// Sử dụng dữ liệu từ local storage nếu có hoặc fallback là uniqueSelectedRooms
-const roomsToDisplay = uniqueSelectedRooms.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
+  // Sử dụng dữ liệu từ local storage nếu có hoặc fallback là uniqueSelectedRooms
+  const roomsToDisplay = uniqueSelectedRooms.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
   const navigate = useNavigate();
-console.log("uniqueSelectedRooms", uniqueSelectedRooms);
+  console.log("uniqueSelectedRooms", uniqueSelectedRooms);
 
   interface Room {
     count: number;
@@ -170,7 +195,6 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
     }
   }, []);
 
-
   const onHandSubmit = () => {
     const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
       id_cate: room.id,
@@ -193,7 +217,7 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
       date: date,
       numberRoom: updatedSelectedRooms,
       numberPeople: numberPeople,
-      price: totalPrice
+      price: totalPrice,
     };
     if (!localStorage.getItem("cart")) {
       localStorage.setItem("cart", JSON.stringify([]));
@@ -205,6 +229,7 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
     const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
     navigate(url);
   };
+
 
   return (
     <div>
@@ -224,17 +249,17 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
             </div>
             <div className="col-span-2">
               <a className="text-xl hover:underline font-semibold ">
-                {hotel_detail?.name}
+                {hotel_detail?.[0]?.name}
               </a>
               <div className="flex items-center py-4">
                 <GrLocation />
                 <p className="text-sm pl-4">
-                  Địa chỉ: {hotel_detail?.city_name}
+                  Địa chỉ: {hotel_detail?.[0]?.address}/ {hotel_detail?.[0]?.city_name}
                 </p>
               </div>
-              <p className="text-lg py-2">{hotel_detail?.description}</p>
+              <p className="text-lg py-2">{hotel_detail?.[0]?.description}</p>
               <Link
-                to={`/hotel/${hotel_detail?.id}`}
+                to={`/hotel/${hotel_detail?.[0]?.id}`}
                 className="font-semibold text-blue-700 hover:text-blue-500 hover:underline"
               >
                 {" "}
@@ -291,19 +316,19 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
                         <AiOutlineInfoCircle />{" "}
                         <span className="px-2"> Giá thành viên:</span>{" "}
                         <span className="font-semibold text-xl">
-                          {hotel?.reduced_price}vnđ
+                          {hotel?.price}vnđ
                         </span>{" "}
                       </p>
                       {/* ... */}
                       <div className="justify-between flex items-center">
                         <div>
                           <p>
-                            {hotel.total_rooms < 4 ? (
+                            {hotel.Total_rooms < 4 ? (
                               <span style={{ color: "red" }}>
-                                Còn {hotel.total_rooms} phòng
+                                Còn {hotel.Total_rooms} phòng
                               </span>
                             ) : (
-                              <span>Còn {hotel.total_rooms} phòng</span>
+                              <span>Còn {hotel.Total_rooms} phòng</span>
                             )}
                           </p>
                         </div>
@@ -326,7 +351,7 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
               <div className="border rounded px-2 py-4">
                 <div>
                   <div className="flex items-center justify-between">
-                    <h1 className="font-semibold">{hotel_detail?.name}</h1>
+                    <h1 className="font-semibold">{hotel_detail?.[0]?.name}</h1>
                     <button className="text-sm">Chỉnh sửa</button>
                   </div>
                   <p className="text-sm pt-3 items-center flex">
@@ -344,67 +369,76 @@ console.log("uniqueSelectedRooms", uniqueSelectedRooms);
                 </div>
                 <hr className="my-4" />
                 <div className="pb-6">
-    <h1 className="font-semibold">Danh sách phòng đã chọn:</h1>
-    {roomsToDisplay.length > 0 ? (
-      <ul>
-        {roomsToDisplay.map((room: any, index: any) => (
-          <li key={index} className="flex flex-col">
-            <div className="flex items-center justify-between">
-              <span className="basis-2/3">
-                {room.name} - {room.price}vnđ{" "}
-                {room.count > 1 ? `x${room.count}` : ""}
-              </span>
-              <button
-                onClick={() => handleRemoveRoom(room)}
-                className="text-red-500 hover:text-red-500 focus:outline-none"
-              >
-                x
-              </button>
-            </div>
-            <span className="basis-1/3">
-              <p className="text-sm pt-3">2 Người lớn, 2 Trẻ em</p>
-              <hr className="my-4" />
-            </span>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      // Hiển thị dữ liệu từ local storage nếu không có phòng nào được chọn
-      <div>
-        {savedRoomInfo ? (
-          <p>{savedRoomInfo.name} - {savedRoomInfo.price}vnđ</p>
-        ) : (
-          <p>Không có phòng nào được chọn.</p>
-        )}
-      </div>
-    )}
-    <hr className="my-2" />
-    <div className="flex items-center justify-between">
-  <h1 className="font-semibold">Tổng cộng:</h1>
-  {totalPrice ? (
-    <h1 className="text-xl font-bold text-yellow-500">
-      {totalPrice * differenceInDays(
-        parseISO(date[1].toISOString().slice(0, 10)),
-        parseISO(date[0].toISOString().slice(0, 10))
-      )}vnđ
-    </h1>
-  ) : (
-    <h1 className="text-xl font-bold text-yellow-500">
-      {savedRoomInfo.price * differenceInDays(
-        parseISO(date[1].toISOString().slice(0, 10)),
-        parseISO(date[0].toISOString().slice(0, 10))
-      )}vnđ
-    </h1>
-  )}
-</div>
-  </div>
+                  <h1 className="font-semibold">Danh sách phòng đã chọn:</h1>
+                  {roomsToDisplay.length > 0 ? (
+                    <ul>
+                      {roomsToDisplay.map((room: any, index: any) => (
+                        <li key={index} className="flex flex-col">
+                          <div className="flex items-center justify-between">
+                            <span className="basis-2/3">
+                              {room.name} - {room.price}vnđ{" "}
+                              {room.count > 1 ? `x${room.count}` : ""}
+                            </span>
+                            <button
+                              onClick={() => handleRemoveRoom(room)}
+                              className="text-red-500 hover:text-red-500 focus:outline-none"
+                            >
+                              x
+                            </button>
+                          </div>
+                          <span className="basis-1/3">
+                            <p className="text-sm pt-3">
+                              2 Người lớn, 2 Trẻ em
+                            </p>
+                            <hr className="my-4" />
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    // Hiển thị dữ liệu từ local storage nếu không có phòng nào được chọn
+                    <div>
+                      {savedRoomInfo ? (
+                        <p>
+                          {savedRoomInfo.name} - {savedRoomInfo.price}vnđ
+                        </p>
+                      ) : (
+                        <p>Không có phòng nào được chọn.</p>
+                      )}
+                    </div>
+                  )}
+                  <hr className="my-2" />
+                  <div className="flex items-center justify-between">
+                    <h1 className="font-semibold">Tổng cộng:</h1>
+                    {totalPrice ? (
+                      <h1 className="text-xl font-bold text-yellow-500">
+                        {totalPrice *
+                          differenceInDays(
+                            parseISO(date[1].toISOString().slice(0, 10)),
+                            parseISO(date[0].toISOString().slice(0, 10))
+                          )}
+                        vnđ
+                      </h1>
+                    ) : (
+                      <h1 className="text-xl font-bold text-yellow-500">
+                        {savedRoomInfo.price *
+                          differenceInDays(
+                            parseISO(date[1].toISOString().slice(0, 10)),
+                            parseISO(date[0].toISOString().slice(0, 10))
+                          )}
+                        vnđ
+                      </h1>
+                    )}
+                  </div>
+                </div>
 
                 <Button
                   onClick={onHandSubmit}
-                  className={`bg-yellow-500 hover:bg-yellow-600 text-white text-lg font-bold rounded-full w-full ${selectedRoomCount === parseInt(searchSlide?.numberRoom, 10)
+                  className={`bg-yellow-500 hover:bg-yellow-600 text-white text-lg font-bold rounded-full w-full ${
+                    selectedRoomCount === parseInt(searchSlide?.numberRoom, 10)
                       ? ""
                       : "opacity-50 pointer-events-none" // Ẩn và vô hiệu hóa nút nếu chưa đủ số phòng
-                    }`}
+                  }`}
                 >
                   Tiếp tục
                 </Button>

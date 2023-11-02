@@ -5,7 +5,7 @@ const hotel_HomeApi = createApi({
     reducerPath: 'hotel_home',
     tagTypes: ['Hotel_home'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
@@ -16,11 +16,11 @@ const hotel_HomeApi = createApi({
     }),
     endpoints: (builder) => ({
         getHotel_homes: builder.query<any, void>({
-            query: () => `/hotel_home`,
+            query: () => `/hotel`,
             providesTags: ['Hotel_home']
         }),
         getHotel_homeById: builder.query({
-            query: (id) => `/hotel_home/${id}`,
+            query: (id) => `/hotel/${id}`,
             providesTags: ['Hotel_home']
         }),
         addHotel_home: builder.mutation({

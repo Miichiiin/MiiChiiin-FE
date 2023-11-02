@@ -8,11 +8,12 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
-import { useGetCategory_adminQuery } from '@/api/admin/category_admin';
 import { useGetService_adminQuery } from '@/api/admin/service_admin';
+import { useGetCategory_BookingQuery } from '@/api/admin/category_booking';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
 
 interface Category {
   id: number;
@@ -38,7 +39,7 @@ interface FieldType {
   name: string;
   people_quantity: number;
   total_amount: number;
-  status: number | string;
+  status: number;
   cccd: string;
   nationality: string;
   id_user: number;
@@ -62,7 +63,7 @@ interface RoomData {
 }
 
 const AddBooking = () => {
-  const { data: categories } = useGetCategory_adminQuery() // Lấy danh sách loại phòng
+  const { data: categories, isLoading, isError } = useGetCategory_BookingQuery() // Lấy danh sách loại phòng
   const { data: services } = useGetService_adminQuery() // Lấy danh sách dịch vụ
   const [addBooking] = useAddBooking_adminMutation(); // Thêm booking
   const [totalAmount, setTotalAmount] = useState<number>(0);
@@ -79,7 +80,7 @@ const AddBooking = () => {
   const [isServicesHidden, setIsServicesHidden] = useState<boolean>(false);
   const [availableRoomCounts, setAvailableRoomCounts] = useState<{ [key: number]: number }>({});
   const [selectedServicesQuantity, setSelectedServicesQuantity] = useState<{ [key: number]: number }>({});
-  
+
   const handleCheckboxChange = (service: Service) => {
     if (selectedServices.includes(service.id)) {
       // If the service is already selected, deselect it
@@ -91,7 +92,7 @@ const AddBooking = () => {
       setSelectedServices([...selectedServices, service.id]);
       // Set the initial quantity to 1 for the selected service
       selectedServicesQuantity[service.id] = 1;
-      
+
     }
   };
   useEffect(() => {
@@ -180,12 +181,12 @@ const AddBooking = () => {
     updatedSelectedRoomsData.splice(roomIndex, 1);
     // Cập nhật lại mảng selectedRoomsData
     setSelectedRoomsData(updatedSelectedRoomsData);
-    const selectedCategory = categories?.find((category: any) => category.id === selectedRoomIndex);
-    if (selectedCategory && selectedRoomIndex !== null) {
-      const updatedAvailableRoomCounts = { ...availableRoomCounts };
-      updatedAvailableRoomCounts[selectedRoomIndex] += 1;
-      setAvailableRoomCounts(updatedAvailableRoomCounts);
-    }
+    // Lấy id_cate của phòng vừa xoá
+    const removedRoomId = selectedRoomsData[roomIndex].id_cate;
+    // Cập nhật lại số lượng phòng còn lại trong availableRoomCounts
+    const updatedAvailableRoomCounts = { ...availableRoomCounts };
+    updatedAvailableRoomCounts[removedRoomId] += 1;
+    setAvailableRoomCounts(updatedAvailableRoomCounts);
     // Giảm số lượng phòng đã chọn đi 1
     setRoomCount(roomCount - 1);
     // Cập nhật lại tổng giá
@@ -263,11 +264,9 @@ const AddBooking = () => {
       promotion: 1,
       message: "Add booking nhé"
     };
-
-    console.log(formattedValues)
     addBooking(formattedValues).unwrap().then(() => {
       message.success('Thêm thành công');
-      navigate('/admin/bookingmanagement');
+
     });
   };
 
@@ -275,6 +274,14 @@ const AddBooking = () => {
     console.log('Failed:', errorInfo);
     message.error('Thêm thất bại');
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
 
   return (
 
@@ -294,6 +301,61 @@ const AddBooking = () => {
         <div className=''>
           <div className="grid grid-cols-2 gap-8">
             <div className='grid grid-cols-2 h-screen'>
+              <Form.Item
+
+                label="Check in"
+                name="check_in"
+                labelCol={{ span: 24 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Hãy chọn ngày check in trước khi chọn phòng!',
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (dayjs(value).isBefore(dayjs(), 'day')) {
+                        return Promise.reject('Không được chọn ngày trong quá khứ!');
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
+              >
+                <DatePicker
+                  value={form.getFieldValue('check_in')}
+                  placeholder="Chọn ngày và giờ"
+                  onChange={handleCheckInDateChange}
+                  format="YYYY-MM-DD HH:mm"
+                  className='w-[250px]'
+                />
+              </Form.Item>
+              <Form.Item
+                label="Check out"
+                name="check_out"
+                labelCol={{ span: 24 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Hãy chọn ngày check out trước khi chọn phòng!',
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (dayjs(value).isBefore(dayjs(), 'day')) {
+                        return Promise.reject('Không được chọn ngày trong quá khứ!');
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
+              >
+                <DatePicker
+                  value={form.getFieldValue('check_out')}
+                  onChange={handleCheckOutDateChange}
+                  format="YYYY-MM-DD HH:mm"
+                  placeholder="Chọn ngày và giờ"
+                  className='w-[250px]'
+                />
+              </Form.Item>
               <Form.Item
                 label="Tên người dùng"
                 name="name"
@@ -352,61 +414,6 @@ const AddBooking = () => {
                 labelCol={{ span: 24 }}
               >
                 <Input allowClear className='w-[250px]' />
-              </Form.Item>
-              <Form.Item
-
-                label="Check in"
-                name="check_in"
-                labelCol={{ span: 24 }}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Hãy chọn ngày check in!',
-                  },
-                  {
-                    validator: (_, value) => {
-                      if (dayjs(value).isBefore(dayjs(), 'day')) {
-                        return Promise.reject('Không được chọn ngày trong quá khứ!');
-                      }
-                      return Promise.resolve();
-                    },
-                  },
-                ]}
-              >
-                <DatePicker
-                  value={form.getFieldValue('check_in')}
-                  placeholder="Chọn ngày và giờ"
-                  onChange={handleCheckInDateChange}
-                  format="YYYY-MM-DD HH:mm"
-                  className='w-[250px]'
-                />
-              </Form.Item>
-              <Form.Item
-                label="Check out"
-                name="check_out"
-                labelCol={{ span: 24 }}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Hãy chọn ngày check out!',
-                  },
-                  {
-                    validator: (_, value) => {
-                      if (dayjs(value).isBefore(dayjs(), 'day')) {
-                        return Promise.reject('Không được chọn ngày trong quá khứ!');
-                      }
-                      return Promise.resolve();
-                    },
-                  },
-                ]}
-              >
-                <DatePicker
-                  value={form.getFieldValue('check_out')}
-                  onChange={handleCheckOutDateChange}
-                  format="YYYY-MM-DD HH:mm"
-                  placeholder="Chọn ngày và giờ"
-                  className='w-[250px]'
-                />
               </Form.Item>
               <Form.Item
                 label="Số lượng người"

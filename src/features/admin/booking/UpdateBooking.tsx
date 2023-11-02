@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Select, Radio } from 'antd';
-import { useGetCategory_adminQuery } from '@/api/admin/category_admin';
 import { useGetService_adminQuery } from '@/api/admin/service_admin';
 import { useGetBooking_adminByIdQuery, useUpdateBooking_adminMutation } from '@/api/admin/booking_admin';
 import dayjs from 'dayjs';
@@ -10,6 +9,7 @@ import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
 import { BsTrash3 } from 'react-icons/bs';
 import { useGetRoom_AdminsQuery } from '@/api/admin/room_admin';
+import { useGetCategory_BookingQuery } from '@/api/admin/category_booking';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -65,7 +65,7 @@ interface RoomData {
 }
 
 const UpdateBooking = () => {
-  const { data: categories } = useGetCategory_adminQuery() // Lấy danh sách loại phòng
+  const { data: categories } = useGetCategory_BookingQuery() // Lấy danh sách loại phòng
   const { data: services } = useGetService_adminQuery() // Lấy danh sách dịch vụ
   const { data: roomsData } = useGetRoom_AdminsQuery({}) // Lấy danh sách phòng
 
@@ -80,7 +80,7 @@ const UpdateBooking = () => {
   const [isRoomsHidden, setIsRoomsHidden] = useState(false);
   const [isServicesHidden, setIsServicesHidden] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>()
-  const { data: bookingData } = useGetBooking_adminByIdQuery(id || "")
+  const { data: bookingData, isLoading, isError } = useGetBooking_adminByIdQuery(id)
 
   const [roomCount, setRoomCount] = useState(0);
   const [maxRoomQuantity, setMaxRoomQuantity] = useState(0);
@@ -263,12 +263,12 @@ const UpdateBooking = () => {
     updatedSelectedRoomsData.splice(roomIndex, 1);
     // Cập nhật lại mảng selectedRoomsData
     setCartData(updatedSelectedRoomsData);
-    const selectedCategory = categories?.find((category: any) => category.id === selectedRoomIndex);
-    if (selectedCategory && selectedRoomIndex !== null) {
-      const updatedAvailableRoomCounts = { ...availableRoomCounts };
-      updatedAvailableRoomCounts[selectedRoomIndex] += 1;
-      setAvailableRoomCounts(updatedAvailableRoomCounts);
-    }
+    // Lấy id_cate của phòng vừa xoá
+    const removedRoomId = selectedRoomsData[roomIndex].id_cate;
+    // Cập nhật lại số lượng phòng còn lại trong availableRoomCounts
+    const updatedAvailableRoomCounts = { ...availableRoomCounts };
+    updatedAvailableRoomCounts[removedRoomId] += 1;
+    setAvailableRoomCounts(updatedAvailableRoomCounts);
     // Giảm số lượng phòng đã chọn đi 1
     setRoomCount(roomCount - 1);
     // Cập nhật lại tổng giá
@@ -351,7 +351,7 @@ const UpdateBooking = () => {
   const onFinish = (values: FieldType) => {
 
     const cart = cartData?.map((roomData) => ({
-      id_room: roomData?.id_room || "", // ID phòng đã chọn
+      id_room: roomData?.id_room , // ID phòng đã chọn
       id_cate: roomData.id_cate, // ID loại phòng đã chọn
       services: roomData.services, // Các dịch vụ đã chọn cho phòng
     }));
@@ -365,25 +365,41 @@ const UpdateBooking = () => {
       promotion: 1,
       flag: isUpdateRoom
     };
-    console.log(formattedValues);
+    let flagIdRoom = false;
+    formattedValues?.cart?.map((item: any) =>{ 
+      if(item.id_room === undefined || item.id_room === null){
+        flagIdRoom = true;
+      }
+     })
 
-    updateBooking(formattedValues).unwrap().then(() => {
-      message.success('Cập nhật thành công');
-      // if (message) {
-      //   navigate(`/admin/detailbooking/${id}`)
-      // }
-    });
+    if(flagIdRoom){
+      message.error('Vui lòng chọn phòng');
+    }
+    else{
+      updateBooking(formattedValues).unwrap().then(() => {
+        message.success('Cập nhật thành công');
+      });
+    }
+    
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
     message.error('Cập nhật thất bại');
   };
+
   useEffect(() => {
     form.setFieldsValue({
       total_amount: totalAmount,
     });
   }, [totalAmount]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
 
   return (
     <div className="mx-auto overflow-auto scroll-smooth">
@@ -402,6 +418,57 @@ const UpdateBooking = () => {
         <div className=''>
           <div className="grid grid-cols-2 gap-8 ">
             <div className='grid grid-cols-2 h-screen'>
+            <Form.Item
+                label="Check in"
+                name="check_in"
+                labelCol={{ span: 24 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Hãy chọn ngày check in!',
+                  },
+
+                ]}
+
+              >
+                <DatePicker
+                  value={form.getFieldValue('check_in')}
+                  onChange={handleCheckInDateChange}
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="Chọn ngày và giờ"
+                  className='w-[250px]'
+                  // disabledDate={(current) => {
+                  //   // Vô hiệu hóa các ngày hôm trước
+                  //   return current && current.isBefore(new Date(), 'day');
+                  // }}
+                  disabled
+
+                />
+              </Form.Item>
+              <Form.Item
+                label="Check out"
+                name="check_out"
+                labelCol={{ span: 24 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Hãy chọn ngày check out!',
+                  },
+                ]}
+              >
+                <DatePicker
+                  value={form.getFieldValue('check_out')}
+                  onChange={handleCheckOutDateChange}
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="Chọn ngày và giờ"
+                  className='w-[250px]'
+                  // disabledDate={(current) => {
+                  //   // Vô hiệu hóa các ngày hôm trước
+                  //   return current && current.isBefore(new Date(), 'day');
+                  // }}
+                  disabled
+                />
+              </Form.Item>
               <Form.Item
                 label="Tên người dùng"
                 name="name"
@@ -456,55 +523,6 @@ const UpdateBooking = () => {
                 labelCol={{ span: 24 }}
               >
                 <Input allowClear className='w-[250px]' />
-              </Form.Item>
-              <Form.Item
-                label="Check in"
-                name="check_in"
-                labelCol={{ span: 24 }}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Hãy chọn ngày check in!',
-                  },
-
-                ]}
-
-              >
-                <DatePicker
-                  value={form.getFieldValue('check_in')}
-                  onChange={handleCheckInDateChange}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="Chọn ngày và giờ"
-                  className='w-[250px]'
-                  disabledDate={(current) => {
-                    // Vô hiệu hóa các ngày hôm trước
-                    return current && current.isBefore(new Date(), 'day');
-                  }}
-
-                />
-              </Form.Item>
-              <Form.Item
-                label="Check out"
-                name="check_out"
-                labelCol={{ span: 24 }}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Hãy chọn ngày check out!',
-                  },
-                ]}
-              >
-                <DatePicker
-                  value={form.getFieldValue('check_out')}
-                  onChange={handleCheckOutDateChange}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="Chọn ngày và giờ"
-                  className='w-[250px]'
-                  disabledDate={(current) => {
-                    // Vô hiệu hóa các ngày hôm trước
-                    return current && current.isBefore(new Date(), 'day');
-                  }}
-                />
               </Form.Item>
               <Form.Item
                 label="Số lượng người"

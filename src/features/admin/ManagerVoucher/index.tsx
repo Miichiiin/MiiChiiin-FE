@@ -1,61 +1,77 @@
 
+import { useGetVoucherQuery, useRemoveVoucherMutation } from "@/api/admin/voucher";
 import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message, } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-
+interface DataType {
+  key: number;
+  id: string;
+  name: string;
+  slug: string;
+  image: string;
+  discount: number;
+  start_at: string;
+  expire_at: string;
+  status: string;
+  meta: string;
+  description: string;
+  quantity: number;
+}
 export const ManagerVouchers = () => {
+  const [remove, {isLoading:isRemoveVoucher}] = useRemoveVoucherMutation()
+  const {data:dataVoucher} = useGetVoucherQuery();
+  const dataSource = dataVoucher?.map(({id,name,image,discount,start_at,expire_at,description,quantity,status}: DataType) => ({
+    key:id,
+    name,image,discount,start_at,expire_at,description,quantity,status
+  }))
+// xóa 
+const confirmDelete = (id: number) => {
+  const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
+  if (isConfirmed) {
+    remove(id).unwrap().then(() => {
+      setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
+    });
+  }
+};
  // phân quyền
  const dataPermission = localStorage.getItem('userAdmin')
  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
- 
  const hasAddUserPermission = (permissions:any) => {
    return currentUserPermissions.includes(permissions);
  };
   const [messageApi, contextHolder] = message.useMessage();
-  interface DataType {
-    key: number;
-    id: string;
-    name: string;
-    slug: string;
-    image: string;
-    discount: number;
-    start_at: string;
-    expire_at: string;
-    status: string;
-    meta: string;
-    description: string;
-    quantity: number;
-  }
+
 
   const columns: ColumnsType<DataType> = [
     {
       title: "#Stt",
-      dataIndex: "id",
-      key: "id",
-      render: (text) => <a>{text}</a>,
+      dataIndex: "key",
+      key: "key",
+      // render: (_, record, index) => <span>{index + 1}</span>,
     },
     {
       title: "Tên Voucher",
       dataIndex: "name",
       key: "name",
     },
-    {
-      title: "slug",
-      dataIndex: "slug",
-      key: "slug",
-    },
+    // {
+    //   title: "slug",
+    //   dataIndex: "slug",
+    //   key: "slug",
+    // },
     {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
+      render: (image) => <img src={image} alt="Hình ảnh" width="70" />,
     },
-    {
-      title: "Mô tả ngắn",
-      dataIndex: "meta",
-      key: "meta",
-    },
+    // {
+    //   title: "Mô tả ngắn",
+    //   dataIndex: "meta",
+    //   key: "meta",
+    // },
     {
       title: "Mô tả dài",
       dataIndex: "description",
@@ -86,7 +102,28 @@ export const ManagerVouchers = () => {
       dataIndex: "status",
       key: "status",
     },
-
+    {
+      title: "Thao tác",
+      dataIndex: "action",
+      key: "action",
+      render: (text, item) => (
+        <div className="flex space-x-2">
+          {hasAddUserPermission("delete voucher") && (
+            <Button loading={isRemoveVoucher}
+              className='px-4 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md'
+              onClick={() => confirmDelete(item.key)}
+            >
+              Xóa
+            </Button>
+          )}
+          {hasAddUserPermission("update voucher") && (
+            <Button type="primary" className='bg-[#3b82f6]'>
+              <Link to={`/admin/updatevoucher/${item.key}`}>Sửa</Link>
+            </Button>
+          )}
+        </div >
+      ),
+    },
   ];
 
   const data: DataType[] = [
@@ -110,7 +147,7 @@ export const ManagerVouchers = () => {
   const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
-  const filteredData = data ? data
+  const filteredData = dataSource ? dataSource
     .filter((item: DataType) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
     )
@@ -146,12 +183,16 @@ export const ManagerVouchers = () => {
                 label: "Tất cả",
               },
               {
-                value: "1",
-                label: "Không hiển thị",
+                value: 1,
+                label: "Trạng thái 1",
               },
               {
-                value: "2",
-                label: "Hiển thị",
+                value: 2,
+                label: "Trạng thái 2",
+              },
+              {
+                value: 3,
+                label: "Trạng thái 3",
               },
             ]}
             onChange={(value) => {
@@ -169,28 +210,6 @@ export const ManagerVouchers = () => {
           </button>
         )}
       </div>
-      <div>
-       {
-        hasAddUserPermission('delete voucher') && (
-          <Popconfirm
-          title="Xóa sản phẩm"
-          description="Bạn có muốn xóa không??"
-          onConfirm={() => {
-          }}
-          okText="Có"
-          cancelText="Không"
-        >
-          <Button danger>Xóa</Button>
-        </Popconfirm>
-        )
-       }
-        {hasAddUserPermission("update voucher") && (
-            <Button type="primary" danger className="mt-2 ml-1">
-            <Link to={`/admin/updatevoucher`}>Sửa</Link>
-          </Button>
-        )}
-      </div>
-
       <Radio.Group
         onChange={({ target: { value } }) => {
           setSelectionType(value);
@@ -200,14 +219,14 @@ export const ManagerVouchers = () => {
 
       <Divider />
       <Table
-        rowSelection={{
-          type: selectionType,
-          selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
-          onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-            setSelectedRows(selectedRows);
-          },
-        }}
+        // rowSelection={{
+        //   type: selectionType,
+        //   selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
+        //   onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+        //     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        //     setSelectedRows(selectedRows);
+        //   },
+        // }}
         columns={columns}
         dataSource={filteredData}
       />

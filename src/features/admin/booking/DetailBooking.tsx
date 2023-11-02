@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetBooking_adminByIdQuery } from "@/api/admin/booking_admin";
-import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 import { Button } from 'antd';
 //import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
 import dayjs from 'dayjs';
@@ -15,12 +14,10 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const DetailBooking = () => {
-  const { data: categories } = useGetCategory_homeQuery();
+  //const { data: categories } = useGetCategory_adminQuery()
   //const { data: services } = useGetService_hotelQuery();
   const { id } = useParams<{ id: string }>();
-  const { data: booking } = useGetBooking_adminByIdQuery(id);
-  console.log("booking",booking);
-  
+  const { data: booking, isLoading, isError } = useGetBooking_adminByIdQuery(id);
   const [isServicesVisible, setIsServicesVisible] = useState<{ [key: number]: boolean }>({});
   // const getRoomName = (roomId: any) => {
   //   const roomData = roomsData?.find((room: any) => room.id === roomId);
@@ -37,7 +34,14 @@ const DetailBooking = () => {
   const checkIn = dayjs(booking?.check_in);
   const checkOut = dayjs(booking?.check_out);
   const numberOfNights = checkOut.diff(checkIn, 'day');
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
+  if (isError) {
+    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
 
   return (
     <div className="w-[100%] mx-auto">
@@ -76,19 +80,18 @@ const DetailBooking = () => {
         <div className="">
           <h1 className="text-lg font-semibold mb-2 ml-4">Danh sách phòng và dịch vụ đã đặt</h1>
           <ul>
-            {booking?.room?.map((item: any, index: any) => {
-              const typeroom = categories?.find((category: any) => category.id === item?.id_category);         
+            {booking?.room?.map((item: any, index: any) => {        
               return (
                 <li key={index} className='ml-3 my-2'>
                   <div className='border flex justify-between px-2 py-3'>
                     <div className=''>
-                      {typeroom && (
+                      
                         <>
-                          <span className='font-bold text-md px-2' >Phòng {index + 1}:</span>
+                          <span className='font-bold text-md pr-2 italic text-lg' >Phòng số {index + 1}:</span>
                           <span className='text-blue-800 font-semibold'>{item.category_name}</span>
-                          <span className=' text-blue-500 px-2'>{item.name}</span>
+                          <span className=' text-blue-500 px-2'> <span className='text-gray-800'>Phòng</span> {item.name}</span>
                         </>
-                      )}
+                      
                     </div>
                     <button onClick={() => toggleServicesVisibility(index)} type='button'>
                       {isServicesVisible[index] ? <span className='flex items-center'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center'>Hiện dịch vụ <AiOutlineDown /></span>}
@@ -98,8 +101,8 @@ const DetailBooking = () => {
                     <ul className='border-b border-x'>
                       {item.services.map((service: any, serviceIndex: any) => (
                         <li key={serviceIndex} className='pt-1'>
-                          <span className='text-md font-bold px-2'>Dịch vụ {serviceIndex + 1}: </span> {service?.name}
-                          <span className='text-md font-bold pl-2'>Giá : </span> {service?.price}
+                          <span className='text-md font-bold px-2 italic'>Dịch vụ {serviceIndex + 1}: </span> {service?.name} x{service.quantity_service}
+                          <span className='text-md font-bold pl-2 italic'>Giá : </span> {service?.price * service.quantity_service}
                         </li>
                       ))}
                     </ul>

@@ -15,7 +15,7 @@ const service_AdminApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getService_admin: builder.query<any,void>({
+        getService_admin: builder.query<any, void>({
             query: () => `/services`,
             providesTags: ['Service_admin']
         }),
@@ -27,14 +27,14 @@ const service_AdminApi = createApi({
             query: (product) => ({
                 url: `/service`,
                 method: "POST",
-                body: product
+                body: product,
             }),
-            invalidatesTags: ['Service_admin']
+            invalidatesTags: ['Service_admin'],
         }),
         updateService_admin: builder.mutation({
             query: (product) => ({
-                url: `/service/${product.id}`,
-                method: "PATCH",
+                url: `/service/${product.get('id')}`,
+                method: "POST",
                 body: product
             }),
             invalidatesTags: ['Service_admin']
@@ -48,8 +48,8 @@ const service_AdminApi = createApi({
         })
     })
 })
-export const { 
+export const {
     useAddService_adminMutation, useGetService_adminIdQuery, useGetService_adminQuery, useRemoveService_adminMutation, useUpdateService_adminMutation
- } = service_AdminApi;
+} = service_AdminApi;
 export const service_AdminReducer = service_AdminApi.reducer;
 export default service_AdminApi;
