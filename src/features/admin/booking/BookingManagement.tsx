@@ -184,20 +184,20 @@ export const BookingManagement = () => {
                             }
                             options={[
                                 {
-                                    value: 0,
+                                    value: "all",
                                     label: "Tất cả",
                                 },
                                 {
-                                    value: "1",
+                                    value: 0,
                                     label: "Không hiển thị",
                                 },
                                 {
-                                    value: "2",
+                                    value: 1,
                                     label: "Hiển thị",
                                 },
                             ]}
                             onChange={(value) => {
-                                if (value === 0) {
+                                if (value === "all") {
                                     setSelectedStatus(undefined); // Xóa bộ lọc
                                 } else {
                                     setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn

@@ -24,9 +24,9 @@ const users = [
      image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
      role: "",
      permissions: [
-       'add dichvu',
-       'update dichvu',
-       'delete dichvu',
+       'add comfort',
+       'update comfort',
+       'delete comfort',
        'add voucher',
      ]
    },
@@ -36,9 +36,9 @@ const users = [
 export const ManagerUtilities = () => {
   // phân quyền
   const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add dichvu") &&
-    users[0].admin.permissions.includes("update dichvu") &&
-    users[0].admin.permissions.includes("delete dichvu")
+    users[0].admin.permissions.includes("add comfort") &&
+    users[0].admin.permissions.includes("update comfort") &&
+    users[0].admin.permissions.includes("delete comfort")
   );
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -54,20 +54,13 @@ export const ManagerUtilities = () => {
     id: string | number;
     name: string;
     description: string;
-    deleted_at: string;
-    created_at: string;
-    updated_at: string;
     status: string;
     alt: string;
   }
-  //lấy dữ liệu từ api
-  const data = Ultilities?.map(({ id, name, description, deleted_at, created_at, updated_at, status, alt }: DataType) => ({
+  const data = Ultilities?.map(({ id, name, description,status, alt }: DataType) => ({
     key: id,
     name,
     description,
-    deleted_at,
-    created_at,
-    updated_at,
     status,
     alt
   }))
@@ -91,36 +84,11 @@ export const ManagerUtilities = () => {
       title: "Tên tiện ích",
       dataIndex: "name",
       key: "name",
-      render: (text:any, item:any) => {
-        return (
-          <>
-            {hasAddUserPermission && (
-              <Link to={`/admin/updateUtilities/${item.key}`}>{text}</Link>
-            )}
-          </>
-        ) 
-       
-      }
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
-    },
-    {
-      title: "Ngày tạo",
-      dataIndex: "created_at",
-      key: "created_at",
-    },
-    {
-      title: "Ngày cập nhật",
-      dataIndex: "updated_at",
-      key: "updated_at",
-    },
-    {
-      title: "Ngày xóa",
-      dataIndex: "deleted_at",
-      key: "deleted_at",
     },
     {
       title: "Trang thái",
@@ -131,8 +99,36 @@ export const ManagerUtilities = () => {
       title: "Icon",
       dataIndex: "alt",
       key: "alt",
-      render: (text) => <Image src={text} alt="" width="50px" height="50px" />
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_: any, record: any) => (
+        <div className="flex space-x-2">
+          {hasAddUserPermission && (
+            <Popconfirm
+              title="Bạn có chắc chắn muốn xóa?"
+              onConfirm={() => {
+                removeUtility(record.key).unwrap().then(() => {
+                  messageApi.success("Xóa thành công");
+                });
+              }}
+              okText="Xóa"
+              cancelText="Hủy"
+            >
+              <button className="mr-2 text-white font-semibold py-2 px-4 hover:bg-red-400  border border-red-400 rounded-lg tracking-wide bg-red-500 hover:text-white">
+                Xóa
+              </button>
+            </Popconfirm>
+          )}
+          {hasAddUserPermission && (
+            <button className="mr-2 text-white font-semibold py-2 px-4 hover:bg-blue-400  border border-blue-400 rounded-lg tracking-wide bg-blue-500 hover:text-white">
+              <Link to={`/admin/updateUtilities/${record.key}`}>Sửa</Link>
+            </button>
+          )}
+        </div>
+      ),
+    }
   ];
 
   // Alert xác nhận xoá
@@ -168,20 +164,20 @@ export const ManagerUtilities = () => {
             }
             options={[
               {
-                value: "0",
+                value: "all",
                 label: "Tất cả",
               },
               {
-                value: "1",
+                value: 0,
                 label: "Đang sử dụng",
               },
               {
-                value: "2",
+                value: 1,
                 label: "Có sẵn",
               },
             ]}
             onChange={(value) => {
-              if (value === "0") {
+              if (value === "all") {
                 setSelectedStatus(undefined); // Xóa bộ lọc
               } else {
                 setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
@@ -217,14 +213,6 @@ export const ManagerUtilities = () => {
 
       <Divider />
       <Table
-        rowSelection={{
-          type: selectionType,
-          selectedRowKeys: selectedRows.map((row) => row.key),
-          onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-            setSelectedRows(selectedRows);
-          },
-        }}
         columns={columns}
         dataSource={filteredData}
       />

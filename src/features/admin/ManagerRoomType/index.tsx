@@ -188,11 +188,11 @@ export const ManagerRoomType = () => {
                 label: "Tất cả",
               },
               {
-                value: 1,
+                value: 0,
                 label: "Ẩn",
               },
               {
-                value: 2,
+                value: 1,
                 label: "Hiện",
               },
             ]}

@@ -120,8 +120,8 @@ export const AddHotel = () => {
                             name="status"
                         >
                             <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
-                                <Select.Option value={1}>Đang dùng</Select.Option>
-                                <Select.Option value={0}>Có sẵn</Select.Option>
+                                <Select.Option value={0}>Đang dùng</Select.Option>
+                                <Select.Option value={1}>Có sẵn</Select.Option>
                             </Select>
                         </Form.Item>
                         <Form.Item
