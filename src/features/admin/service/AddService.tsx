@@ -77,7 +77,7 @@ export const AddService = () => {
           name="image"
           label="Upload"
         >
-          <input type='file' multiple onChange={handleChange} />
+          <input type='file' onChange={handleChange} />
         </Form.Item>
         <Form.Item
           label="Số lượng"

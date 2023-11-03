@@ -1,5 +1,5 @@
 import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { Table, Divider, Radio, Button, Select, Input, Popconfirm, message } from 'antd';
+import { Table, Divider, Radio, Button, Select, Input, Popconfirm, message, Image } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -35,7 +35,7 @@ export const HotelManagement = () => {
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState("");
 
-    const data = HotelData?.map(({ id, name, email, description, quantity_of_room, star, phone, quantity_floor, status, name_cities,address }: DataType) => ({
+    const data = HotelData?.map(({ id, name,image, email, description, quantity_of_room, star, phone, quantity_floor, status, name_cities,address }: DataType) => ( {
         key: id,
         name,
         email,
@@ -46,8 +46,11 @@ export const HotelManagement = () => {
         quantity_floor,
         status,
         name_cities,
-        address
+        address,
+        image,
     }))
+    
+    
     interface DataType {
         key: number;
         id: string | number;
@@ -60,7 +63,8 @@ export const HotelManagement = () => {
         quantity_floor: number,
         status: number,
         name_cities: string,
-        address: string
+        address: string,
+        image: Array<object>
     }
 
     const columns: ColumnsType<DataType> = [
@@ -74,6 +78,12 @@ export const HotelManagement = () => {
             key: 'name',
             render: (text) => <span>{text.length > 5 ? `${text.slice(0, 5)}...` : text}</span>
         },
+        {
+            title: "Hình ảnh",
+            dataIndex: "image",
+            key: "image",
+            render: (image) => <Image src={image[0].image} width={100} height={100} />,
+          },
         {
             title: 'City',
             dataIndex: 'name_cities',

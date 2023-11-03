@@ -97,6 +97,7 @@ export const UpdateService = () => {
           <input type='file' onChange={handleChange} />
           <Image src={data?.image} className='w-[100px] h-[100px] my-2' />
         </Form.Item>
+        
         <Form.Item
           label="Số lượng"
           name="quantity"

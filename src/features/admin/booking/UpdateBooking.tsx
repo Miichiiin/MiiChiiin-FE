@@ -294,7 +294,7 @@ const UpdateBooking = () => {
     setSelectedRoomIndex(roomIndex);
     const rooms = roomsData?.id_room
     setSelectedRoom(rooms);
-    setListRoomSelected(roomsData.filter((room: any) => room.id_cate === selectedRoomsData[roomIndex]?.id_cate))
+    setListRoomSelected(roomsData?.find((room: any) => room.id_cate === selectedRoomsData[roomIndex]?.id_cate))
     setIsSelectingRooms(!isSelectingRooms);
     setHiddenSelectingRooms(!hiddenSelectingRooms)
     setIsSelectingServices(false);
@@ -378,6 +378,7 @@ const UpdateBooking = () => {
     else{
       updateBooking(formattedValues).unwrap().then(() => {
         message.success('Cập nhật thành công');
+        navigate(`/admin/detailbooking/${id}`)
       });
     }
     
