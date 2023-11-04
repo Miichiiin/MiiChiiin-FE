@@ -171,7 +171,7 @@ const HotelChainStatistics = () => {
   
   const [selectedMonthSv, setSelectedMonthSv] = useState(10);
   const [selectedYearSv, setSelectedYearSv] = useState(2023);
-  const [filteredData2, setFilteredData2] = useState([]); // State để lưu trữ dữ liệu từ API
+  const [filteredData2, setFilteredData2] = useState<any>([]); // State để lưu trữ dữ liệu từ API
   const { data: statisticalServiceData } = useGetStatisticalServiceQuery({
     month: selectedMonthSv,
     year: selectedYearSv,
@@ -457,83 +457,83 @@ const HotelChainStatistics = () => {
       </Row>
       {/* bieu do 2 */}
       {chartMode === "service" && (
-        <div>
-          <h1
-            className="text-2xl font-semibold text-blue-600 mb-4 "
-            onClick={handleh1Click}
-          >
-            Thống kê số lượng dịch vụ của khách sạn
-          </h1>
-          <div
-            className={`relative ${isDropdownVisibleSv ? "block" : "hidden"}`}
-          >
-            <div className="flex space-x-4">
-  <div className="bg-blue-200">
-    <label>Chọn tháng: </label>
-    <select
-      className="border rounded p-2"
-      onChange={handleMonthChangeSv}
-      value={selectedMonthSv}
+  <div>
+    <h1
+      className="text-2xl font-semibold text-blue-600 mb-4 "
+      onClick={handleh1Click}
     >
-      {Array.from({ length: 12 }, (_, index) => {
-        const monthNumber = index + 1;
-        return (
-          <option key={monthNumber} value={monthNumber}>
-            {monthNumber}
-          </option>
-        );
-      })}
-    </select>
-  </div>
-  <div className="bg-green-200">
-    <label>Chọn năm: </label>
-    <select
-      className="border rounded p-2"
-      onChange={handleYearChangeSv}
-      value={selectedYearSv}
+      Thống kê số lượng dịch vụ của khách sạn
+    </h1>
+    <div
+      className={`relative ${isDropdownVisibleSv ? "block" : "hidden"}`}
     >
-      {Array.from({ length: 4 }, (_, i) => {
-        const yearNumber = 2020 + i;
-        return (
-          <option key={yearNumber} value={yearNumber}>
-            {yearNumber}
-          </option>
-        );
-      })}
-    </select>
-  </div>
-</div>
-          </div>
-
-          {statisticalServiceData.length > 0 ? (
-            <div>
-              <h2>
-                Dữ liệu cho tháng {selectedMonthSv} năm {selectedYearSv}:
-              </h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={statisticalServiceData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="serviceName" />
-                  <YAxis
-                    label={{
-                      value: "Service",
-                      angle: -90,
-                      position: "insideLeft",
-                    }}
-                  />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="count" name="Số lượng" fill="#8884d8" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <div>
-              <p>Không có dữ liệu cho tháng và năm đã chọn.</p>
-            </div>
-          )}
+      <div className="flex space-x-4">
+        <div className="bg-blue-200">
+          <label>Chọn tháng: </label>
+          <select
+            className="border rounded p-2"
+            onChange={handleMonthChangeSv}
+            value={selectedMonthSv}
+          >
+            {Array.from({ length: 12 }, (_, index) => {
+              const monthNumber = index + 1;
+              return (
+                <option key={monthNumber} value={monthNumber}>
+                  {monthNumber}
+                </option>
+              );
+            })}
+          </select>
         </div>
-      )}
+        <div className="bg-green-200">
+          <label>Chọn năm: </label>
+          <select
+            className="border rounded p-2"
+            onChange={handleYearChangeSv}
+            value={selectedYearSv}
+          >
+            {Array.from({ length: 4 }, (_, i) => {
+              const yearNumber = 2020 + i;
+              return (
+                <option key={yearNumber} value={yearNumber}>
+                  {yearNumber}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    {statisticalServiceData && statisticalServiceData.length > 0 ? ( // Thêm kiểm tra 'statisticalServiceData' không phải là undefined
+      <div>
+        <h2>
+          Dữ liệu cho tháng {selectedMonthSv} năm {selectedYearSv}:
+        </h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={statisticalServiceData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="serviceName" />
+            <YAxis
+              label={{
+                value: "Service",
+                angle: -90,
+                position: "insideLeft",
+              }}
+            />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="count" name="Số lượng" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    ) : (
+      <div>
+        <p>Không có dữ liệu cho tháng và năm đã chọn.</p>
+      </div>
+    )}
+  </div>
+)}
 
       {/* Biểu đồ 3 */}
       <div>
@@ -624,9 +624,9 @@ const HotelChainStatistics = () => {
       </div>
 
       {/* Biểu đồ 4 */}
-      <Card title="Hotel Statistics" style={{ marginTop: "16px" }}>
-        <Table columns={columns} dataSource={dataHotel} />
-      </Card>
+      {/* <Card title="Hotel Statistics" style={{ marginTop: "16px" }}>
+        <Table columns={columns} dataSource={statisticalData} />
+      </Card> */}
     </div>
   );
 };

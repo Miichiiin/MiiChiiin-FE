@@ -7,7 +7,7 @@ const admin_AdminApi1 = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8000/api/admin",
         prepareHeaders(headers) {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("tokenAdmin");
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`)
             }
