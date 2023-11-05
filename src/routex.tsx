@@ -176,7 +176,7 @@ export const router = createBrowserRouter([
         element: <BookingSuccess/>
     },
     {
-        path: "/admin/*",
+        path: "/admin/:id/*",
          element: isAuthenticated() ? (
           <LayoutAdmin />
         ) : (

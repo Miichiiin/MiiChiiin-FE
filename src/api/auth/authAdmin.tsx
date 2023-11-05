@@ -26,13 +26,15 @@ const authAdminApi = createApi({
         body: userAdmin,
       }),
       async transformResponse(response: any) {
+        console.log("res",response.admin);
+        
         try {
           const tokenAdmin = response?.token; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
-          const userAdmin = response?.admin; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
+          const userAdmin = response?.admin;
+          localStorage.setItem("userAdmin", JSON.stringify(userAdmin)); // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
           if (tokenAdmin) {
             localStorage.setItem("tokenAdmin", tokenAdmin); // Lưu token vào localStorage
           }
-          localStorage.setItem("userAdmin", JSON.stringify(userAdmin));
           await Promise.resolve(); // Đảm bảo promise đã được giải quyết
 
           return response;
@@ -42,7 +44,7 @@ const authAdminApi = createApi({
         }
       },
       
-      invalidatesTags: ["UserAdmin"],
+      // invalidatesTags: ["UserAdmin"],
       
     }),
   }),
