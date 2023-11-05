@@ -19,7 +19,7 @@ const Index = () => {
         slidesToShow: 3,
         slidesToScroll: 1,
     };
-    const { data: booking, error, isLoading } = useGetHotel_homesQuery();
+    const { data: booking } = useGetHotel_homesQuery();
     const { data: voucher } = useGetVoucherQuery();
 
     const sliderRef = React.useRef<Slider>(null);
@@ -76,7 +76,7 @@ const Index = () => {
                                 <Link to={`/hotel/${item?.id}`} key={item?.id} className="w-[400px] relative overflow-hidden">
                                     <div className="relative overflow-hidden mb-4">
                                         <img className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                                            src={item.image}
+                                            src={item?.image?.[0]?.image}
                                             alt=""
                                         />
                                     </div>

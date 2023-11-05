@@ -24,13 +24,11 @@ const BookingInformation = () => {
   const [userData, setUserData] = useState<any>({});
   console.log("iduserData", userData);
 
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  
   useEffect(() => {
     const userPromise = localStorage.getItem("user");
-    userPromise.then((user:any) => {
+    userPromise.then((user: any) => {
       setUserData(JSON.parse(user));
     });
   }, []);
@@ -57,7 +55,7 @@ const BookingInformation = () => {
   }
   //Tính số người
   // Tách chuỗi thành các phần tử riêng biệt
-  const individuals:any = dataParam.people && dataParam.people.split("&");
+  const individuals: any = dataParam.people && dataParam.people.split("&");
 
   let totalAdults = 0;
   let totalChildren = 0;
@@ -106,7 +104,6 @@ const BookingInformation = () => {
     totalPrice1 += item.price * numberOfDays * item.count;
   });
 
-
   const sumprice = totalPrice1 + serviceTotalPrice;
 
   const {
@@ -135,7 +132,7 @@ const BookingInformation = () => {
     };
   });
   console.log("cart111", cart);
-  
+
   const onSubmit = (data: any) => {
     const dataBooking = {
       check_in: date[0].toISOString().slice(0, 10),
@@ -162,11 +159,11 @@ const BookingInformation = () => {
           setModalIsOpen(true);
         }
       });
-  
+
     console.log("data form", data);
     console.log("newDataBooking", dataBooking);
   };
-
+  
   
 
   return (
@@ -210,6 +207,7 @@ const BookingInformation = () => {
                 Thông tin người đặt chỗ{" "}
               </span>
             </div>
+            {/* Lưu vào local */}
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="border boder-black  rounded-md w-[800px] pb-10 ">
                 <div className="mt-5 mb-5 flex items-center px-5 py-5">
@@ -240,9 +238,12 @@ const BookingInformation = () => {
                     <span className="items-center">
                       <label>
                         <input
+                          // name="gender"
                           type="radio"
                           value="Khác"
                           {...register("gender", { required: true })}
+                          // value={formData.gender}
+        
                         />{" "}
                         Khác
                       </label>
@@ -262,11 +263,13 @@ const BookingInformation = () => {
                     </label>
                     <br />
                     <input
-                      id="last-name"
+                      // id="last-name"
                       className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
                       type="text"
                       placeholder="Ex: Nguyen"
                       {...register("lastName", { required: true })}
+                    
+                      name="lastName"
                     />
                     {errors.lastName && (
                       <span className="text-red-500">Vui lòng điền họ</span>
@@ -283,6 +286,8 @@ const BookingInformation = () => {
                       type="text"
                       placeholder="Ex: Anh Duy"
                       {...register("firstName", { required: true })}
+                 
+                  
                     />
                     {errors.firstName && (
                       <span className="text-red-500">
@@ -305,6 +310,8 @@ const BookingInformation = () => {
                       type="email"
                       placeholder="Ex: abc@gmail.com"
                       {...register("email", { required: true })}
+                    
+                      name="email"
                     />
                     {errors.email && (
                       <span className="text-red-500">Vui lòng điền email</span>
@@ -317,10 +324,12 @@ const BookingInformation = () => {
                     <br />
                     <input
                       id="phone"
-                      className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
+                      className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none text-black"
                       type="tel"
                       placeholder="Ex: Anh Duy"
                       {...register("phone", { required: true })}
+                      
+                      name="phone"
                     />
                     {errors.phone && (
                       <span className="text-red-500">
@@ -562,39 +571,58 @@ const BookingInformation = () => {
                 </h1>
                 <p className="mb-2">
                   <span className="">Tên khách hàng:</span>{" "}
-                  <span className="text-orange-400">{order && order?.name}</span>
+                  <span className="text-orange-400">
+                    {order && order?.name}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <span className="">Email:</span>{" "}
-                  <span className="text-orange-400">{order && order?.email}</span>
+                  <span className="text-orange-400">
+                    {order && order?.email}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <span className="">Số điện thoại:</span>{" "}
-                  <span className="text-orange-400">{order && order?.phone}</span>
+                  <span className="text-orange-400">
+                    {order && order?.phone}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <span className="">Ngày nhận phòng:</span>{" "}
-                  <span className="text-orange-400">{order && order?.check_in}</span>
+                  <span className="text-orange-400">
+                    {order && order?.check_in}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <span className="">Ngày trả phòng:</span>{" "}
-                  <span className="text-orange-400"> { order && order?.check_out}</span>
+                  <span className="text-orange-400">
+                    {" "}
+                    {order && order?.check_out}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <span className="">Số người:</span>{" "}
-                  <span className="text-orange-400">{order && order?.people_quantity}</span>
+                  <span className="text-orange-400">
+                    {order && order?.people_quantity}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <span className="">CCCD</span>{" "}
-                  <span className="text-orange-400">{order && order?.cccd}</span>
+                  <span className="text-orange-400">
+                    {order && order?.cccd}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <span className="">Quốc tịch</span>{" "}
-                  <span className="text-orange-400">{order && order?.nationality}</span>
+                  <span className="text-orange-400">
+                    {order && order?.nationality}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <span className="">Tổng số tiền:</span>{" "}
-                  <span className="text-orange-400 font-semibold">{order && order?.total_amount}</span>
+                  <span className="text-orange-400 font-semibold">
+                    {order && order?.total_amount}
+                  </span>
                 </p>
                 {/* Thêm thông tin khác của đơn hàng nếu cần */}
               </div>
@@ -609,7 +637,7 @@ const BookingInformation = () => {
                         Phòng: {room?.name}
                       </p>
                       <ul className="list-disc ml-6">
-                        {room?.services?.map((service:any, index: any) => (
+                        {room?.services?.map((service: any, index: any) => (
                           <li key={index}>{service?.name}</li>
                         ))}
                       </ul>
@@ -623,12 +651,14 @@ const BookingInformation = () => {
                 <AiOutlineHome />
                 <Link to={"/homepage"}>Quay lại trang chủ</Link>
               </button>
-           {userData?.id ? (
-               <button className="flex space-x-2 items-center bg-blue-500 px-3 py-1 rounded-md hover:bg-blue-600 hover:text-white">
-               <BsCartCheck />
-               <Link to={"/profileUser/myorder"}>Lịch sử đặt hàng</Link>
-             </button>
-           ) : ( <div></div> )}
+              {userData?.id ? (
+                <button className="flex space-x-2 items-center bg-blue-500 px-3 py-1 rounded-md hover:bg-blue-600 hover:text-white">
+                  <BsCartCheck />
+                  <Link to={"/profileUser/myorder"}>Lịch sử đặt hàng</Link>
+                </button>
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         </div>
