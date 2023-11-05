@@ -20,6 +20,8 @@ const ChooseRoom = () => {
  
   
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
+  console.log("selectroom", selectedRooms);
+  
   const [totalPrice, setTotalPrice] = useState<any>(0);
   const searchSlide = useParams();
   console.log("search", searchSlide);

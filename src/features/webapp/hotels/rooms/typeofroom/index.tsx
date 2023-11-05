@@ -10,10 +10,14 @@ const { RangePicker } = DatePicker;
 
 const RoomTypes = () => {
   const { id:idHotel } = useParams();
+  console.log("idHotel", idHotel);
+  
   
   const {data:hotelData} = useGetHotel_homeByIdQuery(idHotel);
+  console.log("dlks",hotelData);
 
-  const { data } = useGetCategory_homeQuery();
+
+  const { data } = useGetCategory_homeQuery(idHotel);
   console.log("data", data);
   const navigate = useNavigate()
 
@@ -50,10 +54,10 @@ const RoomTypes = () => {
       const encodedGuests = [`adults:1,children:0,infants:0`];
       const encodedSelectedRooms = 1;
   
-      const hotel = `${idHotel}, ${hotelData?.name}`
-      console.log("hoteldl:",hotel)
+      const hotel = `${idHotel}, ${hotelData?.[0]?.name}`
+     
       const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
-      console.log("url", url);
+      
   
       navigate(url);
     } else {

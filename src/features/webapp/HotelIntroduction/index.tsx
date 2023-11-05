@@ -18,16 +18,16 @@ import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { useUseGetRating_hotel_homeQueryQuery } from "@/api/webapp/rate_hotel_home";
 
 const HotelIntroduction = () => {
-  const { data } = useGetCategory_homeQuery();
   const { data: voucher } = useGetVoucherQuery();
   const { data: service } = useGetService_hotelQuery();
   const {id:idHotel} = useParams<{id:string}>();  
+  const { data } = useGetCategory_homeQuery(idHotel);
   const {data:dataRate} = useUseGetRating_hotel_homeQueryQuery(idHotel); 
   console.log("data",dataRate);
   
   let settings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
