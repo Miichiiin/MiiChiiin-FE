@@ -12,25 +12,7 @@ import { Link } from 'react-router-dom';
 
 
 
-const users = [
-    {
-        token: "haha",
-        admin: {
-            id: 2,
-            id_hotel: 1,
-            name: "Augustus Mitchell",
-            image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-            role: "",
-            permissions: [
-                'add booking',
-                'update booking',
-                'delete booking',
-                'add voucher',
-            ]
-        },
-    }
 
-];
 export const BookingManagement = () => {
     const { data: dataBooking, isLoading, isError } = useGetBooking_adminQuery({})
     const [removeBooking] = useRemoveBooking_adminMutation()
@@ -83,6 +65,15 @@ export const BookingManagement = () => {
             title: 'Tên khách hàng',
             dataIndex: 'name',
             key: 'name',
+            render: (text: any, item: any) => {
+                return (
+                  <>
+                  {hasAddUserPermission("delete booking") && (
+                    <Link to={`/admin/updatebooking/${item.key}`}>{text}</Link>
+                  )}
+                  </>
+                )
+              }
         },
         {
             title: 'Email',
@@ -156,7 +147,7 @@ export const BookingManagement = () => {
                 <div>
                     <button className='px-2 py-2 bg-blue-500 text-white rounded-md mr-2'>
                         <Link to={`/admin/detailbooking/${record.key}`} >Chi tiết</Link></button>
-                    {hasAddUserPermission && (
+                    {hasAddUserPermission("delete booking") && (
                         <button className='px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 hover:text-white' onClick={() => removeBooking(record.key)}>Xóa</button>
                     )}
                 </div>
@@ -176,11 +167,11 @@ export const BookingManagement = () => {
             selectedStatus === undefined ? true : item.status === selectedStatus
         ) : [];
     // phân quyền
-    const [hasAddUserPermission, setHasAddUserPermission] = useState(
-        users[0].admin.permissions.includes("add booking") &&
-        users[0].admin.permissions.includes("update booking") &&
-        users[0].admin.permissions.includes("delete booking")
-    );
+ const dataPermission = localStorage.getItem('userAdmin')
+ const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+ const hasAddUserPermission = (permissions:any) => {
+   return currentUserPermissions.includes(permissions);
+ };
     if (isLoading) {
         return <Skeleton active />;
       }
@@ -242,7 +233,7 @@ export const BookingManagement = () => {
                     </div>
 
                 </div>
-                {hasAddUserPermission && (
+                {hasAddUserPermission("add booking") && (
                     <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/addbooking'}>Thêm booking</Link></button>
                 )}
             </div>

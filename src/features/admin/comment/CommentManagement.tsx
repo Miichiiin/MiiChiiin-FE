@@ -9,25 +9,8 @@ import 'dayjs/plugin/timezone';
 dayjs.locale('vi');
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-const users = [
-    {
-     token: "haha",
-     admin:{
-       id: 2,
-       id_hotel: 1,
-       name: "Augustus Mitchell",
-       image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-       role: "",
-       permissions: [
-         'add comment',
-         'update comment',
-         'delete comment',
-         'add voucher',
-       ]
-     },
-    }
-   
-  ];
+
+
 export const CommentManagement = () => {
     const { data: commentData, isLoading, isError } = useGetRatingQuery({});
     const [removeComment] = useRemoveRatingMutation();
@@ -57,11 +40,11 @@ export const CommentManagement = () => {
             selectedStatus === undefined ? true : item.status === selectedStatus
         ) : [];
     // phân quyền
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add comment") &&
-    users[0].admin.permissions.includes("update comment") &&
-    users[0].admin.permissions.includes("delete comment")
-  );
+    const dataPermission = localStorage.getItem('userAdmin')
+    const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+    const hasAddUserPermission = (permissions:any) => {
+    return currentUserPermissions.includes(permissions);
+    };
     interface DataType {
         key: number;
         id: string | number;
@@ -89,7 +72,7 @@ export const CommentManagement = () => {
             render: (text: any, item: any) => {
                 return (
                     <>
-                        {hasAddUserPermission && (
+                        {hasAddUserPermission("update rate") && (
                             <Link to={`/admin/editcomment/${item.key}`}>{text}</Link>
                         )}
                     </>
