@@ -1,7 +1,12 @@
 
 import { useGetRatingQuery, useRemoveRatingMutation } from '@/api/admin/rates_admin';
-import { Table, Divider, Radio, Button, Select, Input } from 'antd';
+import { Table, Divider, Radio, Button, Select, Input, Skeleton } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
+import 'dayjs/plugin/utc';
+import 'dayjs/plugin/timezone';
+dayjs.locale('vi');
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 const users = [
@@ -24,10 +29,9 @@ const users = [
    
   ];
 export const CommentManagement = () => {
-    const { data: commentData } = useGetRatingQuery({});
+    const { data: commentData, isLoading, isError } = useGetRatingQuery({});
     const [removeComment] = useRemoveRatingMutation();
     const [searchText, setSearchText] = useState("");
-    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
 
@@ -111,28 +115,38 @@ export const CommentManagement = () => {
             title: 'Ngày đánh giá',
             dataIndex: 'created_at',
             key: 'created_at',
-        },
-        {
-            title: 'Ngày cập nhật',
-            dataIndex: 'updated_at',
-            key: 'updated_at',
+            render: (_, record) => {
+                const formattedDate = dayjs(record.created_at)
+                    .format('DD/MM/YYYY HH:mm:ss')
+                return <span>{formattedDate}</span>;
+            },
         },
         {
             title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
+            render: (_, record) => {
+                let statusText = '';
+                
+                if (record.status === "2") {
+                    statusText = 'Xác nhận';
+                } else if (record.status === "1") {
+                    statusText = 'Đã ẩn';
+                } else if (record.status === "0") {
+                    statusText = 'Đang chờ';
+                }
+    
+                return <span>{statusText}</span>;
+            },
         },
     ];
 
-
-    const confirmDelete = (id: number) => {
-        const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa comment này?');
-        if (isConfirmed) {
-            removeComment(id).unwrap().then(() => {
-                setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
-            });
-        }
-    };
+    if (isLoading) {
+        return <Skeleton active />;
+    }
+    if (isError) {
+        return <div>Có lỗi xảy ra khi tải dữ liệu</div>;
+    }
 
     return (
         <div>
@@ -151,20 +165,24 @@ export const CommentManagement = () => {
                         }
                         options={[
                             {
-                                value: "0",
+                                value: "all",
                                 label: "Tất cả",
                             },
                             {
-                                value: "1",
-                                label: "Không hiển thị",
+                                value: 0,
+                                label: "Đang chờ",
                             },
                             {
-                                value: "2",
-                                label: "Hiển thị",
+                                value: 1,
+                                label: "Đã ẩn",
+                            },
+                            {
+                                value: 2,
+                                label: "Xác nhận",
                             },
                         ]}
                         onChange={(value) => {
-                            if (value === "0") {
+                            if (value === "all") {
                                 setSelectedStatus(undefined); // Xóa bộ lọc
                             } else {
                                 setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
@@ -184,14 +202,6 @@ export const CommentManagement = () => {
                     }
                     `}
             </style>
-            {hasAddUserPermission && (
-                <Button type="primary" className='mx-5' danger
-                onClick={() => {
-                    selectedRows.forEach((row) => confirmDelete(row.key));
-                }}
-                disabled={selectedRows.length === 0}
-            >Xóa</Button>
-            )}
             <Radio.Group
                 onChange={({ target: { value } }) => {
                     setSelectionType(value);
@@ -203,14 +213,6 @@ export const CommentManagement = () => {
             <Divider />
             <div className="table-container">
                 <Table
-                    rowSelection={{
-                        type: selectionType,
-                        selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
-                        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-                            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                            setSelectedRows(selectedRows);
-                        },
-                    }}
                     columns={columns}
                     dataSource={filteredData}
                     className="custom-table"

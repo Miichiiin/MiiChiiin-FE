@@ -1,5 +1,5 @@
 import { useGetCategory_adminByIdQuery, useUpdateCategory_adminMutation } from "@/api/admin/category_admin";
-import { Button, Form, Image, Input, InputNumber, Skeleton, Spin, message } from "antd";
+import { Button, Form, Image, Input, InputNumber, Select, Skeleton, Spin, message } from "antd";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -147,7 +147,11 @@ const UpdateRoomType = () => {
             name="status"
             rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
           >
-            <InputNumber />
+            <Select placeholder="Chọn trạng thái">
+            <Select.Option value={2}>Đang hoạt động</Select.Option>
+            <Select.Option value={1}>Đang bảo trì</Select.Option>
+            <Select.Option value={0}>Đang chờ</Select.Option>
+          </Select>
           </Form.Item>
         </div>
 

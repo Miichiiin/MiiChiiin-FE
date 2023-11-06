@@ -9,6 +9,7 @@ import {
   Image,
   Popconfirm,
   message,
+  Skeleton,
 
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -17,7 +18,7 @@ import { Link } from "react-router-dom";
 
 
 export const ManagerRoomType = () => {
-  const { data: categoryData } = useGetCategory_adminQuery();
+  const { data: categoryData, isLoading, isError } = useGetCategory_adminQuery();
   const [removeCategory_admin] = useRemoveCategory_adminMutation();
   const [pagination, setPagination] = useState({
     current: 1,
@@ -105,6 +106,19 @@ export const ManagerRoomType = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        
+        if (record.status === 2) {
+            statusText = 'Hoạt động';
+        } else if (record.status === 1) {
+            statusText = 'Đang bảo trì';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+      
+        return <span>{statusText}</span>;
+      }
     },
     {
       title: "Lượt thích",
@@ -159,6 +173,12 @@ export const ManagerRoomType = () => {
     .filter((item: DataType) =>
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
+  if (isLoading) {
+    return <Skeleton active/>;
+  }
+  if (isError) {
+    return <div>Error</div>;
+  }
 
   return (
     <div>
@@ -189,12 +209,16 @@ export const ManagerRoomType = () => {
               },
               {
                 value: 0,
-                label: "Ẩn",
+                label: "Đang chờ",
               },
               {
                 value: 1,
-                label: "Hiện",
+                label: "Đang bảo trì",
               },
+              {
+                value: 2,
+                label: "Hoạt động",
+              }
             ]}
             onChange={(value) => {
               if (value === "all") {

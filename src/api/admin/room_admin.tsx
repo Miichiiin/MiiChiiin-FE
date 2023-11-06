@@ -34,7 +34,7 @@ const room_adminApi = createApi({
         updateRoom_Admin: builder.mutation({
             query: (product) => ({
                 url: `/room/${product.id}`,
-                method: "PUT",
+                method: "POST",
                 body: product
             }),
             invalidatesTags: ['Room_admin']

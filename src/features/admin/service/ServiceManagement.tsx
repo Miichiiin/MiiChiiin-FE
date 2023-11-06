@@ -11,6 +11,7 @@ import {
   Popconfirm,
   Pagination,
   message,
+  Skeleton,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
@@ -36,7 +37,7 @@ const users = [
 
 ];
 export const ServiceManagement = () => {
-  const { data: visibleItems } = useGetService_adminQuery();
+  const { data: visibleItems, isLoading, isError } = useGetService_adminQuery();
   const [removeService] = useRemoveService_adminMutation();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
@@ -54,7 +55,7 @@ export const ServiceManagement = () => {
     name: string;
     quantity: number;
     price: number;
-    status: string;
+    status: string | number;
     image: string;
     description: string; // Thêm description vào DataType
   }
@@ -99,6 +100,19 @@ export const ServiceManagement = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        
+        if (record.status === 2) {
+            statusText = 'Hoạt động';
+        } else if (record.status === 1) {
+            statusText = 'Đã ẩn';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+
+        return <span>{statusText}</span>;
+    },
     },
     {
       title: "Mô tả",
@@ -109,7 +123,7 @@ export const ServiceManagement = () => {
       title: "Thao tác",
       dataIndex: "action",
       key: "action",
-      render: (text: any, item: any) => {
+      render: (_, item: any) => {
         return (
           <>
             {hasAddUserPermission && (
@@ -174,6 +188,13 @@ export const ServiceManagement = () => {
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
 
+  if (isLoading) {
+    return <Skeleton active/>;
+  }
+  if (isError) {
+    return <div>Error</div>;
+  }
+
   return (
     <div>
       <div
@@ -203,12 +224,16 @@ export const ServiceManagement = () => {
               },
               {
                 value: 1,
-                label: "Có sẵn",
+                label: "Đã ẩn",
               },
               {
                 value: 0,
-                label: "Đã thuê",
+                label: "Đang chờ",
               },
+              {
+                value: 2,
+                label: "Hoạt động",
+              }
             ]}
             onChange={(value) => {
               if (value === "all") {

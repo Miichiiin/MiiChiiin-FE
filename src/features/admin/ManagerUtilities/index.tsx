@@ -9,6 +9,7 @@ import {
   Popconfirm,
   message,
   Image,
+  Skeleton,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
@@ -40,13 +41,12 @@ export const ManagerUtilities = () => {
     users[0].admin.permissions.includes("update comfort") &&
     users[0].admin.permissions.includes("delete comfort")
   );
-  const [messageApi, contextHolder] = message.useMessage();
 
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
   const [searchText, setSearchText] = useState("");
   const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
-  const { data: Ultilities } = useGetComfortQuery({});
+  const { data: Ultilities, isLoading, isError } = useGetComfortQuery({});
   const [removeUtility] = useRemoveComfortMutation();
 
   interface DataType {
@@ -54,7 +54,7 @@ export const ManagerUtilities = () => {
     id: string | number;
     name: string;
     description: string;
-    status: string;
+    status: string | number;
     alt: string;
   }
   const data = Ultilities?.map(({ id, name, description,status, alt }: DataType) => ({
@@ -94,6 +94,19 @@ export const ManagerUtilities = () => {
       title: "Trang thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        
+        if (record.status === 2) {
+            statusText = 'Hoạt động';
+        } else if (record.status === 1) {
+            statusText = 'Đã ẩn';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+      
+        return <span>{statusText}</span>;
+      }
     },
     {
       title: "Icon",
@@ -110,7 +123,7 @@ export const ManagerUtilities = () => {
               title="Bạn có chắc chắn muốn xóa?"
               onConfirm={() => {
                 removeUtility(record.key).unwrap().then(() => {
-                  messageApi.success("Xóa thành công");
+                  message.success("Xóa thành công");
                 });
               }}
               okText="Xóa"
@@ -140,6 +153,9 @@ export const ManagerUtilities = () => {
       });
     }
   };
+
+  if (isLoading) return <Skeleton active/>;
+  if (isError) return <div>Đã xảy ra lỗi khi tải dữ liệu</div>;
   return (
     <div>
       <div
@@ -169,11 +185,15 @@ export const ManagerUtilities = () => {
               },
               {
                 value: 0,
-                label: "Đang sử dụng",
+                label: "Đang chờ",
               },
               {
                 value: 1,
-                label: "Có sẵn",
+                label: "Đã ẩn",
+              },
+              {
+                value: 2,
+                label: "Hoạt động",
               },
             ]}
             onChange={(value) => {
@@ -190,17 +210,6 @@ export const ManagerUtilities = () => {
           <Button type="primary" className="ml-2 mt-1 bg-gray-500">
           <Link to={`/admin/addUtilities`}>Thêm</Link>
         </Button>
-        )}
-      </div>
-      {/*Nút Xoá */}
-      <div>
-        {hasAddUserPermission && (
-          <Button type="primary" className='' danger
-          onClick={() => {
-            selectedRows.forEach((row) => confirmDelete(row.key));
-          }}
-          disabled={selectedRows.length === 0}
-        >Xóa</Button>
         )}
       </div>
 

@@ -1,5 +1,5 @@
 import { useGetUsersQuery, useRemoveUserMutation } from '@/api/users';
-import { Table, Divider, Radio, Button, Select, Input, Image } from 'antd';
+import { Table, Divider, Radio, Button, Select, Input, Image, Skeleton } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -24,7 +24,8 @@ const users = [
  
 ];
 export const UserManagement = () => {
-    const {data:dataUser} = useGetUsersQuery([])
+    const {data:dataUser, isLoading, isError} = useGetUsersQuery([])
+    
     const [removeUser] = useRemoveUserMutation()
     const dataSource = dataUser?.map(({id,name,email,image,description,email_verified_at,phone,address,status,gender,date,created_at,updated_at,cccd,nationality} :DataType) =>({
       key:id,
@@ -73,15 +74,15 @@ export const UserManagement = () => {
             title: "Tên Khách hàng",
             dataIndex: "name",
             key: "name",
-            render: (text:any,item:any) =>{
-              return (
-                  <>
-                    {hasAddUserPermission && (
-                      <Link to={`/admin/updateuser/${item.key}`}>{text}</Link>
-                    )}
-                  </>
-                )
-              }
+            // render: (text:any,item:any) =>{
+            //   return (
+            //       <>
+            //         {hasAddUserPermission && (
+            //           <Link to={`/admin/updateuser/${item.key}`}>{text}</Link>
+            //         )}
+            //       </>
+            //     )
+            //   }
             },
           {
             title: "Email",
@@ -129,16 +130,6 @@ export const UserManagement = () => {
             dataIndex: "date",
             key: "date",
           },
-          {
-            title: "created_at",
-            dataIndex: "created_at",
-            key: "created_at",
-          },
-          {
-            title: "updated_at",
-            dataIndex: "updated_at",
-            key: "updated_at",
-          },
         {
             title: 'CCCD',
             dataIndex: 'cccd',
@@ -175,6 +166,8 @@ export const UserManagement = () => {
     users[0].admin.permissions.includes("update user") &&
     users[0].admin.permissions.includes("delete user")
   );
+  if (isLoading) return <Skeleton active/>;
+  if (isError) return <div>Something went wrong</div>;
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>

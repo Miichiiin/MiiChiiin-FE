@@ -1,6 +1,6 @@
 
 import { useGetService_adminIdQuery, useUpdateService_adminMutation } from '@/api/admin/service_admin';
-import { Button, Form, Image, Input, InputNumber, Select, message,Skeleton, Spin} from 'antd';
+import { Button, Form, Image, Input, InputNumber, Select, message, Skeleton, Spin } from 'antd';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -35,8 +35,8 @@ export const UpdateService = () => {
 
     updateServiceAdmin(body).unwrap()
       .then(() => {
-          message.success({ content: 'Cập nhật dịch vụ thành công', key: 'uploading' });
-          navigate('/admin/service');
+        message.success({ content: 'Cập nhật dịch vụ thành công', key: 'uploading' });
+        navigate('/admin/service');
       })
       .catch(() => {
         message.error({ content: 'Cập nhật dịch vụ thất bại', key: 'uploading' });
@@ -58,7 +58,7 @@ export const UpdateService = () => {
   };
 
   if (isLoading) {
-      return <Skeleton active/>
+    return <Skeleton active />
   }
 
   if (isError) {
@@ -97,7 +97,7 @@ export const UpdateService = () => {
           <input type='file' onChange={handleChange} />
           <Image src={data?.image} className='w-[100px] h-[100px] my-2' />
         </Form.Item>
-        
+
         <Form.Item
           label="Số lượng"
           name="quantity"
@@ -108,8 +108,9 @@ export const UpdateService = () => {
 
         <Form.Item label="Trạng thái" name="status" >
           <Select placeholder="Chọn trạng thái " style={{ width: '150px' }}>
-            <Select.Option value={1}>Có sẵn</Select.Option>
-            <Select.Option value={0}>Đã thuê</Select.Option>
+            <Select.Option value={1} >Đang chờ</Select.Option>
+            <Select.Option value={0}>Ẩn</Select.Option>
+            <Select.Option value={2}>Hoạt động</Select.Option>
           </Select>
         </Form.Item>
 
@@ -121,7 +122,7 @@ export const UpdateService = () => {
           <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
             Cập nhật
           </Button>
-          <Button type="primary" danger className='mx-2' onClick={()=>navigate("/admin/service")}>
+          <Button type="primary" danger className='mx-2' onClick={() => navigate("/admin/service")}>
             Quay lại
           </Button>
         </Form.Item>

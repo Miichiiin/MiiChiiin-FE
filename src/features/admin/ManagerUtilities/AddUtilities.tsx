@@ -45,8 +45,9 @@ const AddUtilities = () => {
                 >
                     <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}
                      >
-                        <Select.Option value={0}>Đang dùng</Select.Option>
-                        <Select.Option value={1}>Có sẵn</Select.Option>
+                        <Select.Option value={0}>Đang chờ</Select.Option>
+                        <Select.Option value={1}>Đã ẩn</Select.Option>
+                        <Select.Option value={2}>Hoạt động</Select.Option>
                     </Select>
                 </Form.Item>
 

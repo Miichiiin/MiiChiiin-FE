@@ -1,35 +1,49 @@
 import { useAddHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
+import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 export const AddHotel = () => {
     const navigate = useNavigate()
+    const [selectedFile, setSelectedFile] = useState<File>();
+    const [isUploading, setIsUploading] = useState(false)
+
     const [addHotel, { isLoading }] = useAddHotel_adminMutation()
-    const onFinish = (values: FieldType) => {
-        addHotel(values).unwrap().then(() => navigate('/admin/hotelManagement'));
+    const onFinish = (values: any) => {
+        const body = new FormData()
+        body.append('name', values.name)
+        body.append('address', values.address)
+        body.append('email', values.email)
+        body.append('phone', values.phone)
+        body.append('description', values.description)
+        body.append('star', values.star)
+        body.append('quantity_of_room', values.quantity_of_room)
+        body.append('quantity_floor', values.quantity_floor)
+        body.append('status', values.status)
+        body.append('id_city', values.id_city)
+        body.append('image', selectedFile as File)
+        setIsUploading(true);
+
+        addHotel(body).unwrap().then(() =>{
+            message.success({ content: 'Thêm khách sạn thành công', key: 'uploading' });
+            navigate('/admin/hotelmanagement');
+        }).catch(() => {
+            message.error({ content: 'Thêm khách sạn thất bại', key: 'uploading' });
+        }).finally(() => {
+            setIsUploading(false);
+        });
+           
 
     };
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-
-    type FieldType = {
-        name: string,
-        email: string,
-        description: string,
-        quantity_of_room: number,
-        phone: string,
-        star: number,
-        quantity_floor: number,
-        created_at: string,
-        updated_at: string,
-        status: number,
-        id_city: number,
-        name_cities: string,
-        image_urls: string,
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { files } = event.target
+        const selectedFiles = files as FileList
+        setSelectedFile(selectedFiles?.[0])
     };
     return (
         <div>
@@ -90,6 +104,12 @@ export const AddHotel = () => {
                             { whitespace: true, message: 'Không được để trống!' }]}
                         >
                             <Input.TextArea placeholder="Nội dung" allowClear />
+                        </Form.Item>
+                        <Form.Item
+                            name="image"
+                            label="Upload"
+                        >
+                            <input type='file' onChange={handleChange} />
                         </Form.Item>
                     </div>
                     <div className='w-[500px] p-4 bg-white mr-4'>

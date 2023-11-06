@@ -1,5 +1,5 @@
 
-import { Form, Input, InputNumber, Button, message, Spin } from 'antd';
+import { Form, Input, InputNumber, Button, message, Spin, Select } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from "react-router-dom";
 import { useAddCategory_adminMutation } from '@/api/admin/category_admin';
@@ -131,7 +131,11 @@ const AddRoomType = () => {
           name="status"
           rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
         >
-          <InputNumber/>
+          <Select placeholder="Chọn trạng thái">
+            <Select.Option value={2}>Đang hoạt động</Select.Option>
+            <Select.Option value={1}>Đang bảo trì</Select.Option>
+            <Select.Option value={0}>Đang chờ</Select.Option>
+          </Select>
         </Form.Item>
 
 
