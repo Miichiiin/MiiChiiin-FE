@@ -17,11 +17,15 @@ const bookingUserApi = createApi({
     }),
     endpoints: (builder) => ({
         getBokingUser: builder.query<any,any>({
-            query: (id) => `/booking/${id}/profile`,
+            query: (id) => `/profile/${id}/booking`,
             providesTags: ['BookingUser']
         }),
         getBookingDetailUser: builder.query<any,any>({
-            query: (id) => `/bookingDetail/${id}`,
+            query: (id_detail) => `/profile/${id_detail.id_user}/booking/${id_detail.id_booking}`,
+            providesTags: ['BookingUser']
+        }),
+        getSearchOrder: builder.query<any,any>({
+            query: (slug) => `/profile/booking/${slug}`,
             providesTags: ['BookingUser']
         }),
         addBookingUser: builder.mutation<any,any>({
@@ -40,7 +44,7 @@ const bookingUserApi = createApi({
 
 })
 export const { 
- useGetBokingUserQuery, useGetBookingDetailUserQuery, useAddBookingUserMutation, useGetBokingUserTestQuery
+ useGetBokingUserQuery, useGetBookingDetailUserQuery, useAddBookingUserMutation, useGetBokingUserTestQuery, useGetSearchOrderQuery
  } = bookingUserApi;
 export const bookingUserReducer = bookingUserApi.reducer;
 export default bookingUserApi;

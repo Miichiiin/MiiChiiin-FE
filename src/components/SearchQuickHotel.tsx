@@ -27,7 +27,7 @@ export const SearchQuickHotel = () => {
   const navigate = useNavigate();
 
   const onHandSubmit = () => {
-    const roomDetailsString = roomDetails1.map((details) => {
+    const roomDetailsString = roomDetails1?.map((details) => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
     console.log("roomDetailsString", roomDetailsString);
@@ -235,7 +235,7 @@ export const SearchQuickHotel = () => {
               {isDropdownOpen && (
                 <div className="absolute cursor-pointer">
                   <div className="box-full rounded-md mt-1 bg-white px-6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute transition duration-2000">
-                    {hotelsData.map((hotel: any) => (
+                    {hotelsData?.map((hotel: any) => (
                       <div key={hotel.id} className="leading-[45px]">
                         <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
                           <AiOutlineEnvironment />
@@ -324,7 +324,7 @@ export const SearchQuickHotel = () => {
                           : ""
                           }`}
                       >
-                        {roomDetails1.map((room, index) => (
+                        {roomDetails1?.map((room, index) => (
                           <div key={index} className="mt-3 ">
                             <p className="mb-2 mr-[260px] text-[14px] font-medium">
                               Phòng {index + 1}

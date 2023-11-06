@@ -1,4 +1,4 @@
-import { useGetBokingUserQuery } from "@/api/bookingUser";
+import { useGetBokingUserQuery, useGetBookingDetailUserQuery } from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
@@ -18,12 +18,14 @@ const MyOrder = () => {
     nationality: "",
     address: "",
   });
-  console.log("user111", user);
+  const [idBoking, setIdBooking] = useState<any>("");
 
   const { data: booking } = useGetBokingUserQuery(user?.id);
+
   // const { data: booking } = useGetBokingUserTestQuery();
 
   console.log("booking2333", booking);
+  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -34,6 +36,13 @@ const MyOrder = () => {
     console.log("storedUser", storedUser);
   }, []);
 
+  const handleBookingDetail = (id_booking:any) => {
+    setIdBooking(id_booking)
+  }
+  console.log("id_bôking", idBoking);
+  
+  const { data: bookingDetail } = useGetBookingDetailUserQuery({id_user: user?.id, id_booking: idBoking});
+  console.log("booking2333detail", bookingDetail);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -113,7 +122,10 @@ const MyOrder = () => {
                         </span>
                         <button
                           className="text-red-300"
-                          onClick={handleOpenModal}
+                          onClick={() => {
+                            handleBookingDetail(item.id);
+                            handleOpenModal();
+                          }}
                         >
                           Xem chi tiết
                         </button>
@@ -141,7 +153,7 @@ const MyOrder = () => {
                         >
                           <div className="w-[100%] mx-auto">
                             <section className="grid grid-cols-2 gap-8">
-                              <div key={item?.id} className="">
+                              <div key={bookingDetail?.id} className="">
                                 <h1 className="font-semibold text-lg mb-2">
                                   Thông tin Đặt phòng
                                 </h1>
@@ -150,31 +162,31 @@ const MyOrder = () => {
                                     <p className="font-semibold">
                                       Tên khách hàng:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.name}
+                                        {bookingDetail?.name}
                                       </span>
                                     </p>
                                     <p className="font-semibold">
                                       Căn cước công dân:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.cccd}
+                                        {bookingDetail?.cccd}
                                       </span>
                                     </p>
                                     <p className="font-semibold">
                                       Số điện thoại:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.phone}
+                                        {bookingDetail?.phone}
                                       </span>
                                     </p>
                                     <p className="font-semibold">
                                       Email:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.email}
+                                        {bookingDetail?.email}
                                       </span>
                                     </p>
                                     <p className="font-semibold">
                                       Check in:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {dayjs(item?.check_in).format(
+                                        {dayjs(bookingDetail?.check_in).format(
                                           "YYYY-MM-DD "
                                         )}
                                       </span>
@@ -182,7 +194,7 @@ const MyOrder = () => {
                                     <p className="font-semibold">
                                       Check out:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {dayjs(item?.check_out).format(
+                                        {dayjs(bookingDetail?.check_out).format(
                                           "YYYY-MM-DD"
                                         )}
                                       </span>
@@ -190,19 +202,19 @@ const MyOrder = () => {
                                     <p className="font-semibold">
                                       Quốc tịch:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.nationality}
+                                        {bookingDetail?.nationality}
                                       </span>
                                     </p>
                                     <p className="font-semibold">
                                       Tổng số người:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.people_quantity}
+                                        {bookingDetail?.people_quantity}
                                       </span>
                                     </p>
                                     <p className="font-semibold">
                                       Số phòng:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.total_room}
+                                        {bookingDetail?.total_room}
                                       </span>
                                     </p>
                                     {/* <p className="font-semibold">
@@ -219,7 +231,7 @@ const MyOrder = () => {
                                     <p className="font-semibold">
                                       Tổng tiền:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {item?.total_amount}
+                                        {bookingDetail?.total_amount}
                                       </span>
                                     </p>
                                   </div>
@@ -230,7 +242,7 @@ const MyOrder = () => {
                                   Danh sách phòng và dịch vụ đã đặt
                                 </h1>
                                 <ul>
-                                  {item?.rooms?.map((item: any, index: any) => {
+                                  {bookingDetail?.rooms?.map((item: any, index: any) => {
                                     return (
                                       <li key={index} className="ml-3 my-2">
                                         <div className="border flex justify-between px-2 py-3">
