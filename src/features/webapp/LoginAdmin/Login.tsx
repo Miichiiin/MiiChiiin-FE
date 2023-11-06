@@ -27,7 +27,7 @@ const LoginAdmin = () => {
       localStorage.setItem("tokenAdmin", loginData.token);
       localStorage.setItem("userAdmin", JSON.stringify(loginData.admin)); 
       setTimeout(() => {
-        navigate(`/admin/${loginData.admin?.id_hotel}`);
+        navigate(`/admin`);
       }, 2000);
     }
     else if (isLoginError)

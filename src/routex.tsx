@@ -172,7 +172,7 @@ export const router = createBrowserRouter([
         element: <BookingSuccess/>
     },
     {
-        path: "/admin/:id/*",
+        path: "/admin/*",
         element:<LayoutAdmin />,
         children: [
             {
