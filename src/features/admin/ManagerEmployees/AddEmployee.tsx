@@ -43,11 +43,12 @@ const AddEmployeePage = () => {
       body.append('address', values.address)
       body.append('date', values.date)
       body.append('email', values.email)
-      // body.append('gender', values.gender)
+      body.append('gender', values.gender)
       body.append('password', values.password)
       body.append('phone', values.phone)
       body.append('role', values.role)
       body.append('description', values.description)
+      body.append('status', '2')
       console.log('body', body)
     addEmployee(body).unwrap().then(() =>{
       navigate("/admin/manageremployee")
@@ -60,16 +61,6 @@ const AddEmployeePage = () => {
    const {files} = event.target
     const selectedFiles = files as FileList
     setSelectedFile(selectedFiles?.[0])
-    // if (info.file.status === 'uploading') {
-    //   return;
-    // }
-    // if (info.file.status === 'done') {
-    //   // Get this url from response in real world.
-    //   getBase64(info.file.originFileObj as RcFile, (url) => {
-    //     console.log('url', url)
-    //     // setSelectedFile(url);
-    //   });
-    // }
   };
   return (
     <div>
@@ -95,8 +86,9 @@ const AddEmployeePage = () => {
                 </Form.Item>
                 <Form.Item label="Giới Tính" name="gender" rules={[{ required: true }]}>
                   <Radio.Group>
-                    <Radio value="male">Nam</Radio>
-                    <Radio value="female">Nữ</Radio>
+                    <Radio value={0}>Nam</Radio>
+                    <Radio value={1}>Nữ</Radio>
+                    <Radio value={2}>Khác</Radio>
                   </Radio.Group>
                 </Form.Item>
 
@@ -154,9 +146,6 @@ const AddEmployeePage = () => {
                   label="Upload"
                 >
                   <input type='file' onChange={handleChange}/>
-                  {/* <Upload  onChange={handleChange} name="avatar" action="http://localhost:5173/admin/addemployee"   >
-                    <Button icon={<InboxOutlined />}>Click to upload</Button>
-                  </Upload> */}
                 </Form.Item>
               
                 <div>

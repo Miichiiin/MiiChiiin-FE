@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Select, Radio } from 'antd';
+import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Select, Radio, Skeleton } from 'antd';
 import { useGetService_adminQuery } from '@/api/admin/service_admin';
 import { useGetBooking_adminByIdQuery, useUpdateBooking_adminMutation } from '@/api/admin/booking_admin';
 import dayjs from 'dayjs';
@@ -10,6 +10,7 @@ import 'dayjs/locale/vi';
 import { BsTrash3 } from 'react-icons/bs';
 import { useGetRoom_AdminsQuery } from '@/api/admin/room_admin';
 import { useGetCategory_BookingQuery } from '@/api/admin/category_booking';
+
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -81,7 +82,7 @@ const UpdateBooking = () => {
   const [isServicesHidden, setIsServicesHidden] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>()
   const { data: bookingData, isLoading, isError } = useGetBooking_adminByIdQuery(id)
-
+  
   const [roomCount, setRoomCount] = useState(0);
   const [maxRoomQuantity, setMaxRoomQuantity] = useState(0);
   const [availableRoomCounts, setAvailableRoomCounts] = useState<{ [key: number]: number }>({});
@@ -134,6 +135,8 @@ const UpdateBooking = () => {
     // Cập nhật giá trị tổng thanh toán
     setTotalAmount(total);
   };
+  console.log(bookingData);
+  
   //set giá trị phòng cũ vào form
   useEffect(() => {
     if (bookingData) {
@@ -155,8 +158,8 @@ const UpdateBooking = () => {
       // Lấy danh sách các phòng đã chọn từ bookingData và cập nhật vào selectedRoomsData
       const updatedSelectedRoomsData = bookingData?.room?.map((item: any) => {
         return {
-          id_room : item.id,
-          id_cate: item.id_category,
+          id_room: item?.id,
+          id_cate: item?.id_category,
           services:
             item.services?.map((service: any) => ({
               id_service: service.id,
@@ -164,7 +167,8 @@ const UpdateBooking = () => {
             })) || [],
 
         };
-      });
+      });  
+      setSelectedRoomsData(updatedSelectedRoomsData);
       setSelectedRoomsData(updatedSelectedRoomsData);
       setCartData(updatedSelectedRoomsData);
       calculateTotalAmount(updatedSelectedRoomsData);
@@ -287,14 +291,18 @@ const UpdateBooking = () => {
   const [hiddenSelectingRooms, setHiddenSelectingRooms] = useState(false);
 
   const getRoomName = (roomId: any) => {
-    const roomData = roomsData?.find((room: any) => room.id === roomId);
-    return roomData ? `Phòng ${roomData.name}` : 'Chưa có phòng';
+    console.log(roomsData);
+    
+    const roomData = roomsData?.find((room: any) => room?.id === roomId);
+    
+    return roomData ? `Phòng ${roomData.name}` : 'Phòng không tồn tại';
   }
+  
   const handleSelectRooms = (roomIndex: any) => {
     setSelectedRoomIndex(roomIndex);
     const rooms = roomsData?.id_room
     setSelectedRoom(rooms);
-    setListRoomSelected(roomsData.filter((room: any) => room.id_cate === selectedRoomsData[roomIndex]?.id_cate))
+    setListRoomSelected(roomsData?.filter((room: any) => room.id_cate === selectedRoomsData[roomIndex]?.id_cate))
     setIsSelectingRooms(!isSelectingRooms);
     setHiddenSelectingRooms(!hiddenSelectingRooms)
     setIsSelectingServices(false);
@@ -378,12 +386,15 @@ const UpdateBooking = () => {
     else{
       updateBooking(formattedValues).unwrap().then(() => {
         message.success('Cập nhật thành công');
+        setTimeout(() => {
+          navigate(`/admin/detailbooking/${id}`)
+        }, 3000);
       });
     }
     
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = () => {
     message.error('Cập nhật thất bại');
   };
 
@@ -394,7 +405,7 @@ const UpdateBooking = () => {
   }, [totalAmount]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton active />;
   }
 
   if (isError) {
@@ -499,11 +510,11 @@ const UpdateBooking = () => {
                 label="Số điện thoại"
                 name="phone"
                 rules={[
-                  { required: true, message: 'Hãy nhập !' },
+                  { required: true, message: 'Hãy nhập số vào !' },
                   { whitespace: true, message: 'Không được để trống!' },
                   {
-                    pattern: /^[0-9]*$/,
-                    message: 'Chỉ được nhập số ',
+                    pattern: /^0[0-9]*$/,
+                    message: 'Hãy nhập số đúng định dạng ',
                   },
                 ]}
 
@@ -572,10 +583,14 @@ const UpdateBooking = () => {
                 label="Trạng thái"
                 name="status"
                 labelCol={{ span: 24 }}
+                rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
               >
-                <Select className='w-[250px]'>
-                  <Select.Option value="1" >Không hiển thi</Select.Option>
-                  <Select.Option value="2">Hiển thị</Select.Option>
+                <Select className='w-[250px]' placeholder="Hay chọn trạng thái">
+                  <Select.Option value={0}>Đang chờ</Select.Option>
+                  <Select.Option value={1}>Đã huỷ</Select.Option>
+                  <Select.Option value={2} >Đã check in</Select.Option>
+                  <Select.Option value={3}>Đã thanh toán</Select.Option>
+                  <Select.Option value={4}>Đã hoàn thành</Select.Option>
                 </Select>
               </Form.Item>
             </div>
@@ -692,14 +707,14 @@ const UpdateBooking = () => {
                                 </div>
                               </Popconfirm>
                             </div>
-                            <p className=''>Tên phòng : <span className='font-semibold text-blue-800'>{getRoomName(roomData.id_room)} </span></p>
+                            <p className=''>Tên phòng : <span className='font-semibold text-blue-800'>{getRoomName(roomData?.id_room)} </span></p>
 
                             <p className="text-md ">Dịch vụ đã chọn: </p>
                             <ul>
                               {roomData?.services?.map((serviceId, serviceIndex) => (
                                 <li key={serviceIndex}>
-                                  Dịch vụ {serviceIndex + 1}: <span className='font-semibold text-blue-800'>{getServiceName(serviceId.id_service)} x{serviceId.quantity}</span>
-                                </li>
+                                Dịch vụ {serviceIndex + 1} : <span className='font-semibold text-blue-800 italic'> {getServiceName(serviceId.id_service)}</span> x <span className='text-red-500 font-semibold'>{serviceId.quantity}</span>
+                              </li>
                               ))}
                             </ul>
                             <div className='flex justify-between item-center pt-4'>

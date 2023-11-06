@@ -9,6 +9,7 @@ import {
   Popconfirm,
   message,
   Pagination,
+  Skeleton,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
@@ -35,8 +36,7 @@ const users = [
 ];
 export const ManagerRoom = () => {
 
-  const { data: roomData } = useGetRoom_AdminsQuery({})
-  console.log(roomData);
+  const { data: roomData, isLoading, isError } = useGetRoom_AdminsQuery({})
   
   const [removeRoom] = useRemoveRoom_AdminMutation();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -51,20 +51,20 @@ export const ManagerRoom = () => {
     users[0].admin.permissions.includes("update room") &&
     users[0].admin.permissions.includes("delete room")
   );
-  const [messageApi, contextHolder] = message.useMessage();
   interface DataType {
     id: number;
     name: string;
     name_category: string;
     name_hotel: string;
-    status: string;
+    status: number | string;
   }
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
+      title: "#",
       dataIndex: "id",
       key: "id",
+      //render: (_, __, index) => <span>{index + 1}</span>,
     },
     {
       title: "Tên phòng",
@@ -85,6 +85,19 @@ export const ManagerRoom = () => {
       title: "Trang thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        
+        if (record.status === 2) {
+            statusText = 'Hoạt động';
+        } else if (record.status === 1) {
+            statusText = 'Đã ẩn';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+
+        return <span>{statusText}</span>;
+    },
     },
     {
       title: "Hành động",
@@ -151,6 +164,12 @@ export const ManagerRoom = () => {
     .filter((item: DataType) =>
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
+    if (isLoading) {
+      return <Skeleton active/>;
+    }
+    if (isError) {
+      return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+    }
   return (
     <div>
       <div
@@ -180,11 +199,15 @@ export const ManagerRoom = () => {
               },
               {
                 value: 1,
-                label: "Còn trống",
+                label: "Đã ẩn",
+              },
+              {
+                value: 2,
+                label: "Hoạt động",
               },
               {
                 value: 0,
-                label: "Hết phòng",
+                label: "Đang chờ",
               },
             ]}
             onChange={(value) => {

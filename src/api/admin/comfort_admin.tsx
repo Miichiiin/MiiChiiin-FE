@@ -5,9 +5,9 @@ const comfortApi = createApi({
     reducerPath: 'comfort',
     tagTypes: ['Comfort'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("tokenAdmin");
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`)
             }
@@ -16,7 +16,7 @@ const comfortApi = createApi({
     }),
     endpoints: (builder) => ({
         getComfort: builder.query({
-            query: () => `/comfort`,
+            query: () => `/comforts`,
             providesTags: ['Comfort']
         }),
         getComfortById: builder.query({
@@ -34,7 +34,7 @@ const comfortApi = createApi({
         updateComfort: builder.mutation({
             query: (product) => ({
                 url: `/comfort/${product.id}`,
-                method: "PATCH",
+                method: "PUT",
                 body: product
             }),
             invalidatesTags: ['Comfort']

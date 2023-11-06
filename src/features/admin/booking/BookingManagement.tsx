@@ -1,5 +1,5 @@
 import { useGetBooking_adminQuery, useRemoveBooking_adminMutation } from '@/api/admin/booking_admin';
-import { Table, Divider, Radio, Button, Select, Input, Space } from 'antd';
+import { Table, Divider, Radio, Select, Input, Space, Skeleton } from 'antd';
 const { Search } = Input;
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
@@ -7,35 +7,37 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import 'dayjs/plugin/utc';
 import 'dayjs/plugin/timezone';
-
 dayjs.locale('vi');
+import { Link } from 'react-router-dom';
+
+
 
 const users = [
     {
-     token: "haha",
-     admin:{
-       id: 2,
-       id_hotel: 1,
-       name: "Augustus Mitchell",
-       image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-       role: "",
-       permissions: [
-         'add booking',
-         'update booking',
-         'delete booking',
-         'add voucher',
-       ]
-     },
+        token: "haha",
+        admin: {
+            id: 2,
+            id_hotel: 1,
+            name: "Augustus Mitchell",
+            image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
+            role: "",
+            permissions: [
+                'add booking',
+                'update booking',
+                'delete booking',
+                'add voucher',
+            ]
+        },
     }
-   
-  ];
+
+];
 export const BookingManagement = () => {
-    const { data: dataBooking } = useGetBooking_adminQuery({})
+    const { data: dataBooking, isLoading, isError } = useGetBooking_adminQuery({})
     const [removeBooking] = useRemoveBooking_adminMutation()
     const [searchText, setSearchText] = useState("");
-    const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
+
 
     const data = dataBooking?.map(({ id, check_in, check_out, email, name, people_quantity, total_amount, status, cccd, nationality, id_user, phone, promotion, cart }: DataType) => ({
         key: id,
@@ -101,6 +103,23 @@ export const BookingManagement = () => {
             title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
+            render: (_, record) => {
+                let statusText = '';
+                
+                if (record.status === 2) {
+                    statusText = 'Đã check in';
+                } else if (record.status === 3) {
+                    statusText = 'Đã thanh toán';
+                } else if (record.status === 4) {
+                    statusText = 'Hoàn thành'; 
+                } else if (record.status === 1) {
+                    statusText = 'Đã Huỷ';
+                } else if (record.status === 0) {
+                    statusText = 'Đang chờ';
+                }
+    
+                return <span>{statusText}</span>;
+            },
         },
         // Modify the render functions for 'check_in' and 'check_out' columns
 
@@ -134,21 +153,19 @@ export const BookingManagement = () => {
             title: "Hành động",
             key: "action",
             render: (_, record) => (
+                <div>
+                    <button className='px-2 py-2 bg-blue-500 text-white rounded-md mr-2'>
+                        <Link to={`/admin/detailbooking/${record.key}`} >Chi tiết</Link></button>
+                    {hasAddUserPermission && (
+                        <button className='px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 hover:text-white' onClick={() => removeBooking(record.key)}>Xóa</button>
+                    )}
+                </div>
 
-                <a href={`/admin/detailbooking/${record.key}`} className="px-2 py-2 bg-red-500 text-white rounded-md" >Chi tiết</a>
+
 
             )
         }
     ];
-    // Xóa booking
-    const confirmDelete = (id: number) => {
-        const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
-        if (isConfirmed) {
-            removeBooking(id).unwrap().then(() => {
-                setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
-            });
-        }
-    };
     //lọc dữ liệu
 
     const filteredData = data ? data
@@ -164,6 +181,12 @@ export const BookingManagement = () => {
         users[0].admin.permissions.includes("update booking") &&
         users[0].admin.permissions.includes("delete booking")
     );
+    if (isLoading) {
+        return <Skeleton active />;
+      }
+      if(isError){
+        return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+      }
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
@@ -184,20 +207,32 @@ export const BookingManagement = () => {
                             }
                             options={[
                                 {
-                                    value: 0,
+                                    value: "all",
                                     label: "Tất cả",
                                 },
                                 {
-                                    value: "1",
-                                    label: "Không hiển thị",
+                                    value: 0,
+                                    label: "Đang chờ",
                                 },
                                 {
-                                    value: "2",
-                                    label: "Hiển thị",
+                                    value: 1,
+                                    label: "Đã huỷ",
                                 },
+                                {
+                                    value: 2,
+                                    label: "Đã check in",
+                                },
+                                {
+                                    value: 3,
+                                    label: "Đã thanh toán",
+                                },
+                                {
+                                    value: 4,
+                                    label: "Hoàn thành",
+                                }
                             ]}
                             onChange={(value) => {
-                                if (value === 0) {
+                                if (value === "all") {
                                     setSelectedStatus(undefined); // Xóa bộ lọc
                                 } else {
                                     setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
@@ -208,7 +243,7 @@ export const BookingManagement = () => {
 
                 </div>
                 {hasAddUserPermission && (
-                <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><a href={'/admin/addbooking'}>Thêm booking</a></button>
+                    <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/addbooking'}>Thêm booking</Link></button>
                 )}
             </div>
             {/* Phần CSS tùy chỉnh cho bảng */}
@@ -221,14 +256,6 @@ export const BookingManagement = () => {
                     }
                     `}
             </style>
-            {hasAddUserPermission && (
-                <Button type="primary" className='mx-5' danger
-                onClick={() => {
-                    selectedRows.forEach((row) => confirmDelete(row.key));
-                }}
-                disabled={selectedRows.length === 0}
-            >Xóa</Button>
-            )}
             <Radio.Group
                 onChange={({ target: { value } }) => {
                     setSelectionType(value);
@@ -240,14 +267,6 @@ export const BookingManagement = () => {
             <Divider />
             <div className="bg-[#f4f4f4] rounded-md p-3">
                 <Table
-                    rowSelection={{
-                        type: selectionType,
-                        selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
-                        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-                            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                            setSelectedRows(selectedRows);
-                        },
-                    }}
                     columns={columns}
                     dataSource={filteredData}
                     className="custom-table"

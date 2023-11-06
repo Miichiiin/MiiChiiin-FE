@@ -3,7 +3,7 @@
 import { useGetRatingByIdQuery, useUpdateRatingMutation } from '@/api/admin/rates_admin';
 import { Button, DatePicker, Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export const EditComment = () => {
 
@@ -92,10 +92,12 @@ export const EditComment = () => {
                 <Form.Item
                     label="Trạng thái"
                     name="status"
+                    rules={[{ required: true, message: 'Hãy nhập trạng thái!' }]}
                 >
-                    <Select defaultValue="0" style={{ width: '150px' }}>
-                        <Select.Option value="1">Không hiển thi</Select.Option>
-                        <Select.Option value="2">Hiển thị</Select.Option>
+                    <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
+                        <Select.Option value="0">Chờ</Select.Option>
+                        <Select.Option value="1">Ẩn</Select.Option>
+                        <Select.Option value="2">Xác nhận</Select.Option>
                     </Select>
                 </Form.Item>
 
@@ -110,6 +112,9 @@ export const EditComment = () => {
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" className='bg-blue-500 text-white' htmlType="submit">
                         Submit
+                    </Button>
+                    <Button type='primary' danger className='mx-2'>
+                        <Link to="/admin/commentmanagement">Quay lại</Link>
                     </Button>
                 </Form.Item>
             </Form>

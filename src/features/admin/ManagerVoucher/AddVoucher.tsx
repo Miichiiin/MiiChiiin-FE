@@ -32,6 +32,7 @@ const AddVoucherPage = () => {
       body.append('start_at', values.start_at)
       body.append('expire_at', values.expire_at)
       body.append('quantity', values.quantity)
+      body.append('status', values.status)
       console.log('body', body)
       addvoucher(body).unwrap().then(() =>{
 
@@ -120,9 +121,10 @@ const AddVoucherPage = () => {
           <InputNumber min={1} />
         </Form.Item>
         <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Vui lòng nhập trạng thái' }]}>
-          <Select>
-            <Option value="active">Active</Option>
-            <Option value="inactive">Inactive</Option>
+          <Select placeholder="Chọn trạng thái">
+            <Option value={1}>Ẩn</Option>
+            <Option value={0}>Đang chờ</Option>
+            <Option value={2}>Hoạt động</Option> 
           </Select>
         </Form.Item>
         <Form.Item
