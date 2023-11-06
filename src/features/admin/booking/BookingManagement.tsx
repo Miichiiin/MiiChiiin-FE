@@ -7,28 +7,11 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import 'dayjs/plugin/utc';
 import 'dayjs/plugin/timezone';
+import { Link } from 'react-router-dom';
 
 dayjs.locale('vi');
 
-const users = [
-    {
-     token: "haha",
-     admin:{
-       id: 2,
-       id_hotel: 1,
-       name: "Augustus Mitchell",
-       image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-       role: "",
-       permissions: [
-         'add booking',
-         'update booking',
-         'delete booking',
-         'add voucher',
-       ]
-     },
-    }
-   
-  ];
+
 export const BookingManagement = () => {
     const { data: dataBooking } = useGetBooking_adminQuery({})
     const [removeBooking] = useRemoveBooking_adminMutation()
@@ -81,6 +64,15 @@ export const BookingManagement = () => {
             title: 'Tên khách hàng',
             dataIndex: 'name',
             key: 'name',
+            render: (text: any, item: any) => {
+                return (
+                  <>
+                    {hasAddUserPermission("update booking") && (
+                      <Link to={`/admin/bookingmanagement/${item.id}/update`}>{text}</Link>
+                    )}
+                  </>
+                )
+              }
         },
         {
             title: 'Email',
@@ -158,12 +150,13 @@ export const BookingManagement = () => {
         .filter((item: DataType) =>
             selectedStatus === undefined ? true : item.status === selectedStatus
         ) : [];
-    // phân quyền
-    const [hasAddUserPermission, setHasAddUserPermission] = useState(
-        users[0].admin.permissions.includes("add booking") &&
-        users[0].admin.permissions.includes("update booking") &&
-        users[0].admin.permissions.includes("delete booking")
-    );
+
+   // phân quyền
+ const dataPermission = localStorage.getItem('userAdmin')
+ const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+ const hasAddUserPermission = (permissions:any) => {
+   return currentUserPermissions.includes(permissions);
+ };
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
@@ -207,7 +200,7 @@ export const BookingManagement = () => {
                     </div>
 
                 </div>
-                {hasAddUserPermission && (
+                {hasAddUserPermission("add booking") && (
                 <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><a href={'/admin/addbooking'}>Thêm booking</a></button>
                 )}
             </div>
@@ -221,7 +214,7 @@ export const BookingManagement = () => {
                     }
                     `}
             </style>
-            {hasAddUserPermission && (
+            {hasAddUserPermission("delete booking") && (
                 <Button type="primary" className='mx-5' danger
                 onClick={() => {
                     selectedRows.forEach((row) => confirmDelete(row.key));

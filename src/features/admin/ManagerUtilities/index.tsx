@@ -14,32 +14,14 @@ import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const users = [
-  {
-   token: "haha",
-   admin:{
-     id: 2,
-     id_hotel: 1,
-     name: "Augustus Mitchell",
-     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-     role: "",
-     permissions: [
-       'add dichvu',
-       'update dichvu',
-       'delete dichvu',
-       'add voucher',
-     ]
-   },
-  }
- 
-];
+
 export const ManagerUtilities = () => {
-  // phân quyền
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add dichvu") &&
-    users[0].admin.permissions.includes("update dichvu") &&
-    users[0].admin.permissions.includes("delete dichvu")
-  );
+   // phân quyền
+ const dataPermission = localStorage.getItem('userAdmin')
+ const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+ const hasAddUserPermission = (permissions:any) => {
+   return currentUserPermissions.includes(permissions);
+ };
   const [messageApi, contextHolder] = message.useMessage();
 
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
@@ -94,7 +76,7 @@ export const ManagerUtilities = () => {
       render: (text:any, item:any) => {
         return (
           <>
-            {hasAddUserPermission && (
+            {hasAddUserPermission("update comfort") && (
               <Link to={`/admin/updateUtilities/${item.key}`}>{text}</Link>
             )}
           </>
@@ -190,7 +172,7 @@ export const ManagerUtilities = () => {
           />
           {/*Nút Thêm */}
         </div>
-        {hasAddUserPermission && (
+        {hasAddUserPermission("add comfort") && (
           <Button type="primary" className="ml-2 mt-1 bg-gray-500">
           <Link to={`/admin/addUtilities`}>Thêm</Link>
         </Button>
@@ -198,7 +180,7 @@ export const ManagerUtilities = () => {
       </div>
       {/*Nút Xoá */}
       <div>
-        {hasAddUserPermission && (
+        {hasAddUserPermission("delete comfort") && (
           <Button type="primary" className='' danger
           onClick={() => {
             selectedRows.forEach((row) => confirmDelete(row.key));
