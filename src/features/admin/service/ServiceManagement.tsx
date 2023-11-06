@@ -17,25 +17,7 @@ import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const users = [
-  {
-    token: "haha",
-    admin: {
-      id: 2,
-      id_hotel: 1,
-      name: "Augustus Mitchell",
-      image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-      role: "",
-      permissions: [
-        'add service',
-        'update service',
-        'delete service',
-        'add voucher',
-      ]
-    },
-  }
 
-];
 export const ServiceManagement = () => {
   const { data: visibleItems, isLoading, isError } = useGetService_adminQuery();
   const [removeService] = useRemoveService_adminMutation();
@@ -44,12 +26,12 @@ export const ServiceManagement = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  // phân quyền
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add service") &&
-    users[0].admin.permissions.includes("update service") &&
-    users[0].admin.permissions.includes("delete service")
-  );
+   // phân quyền
+ const dataPermission = localStorage.getItem('userAdmin')
+ const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+ const hasAddUserPermission = (permissions:any) => {
+   return currentUserPermissions.includes(permissions);
+ };
   interface DataType {
     key: string;
     name: string;
@@ -73,7 +55,7 @@ export const ServiceManagement = () => {
       render: (text: any, item: any) => {
         return (
           <>
-            {hasAddUserPermission && (
+            {hasAddUserPermission("update service") && (
               <Link to={`/admin/updateservice/${item.id}`}>{text}</Link>
             )}
           </>
@@ -126,8 +108,9 @@ export const ServiceManagement = () => {
       render: (_, item: any) => {
         return (
           <>
-            {hasAddUserPermission && (
+           
              <div className="flex items-center">
+             {hasAddUserPermission("delete service") && (
                <Popconfirm
                 title="Xóa sản phẩm"
                 description="Bạn có muốn xóa không??"
@@ -141,9 +124,12 @@ export const ServiceManagement = () => {
               >
                 <Button danger>Xóa</Button>
               </Popconfirm>
+              )}
+              {hasAddUserPermission("update service") && (
               <Link className="mx-2 px-4 py-1 border border-blue-700 rounded" to={`/admin/updateservice/${item.id}`}>Sửa</Link>
+              )}
              </div>
-            )}
+           
 
           </>
         )
@@ -244,7 +230,7 @@ export const ServiceManagement = () => {
             }}
           />
         </div>
-        {hasAddUserPermission && (
+        {hasAddUserPermission("add service") && (
           <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
             <Link to={`/admin/addservice`}>Thêm dịch vụ</Link>
           </button>
