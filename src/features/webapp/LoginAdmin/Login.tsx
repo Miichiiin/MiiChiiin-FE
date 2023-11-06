@@ -21,6 +21,8 @@ const LoginAdmin = () => {
         const userAdminLocal = localStorage.getItem('userAdmin')
         if(userAdminLocal !== null) {
           const data = JSON.parse(userAdminLocal);
+          console.log("dataLoginAdmin",data.admin);
+          
          
         if(userAdminLocal) {  
           const tokenAdmin = localStorage.getItem('tokenAdmin')        

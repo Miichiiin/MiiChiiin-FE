@@ -5,7 +5,7 @@ const hotelchainstatisticRtApi = createApi({
     reducerPath: 'hotelchainstatisticrt',
     tagTypes: ['HotelChainStatisticRt'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("tokenAdmin");
             if (token) {
