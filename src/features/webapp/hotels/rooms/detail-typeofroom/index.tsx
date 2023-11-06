@@ -26,6 +26,8 @@ const images = [
 const DetailTypeofRoom = () => {
   const [roomRating, setRoomRating] = useState(0);// đánh giá
   const { idHotel, idRoom } = useParams()
+  console.log("idHotelnw",idHotel);
+  
   const {data:hotelData} = useGetHotel_homeByIdQuery(idHotel);
   const { data } = useGetCategory_homeByIdQuery(idRoom);
   // const dispatch = useAppDispatch();
@@ -132,13 +134,14 @@ const DetailTypeofRoom = () => {
       const numberOfRooms1 = [`adults:1,children:0,infants:0`];
       const encodedSelectedRooms = 1
       
-      const hotel = `${data.hotel_id}, ${hotelData?.name}`
+      const hotel = `${idHotel}, ${hotelData?.[0]?.name}`
       
+      console.log("hotelnew",hotel);
       const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${numberOfRooms1}`;
      
       console.log("url", url);
 
-      saveRoomInfoToLocalStorage(data.name, data.price,data.id,data.hotel_id);
+      // localStorage.setItem('sel')
   
       navigate(url);
     } else {

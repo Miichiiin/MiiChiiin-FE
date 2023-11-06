@@ -25,89 +25,96 @@ const HotelChainStatistic = () => {
     month: selectedMonth,
     year: selectedYear,
   });
-  
+
   console.log("HotelChainStatistics", HotelChainStatistics);
-  
-  
-  const [uniqueMonths, setUniqueMonths] = useState<number[]>([]);
-  const [uniqueYears, setUniqueYears] = useState<number[]>([]);
+
+  // const [uniqueMonths, setUniqueMonths] = useState<number[]>([]);
+  // const [uniqueYears, setUniqueYears] = useState<number[]>([]);
   const [filteredData1, setFilteredData1] = useState<any>([]);
   console.log("filteredData1", filteredData1);
 
-  
   const [chartMode, setChartMode] = useState("revenue");
-  
+
   const handleRevenueChartModeChange = () => {
     setChartMode("revenue");
   };
-  
+
   const handleServiceChartModeChange = () => {
     setChartMode("service");
   };
-  
+
   const handleRoomTypeChartModeChange = () => {
     setChartMode("roomtype");
   };
-  
+
   useEffect(() => {
     if (HotelChainStatistics && Array.isArray(HotelChainStatistics)) {
-      const uniqueMonths = Array.from(
-        new Set(HotelChainStatistics.map((item) => item.month))
-      ).map(Number); // Chuyển đổi chuỗi thành số
-  
-      const uniqueYears = Array.from(
-        new Set(HotelChainStatistics.map((item) => item.year))
-      ).map(Number); // Chuyển đổi chuỗi thành số
-  
-      setUniqueMonths(uniqueMonths);
-      setUniqueYears(uniqueYears);
-  
+      // const uniqueMonths = Array.from(
+      //   new Set(HotelChainStatistics.map((item) => item.month))
+      // ).map(Number); // Chuyển đổi chuỗi thành số
+
+      // const uniqueYears = Array.from(
+      //   new Set(HotelChainStatistics.map((item) => item.year))
+      // ).map(Number); // Chuyển đổi chuỗi thành số
+
+      // setUniqueMonths(uniqueMonths);
+      // setUniqueYears(uniqueYears);
+
       const filteredData = HotelChainStatistics.filter((item) => {
         return item.month === selectedMonth && item.year === selectedYear;
       });
-  
+
       setFilteredData1(filteredData);
     }
   }, [HotelChainStatistics, selectedMonth, selectedYear]);
-  
+
   const handleMonthChange = (event: any) => {
     const selectedMonth = parseInt(event.target.value);
     setSelectedMonth(selectedMonth);
   };
-  
+
   const handleYearChange = (event: any) => {
     const selectedYear = parseInt(event.target.value);
     setSelectedYear(selectedYear);
   };
 
-  // Bieu do cua service
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  
+
   const handleTitleClick1 = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
+  // Bieu do cua service
 
   const { data: HotelChainStatisticsv } = useGetHotelChainStatisticsvQuery();
   const [selectedMonthsv, setSelectedMonthsv] = useState("Tháng 3");
   const [selectedYearsv, setSelectedYearsv] = useState("2023");
-  const [uniqueMonthsv, setUniqueMonthsv] = useState<any>([]);
-  const [uniqueYearsv, setUniqueYearsv] = useState<any>([]);
+  const [uniqueMonthsv, setUniqueMonthsv] = useState<string[]>([]);
+  const [uniqueYearsv, setUniqueYearsv] = useState<string[]>([]);
   const [filteredData2, setFilteredData2] = useState<any[]>([]);
   const [isDropdownVisiblesv, setIsDropdownVisiblesv] = useState(false);
+  const colors = [
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#FF5733",
+    "#34A853",
+    "#FF3333",
+    "#3366FF",
+  ];
+
   const handleTitleClick2 = () => {
     setIsDropdownVisiblesv(!isDropdownVisiblesv);
   };
 
-  console.log("filteredData2", filteredData2);
   useEffect(() => {
     if (HotelChainStatisticsv && Array.isArray(HotelChainStatisticsv)) {
-      // Kiểm tra xem HotelChainStatisticsv có tồn tại và là một mảng không
       const uniqueMonthsSv = Array.from(
-        new Set(HotelChainStatisticsv.map((item: any) => item.month))
+        new Set(
+          HotelChainStatisticsv.map((item: any) => item.services[0].month)
+        )
       );
-      console.log("uniqueMonthsSv", uniqueMonthsSv);
       const uniqueYearsSv = Array.from(
-        new Set(HotelChainStatisticsv.map((item: any) => item.year))
+        new Set(HotelChainStatisticsv.map((item: any) => item.services[0].year))
       );
 
       setUniqueMonthsv(uniqueMonthsSv);
@@ -115,12 +122,18 @@ const HotelChainStatistic = () => {
 
       // Lọc dữ liệu dựa trên tháng và năm đã chọn
       const filteredData = HotelChainStatisticsv.filter((item: any) => {
-        return item.month === selectedMonthsv && item.year === selectedYearsv;
+        return (
+          item.services[0].month === selectedMonthsv &&
+          item.services[0].year === selectedYearsv
+        );
       });
 
       setFilteredData2(filteredData);
     }
   }, [HotelChainStatisticsv, selectedMonthsv, selectedYearsv]);
+
+  console.log("filteredData2",);
+  
 
   const handleMonthChangesv = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedMonth = event.target.value;
@@ -131,6 +144,8 @@ const HotelChainStatistic = () => {
     const selectedYear = event.target.value;
     setSelectedYearsv(selectedYear);
   };
+
+
 
   // Biểu đồ của RoomType
   const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery();
@@ -230,183 +245,169 @@ const HotelChainStatistic = () => {
       {/* Biểu đồ 1 */}
 
       <div>
-  {chartMode === "revenue" && (
-    <div>
-      <h1
-        className="text-2xl font-semibold text-blue-600 mb-4"
-        onClick={handleTitleClick1}
-      >
-        Biểu đồ thống kê tổng doanh thu và số booking
-      </h1>
+        {chartMode === "revenue" && (
+          <div>
+            <h1
+              className="text-2xl font-semibold text-blue-600 mb-4"
+              onClick={handleTitleClick1}
+            >
+              Biểu đồ thống kê tổng doanh thu và số booking
+            </h1>
 
-      <div
-        className={`relative ${isDropdownVisible ? "block" : "hidden"} flex space-x-4`}
-      >
+            <div
+              className={`relative ${
+                isDropdownVisible ? "block" : "hidden"
+              } flex space-x-4`}
+            >
+              <div className="bg-blue-200">
+                <label>Chọn tháng: </label>
+                <select
+                  className="border rounded p-2"
+                  onChange={handleMonthChange}
+                  value={selectedMonth}
+                >
+                  {Array.from({ length: 12 }, (_, index) => {
+                    const month = index + 1; // Vì tháng bắt đầu từ 1
+                    return (
+                      <option key={month} value={month}>
+                        {month}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="bg-green-200">
+                <label>Chọn năm: </label>
+                <select
+                  className="border rounded p-2"
+                  onChange={handleYearChange}
+                  value={selectedYear}
+                >
+                  {Array.from({ length: 5 }, (_, index) => {
+                    const year = 2020 + index;
+                    return (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+
+            <ResponsiveContainer width="100%" height={400}>
+              <LineChart
+                data={HotelChainStatistics}
+                margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="hotel" allowDuplicatedCategory={false} />
+                <YAxis
+                  yAxisId="left"
+                  label={{
+                    value: "Số Booking",
+                    angle: -90,
+                    position: "insideLeft",
+                  }}
+                />
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  label={{
+                    value: "Doanh thu",
+                    angle: 90,
+                    position: "insideRight",
+                  }}
+                />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="booking"
+                  yAxisId="left"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="revenue"
+                  yAxisId="right"
+                  stroke="#82ca9d"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="cancelroom"
+                  yAxisId="left"
+                  stroke="#82ca9d"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </div>
+
+      {/* Bieu do 2 */}
+      <div>
+  {chartMode === "service" && (
+    <div>
+      <h2 className="text-2xl font-semibold text-blue-600 mb-4" onClick={handleTitleClick2}>
+        Biểu đồ thống kê dịch vụ chuỗi khách sạn
+      </h2>
+      <div className={`relative ${isDropdownVisiblesv ? "block" : "hidden"} flex space-x-4`}>
         <div className="bg-blue-200">
           <label>Chọn tháng: </label>
-          <select
-            className="border rounded p-2"
-            onChange={handleMonthChange}
-            value={selectedMonth}
-          >
-            {Array.from({ length: 12 }, (_, index) => {
-              const month = index + 1; // Vì tháng bắt đầu từ 1
-              return (
-                <option key={month} value={month}>
-                  {month}
-                </option>
-              );
-            })}
+          <select className="border rounded p-2" onChange={handleMonthChangesv} value={selectedMonthsv}>
+            {uniqueMonthsv.map((month: string) => (
+              <option key={month} value={month}>
+                {month}
+              </option>
+            ))}
           </select>
         </div>
         <div className="bg-green-200">
           <label>Chọn năm: </label>
-          <select
-            className="border rounded p-2"
-            onChange={handleYearChange}
-            value={selectedYear}
-          >
-            {Array.from({ length: 5 }, (_, index) => {
-              const year = 2020 + index;
-              return (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              );
-            })}
+          <select className="border rounded p-2" onChange={handleYearChangesv} value={selectedYearsv}>
+            {uniqueYearsv.map((year: string) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
           </select>
         </div>
       </div>
-
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart
-          data={HotelChainStatistics}
-          margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="hotel" allowDuplicatedCategory={false} />
-          <YAxis
-            yAxisId="left"
-            label={{
-              value: "Số Booking",
-              angle: -90,
-              position: "insideLeft",
-            }}
-          />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            label={{
-              value: "Doanh thu",
-              angle: 90,
-              position: "insideRight",
-            }}
-          />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="booking"
-            yAxisId="left"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="revenue"
-            yAxisId="right"
-            stroke="#82ca9d"
-          />
-          <Line
-            type="monotone"
-            dataKey="cancelroom"
-            yAxisId="left"
-            stroke="#82ca9d"
-          />
-        </LineChart>
+        {filteredData2.length > 0 ? (
+          <BarChart data={filteredData2} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+            <CartesianGrid />
+            <XAxis dataKey="hotel" />
+            <YAxis
+              label={{
+                value: "Số lượng Service",
+                angle: -90,
+                position: "insideLeft",
+              }}
+            />
+            <Tooltip />
+            {filteredData2[1].services?.map((service: any, index: number) => (
+              <Bar
+                key={`services[${index}].servicename`}
+                dataKey={`services[${index}].count`}
+                name={service.servicename}
+                stackId="a"
+                fill={colors[index % colors.length]}
+              >
+                <LabelList dataKey={`services[${index}].count`} position="top" />
+              </Bar>
+            ))}
+          </BarChart>
+        ) : (
+          <p>Không có dữ liệu</p>
+        )}
       </ResponsiveContainer>
     </div>
   )}
 </div>
 
-
-      {/* Bieu do 2 */}
-      {chartMode === "service" && (
-        <div>
-          <h2
-            className="text-2xl font-semibold text-blue-600 mb-4"
-            onClick={handleTitleClick2}
-          >
-            Biểu đồ thống kê dịch vụ chuỗi khách sạn
-          </h2>
-          <div
-            className={`relative ${
-              isDropdownVisiblesv ? "block" : "hidden"
-            } flex space-x-4`}
-          >
-            <div className="bg-blue-200">
-              <label>Chọn tháng: </label>
-              <select
-                className="border rounded p-2"
-                onChange={handleMonthChangesv}
-                value={selectedMonthsv}
-              >
-                {uniqueMonthsv.map((month: any) => (
-                  <option key={month} value={month}>
-                    {month}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="bg-green-200">
-              <label>Chọn năm: </label>
-              <select
-                className="border rounded p-2"
-                onChange={handleYearChangesv}
-                value={selectedYearsv}
-              >
-                {uniqueYearsv.map((year: any) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <ResponsiveContainer width="100%" height={400}>
-            {filteredData2.length > 0 ? (
-              <BarChart
-                data={filteredData2}
-                margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
-              >
-                <CartesianGrid />
-                <XAxis dataKey="hotel" />
-                <YAxis
-                  label={{
-                    value: "Số lượng Service",
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
-                />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="serviceA" stackId="a" fill="#8884d8">
-                  <LabelList dataKey="serviceA" position="top" />
-                </Bar>
-                <Bar dataKey="serviceB" stackId="a" fill="#82ca9d">
-                  <LabelList dataKey="serviceB" position="top" />
-                </Bar>
-                <Bar dataKey="serviceC" stackId="a" fill="#ffc658">
-                  <LabelList dataKey="serviceC" position="top" />
-                </Bar>
-              </BarChart>
-            ) : (
-              <p>Không có dữ liệu</p>
-            )}
-          </ResponsiveContainer>
-        </div>
-      )}
 
       {/* Biểu đồ 3 */}
       <div>
