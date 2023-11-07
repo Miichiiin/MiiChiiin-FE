@@ -10,35 +10,30 @@ import { useSigninMutation } from "@/api/auth/authAdmin";
 
 
 const LoginAdmin = () => {
-  const [SigninAdmin] = useSigninMutation();
+  const [SigninAdmin, {data: loginData, isSuccess: isLoginSuccess, isError: isLoginError}] = useSigninMutation();
   const navigate = useNavigate();
   const {register,handleSubmit,formState: { errors }} = useForm<SigninForm>({
     resolver: yupResolver(schemaSignIn),
   });
+ 
   const handleLoginAdmin = async (userAdmin: SigninForm) => {
-    try {
-      await SigninAdmin(userAdmin).then(() => {
-        const userAdminLocal = localStorage.getItem('userAdmin')
-        if(userAdminLocal !== null) {
-          const data = JSON.parse(userAdminLocal);
-         
-        if(userAdminLocal) {  
-          const tokenAdmin = localStorage.getItem('tokenAdmin')        
-          if(tokenAdmin) {
-              message.success("Đăng nhập thành công!");
-              navigate(`/admin/${data?.id_hotel}`);
-          }else {
-            message.error("Không tồn tại token vui lòng kiểm tra lại thông tin đăng nhập!")
-          }
-        }else{
-          message.error("Thông tin tài khoản hoặc mật khẩu không chính xác !");
-        }
-      }  
-      });
-    } catch (error) {
-     
-    }
+    await SigninAdmin(userAdmin)
   };
+
+  useEffect(() => {
+    if (isLoginSuccess) {
+      console.log('loginData', loginData)
+      message.success("Đăng nhập thành công!");
+      localStorage.setItem("tokenAdmin", loginData.token);
+      localStorage.setItem("userAdmin", JSON.stringify(loginData.admin)); 
+      setTimeout(() => {
+        navigate(`/admin`);
+      }, 2000);
+    }
+    else if (isLoginError)
+      message.error("Thông tin tài khoản hoặc mật khẩu không chính xác !");
+  }, [isLoginSuccess, isLoginError])
+
   useEffect(() => {
     window.scrollTo(0, 0);
   });

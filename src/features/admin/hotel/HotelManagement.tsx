@@ -1,41 +1,18 @@
 import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { Table, Divider, Radio, Button, Select, Input, Popconfirm, message } from 'antd';
+import { Table, Divider, Radio, Button, Select, Input, Popconfirm, message, Image, Skeleton } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const users = [
-    {
-     token: "haha",
-     admin:{
-       id: 2,
-       id_hotel: 1,
-       name: "Augustus Mitchell",
-       image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-       role: "",
-       permissions: [
-         'add hotel',
-         'update hotel',
-         'delete hotel',
-         'add voucher',
-       ]
-     },
-    }
-   
-  ];
+
 export const HotelManagement = () => {
-    const [pagination, setPagination] = useState({
-        current: 1,
-        pageSize: 5,
-      });
-    const { data: HotelData } = useGetHotel_adminsQuery({})
-    console.log(HotelData);
-    
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
+    const { data: HotelData, isLoading, isError } = useGetHotel_adminsQuery({});  
     const [removeHotel] = useRemoveHotel_adminMutation({})
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState("");
 
-    const data = HotelData?.map(({ id, name, email, description, quantity_of_room, star, phone, quantity_floor, status, name_cities,address }: DataType) => ({
+    const data = HotelData?.map(({ id, name,image, email, description, quantity_of_room, star, phone, quantity_floor, status, name_cities,address }: DataType) => ( {
         key: id,
         name,
         email,
@@ -46,8 +23,11 @@ export const HotelManagement = () => {
         quantity_floor,
         status,
         name_cities,
-        address
+        address,
+        image,
     }))
+    
+    
     interface DataType {
         key: number;
         id: string | number;
@@ -58,9 +38,10 @@ export const HotelManagement = () => {
         phone: string,
         star: number,
         quantity_floor: number,
-        status: number,
+        status: number | string,
         name_cities: string,
-        address: string
+        address: string,
+        image: Array<object>
     }
 
     const columns: ColumnsType<DataType> = [
@@ -74,6 +55,12 @@ export const HotelManagement = () => {
             key: 'name',
             render: (text) => <span>{text.length > 5 ? `${text.slice(0, 5)}...` : text}</span>
         },
+        {
+            title: "Hình ảnh",
+            dataIndex: "image",
+            key: "image",
+            render: (image) => <Image src={image[0]?.image} width={100} height={100} />,
+          },
         {
             title: 'City',
             dataIndex: 'name_cities',
@@ -122,6 +109,19 @@ export const HotelManagement = () => {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
+            render: (_, record) => {
+                let statusText = '';
+                
+                if (record.status === 2) {
+                    statusText = 'Hoạt động';
+                } else if (record.status === 1) {
+                    statusText = 'Đã ẩn';
+                } else if (record.status === 0) {
+                    statusText = 'Đang chờ';
+                }
+        
+                return <span>{statusText}</span>;
+            },
         },
         {
             title: 'Action',
@@ -129,8 +129,8 @@ export const HotelManagement = () => {
             render: (_: any, item: any) => {
                 return (
                     <>
-                      {hasAddUserPermission && (
                         <div>
+                        {hasAddUserPermission("delete hotel") && (
                           <Popconfirm
                             title="Xóa Khách sạn"
                             description="Bạn có muốn xóa không??"
@@ -144,9 +144,12 @@ export const HotelManagement = () => {
                           >
                             <Button danger>Xóa</Button>
                           </Popconfirm>
-                          <Button className="mx-2 px-4 py-1 border border-blue-700 rounded" onClick={()=>navigate(`/admin/updatehotel/${item.key}`)}>Sửa</Button>
+                          )}
+                          {hasAddUserPermission("update hotel") && (
+                            <Button className="mx-2 px-4 py-1 border border-blue-700 rounded" onClick={()=>navigate(`/admin/updatehotel/${item.key}`)}>Sửa</Button>
+                        )}
                         </div>
-                      )}
+                      
                     </>
                   )
             }
@@ -166,11 +169,13 @@ export const HotelManagement = () => {
         return nameMatch && addressMatch;
     }) : [];
     // phân quyền
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add hotel") &&
-    users[0].admin.permissions.includes("update hotel") &&
-    users[0].admin.permissions.includes("delete hotel")
-  );
+    const dataPermission = localStorage.getItem('userAdmin')
+    const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+    const hasAddUserPermission = (permissions:any) => {
+    return currentUserPermissions.includes(permissions);
+    };
+  if(isLoading) return <Skeleton active/>
+    if(isError) return <div>Error</div>
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
@@ -193,7 +198,7 @@ export const HotelManagement = () => {
                     </Select>
                 </div>
                 {
-                    hasAddUserPermission && (
+                    hasAddUserPermission("add hotel") && (
                         <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/addhotel'}>Thêm khách sạn</Link></button>
                     )
                 }
@@ -219,6 +224,7 @@ export const HotelManagement = () => {
             <Divider />
             <div className="table-container">
                 <Table
+                    scroll={{ x: 1500 }}
                     columns={columns}
                     dataSource={filteredData}
                     className="custom-table"

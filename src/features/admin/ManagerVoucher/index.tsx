@@ -1,6 +1,6 @@
 
 import { useGetVoucherQuery, useRemoveVoucherMutation } from "@/api/admin/voucher";
-import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message, } from "antd";
+import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message, Skeleton, } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -14,14 +14,14 @@ interface DataType {
   discount: number;
   start_at: string;
   expire_at: string;
-  status: string;
+  status: string | number;
   meta: string;
   description: string;
   quantity: number;
 }
 export const ManagerVouchers = () => {
   const [remove, {isLoading:isRemoveVoucher}] = useRemoveVoucherMutation()
-  const {data:dataVoucher} = useGetVoucherQuery();
+  const {data:dataVoucher, isLoading:Loading, isError} = useGetVoucherQuery();
   const dataSource = dataVoucher?.map(({id,name,image,discount,start_at,expire_at,description,quantity,status}: DataType) => ({
     key:id,
     name,image,discount,start_at,expire_at,description,quantity,status
@@ -41,7 +41,6 @@ const confirmDelete = (id: number) => {
  const hasAddUserPermission = (permissions:any) => {
    return currentUserPermissions.includes(permissions);
  };
-  const [messageApi, contextHolder] = message.useMessage();
 
 
   const columns: ColumnsType<DataType> = [
@@ -56,22 +55,12 @@ const confirmDelete = (id: number) => {
       dataIndex: "name",
       key: "name",
     },
-    // {
-    //   title: "slug",
-    //   dataIndex: "slug",
-    //   key: "slug",
-    // },
     {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
       render: (image) => <img src={image} alt="Hình ảnh" width="70" />,
     },
-    // {
-    //   title: "Mô tả ngắn",
-    //   dataIndex: "meta",
-    //   key: "meta",
-    // },
     {
       title: "Mô tả dài",
       dataIndex: "description",
@@ -101,12 +90,25 @@ const confirmDelete = (id: number) => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        if (record.status === 2) {
+            statusText = 'Hoạt động';
+        } else if (record.status === 1) {
+            statusText = 'Đã ẩn';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+
+        return <span>{statusText}</span>;
+    },
+      
     },
     {
       title: "Thao tác",
       dataIndex: "action",
       key: "action",
-      render: (text, item) => (
+      render: (_, item) => (
         <div className="flex space-x-2">
           {hasAddUserPermission("delete voucher") && (
             <Button loading={isRemoveVoucher}
@@ -126,22 +128,6 @@ const confirmDelete = (id: number) => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      id: "1",
-      name: "voucher Da Nang",
-      slug: "Quiz.",
-      image: "loi 404",
-      discount: 30,
-      start_at: "24/8/2023",
-      expire_at: "24/9/2023",
-      status: "Van con",
-      meta: "Oke con de",
-      description: "Oke con de",
-      quantity: 50,
-      key: 1
-    },
-  ];
 
   const [searchText, setSearchText] = useState("");
   const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
@@ -154,7 +140,8 @@ const confirmDelete = (id: number) => {
     .filter((item: DataType) =>
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
-
+  if (Loading) return <Skeleton active/>;
+  if (isError) return <div>error...</div>;
   return (
     <div>
       <div
@@ -179,24 +166,24 @@ const confirmDelete = (id: number) => {
             }
             options={[
               {
-                value: "0",
+                value: "all",
                 label: "Tất cả",
               },
               {
                 value: 1,
-                label: "Trạng thái 1",
+                label: "Đã ẩn",
               },
               {
                 value: 2,
-                label: "Trạng thái 2",
+                label: "Hoạt động",
               },
               {
-                value: 3,
-                label: "Trạng thái 3",
+                value: 0,
+                label: "Đang chờ",
               },
             ]}
             onChange={(value) => {
-              if (value === "0") {
+              if (value === "all") {
                 setSelectedStatus(undefined); // Xóa bộ lọc
               } else {
                 setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
@@ -219,14 +206,6 @@ const confirmDelete = (id: number) => {
 
       <Divider />
       <Table
-        // rowSelection={{
-        //   type: selectionType,
-        //   selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
-        //   onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-        //     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        //     setSelectedRows(selectedRows);
-        //   },
-        // }}
         columns={columns}
         dataSource={filteredData}
       />

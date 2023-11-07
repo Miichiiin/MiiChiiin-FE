@@ -168,6 +168,7 @@ export const AddUser = () => {
                     <Button type="primary" className='bg-blue-500 text-white' htmlType="submit">
                         Submit
                     </Button>
+                    <button className='bg-red-500 text-white px-2 py-1.5 mx-2 rounded-lg hover:bg-red-400' onClick={()=>navigate("/admin/usermanagement")}> Quay lại</button>
                 </Form.Item>
             </Form>
         </div>

@@ -57,8 +57,9 @@ const AddRoomPage = () => {
           <div className="w-1/2 p-4 bg-white pr-2">
             <Form.Item label="Trạng Thái" name="status" rules={[{ required: true, message: 'Hãy chọn trạng thái ' }]}>
               <Select placeholder="Chọn trạng thái">
-                <Select value={1}>Có sẵn</Select>
-                <Select value={0}>Đã đặt</Select>
+                <Select.Option value={1}>Đã ẩn</Select.Option>
+                <Select.Option value={0}>Đang chờ</Select.Option>
+                <Select.Option value={2}>Hoạt động</Select.Option>
               </Select>
             </Form.Item>
           </div>

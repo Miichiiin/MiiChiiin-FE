@@ -33,8 +33,8 @@ const hotel_AdminApi = createApi({
         }),
         updateHotel_admin: builder.mutation({
             query: (product) => ({
-                url: `/hotel/${product.id}`,
-                method: "PUT",
+                url: `/hotel/${product.get('id')}`,
+                method: "POST",
                 body: product
             }),
             invalidatesTags: ['Hotel_admin']

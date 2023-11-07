@@ -79,6 +79,19 @@ export const ManagerEmployee = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        
+        if (record.status === 2) {
+            statusText = 'Xác nhận';
+        } else if (record.status === 1) {
+            statusText = 'Đã ẩn';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+
+        return <span>{statusText}</span>;
+    },
     },
     {
       title: "Ngày sinh",
@@ -169,20 +182,24 @@ export const ManagerEmployee = () => {
             }
             options={[
               {
-                value: "0",
+                value: "all",
                 label: "Tất cả",
               },
               {
+                value: 0,
+                label: "Đang chờ",
+              },
+              {
                 value: 1,
-                label: "Không hiển thị",
+                label: "Đã ẩn",
               },
               {
                 value: 2,
-                label: "Hiển thị",
+                label: "Xác nhận",
               },
             ]}
             onChange={(value) => {
-              if (value === "0") {
+              if (value === "all") {
                 setSelectedStatus(undefined); // Xóa bộ lọc
               } else {
                 setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn

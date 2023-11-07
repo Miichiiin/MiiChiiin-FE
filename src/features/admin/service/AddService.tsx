@@ -77,7 +77,7 @@ export const AddService = () => {
           name="image"
           label="Upload"
         >
-          <input type='file' multiple onChange={handleChange} />
+          <input type='file' onChange={handleChange} />
         </Form.Item>
         <Form.Item
           label="Số lượng"
@@ -92,8 +92,9 @@ export const AddService = () => {
           rules={[{ required: true, message: 'Chọn trạng thái đi ' }]}
         >
           <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
-            <Select.Option value={1} >Có sẵn</Select.Option>
-            <Select.Option value={0}>Đã thuê</Select.Option>
+            <Select.Option value={1} >Đang chờ</Select.Option>
+            <Select.Option value={0}>Ẩn</Select.Option>
+            <Select.Option value={2}>Hoạt động</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item label="Mô tả" name="description">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Select, Popconfirm, message } from 'antd';
+import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Skeleton, Select } from 'antd';
 import { useAddBooking_adminMutation } from '@/api/admin/booking_admin';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 import { BsTrash3 } from 'react-icons/bs';
@@ -264,9 +264,14 @@ const AddBooking = () => {
       promotion: 1,
       message: "Add booking nhé"
     };
-    addBooking(formattedValues).unwrap().then(() => {
+    addBooking(formattedValues).unwrap().then((response) => {
+      const bookingId = response.error_message.id;
+      console.log(bookingId);
+      
       message.success('Thêm thành công');
-
+      setTimeout(() => {
+        navigate(`/admin/detailbooking/${bookingId}`);
+      }, 3000);
     });
   };
 
@@ -276,7 +281,7 @@ const AddBooking = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton active />;
   }
 
   if (isError) {
@@ -286,7 +291,7 @@ const AddBooking = () => {
   return (
 
     <div className="mx-auto overflow-auto scroll-smooth">
-      <h1 className='text-xl font-semibold pb-5'>Thêm Booking mới </h1>
+      <h1 className='text-2xl font-bold pb-5'>Thêm Booking mới </h1>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -311,14 +316,6 @@ const AddBooking = () => {
                     required: true,
                     message: 'Hãy chọn ngày check in trước khi chọn phòng!',
                   },
-                  {
-                    validator: (_, value) => {
-                      if (dayjs(value).isBefore(dayjs(), 'day')) {
-                        return Promise.reject('Không được chọn ngày trong quá khứ!');
-                      }
-                      return Promise.resolve();
-                    },
-                  },
                 ]}
               >
                 <DatePicker
@@ -327,6 +324,10 @@ const AddBooking = () => {
                   onChange={handleCheckInDateChange}
                   format="YYYY-MM-DD HH:mm"
                   className='w-[250px]'
+                  disabledDate={(currentDate) => {
+                    // Disable dates before the current date
+                    return currentDate.isBefore(dayjs(), 'day');
+                  }}
                 />
               </Form.Item>
               <Form.Item
@@ -338,22 +339,18 @@ const AddBooking = () => {
                     required: true,
                     message: 'Hãy chọn ngày check out trước khi chọn phòng!',
                   },
-                  {
-                    validator: (_, value) => {
-                      if (dayjs(value).isBefore(dayjs(), 'day')) {
-                        return Promise.reject('Không được chọn ngày trong quá khứ!');
-                      }
-                      return Promise.resolve();
-                    },
-                  },
                 ]}
               >
                 <DatePicker
-                  value={form.getFieldValue('check_out')}
+                  value={form.getFieldValue('check_in')}
+                  placeholder="Chọn ngày và giờ"
                   onChange={handleCheckOutDateChange}
                   format="YYYY-MM-DD HH:mm"
-                  placeholder="Chọn ngày và giờ"
                   className='w-[250px]'
+                  disabledDate={(currentDate) => {
+                    // Disable dates before the current date
+                    return currentDate.isBefore(dayjs(), 'day');
+                  }}
                 />
               </Form.Item>
               <Form.Item
@@ -387,11 +384,11 @@ const AddBooking = () => {
                 label="Số điện thoại"
                 name="phone"
                 rules={[
-                  { required: true, message: 'Hãy nhập !' },
+                  { required: true, message: 'Hãy nhập số vào !' },
                   { whitespace: true, message: 'Không được để trống!' },
                   {
-                    pattern: /^[0-9]*$/,
-                    message: 'Chỉ được nhập số ',
+                    pattern: /^0[0-9]*$/,
+                    message: 'Hãy nhập số đúng định dạng ',
                   },
                 ]}
 
@@ -430,7 +427,7 @@ const AddBooking = () => {
                 labelCol={{ span: 24 }}
 
               >
-                <Input className='w-[250px]' />
+                <Input className='w-[100px]' />
               </Form.Item>
               <Form.Item
                 label="Quốc tịch"
@@ -455,7 +452,7 @@ const AddBooking = () => {
                   },]}
                 labelCol={{ span: 24 }}
               >
-                <InputNumber className='w-[250px]'
+                <InputNumber className='w-[100px]'
 
                   onChange={(value: any) => {
                     handleEnterPress(value);
@@ -466,10 +463,14 @@ const AddBooking = () => {
                 label="Trạng thái"
                 name="status"
                 labelCol={{ span: 24 }}
+                rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
               >
-                <Select className='w-[250px]'>
-                  <Select.Option value="1" >Không hiển thi</Select.Option>
-                  <Select.Option value="2">Hiển thị</Select.Option>
+                <Select className='w-[250px]' placeholder="Hay chọn trạng thái">
+                  <Select.Option value={0}>Đang chờ</Select.Option>
+                  <Select.Option value={1}>Đã huỷ</Select.Option>
+                  <Select.Option value={2} >Đã check in</Select.Option>
+                  <Select.Option value={3}>Đã thanh toán</Select.Option>
+                  <Select.Option value={4}>Đã hoàn thành</Select.Option>
                 </Select>
               </Form.Item>
             </div>
@@ -567,13 +568,13 @@ const AddBooking = () => {
                       <li key={index} className="p-3 rounded-md border border-gray-300 mb-2">
                         <div className='flex justify-between items-center'>
                           <div>
-                            <p className='font-bold text-lg'>Phòng {index + 1}</p>
-                            <p>Tên loại phòng: {selectedCategory?.name}</p>
+                            <p className='font-bold text-lg text-blue-800'>Phòng số {index + 1}</p>
+                            <p>Tên loại phòng : <span className='font-semibold text-lg italic text-blue-800'>{selectedCategory?.name}</span></p>
                           </div>
                           <button
                             type='button'
                             onClick={() => toggleServicesVisibility(index)}
-                            className="mb-2 flex items-center text-blue-500"
+                            className="mb-2 flex items-center text-yellow-800"
                           >
                             {isServicesVisible[index] ? <span className='flex items-center'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center'>Hiện dịch vụ <AiOutlineDown /></span>}
                           </button>
@@ -583,7 +584,7 @@ const AddBooking = () => {
                           <ul>
                             {roomData.services.map((serviceId, serviceIndex) => (
                               <li key={serviceIndex}>
-                                Dịch vụ {serviceIndex + 1}: {getServiceName(serviceId.id_service)} x{serviceId.quantity}
+                                Dịch vụ {serviceIndex + 1} : <span className='font-semibold text-blue-800 italic'> {getServiceName(serviceId.id_service)}</span> x <span className='text-red-500 font-semibold'>{serviceId.quantity}</span>
                               </li>
                             ))}
                           </ul>
@@ -617,7 +618,7 @@ const AddBooking = () => {
           <Form.Item >
             <div className="flex justify-start items-center space-x-4">
               <Button type="primary" className="bg-blue-500 text-white" htmlType="submit" >
-                Add
+                Thêm mới
               </Button>
               <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
                 Quay lại

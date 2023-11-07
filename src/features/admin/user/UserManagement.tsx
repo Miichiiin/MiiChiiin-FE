@@ -1,30 +1,13 @@
 import { useGetUsersQuery, useRemoveUserMutation } from '@/api/users';
-import { Table, Divider, Radio, Button, Select, Input, Image } from 'antd';
+import { Table, Divider, Radio, Button, Select, Input, Image, Skeleton } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const users = [
-  {
-   token: "haha",
-   admin:{
-     id: 2,
-     id_hotel: 1,
-     name: "Augustus Mitchell",
-     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-     role: "",
-     permissions: [
-       'add typeRom',
-       'update typeRom',
-       'delete typeRom',
-       'add voucher',
-     ]
-   },
-  }
- 
-];
+
 export const UserManagement = () => {
-    const {data:dataUser} = useGetUsersQuery([])
+    const {data:dataUser, isLoading, isError} = useGetUsersQuery([])
+    
     const [removeUser] = useRemoveUserMutation()
     const dataSource = dataUser?.map(({id,name,email,image,description,email_verified_at,phone,address,status,gender,date,created_at,updated_at,cccd,nationality} :DataType) =>({
       key:id,
@@ -76,7 +59,7 @@ export const UserManagement = () => {
             render: (text:any,item:any) =>{
               return (
                   <>
-                    {hasAddUserPermission && (
+                    {hasAddUserPermission("update user") && (
                       <Link to={`/admin/updateuser/${item.key}`}>{text}</Link>
                     )}
                   </>
@@ -129,16 +112,6 @@ export const UserManagement = () => {
             dataIndex: "date",
             key: "date",
           },
-          {
-            title: "created_at",
-            dataIndex: "created_at",
-            key: "created_at",
-          },
-          {
-            title: "updated_at",
-            dataIndex: "updated_at",
-            key: "updated_at",
-          },
         {
             title: 'CCCD',
             dataIndex: 'cccd',
@@ -170,11 +143,13 @@ export const UserManagement = () => {
     };
     // const onSearch = (value: string) => console.log(value);
     // phân quyền
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add user") &&
-    users[0].admin.permissions.includes("update user") &&
-    users[0].admin.permissions.includes("delete user")
-  );
+    const dataPermission = localStorage.getItem('userAdmin')
+    const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+    const hasAddUserPermission = (permissions:any) => {
+      return currentUserPermissions.includes(permissions);
+    };
+  if (isLoading) return <Skeleton active/>;
+  if (isError) return <div>Something went wrong</div>;
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -218,7 +193,7 @@ export const UserManagement = () => {
                         ]}
                     />
                 </div>
-                {hasAddUserPermission && (
+                {hasAddUserPermission("add user") && (
                   <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/adduser'}>Thêm khách hàng</Link></button>
                 )}
             </div>
@@ -232,7 +207,7 @@ export const UserManagement = () => {
                     }
                     `}
             </style>
-            {hasAddUserPermission && (
+            {hasAddUserPermission("delete user") && (
                 <Button type="primary" className='mx-5' danger
                 onClick={() => {
                     selectedRows.forEach((row) => confirmDelete(row.key));

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { AiFillSignal, AiOutlineCreditCard } from "react-icons/ai";
 import { BiSolidBed, BiHotel } from "react-icons/bi";
@@ -28,6 +29,7 @@ function getItem(
 }
 
 export const LayoutAdmin = () => {
+  const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
@@ -44,7 +46,15 @@ export const LayoutAdmin = () => {
 
   // Lấy quyền hạn của người dùng hiện tại (lấy ví dụ từ người dùng đầu tiên trong danh sách)
   const currentUserPermissions = (userAdminLocal && JSON.parse(userAdminLocal).permissions) || [];
-  
+  const image403 = () => {
+    return (
+        <img 
+            src="https://blog.task.com.br/wp-content/uploads/erro-403-forbidden.jpg" 
+            alt=""
+            className="mx-auto object-cover" 
+        />
+    )
+}
   // Tạo menu dựa trên quyền hạn của người dùng
   const getMenuItems = () => {
     const menuItems = [];
@@ -171,6 +181,11 @@ export const LayoutAdmin = () => {
 
     return menuItems;
   };
+
+  useEffect(() => {
+  if(!localStorage.getItem('tokenAdmin') )
+    navigate('/error/401')
+  }, [])
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
