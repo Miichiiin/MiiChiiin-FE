@@ -264,10 +264,13 @@ const AddBooking = () => {
       promotion: 1,
       message: "Add booking nhé"
     };
-    addBooking(formattedValues).unwrap().then(() => {
+    addBooking(formattedValues).unwrap().then((response) => {
+      const bookingId = response.error_message.id;
+      console.log(bookingId);
+      
       message.success('Thêm thành công');
       setTimeout(() => {
-        navigate(`/admin/detailbooking/${formattedValues?.id}`);
+        navigate(`/admin/detailbooking/${bookingId}`);
       }, 3000);
     });
   };
@@ -615,7 +618,7 @@ const AddBooking = () => {
           <Form.Item >
             <div className="flex justify-start items-center space-x-4">
               <Button type="primary" className="bg-blue-500 text-white" htmlType="submit" >
-                Add
+                Thêm mới
               </Button>
               <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
                 Quay lại
