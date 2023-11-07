@@ -111,7 +111,9 @@ const SearchOrder = () => {
                   </span>
                   <span>
                     Tổng số người:{" "}
-                    <span className="text-blue-500 px-1 ">21</span>{" "}
+                    <span className="text-blue-500 px-1 ">
+                      {data?.people_quantity}
+                    </span>{" "}
                   </span>
                   <span>
                     Tổng tiền:{" "}
@@ -133,15 +135,16 @@ const SearchOrder = () => {
                 </span>
                 <div className="border-t-2">
                   <h2 className="my-3 mx-2 font-bold">Thông tin các phòng</h2>
-                  <div className="border-b-1 mb-2 flex">
-                    <img
-                      className="w-[25%] h-[60px]  px-2 "
-                      src="https://statics.vinpearl.com/du-lich-gan-ha-noi_1649342700.jpg"
-                      alt=""
-                    />
-                    {data?.room?.map((item: any) => {
-                      return (
-                        <>
+
+                  {data?.room?.map((item: any) => {
+                    return (
+                      <>
+                        <div className="border-b-1 mb-2 flex">
+                          <img
+                            className="w-[25%] h-[60px]  px-2 "
+                            src={item?.category_image}
+                            alt=""
+                          />
                           <div>
                             <span className="text-[14px] font-medium">
                               Phòng:
@@ -165,10 +168,10 @@ const SearchOrder = () => {
                               })}
                             </span>
                           </div>
-                        </>
-                      );
-                    })}
-                  </div>
+                        </div>
+                      </>
+                    );
+                  })}
                 </div>
               </div>
             </div>
