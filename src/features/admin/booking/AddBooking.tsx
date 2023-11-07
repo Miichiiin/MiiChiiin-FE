@@ -618,7 +618,7 @@ const AddBooking = () => {
           <Form.Item >
             <div className="flex justify-start items-center space-x-4">
               <Button type="primary" className="bg-blue-500 text-white" htmlType="submit" >
-                Add
+                Thêm mới
               </Button>
               <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
                 Quay lại
