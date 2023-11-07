@@ -264,10 +264,13 @@ const AddBooking = () => {
       promotion: 1,
       message: "Add booking nhé"
     };
-    addBooking(formattedValues).unwrap().then(() => {
+    addBooking(formattedValues).unwrap().then((response) => {
+      const bookingId = response.error_message.id;
+      console.log(bookingId);
+      
       message.success('Thêm thành công');
       setTimeout(() => {
-        navigate(`/admin/detailbooking/${formattedValues?.id}`);
+        navigate(`/admin/detailbooking/${bookingId}`);
       }, 3000);
     });
   };
