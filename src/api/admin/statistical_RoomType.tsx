@@ -15,8 +15,8 @@ const  statisticalRoomTypeApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getStatisticalRoomtype: builder.query<any, { month: number, year: number }>({ 
-            query: ({ month, year }) => `/statistical_rates_in_hotel/1/${month}/${year}`, // Sử dụng
+        getStatisticalRoomtype: builder.query<any, { month: number, year: number,id:number }>({ 
+            query: ({ month, year,id }) => `/statistical_rates_in_hotel/${id}/${month}/${year}`, // Sử dụng
             providesTags: ['StatisticalRoomtype']
           }),
         getStatisticalByIdRoomtype: builder.query({

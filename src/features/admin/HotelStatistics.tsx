@@ -17,10 +17,13 @@ import {
 import { useGetStatisticalQuery } from "../../api/admin/statistical";
 import { useGetStatisticalServiceQuery } from "@/api/admin/statistical_Service";
 import { useGetStatisticalRoomtypeQuery } from "@/api/admin/statistical_RoomType";
+import { useParams } from 'react-router-dom';
 
 const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f0e", "#99CCFF"];
 
 const HotelChainStatistics = () => {
+
+
   const dataHotel = [
     {
       hotelName: "Hotel A",
@@ -92,15 +95,32 @@ const HotelChainStatistics = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const userAdminLocal = localStorage.getItem('userAdmin');
+
+  let dataLogin;
+if (userAdminLocal !== null) {
+
+  if (userAdminLocal[0] === '{' && userAdminLocal[userAdminLocal.length - 1] === '}') {
+    // Dữ liệu trong localStorage có dấu ngoặc nhọn ở đầu và cuối, có thể là đối tượng JSON.
+    dataLogin = JSON.parse(userAdminLocal);
+  } else {
+    // Dữ liệu trong localStorage không phải là đối tượng JSON, sử dụng nó trực tiếp.
+    dataLogin = userAdminLocal;
+  }
+
+  console.log("dataLoginAdmin", dataLogin.id_hotel);
+}
+  
 
 
   // Biểu đồ 1
 
   const [selectedYear, setSelectedYear] = useState(2023);
 
-  const { data: statisticalData1, refetch } =
-    useGetStatisticalQuery(selectedYear);
-
+  const { data: statisticalData1, refetch } = useGetStatisticalQuery({
+    id: dataLogin?.id_hotel,
+    year: selectedYear,
+  });
   let statisticalData: any;
 
   if (statisticalData1) {
@@ -173,6 +193,7 @@ const HotelChainStatistics = () => {
   const [selectedYearSv, setSelectedYearSv] = useState(2023);
   const [filteredData2, setFilteredData2] = useState<any>([]); // State để lưu trữ dữ liệu từ API
   const { data: statisticalServiceData } = useGetStatisticalServiceQuery({
+    id: dataLogin?.id_hotel,
     month: selectedMonthSv,
     year: selectedYearSv,
   });
@@ -209,6 +230,7 @@ const HotelChainStatistics = () => {
   const [selectedMonthRt, setSelectedMonthRt] = useState(10);
   const [filteredRoomTypeData, setFilteredRoomTypeData] = useState<any>([]);
   const { data: statisticalroomtype1 } = useGetStatisticalRoomtypeQuery({
+    id: dataLogin?.id_hotel,
     month: selectedMonthRt,
     year: selectedYearRt,
   });

@@ -15,8 +15,8 @@ const  statistical_ServiceApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getStatisticalService: builder.query<any,{month:number, year:number}>({
-            query: ({month,year}) => `statistical_services/${month}/${year}/1`,
+        getStatisticalService: builder.query<any,{month:number, year:number,id:number}>({
+            query: ({month,year,id}) => `statistical_services/${month}/${year}/${id}`,
             providesTags: ['StatisticalService']
         }),
         getStatisticalByIdService: builder.query({

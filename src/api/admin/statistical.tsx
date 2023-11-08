@@ -16,10 +16,10 @@ const statisticalApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getStatistical: builder.query<any, number>({ 
-            query: (year) => `/statictical_total_booking_month_in_hotel/1/${year}`, 
-            providesTags: ['Statistical']
-        }),
+        getStatistical: builder.query<any, { id: number, year: number }>({ 
+            query: ({ id, year }) => `/statictical_total_booking_month_in_hotel/${id}/${year}`, 
+            providesTags: ['Statistical'],
+          }),
         getStatisticalById: builder.query({
             query: (id) => `/statistical/${id}`,
             providesTags: ['Statistical']

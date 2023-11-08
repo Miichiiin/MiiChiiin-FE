@@ -94,7 +94,7 @@ const hasAddUserPermission = (permissions:any) => {
         },
       ];
   return (
-    <div >
+    <div>
       {
         hasAddUserPermission('add role') && (
           <Button className='btn-primary bg-[#0284c7] text-white'><Link to={"/admin/addpermission"}>Thêm role</Link></Button>
