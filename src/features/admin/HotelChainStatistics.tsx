@@ -61,7 +61,7 @@ const HotelChainStatistic = () => {
       // setUniqueYears(uniqueYears);
 
       const filteredData = HotelChainStatistics.filter((item) => {
-        return item?.month === selectedMonth && item?.year === selectedYear;
+        return item.month === selectedMonth && item.year === selectedYear;
       });
 
       setFilteredData1(filteredData);
@@ -84,13 +84,13 @@ const HotelChainStatistic = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
   // Bieu do cua service
-  const [selectedMonthsv, setSelectedMonthsv] = useState(11);
+  const [selectedMonthsv, setSelectedMonthsv] = useState(1);
   const [selectedYearsv, setSelectedYearsv] = useState(2023);
 
   const { data: HotelChainStatisticsv } = useGetHotelChainStatisticsvQuery({
     month: selectedMonthsv,
     year: selectedYearsv,
-});
+  });
   // const [uniqueMonthsv, setUniqueMonthsv] = useState<string[]>([]);
   // const [uniqueYearsv, setUniqueYearsv] = useState<string[]>([]);
   // const [filteredData2, setFilteredData2] = useState<any[]>([]);
@@ -142,58 +142,71 @@ const HotelChainStatistic = () => {
     setSelectedMonthsv(selectedMonth);
   };
 
- 
-
-
   const handleYearChangesv = (event: any) => {
     const selectedYear = parseInt(event.target.value);
     setSelectedYearsv(selectedYear);
   };
 
   // Biểu đồ của RoomType
-  const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery();
-  const [selectedMonthRt, setSelectedMonthRt] = useState("tháng 1");
-  const [selectedYearRt, setSelectedYearRt] = useState("2023");
-  const [uniqueMonthRt, setUniqueMonthRt] = useState<any>([]);
-  const [uniqueYearRt, setUniqueYearRt] = useState<any>([]);
-  const [uniqueRoomTypes, setUniqueRoomTypes] = useState<any>([]);
-  const [selectedRoomType, setSelectedRoomType] = useState<any>("Single");
-  const [filteredData3, setFilteredData3] = useState<any>([]);
+  const [selectedMonthRt, setSelectedMonthRt] = useState(1);
+const [selectedYearRt, setSelectedYearRt] = useState(2023);
+const [selectedRoomType, setSelectedRoomType] = useState<any>(2);
+const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery({
+  month: selectedMonthRt,
+  year: selectedYearRt,
+  roomType: selectedRoomType,
+});
+const [filteredData3, setFilteredData3] = useState<any>([]);
 
-  useEffect(() => {
-    if (HotelChainStatisticRt) {
-      // Extract unique months, years, and room types from the data
-      const uniqueMonthsRt = Array.from(
-        new Set(HotelChainStatisticRt.map((item: any) => item.month))
+useEffect(() => {
+  if (Array.isArray(HotelChainStatisticRt)) {
+    // Extract unique months, years, and room types from the data
+    const uniqueMonthsRt = Array.from(
+      new Set(HotelChainStatisticRt?.map((item: any) => item.month))
+    );
+    const uniqueYearsRt = Array.from(
+      new Set(HotelChainStatisticRt?.map((item: any) => item.year))
+    );
+    const uniqueRoomTypes = Array.from(
+      new Set(HotelChainStatisticRt?.map((item: any) => item.roomType))
+    );
+
+    // Filter data based on selected month, year, and room type
+    const filteredData = HotelChainStatisticRt.filter((item: any) => {
+      return (
+        item.month === selectedMonthRt &&
+        item.year === selectedYearRt &&
+        item.roomType === selectedRoomType
       );
-      const uniqueYearsRt = Array.from(
-        new Set(HotelChainStatisticRt.map((item: any) => item.year))
-      );
-      const uniqueRoomTypes = Array.from(
-        new Set(HotelChainStatisticRt.map((item: any) => item.roomType))
-      );
+    });
 
-      setUniqueMonthRt(uniqueMonthsRt);
-      setUniqueYearRt(uniqueYearsRt);
-      setUniqueRoomTypes(uniqueRoomTypes);
+    setFilteredData3(filteredData);
+  }
+}, [HotelChainStatisticRt, selectedMonthRt, selectedYearRt, selectedRoomType]);
 
-      // Filter data based on selected month, year, and room type
-      const filteredData = HotelChainStatisticRt?.filter((item: any) => {
-        return (
-          item?.month === selectedMonthRt &&
-          item?.year === selectedYearRt &&
-          item?.roomType === selectedRoomType
-        );
-      });
+// 
 
-      setFilteredData3(filteredData);
-    }
-  }, [
-    HotelChainStatisticRt,
-    selectedMonthRt,
-    selectedYearRt,
-    selectedRoomType,
-  ]);
+let statisticalChainRoomtype: any;
+
+if (HotelChainStatistics) {
+  statisticalChainRoomtype = HotelChainStatistics.rating_comment_booking;
+} else {
+  console.log("Không có dữ liệu thống kê.");
+}
+
+
+
+const statisticalRoom =
+statisticalChainRoomtype &&
+statisticalChainRoomtype?.map((item: any) => ({
+    roomType: item.roomType,
+    bookingCount: item.bookingCount,
+    rating: item.rating,
+  }));
+
+  console.log("statisticalRoomType",statisticalRoom);
+  
+
 
   const handleMonthChangeRt = (event: any) => {
     const selectedMonth = event.target.value;
@@ -209,6 +222,15 @@ const HotelChainStatistic = () => {
     const selectedRoomType = event.target.value;
     setSelectedRoomType(selectedRoomType);
   };
+
+  const roomTypesFromAPI = Array.isArray(HotelChainStatisticRt)
+    ? HotelChainStatisticRt.flatMap(
+        (hotel) =>
+          hotel.roomAverages?.map((roomAverage: any) => roomAverage.roomType) ||
+          []
+      )
+    : [];
+
   return (
     <div>
       <div className="flex items-center mb-4">
@@ -269,7 +291,7 @@ const HotelChainStatistic = () => {
                   onChange={handleMonthChange}
                   value={selectedMonth}
                 >
-                  { Array?.from({ length: 12 }, (_, index) => {
+                  {Array.from({ length: 12 }, (_, index) => {
                     const month = index + 1; // Vì tháng bắt đầu từ 1
                     return (
                       <option key={month} value={month}>
@@ -286,7 +308,7 @@ const HotelChainStatistic = () => {
                   onChange={handleYearChange}
                   value={selectedYear}
                 >
-                  {Array?.from({ length: 5 }, (_, index) => {
+                  {Array.from({ length: 4 }, (_, index) => {
                     const year = 2020 + index;
                     return (
                       <option key={year} value={year}>
@@ -371,7 +393,7 @@ const HotelChainStatistic = () => {
                   onChange={handleMonthChangesv}
                   value={selectedMonthsv}
                 >
-                  {Array?.from({ length: 12 }, (_, index) => {
+                  {Array.from({ length: 12 }, (_, index) => {
                     const month = index + 1;
                     return (
                       <option key={month} value={month}>
@@ -388,7 +410,7 @@ const HotelChainStatistic = () => {
                   onChange={handleYearChangesv}
                   value={selectedYearsv}
                 >
-                  {Array && Array?.from({ length: 5 }, (_, index) => {
+                  {Array.from({ length: 4 }, (_, index) => {
                     const year = 2020 + index;
                     return (
                       <option key={year} value={year}>
@@ -402,7 +424,7 @@ const HotelChainStatistic = () => {
             <ResponsiveContainer width="100%" height={400}>
               {HotelChainStatisticsv?.length > 0 ? (
                 <BarChart
-                  data={HotelChainStatisticsv }
+                  data={HotelChainStatisticsv}
                   margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
                 >
                   <CartesianGrid />
@@ -415,22 +437,23 @@ const HotelChainStatistic = () => {
                     }}
                   />
                   <Tooltip />
-                  {HotelChainStatisticsv [1].services?.map(
-                    (service: any, index: number) => (
-                      <Bar
-                        key={`services[${index}].servicename`}
-                        dataKey={`services[${index}].count`}
-                        name={service.servicename}
-                        stackId="a"
-                        fill={colors[index % colors.length]}
-                      >
-                        <LabelList
-                          dataKey={`services[${index}].count`}
-                          position="top"
-                        />
-                      </Bar>
-                    )
-                  )}
+                  {HotelChainStatisticsv.map((service: any, index: number) => (
+                    <div key={`service-${index}`}>
+                      <div>
+                        {service?.services?.map(
+                          (subService: any, subIndex: number) => (
+                            <Bar
+                              key={`sub-service-${subIndex}`}
+                              dataKey="count"
+                              name={subService?.servicename}
+                              stackId="a"
+                              fill={colors[subIndex % colors.length]}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </BarChart>
               ) : (
                 <p>Không có dữ liệu</p>
@@ -463,11 +486,14 @@ const HotelChainStatistic = () => {
                   onChange={handleMonthChangeRt}
                   value={selectedMonthRt}
                 >
-                  {uniqueMonthRt.map((month: any) => (
-                    <option key={month} value={month}>
-                      {month}
-                    </option>
-                  ))}
+                  {Array.from({ length: 12 }, (_, index) => {
+                    const month = index + 1;
+                    return (
+                      <option key={month} value={month}>
+                        {month}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div className="bg-green-200">
@@ -477,11 +503,14 @@ const HotelChainStatistic = () => {
                   onChange={handleYearChangeRt}
                   value={selectedYearRt}
                 >
-                  {uniqueYearRt.map((year: any) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
+                  {Array.from({ length: 4 }, (_, index) => {
+                    const year = 2020 + index;
+                    return (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div className="bg-yellow-200">
@@ -491,17 +520,21 @@ const HotelChainStatistic = () => {
                   onChange={handleRoomTypeChange}
                   value={selectedRoomType}
                 >
-                  {uniqueRoomTypes.map((roomType: any) => (
-                    <option key={roomType} value={roomType}>
-                      {roomType}
-                    </option>
-                  ))}
+                  {roomTypesFromAPI.length > 0 ? (
+                    roomTypesFromAPI.map((roomAverage: any) => (
+                      <option key={roomAverage} value={roomAverage}>
+                        {roomAverage}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">Không có dữ liệu loại phòng</option>
+                  )}
                 </select>
               </div>
             </div>
 
             <ResponsiveContainer width="100%" height={400}>
-              <BarChart data={filteredData3}>
+              <BarChart data={statisticalRoom}>
                 <defs>
                   <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
@@ -513,7 +546,7 @@ const HotelChainStatistic = () => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hotel" />
+                <XAxis dataKey="hotelName"/>
                 <YAxis
                   yAxisId="left"
                   label={{
@@ -533,8 +566,8 @@ const HotelChainStatistic = () => {
                 />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="bookings" fill="url(#colorPv)" yAxisId="left">
-                  <LabelList dataKey="bookings" position="top" />
+                <Bar dataKey="bookingCount" fill="url(#colorPv)" yAxisId="left">
+                  <LabelList dataKey="bookingCount" position="top" />
                 </Bar>
                 <Bar dataKey="rating" fill="url(#colorUv)" yAxisId="right">
                   <LabelList dataKey="rating" position="top" />
