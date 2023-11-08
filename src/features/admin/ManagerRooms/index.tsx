@@ -9,34 +9,16 @@ import {
   Popconfirm,
   message,
   Pagination,
+  Skeleton,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const users = [
-  {
-    token: "haha",
-    admin: {
-      id: 2,
-      id_hotel: 1,
-      name: "Augustus Mitchell",
-      image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-      role: "",
-      permissions: [
-        'add room',
-        'update room',
-        'delete room',
-        'add voucher',
-      ]
-    },
-  }
 
-];
 export const ManagerRoom = () => {
 
-  const { data: roomData } = useGetRoom_AdminsQuery({})
-  console.log(roomData);
+  const { data: roomData, isLoading, isError } = useGetRoom_AdminsQuery({})
   
   const [removeRoom] = useRemoveRoom_AdminMutation();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -45,26 +27,26 @@ export const ManagerRoom = () => {
     setCurrentPage(page);
   };
 
-  // phân quyền
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add room") &&
-    users[0].admin.permissions.includes("update room") &&
-    users[0].admin.permissions.includes("delete room")
-  );
-  const [messageApi, contextHolder] = message.useMessage();
+   // phân quyền
+ const dataPermission = localStorage.getItem('userAdmin')
+ const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+ const hasAddUserPermission = (permissions:any) => {
+   return currentUserPermissions.includes(permissions);
+ };
   interface DataType {
     id: number;
     name: string;
     name_category: string;
     name_hotel: string;
-    status: string;
+    status: number | string;
   }
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
+      title: "#",
       dataIndex: "id",
       key: "id",
+      //render: (_, __, index) => <span>{index + 1}</span>,
     },
     {
       title: "Tên phòng",
@@ -85,6 +67,19 @@ export const ManagerRoom = () => {
       title: "Trang thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        
+        if (record.status === 2) {
+            statusText = 'Hoạt động';
+        } else if (record.status === 1) {
+            statusText = 'Đã ẩn';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+
+        return <span>{statusText}</span>;
+    },
     },
     {
       title: "Hành động",
@@ -92,8 +87,9 @@ export const ManagerRoom = () => {
       render: (_: any, item: any) => {
         return (
           <>
-            {hasAddUserPermission && (
+            
               <div>
+              {hasAddUserPermission("delete room") && (
                 <Popconfirm
                   title="Xóa sản phẩm"
                   description="Bạn có muốn xóa không??"
@@ -107,9 +103,12 @@ export const ManagerRoom = () => {
                 >
                   <Button danger>Xóa</Button>
                 </Popconfirm>
-                <Link className="mx-2 px-4 py-1 border border-blue-700 rounded" to={`/admin/updateroom/${item.id}`}>Sửa</Link>
+                  )}
+                   {hasAddUserPermission("update room") && (
+                    <Link className="mx-2 px-4 py-1 border border-blue-700 rounded" to={`/admin/updateroom/${item.id}`}>Sửa</Link>
+                   )}
               </div>
-            )}
+         
           </>
         )
       }
@@ -151,6 +150,12 @@ export const ManagerRoom = () => {
     .filter((item: DataType) =>
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
+    if (isLoading) {
+      return <Skeleton active/>;
+    }
+    if (isError) {
+      return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+    }
   return (
     <div>
       <div
@@ -180,11 +185,15 @@ export const ManagerRoom = () => {
               },
               {
                 value: 1,
-                label: "Còn trống",
+                label: "Đã ẩn",
+              },
+              {
+                value: 2,
+                label: "Hoạt động",
               },
               {
                 value: 0,
-                label: "Hết phòng",
+                label: "Đang chờ",
               },
             ]}
             onChange={(value) => {
@@ -196,7 +205,7 @@ export const ManagerRoom = () => {
             }}
           />
         </div>
-        {hasAddUserPermission && (
+        {hasAddUserPermission("add room") && (
           <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
             <Link to={`/admin/addroom`}>Thêm phòng</Link>
           </button>

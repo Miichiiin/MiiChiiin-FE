@@ -152,12 +152,13 @@ useEffect(() => {
                 <Form.Item label="Tên Nhân Viên" name="name" rules={[{ required: true, message: 'Vui lòng nhâp tên nhân viên!' }]}>
                   <Input />
                 </Form.Item>
-                {/* <Form.Item label="Giới Tính" name="gender" rules={[{ required: true }]}>
-                  <Radio.Group>
-                    <Radio value="male">Nam</Radio>
-                    <Radio value="female">Nữ</Radio>
+                 <Form.Item label="Giới Tính" name="gender" rules={[{ required: true, message: "Chọn giới tính" }]}>
+                 <Radio.Group>
+                    <Radio value={0}>Nam</Radio>
+                    <Radio value={1}>Nữ</Radio>
+                    <Radio value={2}>Khác</Radio>
                   </Radio.Group>
-                </Form.Item> */}
+                </Form.Item> 
 
                 <Form.Item label="Ngày Sinh" name="date" rules={[{ required: true, message: 'Vui lòng nhập ngày sinh nhân viên! ' }]}>
                 <DatePicker />
@@ -209,7 +210,7 @@ useEffect(() => {
                 </Form.Item>
 
                 <Form.Item
-                  name="imagem"
+                  name="image"
                   label="Upload"
                 >
                   <input type='file' onChange={handleChange}/>

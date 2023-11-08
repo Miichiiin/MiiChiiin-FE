@@ -6,10 +6,11 @@ import {
   Radio,
   Input,
   Select,
-  Button,
+  Image,
+  Popconfirm,
   message,
-  
-  
+  Skeleton,
+
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
@@ -17,86 +18,79 @@ import { Link } from "react-router-dom";
 
 
 export const ManagerRoomType = () => {
-  const {data: categoryData} = useGetCategory_adminQuery([]);
+  const { data: categoryData, isLoading, isError } = useGetCategory_adminQuery();
   const [removeCategory_admin] = useRemoveCategory_adminMutation();
-  
- // phân quyền
- const dataPermission = localStorage.getItem('userAdmin')
- const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
- const hasAddUserPermission = (permissions:any) => {
-   return currentUserPermissions.includes(permissions);
- };
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 5,
+  });
+  // phân quyền
+  const dataPermission = localStorage.getItem('userAdmin')
+  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+  const hasAddUserPermission = (permissions: any) => {
+    return currentUserPermissions.includes(permissions);
+  };
 
-  const [messageApi, contextHolder] = message.useMessage();
-  const dataSource = categoryData?.map(({id,name,price,image,description,capacity,convenient,quantity_of_people,acreage,floor,status,likes,views,
-    created_at,updated_at
-  }: DataType) =>({
-    key:id,
-    name:name,
-    price:price,
-    image:image,
-    description:description,
+  const dataSource = categoryData?.map(({ id, name, price, image, description, capacity, convenient, quantity_of_people, acreage, floor, status, likes, views,
+    created_at, updated_at
+  }: DataType) => ({
+    key: id,
+    name: name,
+    price: price,
+    image: image,
+    description: description,
     capacity: capacity,
-    convenient:convenient,
-    quantity_of_people:quantity_of_people,
-    acreage:acreage,
-    floor:floor,
-    status:status,
-    likes:likes,
-    views:views,
-    created_at:created_at,
-    updated_at:updated_at
+    convenient: convenient,
+    quantity_of_people: quantity_of_people,
+    acreage: acreage,
+    floor: floor,
+    status: status,
+    likes: likes,
+    views: views,
+    created_at: created_at,
+    updated_at: updated_at
   }))
   interface DataType {
-    key:number
+    key: number
     id: string | number;
     name: string;
     description: string;
     capacity: string;
     convenient: string;
-    image:string;
-    quantity_of_people:number;
-    price:number;
-    acreage:number;
-    floor:number;
+    image: string;
+    quantity_of_people: number;
+    price: number;
+    acreage: number;
+    floor: number;
     status: number | string;
-    likes:number;
-    views:number;
-    created_at:string;
-    updated_at:string;
+    likes: number;
+    views: number;
+    created_at: string;
+    updated_at: string;
   }
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "#",
+      title: "ID",
       dataIndex: "key",
       key: "key",
-      render: (_, record, index) => <span>{index + 1}</span>,
+      render: (_, __, index) => <span>{index + 1}</span>,
     },
     {
       title: "Tên loại phòng",
       dataIndex: "name",
       key: "name",
-      
-      render: (text:any,item:any) =>{
-        return (
-            <>
-                <Link to={`/admin/updateroomtype/${item.key}`}>{text}</Link>
-            </>
-          )
-        }
     },
     {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
-      // render: (image) => <img src={image} alt="Hình ảnh" width="100" />,
+      render: (image) => <Image src={image} width={100} height={100} />,
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
-      width:200,
     },
     {
       title: "Sức chứa",
@@ -109,14 +103,22 @@ export const ManagerRoomType = () => {
       key: "price",
     },
     {
-      title: "Diện tích",
-      dataIndex: "acreage",
-      key: "acreage",
-    },
-    {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        
+        if (record.status === 2) {
+            statusText = 'Hoạt động';
+        } else if (record.status === 1) {
+            statusText = 'Đang bảo trì';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+      
+        return <span>{statusText}</span>;
+      }
     },
     {
       title: "Lượt thích",
@@ -129,22 +131,41 @@ export const ManagerRoomType = () => {
       key: "views",
     },
     {
-      title: "Ngày tạo",
-      dataIndex: "created_at",
-      key: "created_at",
-    },
-    {
-      title: "Ngày cập nhập",
-      dataIndex: "updated_at",
-      key: "updated_at",
-    },
-    
+      title: "Action",
+      render: (_, record) => {
+        return (
+          <div className="flex items-center">
+            {hasAddUserPermission('update category') && (
+              <button className="mr-2 px-2 py-2 bg-blue-500 text-white rounded-md">
+                <Link to={`/admin/updateroomtype/${record.key}`}>Sửa</Link>
+              </button>
+            )}
+            {hasAddUserPermission('delete category') && (
+              <Popconfirm
+                title="Xóa Khách sạn"
+                description="Bạn có muốn xóa không??"
+                onConfirm={() => {
+                  removeCategory_admin(record.key).unwrap().then(() => {
+                    message.success("Xóa thành công");
+                  })
+                }}
+                okText="Có"
+                cancelText="Không"
+              >
+                <button className="bg-red-500 px-2 py-2 text-white rounded-md">Xóa</button>
+              </Popconfirm>
+            )}
+          </div>
+        )
+      }
+    }
+
   ];
 
   const [searchText, setSearchText] = useState("");
-  const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
+
   const filteredData = dataSource ? dataSource
     .filter((item: DataType) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
@@ -152,16 +173,13 @@ export const ManagerRoomType = () => {
     .filter((item: DataType) =>
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
+  if (isLoading) {
+    return <Skeleton active/>;
+  }
+  if (isError) {
+    return <div>Error</div>;
+  }
 
-
-  const confirmDelete = (id: number) => {
-    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa phòng này?');
-    if (isConfirmed) {
-        removeCategory_admin(id).unwrap().then(() => {
-            setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
-        });
-    }
-};
   return (
     <div>
       <div
@@ -186,20 +204,24 @@ export const ManagerRoomType = () => {
             }
             options={[
               {
-                value: "0",
+                value: "all",
                 label: "Tất cả",
               },
               {
-                value: "1",
-                label: "Không hiển thị",
+                value: 0,
+                label: "Đang chờ",
               },
               {
-                value: "2",
-                label: "Hiển thị",
+                value: 1,
+                label: "Đang bảo trì",
               },
+              {
+                value: 2,
+                label: "Hoạt động",
+              }
             ]}
             onChange={(value) => {
-              if (value === "0") {
+              if (value === "all") {
                 setSelectedStatus(undefined); // Xóa bộ lọc
               } else {
                 setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
@@ -208,32 +230,11 @@ export const ManagerRoomType = () => {
           />
         </div>
         {hasAddUserPermission('add category') && (
-            <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
+          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
             <Link to={`/admin/addroomtype`}>Thêm loại phòng</Link>
           </button>
         )}
       </div>
-      <div>
-          
-             {hasAddUserPermission('delete category') && (
-                <Button type="primary" className='mx-5' danger
-                onClick={() => {
-                    selectedRows.forEach((row) => confirmDelete(row.key));
-                }}
-                disabled={selectedRows.length === 0}
-              >
-                Xóa
-              </Button>
-             )}
-          {
-            hasAddUserPermission("update category") && (
-              <Button type="primary" danger className="ml-2 mt-1">
-                <Link to={`/admin/updateroomtype`}>Sửa</Link>
-            </Button>
-            )
-          }
-        </div>
-
       <Radio.Group
         onChange={({ target: { value } }) => {
           setSelectionType(value);
@@ -243,20 +244,17 @@ export const ManagerRoomType = () => {
 
       <Divider />
       <Table
-        rowSelection={{
-          type: selectionType,
-          selectedRowKeys: selectedRows.map((row) => row.key), // Thêm dòng này
-          onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-            setSelectedRows(selectedRows);
-        },
-        }}
         columns={columns}
         dataSource={filteredData}
-        scroll={{ x: 2000 }}
-       
+        scroll={{ x: 1000 }}
+        pagination={{
+          ...pagination,
+          onChange: (page) => {
+            setPagination({ ...pagination, current: page });
+          },
+        }}
       />
-      
+
     </div>
   );
 };

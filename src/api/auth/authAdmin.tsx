@@ -25,26 +25,25 @@ const authAdminApi = createApi({
         method: "POST",
         body: userAdmin,
       }),
-      async transformResponse(response: any) {
-        console.log("res",response.admin);
+      // async transformResponse(response: any) {
+      //   console.log("res",response.admin);
         
-        try {
-          const tokenAdmin = response?.token; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
-          const userAdmin = response?.admin;
-          localStorage.setItem("userAdmin", JSON.stringify(userAdmin)); // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
-          if (tokenAdmin) {
-            localStorage.setItem("tokenAdmin", tokenAdmin); // Lưu token vào localStorage
-          }
-          await Promise.resolve(); // Đảm bảo promise đã được giải quyết
+      //   try {
+      //     const tokenAdmin = response?.token; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
+      //     const userAdmin = response?.admin;
+      //     localStorage.setItem("userAdmin", JSON.stringify(userAdmin)); // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
+      //     if (tokenAdmin) {
+      //       localStorage.setItem("tokenAdmin", tokenAdmin); // Lưu token vào localStorage
+      //     }
+      //     await Promise.resolve(); // Đảm bảo promise đã được giải quyết
 
-          return response;
-        } catch (error) {
-          console.error("Error in transformResponse:", error);
-          throw error;
-        }
-      },
-      
-      // invalidatesTags: ["UserAdmin"],
+      //     return response;
+      //   } catch (error) {
+      //     console.error("Error in transformResponse:", error);
+      //     throw error;
+      //   }
+      // },
+      invalidatesTags: ["UserAdmin"],
       
     }),
   }),

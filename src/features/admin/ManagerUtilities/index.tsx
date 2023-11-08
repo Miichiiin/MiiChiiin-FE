@@ -9,44 +9,27 @@ import {
   Popconfirm,
   message,
   Image,
+  Skeleton,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const users = [
-  {
-   token: "haha",
-   admin:{
-     id: 2,
-     id_hotel: 1,
-     name: "Augustus Mitchell",
-     image: "https://via.placeholder.com/640x480.png/0055aa?text=enim",
-     role: "",
-     permissions: [
-       'add dichvu',
-       'update dichvu',
-       'delete dichvu',
-       'add voucher',
-     ]
-   },
-  }
- 
-];
+
+
 export const ManagerUtilities = () => {
   // phân quyền
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(
-    users[0].admin.permissions.includes("add dichvu") &&
-    users[0].admin.permissions.includes("update dichvu") &&
-    users[0].admin.permissions.includes("delete dichvu")
-  );
-  const [messageApi, contextHolder] = message.useMessage();
+  const dataPermission = localStorage.getItem('userAdmin')
+  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
+  const hasAddUserPermission = (permissions:any) => {
+    return currentUserPermissions.includes(permissions);
+  };
 
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
   const [searchText, setSearchText] = useState("");
   const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
-  const { data: Ultilities } = useGetComfortQuery({});
+  const { data: Ultilities, isLoading, isError } = useGetComfortQuery({});
   const [removeUtility] = useRemoveComfortMutation();
 
   interface DataType {
@@ -54,20 +37,13 @@ export const ManagerUtilities = () => {
     id: string | number;
     name: string;
     description: string;
-    deleted_at: string;
-    created_at: string;
-    updated_at: string;
-    status: string;
+    status: string | number;
     alt: string;
   }
-  //lấy dữ liệu từ api
-  const data = Ultilities?.map(({ id, name, description, deleted_at, created_at, updated_at, status, alt }: DataType) => ({
+  const data = Ultilities?.map(({ id, name, description,status, alt }: DataType) => ({
     key: id,
     name,
     description,
-    deleted_at,
-    created_at,
-    updated_at,
     status,
     alt
   }))
@@ -91,16 +67,6 @@ export const ManagerUtilities = () => {
       title: "Tên tiện ích",
       dataIndex: "name",
       key: "name",
-      render: (text:any, item:any) => {
-        return (
-          <>
-            {hasAddUserPermission && (
-              <Link to={`/admin/updateUtilities/${item.key}`}>{text}</Link>
-            )}
-          </>
-        ) 
-       
-      }
     },
     {
       title: "Mô tả",
@@ -108,31 +74,57 @@ export const ManagerUtilities = () => {
       key: "description",
     },
     {
-      title: "Ngày tạo",
-      dataIndex: "created_at",
-      key: "created_at",
-    },
-    {
-      title: "Ngày cập nhật",
-      dataIndex: "updated_at",
-      key: "updated_at",
-    },
-    {
-      title: "Ngày xóa",
-      dataIndex: "deleted_at",
-      key: "deleted_at",
-    },
-    {
       title: "Trang thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => {
+        let statusText = '';
+        
+        if (record.status === 2) {
+            statusText = 'Hoạt động';
+        } else if (record.status === 1) {
+            statusText = 'Đã ẩn';
+        } else if (record.status === 0) {
+            statusText = 'Đang chờ';
+        }
+      
+        return <span>{statusText}</span>;
+      }
     },
     {
       title: "Icon",
       dataIndex: "alt",
       key: "alt",
-      render: (text) => <Image src={text} alt="" width="50px" height="50px" />
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_: any, record: any) => (
+        <div className="flex space-x-2">
+          {hasAddUserPermission("delete comfort") && (
+            <Popconfirm
+              title="Bạn có chắc chắn muốn xóa?"
+              onConfirm={() => {
+                removeUtility(record.key).unwrap().then(() => {
+                  message.success("Xóa thành công");
+                });
+              }}
+              okText="Xóa"
+              cancelText="Hủy"
+            >
+              <button className="mr-2 text-white font-semibold py-2 px-4 hover:bg-red-400  border border-red-400 rounded-lg tracking-wide bg-red-500 hover:text-white">
+                Xóa
+              </button>
+            </Popconfirm>
+          )}
+          {hasAddUserPermission("update comfort") && (
+            <button className="mr-2 text-white font-semibold py-2 px-4 hover:bg-blue-400  border border-blue-400 rounded-lg tracking-wide bg-blue-500 hover:text-white">
+              <Link to={`/admin/updateUtilities/${record.key}`}>Sửa</Link>
+            </button>
+          )}
+        </div>
+      ),
+    }
   ];
 
   // Alert xác nhận xoá
@@ -144,6 +136,9 @@ export const ManagerUtilities = () => {
       });
     }
   };
+
+  if (isLoading) return <Skeleton active/>;
+  if (isError) return <div>Đã xảy ra lỗi khi tải dữ liệu</div>;
   return (
     <div>
       <div
@@ -168,20 +163,24 @@ export const ManagerUtilities = () => {
             }
             options={[
               {
-                value: "0",
+                value: "all",
                 label: "Tất cả",
               },
               {
-                value: "1",
-                label: "Đang sử dụng",
+                value: 0,
+                label: "Đang chờ",
               },
               {
-                value: "2",
-                label: "Có sẵn",
+                value: 1,
+                label: "Đã ẩn",
+              },
+              {
+                value: 2,
+                label: "Hoạt động",
               },
             ]}
             onChange={(value) => {
-              if (value === "0") {
+              if (value === "all") {
                 setSelectedStatus(undefined); // Xóa bộ lọc
               } else {
                 setSelectedStatus(value); // Sử dụng giá trị trạng thái đã chọn
@@ -190,21 +189,10 @@ export const ManagerUtilities = () => {
           />
           {/*Nút Thêm */}
         </div>
-        {hasAddUserPermission && (
+        {hasAddUserPermission("add comfort") && (
           <Button type="primary" className="ml-2 mt-1 bg-gray-500">
           <Link to={`/admin/addUtilities`}>Thêm</Link>
         </Button>
-        )}
-      </div>
-      {/*Nút Xoá */}
-      <div>
-        {hasAddUserPermission && (
-          <Button type="primary" className='' danger
-          onClick={() => {
-            selectedRows.forEach((row) => confirmDelete(row.key));
-          }}
-          disabled={selectedRows.length === 0}
-        >Xóa</Button>
         )}
       </div>
 
@@ -217,14 +205,6 @@ export const ManagerUtilities = () => {
 
       <Divider />
       <Table
-        rowSelection={{
-          type: selectionType,
-          selectedRowKeys: selectedRows.map((row) => row.key),
-          onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-            setSelectedRows(selectedRows);
-          },
-        }}
         columns={columns}
         dataSource={filteredData}
       />

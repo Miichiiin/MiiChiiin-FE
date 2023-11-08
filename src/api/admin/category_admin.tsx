@@ -15,12 +15,7 @@ const category_AdminApi = createApi({
     }),
     endpoints: (builder) => ({
         getCategory_admin: builder.query<any, void>({
-            query: () => {
-                const id = JSON.parse(localStorage.getItem("userAdmin") || '{}');
-                console.log(id.id_hotel);
-                // Lấy ID khách sạn từ Local Storage
-                return `/listRoom/hotels=${id.id_hotel}`;
-            },
+            query: () => `/categories`,
             providesTags: ['Category_admin']
         }),
         getCategory_adminById: builder.query({
@@ -37,8 +32,8 @@ const category_AdminApi = createApi({
         }),
         updateCategory_admin: builder.mutation({
             query: (product) => ({
-                url: `/category/${product.id}`,
-                method: "PATCH",
+                url: `/category/${product.get('id')}`,
+                method: "POST",
                 body: product
             }),
             invalidatesTags: ['Category_admin']

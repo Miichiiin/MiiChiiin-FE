@@ -1,47 +1,22 @@
-import { useAddComfortMutation, useGetComfortByIdQuery, useUpdateComfortMutation } from '@/api/admin/comfort_admin';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
-import { useEffect } from 'react';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { useGetComfortByIdQuery, useUpdateComfortMutation } from '@/api/admin/comfort_admin';
+import { Button, Form, Input, Select, Skeleton, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const { Option } = Select;
 
 const UpdateUtilitiesPage = () => {
   const navigate = useNavigate()
-  const [updateUtil, { isLoading }] = useUpdateComfortMutation()
-  const [messageApi, contextHolder] = message.useMessage();
-   
-  const [form] = Form.useForm();
-  const {id} = useParams<{id:string}>();
-  const { data: Ultilities } = useGetComfortByIdQuery(id||"");
+  const [updateUtil] = useUpdateComfortMutation()
 
-  useEffect(() => {
-    form.setFieldsValue({
-      name: Ultilities?.name,
-      description: Ultilities?.description,
-      deleted_at: Ultilities?.deleted_at,
-      created_at: Ultilities?.created_at,
-      updated_at: Ultilities?.updated_at,
-      status: Ultilities?.status,
-    })
-  }, [Ultilities])
+  const { id } = useParams<{ id: string }>();
+  const { data, isLoading, isError } = useGetComfortByIdQuery(id || "");
 
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'Update product successfully',
-    });
-  };
 
   type FieldType = {
     key: number;
     id: string | number;
     name: string;
     description: string;
-    deleted_at: string;
-    created_at: string;
-    updated_at: string;
     status: string;
     alt: string;
   }
@@ -49,27 +24,34 @@ const UpdateUtilitiesPage = () => {
     console.log('Failed:', errorInfo);
   };
   const onFinish = (values: FieldType) => {
-    updateUtil({...values, id:id}).unwrap().then(() => navigate('/admin/managerutilities'));
+    updateUtil({ ...values, id: id }).unwrap().then(() => {
+      message.success('Sửa tiện ích thành công')
+      navigate('/admin/managerutilities')
+    });
+  }
+  if (isLoading) {
+    return <Skeleton active />
+  }
+  if (isError) {
+    message.error('Có lỗi xảy ra khi tải thông tin tiện ích.')
   }
 
   return (
     <div>
       <header className="flex justify-between items-center my-5 mx-3">
-        <h2 className="text-2xl  text-blue-700">Sửa tiện ích: <span className='font-semibold'>{Ultilities?.name}</span></h2>
+        <h2 className="text-2xl  text-blue-700">Sửa tiện ích: <span className='font-semibold'>{data?.name}</span></h2>
       </header>
-      {contextHolder}
       <Form
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
+        initialValues={data}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        form = {form}
       >
-        <Form.Item<FieldType>
+        <Form.Item
           label="Tên tiện ích"
           name="name"
           rules={[{ required: true, message: 'Hãy nhập tên tiện ích!' },
@@ -77,36 +59,16 @@ const UpdateUtilitiesPage = () => {
         >
           <Input allowClear />
         </Form.Item>
-
-        <Form.Item<FieldType>
-          label="deleted_at"
-          name="deleted_at"
-          rules={[]}>
-          <Input disabled/>
-        </Form.Item>
-
-        <Form.Item<FieldType>
-          label="created_at"
-          name="created_at"
-          rules={[]}
-        >
-          <Input disabled/>
-        </Form.Item>
-
-        <Form.Item<FieldType>
-          label="updated_at"
-          name="updated_at"
-          rules={[]}
-        >
-          <Input disabled/>
-        </Form.Item>
-        <Form.Item<FieldType>
+        <Form.Item
           label="Trạng thái"
           name="status"
+          rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
         >
-          <Select defaultValue="0" style={{ width: '150px' }}>
-            <Select.Option value="1">Đang dùng</Select.Option>
-            <Select.Option value="2">Có sẵn</Select.Option>
+          <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}
+          >
+            <Select.Option value={0}>Đang chờ</Select.Option>
+            <Select.Option value={1}>Đã ẩn</Select.Option>
+            <Select.Option value={2}>Hoạt động</Select.Option>
           </Select>
         </Form.Item>
 
@@ -121,12 +83,11 @@ const UpdateUtilitiesPage = () => {
 
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" className='bg-blue-500 text-white' htmlType="submit" onClick={() => success()}>
-            {isLoading ? (
-              <AiOutlineLoading3Quarters className="animate-spin" />
-            ) : (
-              "Update product"
-            )}
+          <Button type="primary" className='bg-blue-500 text-white' htmlType="submit">
+            Update Tiện ích
+          </Button>
+          <Button type="primary" danger className='mx-2' onClick={() => navigate("/admin/managerutilities")}>
+            Quay lại
           </Button>
         </Form.Item>
       </Form>
