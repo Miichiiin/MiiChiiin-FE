@@ -295,7 +295,7 @@ const ChooseRoom = () => {
                       />
                     </div>
                     <div className="col-span-2">
-                      <a className="text-xl hover:underline">{hotel?.name}</a>
+                      <a className="text-xl hover:underline font-medium">{hotel?.name}</a>
                       <div className="flex items-center py-4">
                         <HiOutlineUser />
                         <p className="text-sm px-2">
@@ -306,19 +306,20 @@ const ChooseRoom = () => {
                           {hotel?.acreage}m
                           <span className="text-[10px]">2</span>
                         </p>
+                        
                       </div>
                       <p className=" text-right">
                         {" "}
                         Giá công bố:{" "}
                         <span className="font-semibold text-lg">
-                          {hotel?.price}vnđ
+                          {hotel?.price.toLocaleString('vi-VN')} vnđ
                         </span>{" "}
                       </p>
                       <p className=" flex justify-end items-center">
                         <AiOutlineInfoCircle />{" "}
                         <span className="px-2"> Giá thành viên:</span>{" "}
                         <span className="font-semibold text-xl">
-                          {hotel?.price}vnđ
+                          {hotel?.price.toLocaleString('vi-VN')}vnđ
                         </span>{" "}
                       </p>
                       {/* ... */}
@@ -378,7 +379,7 @@ const ChooseRoom = () => {
                         <li key={index} className="flex flex-col">
                           <div className="flex items-center justify-between">
                             <span className="basis-2/3">
-                              {room.name} - {room.price}vnđ{" "}
+                              {room.name} - {room.price.toLocaleString('vi-VN')}vnđ{" "}
                               {room.count > 1 ? `x${room.count}` : ""}
                             </span>
                             <button
