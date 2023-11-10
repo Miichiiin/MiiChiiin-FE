@@ -189,7 +189,7 @@ if (userAdminLocal !== null) {
   };
   // Biểu đồ 2
   
-  const [selectedMonthSv, setSelectedMonthSv] = useState(10);
+  const [selectedMonthSv, setSelectedMonthSv] = useState(11);
   const [selectedYearSv, setSelectedYearSv] = useState(2023);
   const [filteredData2, setFilteredData2] = useState<any>([]); // State để lưu trữ dữ liệu từ API
   const { data: statisticalServiceData } = useGetStatisticalServiceQuery({
@@ -227,7 +227,7 @@ if (userAdminLocal !== null) {
 
   // Biểu đồ 3
   const [selectedYearRt, setSelectedYearRt] = useState(2023);
-  const [selectedMonthRt, setSelectedMonthRt] = useState(10);
+  const [selectedMonthRt, setSelectedMonthRt] = useState(11);
   const [filteredRoomTypeData, setFilteredRoomTypeData] = useState<any>([]);
   const { data: statisticalroomtype1 } = useGetStatisticalRoomtypeQuery({
     id: dataLogin?.id_hotel,

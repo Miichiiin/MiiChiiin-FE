@@ -15,10 +15,11 @@ import {
 import { useGetHotelChainStatisticsQuery } from "@/api/admin/HotelChainStatistics";
 import { useGetHotelChainStatisticsvQuery } from "@/api/admin/HotelChainStatisticsSv";
 import { useGetHotelChainStatisticRtQuery } from "@/api/admin/HotelChainStatistics_Roomtype";
+import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 
 const HotelChainStatistic = () => {
   // Thêm dữ liệu cho các khách sạn và tháng/năm khác theo nhu cầu của bạn
-  const [selectedMonth, setSelectedMonth] = useState(10);
+  const [selectedMonth, setSelectedMonth] = useState(11);
   const [selectedYear, setSelectedYear] = useState(2023);
 
   const { data: HotelChainStatistics } = useGetHotelChainStatisticsQuery({
@@ -28,8 +29,6 @@ const HotelChainStatistic = () => {
 
   console.log("HotelChainStatistics", HotelChainStatistics);
 
-  // const [uniqueMonths, setUniqueMonths] = useState<number[]>([]);
-  // const [uniqueYears, setUniqueYears] = useState<number[]>([]);
   const [filteredData1, setFilteredData1] = useState<any>([]);
   console.log("filteredData1", filteredData1);
 
@@ -47,27 +46,6 @@ const HotelChainStatistic = () => {
     setChartMode("roomtype");
   };
 
-  useEffect(() => {
-    if (HotelChainStatistics && Array.isArray(HotelChainStatistics)) {
-      // const uniqueMonths = Array.from(
-      //   new Set(HotelChainStatistics.map((item) => item.month))
-      // ).map(Number); // Chuyển đổi chuỗi thành số
-
-      // const uniqueYears = Array.from(
-      //   new Set(HotelChainStatistics.map((item) => item.year))
-      // ).map(Number); // Chuyển đổi chuỗi thành số
-
-      // setUniqueMonths(uniqueMonths);
-      // setUniqueYears(uniqueYears);
-
-      const filteredData = HotelChainStatistics.filter((item) => {
-        return item.month === selectedMonth && item.year === selectedYear;
-      });
-
-      setFilteredData1(filteredData);
-    }
-  }, [HotelChainStatistics, selectedMonth, selectedYear]);
-
   const handleMonthChange = (event: any) => {
     const selectedMonth = parseInt(event.target.value);
     setSelectedMonth(selectedMonth);
@@ -84,16 +62,14 @@ const HotelChainStatistic = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
   // Bieu do cua service
-  const [selectedMonthsv, setSelectedMonthsv] = useState(1);
+  const [selectedMonthsv, setSelectedMonthsv] = useState(11);
   const [selectedYearsv, setSelectedYearsv] = useState(2023);
 
   const { data: HotelChainStatisticsv } = useGetHotelChainStatisticsvQuery({
     month: selectedMonthsv,
     year: selectedYearsv,
   });
-  // const [uniqueMonthsv, setUniqueMonthsv] = useState<string[]>([]);
-  // const [uniqueYearsv, setUniqueYearsv] = useState<string[]>([]);
-  // const [filteredData2, setFilteredData2] = useState<any[]>([]);
+
   const [isDropdownVisiblesv, setIsDropdownVisiblesv] = useState(false);
   const colors = [
     "#8884d8",
@@ -109,32 +85,6 @@ const HotelChainStatistic = () => {
     setIsDropdownVisiblesv(!isDropdownVisiblesv);
   };
 
-  // useEffect(() => {
-  //   if (HotelChainStatisticsv && Array.isArray(HotelChainStatisticsv)) {
-  //     const uniqueMonthsSv = Array.from(
-  //       new Set(
-  //         HotelChainStatisticsv.map((item: any) => item.services[0].month)
-  //       )
-  //     );
-  //     const uniqueYearsSv = Array.from(
-  //       new Set(HotelChainStatisticsv.map((item: any) => item.services[0].year))
-  //     );
-
-  //     // setUniqueMonthsv(uniqueMonthsSv);
-  //     // setUniqueYearsv(uniqueYearsSv);
-
-  //     // Lọc dữ liệu dựa trên tháng và năm đã chọn
-  //     const filteredData = HotelChainStatisticsv.filter((item: any) => {
-  //       return (
-  //         item.services[0].month === selectedMonthsv &&
-  //         item.services[0].year === selectedYearsv
-  //       );
-  //     });
-
-  //     // setFilteredData2(filteredData);
-  //   }
-  // }, [HotelChainStatisticsv, selectedMonthsv, selectedYearsv]);
-
   console.log("filteredData2");
 
   const handleMonthChangesv = (event: any) => {
@@ -148,65 +98,45 @@ const HotelChainStatistic = () => {
   };
 
   // Biểu đồ của RoomType
-  const [selectedMonthRt, setSelectedMonthRt] = useState(1);
-const [selectedYearRt, setSelectedYearRt] = useState(2023);
-const [selectedRoomType, setSelectedRoomType] = useState<any>(2);
-const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery({
-  month: selectedMonthRt,
-  year: selectedYearRt,
-  roomType: selectedRoomType,
-});
-const [filteredData3, setFilteredData3] = useState<any>([]);
+  const [selectedMonthRt, setSelectedMonthRt] = useState(11);
+  const [selectedYearRt, setSelectedYearRt] = useState(2023);
+  const [selectedRoomType, setSelectedRoomType] = useState<any>(2);
+  const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery({
+    month: selectedMonthRt,
+    year: selectedYearRt,
+    roomType: selectedRoomType,
+  });
 
-useEffect(() => {
-  if (Array.isArray(HotelChainStatisticRt)) {
-    // Extract unique months, years, and room types from the data
-    const uniqueMonthsRt = Array.from(
-      new Set(HotelChainStatisticRt?.map((item: any) => item.month))
-    );
-    const uniqueYearsRt = Array.from(
-      new Set(HotelChainStatisticRt?.map((item: any) => item.year))
-    );
-    const uniqueRoomTypes = Array.from(
-      new Set(HotelChainStatisticRt?.map((item: any) => item.roomType))
-    );
 
-    // Filter data based on selected month, year, and room type
-    const filteredData = HotelChainStatisticRt.filter((item: any) => {
-      return (
-        item.month === selectedMonthRt &&
-        item.year === selectedYearRt &&
-        item.roomType === selectedRoomType
-      );
-    });
+  console.log("HotelChainStatisticRt", HotelChainStatisticRt);
 
-    setFilteredData3(filteredData);
+  let statisticalChainRoomtype: any;
+
+  if (HotelChainStatistics) {
+    statisticalChainRoomtype = HotelChainStatistics.rating_comment_booking;
+  } else {
+    console.log("Không có dữ liệu thống kê.");
   }
-}, [HotelChainStatisticRt, selectedMonthRt, selectedYearRt, selectedRoomType]);
 
-// 
+  let statisticalRoom: any[] = [];
 
-let statisticalChainRoomtype: any;
+  if (HotelChainStatisticRt) {
+    statisticalRoom = HotelChainStatisticRt.rating_comment_booking.flatMap(
+      (hotel:any) =>
+        hotel.roomAverages.map((roomAverage:any) => ({
+          hotelName: hotel.hotelName, // Lấy tên khách sạn từ mức độ cao hơn
+          roomType: roomAverage.roomType,
+          bookingCount: roomAverage.bookingCount,
+          rating: roomAverage.rating,
+        })) || []
+    );
+  } else {
+    console.log("Không có dữ liệu thống kê.");
+  }
 
-if (HotelChainStatistics) {
-  statisticalChainRoomtype = HotelChainStatistics.rating_comment_booking;
-} else {
-  console.log("Không có dữ liệu thống kê.");
-}
 
 
-
-const statisticalRoom =
-statisticalChainRoomtype &&
-statisticalChainRoomtype?.map((item: any) => ({
-    roomType: item.roomType,
-    bookingCount: item.bookingCount,
-    rating: item.rating,
-  }));
-
-  console.log("statisticalRoomType",statisticalRoom);
-  
-
+ 
 
   const handleMonthChangeRt = (event: any) => {
     const selectedMonth = event.target.value;
@@ -437,23 +367,17 @@ statisticalChainRoomtype?.map((item: any) => ({
                     }}
                   />
                   <Tooltip />
-                  {HotelChainStatisticsv.map((service: any, index: number) => (
-                    <div key={`service-${index}`}>
-                      <div>
-                        {service?.services?.map(
-                          (subService: any, subIndex: number) => (
-                            <Bar
-                              key={`sub-service-${subIndex}`}
-                              dataKey="count"
-                              name={subService?.servicename}
-                              stackId="a"
-                              fill={colors[subIndex % colors.length]}
-                            />
-                          )
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                  {HotelChainStatisticsv[0]?.services?.map(
+                    (subService: any, subIndex: number) => (
+                      <Bar
+                        key={`sub-service-${subIndex}`}
+                        dataKey={`services[${subIndex}].count`}
+                        name={subService?.servicename}
+                        stackId="a"
+                        fill={colors[subIndex % colors.length]}
+                      />
+                    )
+                  )}
                 </BarChart>
               ) : (
                 <p>Không có dữ liệu</p>
@@ -546,7 +470,7 @@ statisticalChainRoomtype?.map((item: any) => ({
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hotelName"/>
+                <XAxis dataKey="hotelName" />
                 <YAxis
                   yAxisId="left"
                   label={{
