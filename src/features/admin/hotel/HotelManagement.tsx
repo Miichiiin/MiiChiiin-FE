@@ -53,7 +53,7 @@ export const HotelManagement = () => {
             title: 'Hotel',
             dataIndex: 'name',
             key: 'name',
-            render: (text) => <span>{text.length > 5 ? `${text.slice(0, 5)}...` : text}</span>
+            render: (text) => <span>{text.length > 10 ? `${text.slice(0, 20)}...` : text}</span>
         },
         {
             title: "Hình ảnh",
@@ -65,7 +65,7 @@ export const HotelManagement = () => {
             title: 'City',
             dataIndex: 'name_cities',
             key: 'name_cities',
-            render: (text) => <span>{text.length > 5 ? `${text.slice(0, 5)}...` : text}</span>
+            render: (text) => <span>{text.length > 5 ? `${text.slice(0, 10)}...` : text}</span>
         },
         {
             title: 'Star',

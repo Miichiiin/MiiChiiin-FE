@@ -1,5 +1,5 @@
 import { useGetHotel_adminByIdQuery, useUpdateHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { Button, Form, Input, InputNumber, Select, Spin, Upload, message } from 'antd';
+import { Button, Form, Image, Input, InputNumber, Select, Spin, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ const UpdateHotel = () => {
     const navigate = useNavigate()
     const [updateHotel, { isLoading }] = useUpdateHotel_adminMutation()
     const [selectedFiles, setSelectedFiles] = useState<File[]>();
+    const [isImageChanged, setIsImageChanged] = useState(false);
     const onFinish = (values: any) => {
         const body = new FormData()
         if (id) {
@@ -23,30 +24,40 @@ const UpdateHotel = () => {
         body.append('status', values.status)
         body.append('id_city', values.id_city)
         // Lặp qua danh sách các tệp ảnh và thêm chúng vào FormData
-        if (selectedFiles) {
-            selectedFiles.forEach((file, index) => {
-                body.append(`images[${index}]`, file);
-            });
+        if(isImageChanged){
+            if (selectedFiles) {
+                selectedFiles.forEach((file, index) => {
+                    body.append(`images[${index}]`, file);
+                  });
+            }
         }
+        else{
+            body.append('image', data?.image)
+        }
+        
 
-        console.log(body);
-        console.log("ảnh", selectedFiles as File);
-
-
-        updateHotel(body).unwrap().then(() => navigate('/admin/hotelManagement'));
+        updateHotel(body).unwrap().then(() => {
+            message.success({ content: 'Sửa khách sạn thành công', key: 'uploading' });
+            navigate('/admin/hotelmanagement');
+        }).catch(() => {
+            message.error({ content: 'Sửa khách sạn thất bại', key: 'uploading' });
+        })
     };
     const { id } = useParams<{ id: string }>()
-    const { data: hotelData } = useGetHotel_adminByIdQuery(id)
-
+    const { data } = useGetHotel_adminByIdQuery(id)
+    const hotelData = data?.[0]
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = event.target;
         const selectedFiles = files as FileList;
+        // Tạo một mảng mới để lưu trữ tệp đã chọn
         const filesArray: File[] = Array.from(selectedFiles);
+        // Ghi đè mảng selectedFiles bằng các tệp mới
         setSelectedFiles(filesArray);
-    };
+        setIsImageChanged(true);
+      };
     const [form] = Form.useForm();
     useEffect(() => {
         form.setFieldsValue({
@@ -104,6 +115,7 @@ const UpdateHotel = () => {
                             label="Upload"
                         >
                             <input type='file' multiple onChange={handleChange} />
+                            <Image src={hotelData?.image[0]?.image} width={100} height={100} className='mt-4 '/>
                         </Form.Item>
 
                         <Form.Item

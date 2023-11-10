@@ -1,12 +1,12 @@
 import { useAddHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Spin, message } from 'antd';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 export const AddHotel = () => {
     const navigate = useNavigate()
-    const [selectedFile, setSelectedFile] = useState<File>();
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [isUploading, setIsUploading] = useState(false)
 
     const [addHotel, { isLoading }] = useAddHotel_adminMutation()
@@ -22,10 +22,14 @@ export const AddHotel = () => {
         body.append('quantity_floor', values.quantity_floor)
         body.append('status', values.status)
         body.append('id_city', values.id_city)
-        body.append('image', selectedFile as File)
+        selectedFiles.forEach((file, index) => {
+            body.append(`images[${index}]`, file);
+        });
+        console.log(selectedFiles);
+
         setIsUploading(true);
 
-        addHotel(body).unwrap().then(() =>{
+        addHotel(body).unwrap().then(() => {
             message.success({ content: 'Thêm khách sạn thành công', key: 'uploading' });
             navigate('/admin/hotelmanagement');
         }).catch(() => {
@@ -33,7 +37,7 @@ export const AddHotel = () => {
         }).finally(() => {
             setIsUploading(false);
         });
-           
+
 
     };
 
@@ -41,13 +45,18 @@ export const AddHotel = () => {
         console.log('Failed:', errorInfo);
     };
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { files } = event.target
-        const selectedFiles = files as FileList
-        setSelectedFile(selectedFiles?.[0])
+        const { files } = event.target;
+        const selectedFiles = files as FileList;
+
+        // Tạo một mảng mới để lưu trữ tệp đã chọn
+        const filesArray: File[] = Array.from(selectedFiles);
+
+        // Ghi đè mảng selectedFiles bằng các tệp mới
+        setSelectedFiles(filesArray);
     };
     return (
         <div>
-
+            {isUploading && <Spin className='animate'/>}
             <header className="flex justify-between items-center my-5 mx-3">
                 <h2 className="text-2xl  text-blue-700">Thêm khách sạn</h2>
             </header>
@@ -109,7 +118,14 @@ export const AddHotel = () => {
                             name="image"
                             label="Upload"
                         >
-                            <input type='file' onChange={handleChange} />
+                            <input type='file' multiple onChange={handleChange} />
+                            <ul>
+                                {selectedFiles.map((file, index) => (
+                                    <li key={index}>
+                                        {file.name}
+                                    </li>
+                                ))}
+                            </ul>
                         </Form.Item>
                     </div>
                     <div className='w-[500px] p-4 bg-white mr-4'>
@@ -145,13 +161,16 @@ export const AddHotel = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item
-                            label="ID thành phố"
+                            label="Thành phố"
                             name="id_city"
                             rules={[{ required: true, message: 'Hãy nhập chọn id city!' }]}
                         >
-                            <Select defaultValue="0" style={{ width: '150px' }}>
-                                <Select.Option value="1">City 1</Select.Option>
-                                <Select.Option value="2">City 2</Select.Option>
+                            <Select placeholder="Chọn thành phố" style={{ width: '150px' }}>
+                                <Select.Option value={1}>Hà Nội</Select.Option>
+                                <Select.Option value={2}>Đà Nẵng</Select.Option>
+                                <Select.Option value={3}>Hồ Chí Minh</Select.Option>
+                                <Select.Option value={4}>Đà Lạt</Select.Option>
+                                <Select.Option value={5}>Hạ Long</Select.Option>
                             </Select>
                         </Form.Item>
                     </div>
