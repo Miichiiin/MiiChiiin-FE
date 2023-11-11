@@ -1,43 +1,71 @@
-import { useGetSearchOrderQuery } from "@/api/bookingUser";
+import {
+  useFindBookingMutation,
+  useGetSearchOrderQuery,
+} from "@/api/bookingUser";
+import { message } from "antd";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const SearchOrder = () => {
-  const [searchValue, setSearchValue] = useState("");
+  const [bookingData, setBookingData] = useState<any>(null);
 
-  const { data } = useGetSearchOrderQuery(searchValue);
-  console.log("dataSerchOrder", data);
+  const [find_booking] = useFindBookingMutation();
 
-  const handleSearch = () => {
-    // Thực hiện xử lý tìm kiếm với giá trị searchValue ở đây
-    console.log("Giá trị tìm kiếm:", searchValue);
-  };
+  const { register, handleSubmit } = useForm();
 
-  const handleChange = (event: any) => {
-    setSearchValue(event.target.value);
+  const onSubmit = async (data: any) => {
+    console.log("dữ liệu",data);
+    
+    try {
+      const response:any = await find_booking(data);
+      if (response?.error) {
+        message.error(response.error.message);
+        setBookingData(null)
+      } else if (response?.data) {
+        const { data: bookingData } = response;
+        setBookingData(bookingData);
+        // Tiếp tục xử lý dữ liệu
+      }
+    } catch (error) {
+      message.error('Đã xảy ra lỗi khi tìm kiếm.');
+    }
   };
   return (
     <div>
-      {data ? (
-        <div className="bg-whitec w-[1024px] absolute start-[220px] top-[-50px] z-10 rounded-md p-5 text-black">
-          <div className="flex items-center text-white">
+      <div className="bg-whitec w-[1024px] absolute start-[220px] top-[-50px] z-10 rounded-md p-5 text-black">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex items-center text-white w-[1000px] bg-white"
+        >
+          <div className="flex items-center">
             <input
               type="text"
               placeholder="Nhập hóa đơn mà bạn muốn tìm kiếm vào đây..."
-              onChange={handleChange}
-              className="w-[1000px] py-4 text-[13px] placeholder-gray-500 text-black bg-white pl-9 rounded"
+              {...register("slug")}
+              className="py-4 text-[13px] placeholder-gray-500 text-black pl-9 rounded"
             />
-            <i className="absolute text-gray-500 text-[20px]  pl-2">
+            <i className="absolute text-gray-500 text-[20px] pl-2">
               <AiOutlineSearch />
             </i>
-            <button
-              onClick={handleSearch}
-              className="text-white font-medium text-[15px] bg-[#e8952f] absolute end-6 px-7 py-[10px] rounded-md"
-            >
-              Tìm kiếm
-            </button>
           </div>
+          <div className="flex items-center">
+            <input
+              type="text"
+              placeholder="Nhập số điện thoại mà bạn muốn tìm kiếm vào đây..."
+              {...register("phone")}
+              className="py-4 text-[13px] placeholder-gray-500 text-black pl-9 rounded"
+            />
+          </div>
+          <button
+            type="submit"
+            className="text-white font-medium text-[15px] bg-[#e8952f] absolute end-6 px-7 py-[10px] rounded-md"
+          >
+            Tìm kiếm
+          </button>
+        </form>
 
+        {bookingData ? (
           <div
             className="mt-2 bg-white rounded-md px-2 py-2 overflow-y-scroll"
             style={{ maxHeight: "400px" }}
@@ -54,14 +82,14 @@ const SearchOrder = () => {
                   <span>
                     Họ và tên:{" "}
                     <span className="text-blue-500 px-1 mr-5">
-                      {data?.name}
+                      {bookingData?.name}
                     </span>
                   </span>{" "}
                   <br />
                   <span>
                     Email:{" "}
                     <span className="text-blue-500 px-1 mr-5">
-                      {data?.email}
+                      {bookingData?.email}
                     </span>
                   </span>{" "}
                   <br />
@@ -75,21 +103,21 @@ const SearchOrder = () => {
                   <span>
                     Số điện thoại:{" "}
                     <span className="text-blue-500 px-1 mr-5">
-                      {data?.phone}
+                      {bookingData?.phone}
                     </span>
                   </span>{" "}
                   <br />
                   <span>
                     Căn cước công dân:{" "}
                     <span className="text-blue-500 px-1 mr-5">
-                      {data?.cccd}
+                      {bookingData?.cccd}
                     </span>
                   </span>{" "}
                   <br />
                   <span>
                     Quốc tịch:{" "}
                     <span className="text-blue-500 px-1 mr-5">
-                      {data?.nationality}
+                      {bookingData?.nationality}
                     </span>
                   </span>{" "}
                   <br />
@@ -106,19 +134,19 @@ const SearchOrder = () => {
                   <span className="">
                     Tổng số phòng:{" "}
                     <span className="text-blue-500 px-1 ">
-                      {data?.total_room}
+                      {bookingData?.total_room}
                     </span>
                   </span>
                   <span>
                     Tổng số người:{" "}
                     <span className="text-blue-500 px-1 ">
-                      {data?.people_quantity}
+                      {bookingData?.people_quantity}
                     </span>{" "}
                   </span>
                   <span>
                     Tổng tiền:{" "}
                     <span className="text-blue-500 px-1 ">
-                      {data?.total_amount} đ
+                      {bookingData?.total_amount} đ
                     </span>{" "}
                   </span>
                 </div>
@@ -126,17 +154,17 @@ const SearchOrder = () => {
                   (Chủ nhật){" "}
                   <span className="text-blue-500 px-1 ">
                     {" "}
-                    {new Date(data?.check_in).toLocaleDateString()}
+                    {new Date(bookingData?.check_in).toLocaleDateString()}
                   </span>{" "}
                   - (Thứ ba)
                   <span className="text-blue-500 px-1">
-                    {new Date(data?.check_out).toLocaleDateString()}
+                    {new Date(bookingData?.check_out).toLocaleDateString()}
                   </span>
                 </span>
                 <div className="border-t-2">
                   <h2 className="my-3 mx-2 font-bold">Thông tin các phòng</h2>
 
-                  {data?.room?.map((item: any) => {
+                  {bookingData?.room?.map((item: any) => {
                     return (
                       <>
                         <div className="border-b-1 mb-2 flex">
@@ -176,35 +204,18 @@ const SearchOrder = () => {
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="bg-whitec w-[1024px] absolute start-[220px] top-[-50px] z-10 rounded-md p-5 text-black">
-          <div className="flex items-center text-white">
-            <input
-              type="text"
-              placeholder="Nhập hóa đơn mà bạn muốn tìm kiếm vào đây..."
-              onChange={handleChange}
-              className="w-[1000px] py-4 text-[13px] placeholder-gray-500 text-black bg-white pl-9 rounded"
-            />
-            <i className="absolute text-gray-500 text-[20px]  pl-2">
-              <AiOutlineSearch />
-            </i>
-            <button
-              onClick={handleSearch}
-              className="text-white font-medium text-[15px] bg-[#e8952f] absolute end-6 px-7 py-[10px] rounded-md"
-            >
-              Tìm kiếm
-            </button>
-          </div>
-
+        ) : (
           <div
             className="mt-2 bg-white rounded-md px-2 py-2 overflow-y-scroll"
-            style={{ height: "400px" }}
+            style={{ maxHeight: "400px" }}
           >
-            <h1>Không có dữ liệu</h1>
+            <h2 className="text-[23px] font-medium mb-3 px-3 py-3">
+              Thông tin tìm kiếm
+            </h2>
+            <div>Không có dữ liệu</div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

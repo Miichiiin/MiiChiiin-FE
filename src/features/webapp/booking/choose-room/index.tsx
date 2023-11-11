@@ -15,6 +15,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { Button } from "antd";
 import moment from 'moment';
+import { SearchQuickHotel } from "@/components/SearchQuickHotel";
 
 const ChooseRoom = () => {
  
@@ -238,7 +239,7 @@ const ChooseRoom = () => {
       <div className="mb-[150px]">
         <HeaderHotelType />
       </div>
-      <SearchHotel />
+      <SearchQuickHotel/>
       <div className="max-w-7xl mx-auto">
         <div className="max-w-5xl mx-auto my-5">
           <section className="border grid grid-cols-3 gap-4 px-2 py-3">
