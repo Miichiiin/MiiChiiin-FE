@@ -1,6 +1,5 @@
 import {
   useFindBookingMutation,
-  useGetSearchOrderQuery,
 } from "@/api/bookingUser";
 import { message } from "antd";
 import { useState } from "react";
@@ -32,34 +31,34 @@ const SearchOrder = () => {
     }
   };
   return (
-    <div>
-      <div className="bg-whitec w-[1024px] absolute start-[220px] top-[-50px] z-10 rounded-md p-5 text-black">
+    <div className="">
+      <div className=" w-[1024px] absolute start-[220px] top-[-50px] z-10 p-5 text-black">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex items-center text-white w-[1000px] bg-white"
+          className="flex items-center text-white w-[1024px] bg-white py-1"
         >
-          <div className="flex items-center">
+          <div className="flex items-center gap-8 pl-5">
             <input
               type="text"
               placeholder="Nhập hóa đơn mà bạn muốn tìm kiếm vào đây..."
               {...register("slug")}
-              className="py-4 text-[13px] placeholder-gray-500 text-black pl-9 rounded"
+              className="py-3 text-[13px] placeholder-gray-500 text-black pl-9 rounded w-[400px] border"
             />
             <i className="absolute text-gray-500 text-[20px] pl-2">
               <AiOutlineSearch />
             </i>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center pl-5">
             <input
               type="text"
               placeholder="Nhập số điện thoại mà bạn muốn tìm kiếm vào đây..."
               {...register("phone")}
-              className="py-4 text-[13px] placeholder-gray-500 text-black pl-9 rounded"
+              className="py-3 text-[13px] placeholder-gray-500 text-black pl-9 rounded w-[400px] border"
             />
           </div>
           <button
             type="submit"
-            className="text-white font-medium text-[15px] bg-[#e8952f] absolute end-6 px-7 py-[10px] rounded-md"
+            className="text-white font-medium text-[15px] bg-[#e8952f] absolute end-1 px-7 py-[10px] rounded-md"
           >
             Tìm kiếm
           </button>
@@ -67,13 +66,13 @@ const SearchOrder = () => {
 
         {bookingData ? (
           <div
-            className="mt-2 bg-white rounded-md px-2 py-2 overflow-y-scroll"
+            className="mt-2 bg-white  px-5 py-2 overflow-y-scroll w-[1024px]"
             style={{ maxHeight: "400px" }}
           >
-            <h2 className="text-[23px] font-medium mb-3 px-3 py-3">
+            <h2 className="text-[23px] font-medium mb-3 py-3">
               Thông tin tìm kiếm
             </h2>
-            <div className="flex   rounded-md">
+            <div className="flex  rounded-md">
               <div className=" w-[50%] rounded-md border">
                 <h3 className="text-[17px] h-10 font-medium px-2 py-2 bg-gray-300 mb-2">
                   Thông tin khách hàng
@@ -206,10 +205,10 @@ const SearchOrder = () => {
           </div>
         ) : (
           <div
-            className="mt-2 bg-white rounded-md px-2 py-2 overflow-y-scroll"
+            className="mt-2 bg-white px-5 py-2 overflow-y-scroll w-[1024px]"
             style={{ maxHeight: "400px" }}
           >
-            <h2 className="text-[23px] font-medium mb-3 px-3 py-3">
+            <h2 className="text-[23px] font-medium mb-3 py-3">
               Thông tin tìm kiếm
             </h2>
             <div>Không có dữ liệu</div>
