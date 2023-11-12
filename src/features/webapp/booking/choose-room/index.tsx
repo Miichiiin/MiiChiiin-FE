@@ -239,7 +239,7 @@ const ChooseRoom = () => {
       <div className="mb-[150px]">
         <HeaderHotelType />
       </div>
-      <SearchQuickHotel/>
+      <SearchHotel/>
       <div className="max-w-7xl mx-auto">
         <div className="max-w-5xl mx-auto my-5">
           <section className="border grid grid-cols-3 gap-4 px-2 py-3">

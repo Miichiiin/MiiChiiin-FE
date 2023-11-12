@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  AiOutlineSearch,
   AiOutlineRight,
   AiOutlineMenu,
   AiOutlineDown,

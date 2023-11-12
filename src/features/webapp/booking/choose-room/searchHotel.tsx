@@ -23,7 +23,7 @@ export const SearchHotel = () => {
   const [hotelsData, setHotelsData] = useState([]);
 
   const searchSlide = useParams()
-  console.log("param", searchSlide);
+  console.log("param111", searchSlide);
 
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
