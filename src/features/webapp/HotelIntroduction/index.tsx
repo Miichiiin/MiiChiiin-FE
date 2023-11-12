@@ -16,15 +16,20 @@ import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 import { useGetVoucherQuery } from "@/api/admin/voucher";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { useUseGetRating_hotel_homeQueryQuery } from "@/api/webapp/rate_hotel_home";
+import { SearchQuickHotel } from "@/components/SearchQuickHotel";
+import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 
 const HotelIntroduction = () => {
   const { data: voucher } = useGetVoucherQuery();
   const { data: service } = useGetService_hotelQuery();
-  const {id:idHotel} = useParams<{id:string}>();  
+  const { id: idHotel } = useParams<{ id: string }>();
   const { data } = useGetCategory_homeQuery(idHotel);
-  const {data:dataRate} = useUseGetRating_hotel_homeQueryQuery(idHotel); 
-  console.log("data",dataRate);
+  const {data: hotelData} = useGetHotel_homeByIdQuery(idHotel);
+  console.log("hotelData",hotelData);
   
+  const { data: dataRate } = useUseGetRating_hotel_homeQueryQuery(idHotel);
+  console.log("data", dataRate);
+
   let settings = {
     dots: false,
     infinite: false,
@@ -75,13 +80,11 @@ const HotelIntroduction = () => {
   return (
     <div>
       <HeaderHotel />
-      <Search />
+      <SearchQuickHotel />
       <div>
         <div className="bg-[#fbf8f2] w-full mt-3 px-5 py-10">
           <div className="mt-10 w-[940px] text-[14px] text-center mx-auto">
-            <h1 className="text-[30px] font-medium mb-3">
-              Smart Stay - VinHolidays
-            </h1>
+            <h1 className="text-[30px] font-medium mb-3">{hotelData?.[0]?.name}</h1>
             <p>
               Được thiết kế theo lối kiến trúc mạnh mẽ, vững chãi nhưng không
               kém phần tinh tế, thu hút cùng hệ thống 687 phòng nghỉ có nội thất
@@ -96,7 +99,7 @@ const HotelIntroduction = () => {
               nghỉ trong mơ với chi phí hợp lý cho tất cả mọi người trong hành
               trình{" "}
               <a href="" className="text-[#4a6d76] hover:text-[#f2ba50]">
-                du lịch Phú Quốc.
+                du lịch {hotelData?.[0]?.city_name}.
               </a>
             </p>
           </div>
@@ -184,80 +187,96 @@ const HotelIntroduction = () => {
           </div>
         </div>
         <div className="bg-[#fbf8f2] w-full mt-10 px-5 py-3 ">
-        {/* hiển thị đánh giá sao */}
-        <div className="w-[1280px] mx-auto mt-5 relative">
-              <h1 className="text-[30px] mb-[30px]">Thông tin đánh giá</h1>
-              <div >
+          {/* hiển thị đánh giá sao */}
+          <div className="w-[1280px] mx-auto mt-5 relative">
+            <h1 className="text-[30px] mb-[30px]">Thông tin đánh giá</h1>
+            <div>
               <Slider {...settings2} className="mb-10 pb-3">
-                  {dataRate?.map((item: any) => {                  
-                    const createdAtDate = new Date(item.created_at);
-                    const formattedDate = createdAtDate.toLocaleDateString('vi-VN');
-                    const firstLetterOfName = item.user_name.charAt(0);
-                      return (
-                        <div key={item.id} className='comment column '>
-                      <Link to={`/hotel/${idHotel}/rooms/detail/${item?.id_category}`}>
-                        <div className='comment column border border-gray-300 p-5 rounded-xl mr-5' >
-                            <div className="small-column py-2 flex items-center">
-                              <div className="border rounded-full bg-blue-300 w-16 h-16 flex justify-center items-center">
-                                <span className="text-xl font-bold">{firstLetterOfName}</span>
-                              </div>
-                              <h1 className="text-[17px] px-3">{formattedDate}
-                                <br />
-                                <span className="font-bold ">{item.user_name}</span>
-                              </h1>
-                              <h1 className="text-[17px] ml-5 mb-[-5px]"><span className='font-semibold italic'>Loại phòng: {item?.category_name}</span>
-                              <h1 className='text-[14px] pr-2 font-medium'>Đánh giá: <span className="text-yellow-400 text-[20px]  mt-[-5px]">{'★'.repeat(item.rating)}</span></h1>
-                              </h1>
+                {dataRate?.map((item: any) => {
+                  const createdAtDate = new Date(item.created_at);
+                  const formattedDate =
+                    createdAtDate.toLocaleDateString("vi-VN");
+                  const firstLetterOfName = item.user_name.charAt(0);
+                  return (
+                    <div key={item.id} className="comment column ">
+                      <Link
+                        to={`/hotel/${idHotel}/rooms/detail/${item?.id_category}`}
+                      >
+                        <div className="comment column border border-gray-300 p-5 rounded-xl mr-5">
+                          <div className="small-column py-2 flex items-center">
+                            <div className="border rounded-full bg-blue-300 w-16 h-16 flex justify-center items-center">
+                              <span className="text-xl font-bold">
+                                {firstLetterOfName}
+                              </span>
                             </div>
-                            <h1 className='ml-[75px]'>{item.content}</h1>
+                            <h1 className="text-[17px] px-3">
+                              {formattedDate}
+                              <br />
+                              <span className="font-bold ">
+                                {item.user_name}
+                              </span>
+                            </h1>
+                            <h1 className="text-[17px] ml-5 mb-[-5px]">
+                              <span className="font-semibold italic">
+                                Loại phòng: {item?.category_name}
+                              </span>
+                              <h1 className="text-[14px] pr-2 font-medium">
+                                Đánh giá:{" "}
+                                <span className="text-yellow-400 text-[20px]  mt-[-5px]">
+                                  {"★".repeat(item.rating)}
+                                </span>
+                              </h1>
+                            </h1>
                           </div>
-                      </Link>
+                          <h1 className="ml-[75px]">{item.content}</h1>
                         </div>
-                      );
-                    })}
-                  </Slider> 
-                </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+              </Slider>
             </div>
+          </div>
         </div>
         <div>
-      <div className="w-[1560px] mx-auto pb-10 relative">
-        <div className="flex items-center justify-between w-[1280px] mx-auto mt-[80px] mb-10">
-          <h1 className="text-[30px]">Dịch Vụ</h1>
-          <span className="flex items-center space-x-2 text-[#f2ba50]">
-            <a href="">Xem tất cả </a>
-            <AiOutlineArrowRight />
-          </span>
-        </div>
-        <div className="">
-          <Slider {...settings1} ref={sliderRef1} className="space-x-4">
-            {service?.map((item:any, index:any) => (
-              <div key={index} className="relative">
-                <img
-                  className="h-[400px] w-[380px] rounded-md"
-                  src={item?.image}
-                  alt=""
-                />
-                <span className="absolute bottom-3 start-5 text-white leading-7">
-                  <p>Dịch Vụ</p>
-                  <span className="flex items-center space-x-4">
-                    <p className="text-[23px]">{item?.name}</p>
-                    <span className="mt-1">
-                      <AiOutlineArrowRight />
+          <div className="w-[1560px] mx-auto pb-10 relative">
+            <div className="flex items-center justify-between w-[1280px] mx-auto mt-[80px] mb-10">
+              <h1 className="text-[30px]">Dịch Vụ</h1>
+              <span className="flex items-center space-x-2 text-[#f2ba50]">
+                <a href="">Xem tất cả </a>
+                <AiOutlineArrowRight />
+              </span>
+            </div>
+            <div className="">
+              <Slider {...settings1} ref={sliderRef1} className="space-x-4">
+                {service?.map((item: any, index: any) => (
+                  <div key={index} className="relative">
+                    <img
+                      className="h-[400px] w-[380px] rounded-md"
+                      src={item?.image}
+                      alt=""
+                    />
+                    <span className="absolute bottom-3 start-5 text-white leading-7">
+                      <p>Dịch Vụ</p>
+                      <span className="flex items-center space-x-4">
+                        <p className="text-[23px]">{item?.name}</p>
+                        <span className="mt-1">
+                          <AiOutlineArrowRight />
+                        </span>
+                      </span>
                     </span>
-                  </span>
-                </span>
-              </div>
-            ))}
-          </Slider>
+                  </div>
+                ))}
+              </Slider>
+            </div>
+            <button
+              onClick={handleNext1}
+              className="bg-white absolute top-[280px] end-[410px] w-8 hover:bg-gray-500 hover:text-white h-12 text-[22px] pl-1"
+            >
+              <AiOutlineRight />
+            </button>
+          </div>
         </div>
-        <button
-          onClick={handleNext1}
-          className="bg-white absolute top-[280px] end-[410px] w-8 hover:bg-gray-500 hover:text-white h-12 text-[22px] pl-1"
-        >
-          <AiOutlineRight />
-        </button>
-      </div>
-    </div>
         <div className="w-[1280px] mx-auto mt-10 relative">
           <img
             src="https://vinpearl.com/themes/porto/images/microsite_hotel_v2/img_become.jpg"
@@ -291,13 +310,13 @@ const HotelIntroduction = () => {
                     <div className="w-[400px] ">
                       <div className="relative overflow-hidden mb-4">
                         <Link to={`/promotion`}>
-                        <img
-                          className=" h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                          src={item.image}
-                          width="400px"
-                          height="300px"
-                          alt=""
-                        />
+                          <img
+                            className=" h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                            src={item.image}
+                            width="400px"
+                            height="300px"
+                            alt=""
+                          />
                         </Link>
                       </div>
                       <a

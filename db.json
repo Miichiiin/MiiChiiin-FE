@@ -1904,293 +1904,64 @@
   ],
   "HotelChainStatisticRt": [
     {
-      "hotel": "Hotel A",
-      "roomType": "Single",
-      "rating": 4,
-      "month": "tháng 1",
-      "year": "2023",
-      "bookings": 25
-    },
-    {
-      "hotel": "Hotel A",
-      "roomType": "Double",
-      "rating": 4.5,
-      "month": "tháng 2",
-      "year": "2023",
-      "bookings": 30
-    },
-    {
-      "hotel": "Hotel A",
-      "roomType": "Suite",
-      "rating": 5,
-      "month": "tháng 1",
-      "year": "2023",
-      "bookings": 15
-    },
-    {
-      "hotel": "Hotel B",
-      "roomType": "Single",
-      "rating": 3.5,
-      "month": "tháng 2",
-      "year": "2023",
-      "bookings": 20
-    },
-    {
-      "hotel": "Hotel B",
-      "roomType": "Double",
-      "rating": 4,
-      "month": "tháng 1",
-      "year": "2023",
-      "bookings": 35
-    },
-    {
-      "hotel": "Hotel B",
-      "roomType": "Suite",
-      "rating": 4.5,
-      "month": "tháng 2",
-      "year": "2023",
-      "bookings": 10
-    },
-    {
-      "hotel": "Hotel C",
-      "roomType": "Single",
-      "rating": 4,
-      "month": "tháng 1",
-      "year": "2023",
-      "bookings": 22
-    },
-    {
-      "hotel": "Hotel C",
-      "roomType": "Double",
-      "rating": 4.3,
-      "month": "tháng 2",
-      "year": "2023",
-      "bookings": 28
-    },
-    {
-      "hotel": "Hotel C",
-      "roomType": "Suite",
-      "rating": 4.8,
-      "month": "tháng 2",
-      "year": "2023",
-      "bookings": 18
-    },
-    {
-      "hotel": "Hotel D",
-      "roomType": "Single",
-      "rating": 3.8,
-      "month": "tháng 1",
-      "year": "2023",
-      "bookings": 15
-    },
-    {
-      "hotel": "Hotel D",
-      "roomType": "Double",
-      "rating": 4.2,
-      "month": "tháng 2",
-      "year": "2023",
-      "bookings": 32
-    },
-    {
-      "hotel": "Hotel D",
-      "roomType": "Suite",
-      "rating": 4.6,
-      "month": "tháng 1",
-      "year": "2023",
-      "bookings": 12
-    },
-    {
-      "hotel": "Hotel E",
-      "roomType": "Single",
-      "rating": 3.5,
-      "month": "tháng 2",
-      "year": "2023",
-      "bookings": 17
-    },
-    {
-      "hotel": "Hotel E",
-      "roomType": "Double",
-      "rating": 4,
-      "month": "tháng 1",
-      "year": "2023",
-      "bookings": 28
-    },
-    {
-      "hotel": "Hotel E",
-      "roomType": "Suite",
-      "rating": 4.2,
-      "month": "tháng 1",
-      "year": "2023",
-      "bookings": 14
-    }
-  ],
-  "bookingTest": [
-    {
       "id": 1,
-      "check_in": "2023-10-05 00:00:00",
-      "check_out": "2023-10-10 00:00:00",
-      "people_quantity": 8,
-      "total_amount": 100,
-      "status": 1,
-      "nationality": "vn",
-      "cccd": "1123",
-      "message": "sua",
-      "phone": "111",
-      "email": "ntt091103@gmail.com",
-      "deleted_at": null,
-      "name": "tung",
-      "id_user": 1,
-      "created_at": "2023-10-06T16:22:11.000000Z",
-      "updated_at": "2023-10-06T16:31:07.000000Z",
-      "hotel": {
-        "name": "Mr. Koby West DDS",
-        "image": "https://via.placeholder.com/640x480.png/003355?text=quia",
-        "alt": "http://wiza.com/"
-      },
-      "categories": [
+      "hotelName": "Michi Hà Nội",
+      "roomAverages": [
         {
           "id": 1,
-          "name": "Selena Kemmer",
-          "image": "https://via.placeholder.com/640x480.png/009988?text=officia",
-          "rooms": [
-            {
-              "id": 3,
-              "name": "Darby Little",
-              "id_hotel": 5,
-              "id_cate": 1,
-              "services": [
-                {
-                  "name": "Quam hic esse.",
-                  "price": 571
-                },
-                {
-                  "name": "Veritatis.",
-                  "price": 993
-                },
-                {
-                  "name": "Commodi suscipit.",
-                  "price": 523
-                },
-                {
-                  "name": "Quam hic esse.",
-                  "price": 571
-                },
-                {
-                  "name": "Veritatis.",
-                  "price": 993
-                },
-                {
-                  "name": "Commodi suscipit.",
-                  "price": 523
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "total_room": 1,
-      "total_service": 6
-    },
-    {
-      "id": 3,
-      "check_in": "2023-10-10 00:00:00",
-      "check_out": "2023-10-12 00:00:00",
-      "people_quantity": 8,
-      "total_amount": 100,
-      "status": 1,
-      "nationality": "vn",
-      "cccd": "1123",
-      "message": "kfgahsgad",
-      "phone": "111",
-      "email": "ntt091103@gmail.com",
-      "deleted_at": null,
-      "name": "tung",
-      "id_user": 1,
-      "created_at": "2023-10-09T14:53:26.000000Z",
-      "updated_at": "2023-10-09T14:53:26.000000Z",
-      "hotel": {
-        "name": "Prof. Carmen Cummerata III",
-        "image": "https://via.placeholder.com/640x480.png/003366?text=nesciunt",
-        "alt": "http://www.abernathy.com/voluptatem-omnis-sit-commodi-est-quis.html"
-      },
-      "categories": [
-        {
-          "id": 1,
-          "name": "Selena Kemmer",
-          "image": "https://via.placeholder.com/640x480.png/009988?text=officia",
-          "rooms": [
-            {
-              "id": 1,
-              "name": "Scotty Konopelski",
-              "id_hotel": 5,
-              "id_cate": 1,
-              "services": [
-                {
-                  "name": "Quam hic esse.",
-                  "price": 571
-                },
-                {
-                  "name": "Veritatis.",
-                  "price": 993
-                },
-                {
-                  "name": "Commodi suscipit.",
-                  "price": 523
-                }
-              ]
-            }
-          ]
+          "roomType": "Phòng gia đình",
+          "rating": 8.74,
+          "bookingCount": 0,
+          "month": "tháng 1",
+          "year": "2023"
         },
         {
           "id": 2,
-          "name": "Ada Boehm",
-          "image": "https://via.placeholder.com/640x480.png/00ff99?text=consequatur",
-          "rooms": [
-            {
-              "id": 1,
-              "name": "Scotty Konopelski",
-              "id_hotel": 5,
-              "id_cate": 1,
-              "services": [
-                {
-                  "name": "Quam hic esse.",
-                  "price": 571
-                },
-                {
-                  "name": "Veritatis.",
-                  "price": 993
-                },
-                {
-                  "name": "Commodi suscipit.",
-                  "price": 523
-                }
-              ]
-            },
-            {
-              "id": 5,
-              "name": "Icie O'Kon",
-              "id_hotel": 6,
-              "id_cate": 2,
-              "services": [
-                {
-                  "name": "Quam hic esse.",
-                  "price": 571
-                },
-                {
-                  "name": "Veritatis.",
-                  "price": 993
-                },
-                {
-                  "name": "Commodi suscipit.",
-                  "price": 523
-                }
-              ]
-            }
-          ]
+          "roomType": "Phòng đôi",
+          "rating": 9.88,
+          "bookingCount": 1,
+          "month": "tháng 2",
+          "year": "2023"
+        },
+        {
+          "id": 3,
+          "roomType": "Suite",
+          "rating": 10.46,
+          "bookingCount": 2,
+          "month": "tháng 1",
+          "year": "2023"
         }
-      ],
-      "total_room": 2,
-      "total_service": 6
+      ]
+    },
+    {
+      "id": 2,
+      "hotelName": "Khách sạn ABC",
+      "roomAverages": [
+        {
+          "id": 4,
+          "roomType": "Phòng gia đình",
+          "rating": 7.88,
+          "bookingCount": 1,
+          "month": "tháng 1",
+          "year": "2023"
+        },
+        {
+          "id": 5,
+          "roomType": "Phòng đôi",
+          "rating": 8.75,
+          "bookingCount": 2,
+          "month": "tháng 2",
+          "year": "2023"
+        },
+        {
+          "id": 6,
+          "roomType": "Suite",
+          "rating": 9.13,
+          "bookingCount": 3,
+          "month": "tháng 1",
+          "year": "2023"
+        }
+      ]
     }
   ]
 }

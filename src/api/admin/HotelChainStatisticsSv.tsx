@@ -5,7 +5,7 @@ const hotelchainstatisticsvApi = createApi({
     reducerPath: 'hotelchainstatisticsv',
     tagTypes: ['HotelChainStatisticSv'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("tokenAdmin");
             if (token) {
@@ -15,8 +15,8 @@ const hotelchainstatisticsvApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getHotelChainStatisticsv: builder.query<any, void>({
-            query: () => `/hotelchainstatisticsv`,
+        getHotelChainStatisticsv: builder.query<any,{month: number, year: number}>({
+            query: ({month, year}) => `statistical_services_inchain/${month}/${year}`,
             providesTags: ['HotelChainStatisticSv']
         }),
         getHotelChainStatisticsvById: builder.query({
