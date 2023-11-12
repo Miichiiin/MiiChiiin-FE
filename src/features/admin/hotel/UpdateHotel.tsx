@@ -8,41 +8,7 @@ const UpdateHotel = () => {
     const [updateHotel, { isLoading }] = useUpdateHotel_adminMutation()
     const [selectedFiles, setSelectedFiles] = useState<File[]>();
     const [isImageChanged, setIsImageChanged] = useState(false);
-    const onFinish = (values: any) => {
-        const body = new FormData()
-        if (id) {
-            body.append('id', id);
-        }
-        body.append('name', values.name)
-        body.append('address', values.address)
-        body.append('email', values.email)
-        body.append('phone', values.phone)
-        body.append('description', values.description)
-        body.append('star', values.star)
-        body.append('quantity_of_room', values.quantity_of_room)
-        body.append('quantity_floor', values.quantity_floor)
-        body.append('status', values.status)
-        body.append('id_city', values.id_city)
-        // Lặp qua danh sách các tệp ảnh và thêm chúng vào FormData
-        if(isImageChanged){
-            if (selectedFiles) {
-                selectedFiles.forEach((file, index) => {
-                    body.append(`images[${index}]`, file);
-                  });
-            }
-        }
-        else{
-            body.append('image', data?.image)
-        }
-        
-
-        updateHotel(body).unwrap().then(() => {
-            message.success({ content: 'Sửa khách sạn thành công', key: 'uploading' });
-            navigate('/admin/hotelmanagement');
-        }).catch(() => {
-            message.error({ content: 'Sửa khách sạn thất bại', key: 'uploading' });
-        })
-    };
+    
     const { id } = useParams<{ id: string }>()
     const { data } = useGetHotel_adminByIdQuery(id)
     const hotelData = data?.[0]
@@ -76,6 +42,42 @@ const UpdateHotel = () => {
             image_urls: hotelData?.image_urls,
         })
     }, [hotelData])
+    const onFinish = (values: any) => {
+        const body = new FormData()
+        if (id) {
+            body.append('id', id);
+        }
+        body.append('name', values.name)
+        body.append('address', values.address)
+        body.append('email', values.email)
+        body.append('phone', values.phone)
+        body.append('description', values.description)
+        body.append('star', values.star)
+        body.append('quantity_of_room', values.quantity_of_room)
+        body.append('quantity_floor', values.quantity_floor)
+        body.append('status', values.status)
+        body.append('id_city', values.id_city)
+        // Lặp qua danh sách các tệp ảnh và thêm chúng vào FormData
+        if(isImageChanged){
+            if (selectedFiles) {
+                selectedFiles.forEach((file, index) => {
+                    body.append(`images[${index}]`, file);
+                  });
+            }
+        }
+        else{
+            body.append('image', hotelData?.image)
+        }
+        
+
+        updateHotel(body).unwrap().then(() => {
+            message.success({ content: 'Sửa khách sạn thành công', key: 'uploading' });
+            navigate('/admin/hotelmanagement');
+        }).catch(() => {
+            message.error({ content: 'Sửa khách sạn thất bại', key: 'uploading' });
+        })
+    };
+    
     return (
         <div>
 
