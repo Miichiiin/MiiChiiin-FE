@@ -75,7 +75,7 @@ const HeaderHotelType = () => {
   /*slideshow*/
 
    const clearLocalStorageData = () => {
-    localStorage.removeItem('selectRoom');
+    localStorage.removeItem('selectedRooms');
     localStorage.removeItem('totalPrice');
   };
 
