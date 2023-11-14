@@ -200,7 +200,7 @@ export const SearchQuickHotel = () => {
   /*Cuộn trang*/
   const shouldShowScroll = numberOfRooms1 > 1;
   return (
-    <div className="xl:ml-[100px] 2xl:ml-[250px] md:ml-[50px] lg:ml-[75px]">
+    <div className="mx-auto w-[1280px]">
       <Form
         className="flex items-center w-full flex-wrap" // Thêm lớp flex-wrap để xử lý trường hợp tràn dòng
         name="basic"
@@ -218,17 +218,17 @@ export const SearchQuickHotel = () => {
           // rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <div ref={refCalen} onClick={handleDivClick}>
-              <div onClick={toggleDropdown} className="relative cursor-pointer ">
+              <div onClick={toggleDropdown} className="relative cursor-pointer group">
                 <div
                   className="border rounded border-[#e0e0e0] xl:w-[410px] xl:h-[57px] xl:pl-[55px] 
                         lg:w-[200px] lg:h-[55px] xl:text-[16px] lg:text-[11px] lg:pl-[40px] 
-                        sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px] transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md"
+                        sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px] transition-all duration-300 ease-in-out group-hover:border-[#e8952f] hover:shadow-md"
                 >
-                  <span className="text-gray-700 absolute pt-[13px]">
+                  <span className="text-gray-700 absolute pt-[13px] font-medium">
                     {selectedHotel || "Bạn nhập nơi muốn đến..."}
                   </span>
                 </div>
-                <span className="absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4">
+                <span className="text-gray-700 absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4 group-hover:text-[#e8952f]">
                   <AiOutlineEnvironment />
                 </span>
               </div>
@@ -256,26 +256,29 @@ export const SearchQuickHotel = () => {
 
           <Form.Item className="flex-grow ml-2">
             <RangePicker
-              className="w-[280px] text-[16px] h-[57px] border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md"
+              className="w-[280px] text-[16px] h-[57px] border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               format="DD/MM/YYYY"
               onChange={handleRangeChange}
               disabledDate={(current) => {
                 // Vô hiệu hóa các ngày hôm trước
                 return current && current.isBefore(new Date(), 'day');
               }}
+              style={{ color: 'black', fontWeight: 'medium' }}
             />
           </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
             <button className='w-[310px]' >
-              <div className="flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all duration-300 ease-in-out hover:border-blue-500 hover:shadow-md " >
-                <span className="xl:text-[22px] lg:text-[19px] mr-4">
+              <div className="group flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all 
+                duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md " 
+              >
+                <span className="xl:text-[22px] lg:text-[19px] mr-4 group-hover:text-[#e8952f] text-gray-700">
                   <AiOutlineUser />
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
-                  <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-semibold ">
-                    <label htmlFor="" className='cursor-pointer'>Số phòng </label>
-                    <label htmlFor="" className='cursor-pointer pl-[20px]'>Số người </label>
+                  <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 font-bold sm:space-x-2 font-semibold ">
+                    <label htmlFor="" className='cursor-pointer group-hover:text-[#e8952f]'>Số phòng</label>
+                    <label htmlFor="" className='cursor-pointer pl-[20px] group-hover:text-[#e8952f]'>Số người </label>
                   </div>
                   <div
                     onClick={toggleDropdown1}
@@ -294,30 +297,30 @@ export const SearchQuickHotel = () => {
                   {isDropdownOpen1 && (
                     <div className="absolute mt-1 lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 hover:block rounded-md">
                       <div className="flex items-center justify-between cursor-pointer text-[15px]">
-                        <span className="font-medium">Số phòng</span>
+                        <span className="font-medium text-gray-700 font-bold">Số phòng</span>
                         <div className="flex items-center space-x-4">
                           {numberOfRooms1 > 1 && (
                             <button
                               onClick={() =>
                                 handleRoomChange1(numberOfRooms1 - 1)
                               }
-                              className="border border-gray-400 text-gray-400 px-1 py-1 rounded-full"
+                              className="border border-gray-600 text-gray-600 px-1 py-1 rounded-full"
                             >
                               <AiOutlineMinus />
                             </button>
                           )}
-                          <a href="">{numberOfRooms1}</a>
+                          <a className='text-gray-600 font-medium' href="">{numberOfRooms1}</a>
                           <button
                             onClick={() =>
                               handleRoomChange1(numberOfRooms1 + 1)
                             }
-                            className="border border-gray-400 text-gray-400 px-1 py-1 rounded-full"
+                            className="border border-gray-600 text-gray-600 px-1 py-1 rounded-full"
                           >
                             <AiOutlinePlus />
                           </button>
                         </div>
                       </div>
-                      <hr className="text-gray-300 mt-3" />
+                      <hr className="text-gray-600 mt-3" />
                       <div
                         className={`max-h-[230px] w-auto  ${shouldShowScroll
                           ? "overflow-y-scroll overflow-hidden"
@@ -326,20 +329,20 @@ export const SearchQuickHotel = () => {
                       >
                         {roomDetails1?.map((room, index) => (
                           <div key={index} className="mt-3 ">
-                            <p className="mb-2 mr-[260px] text-[14px] font-medium">
+                            <p className="mb-2 mr-[260px] text-[14px] font-bold text-gray-600">
                               Phòng {index + 1}
                             </p>
                             <div className="flex items-center space-x-[42px] border-b-[1px] pb-5">
                               <span>
-                                <h2 className="ml-3 mb-2 text-[12px] text-gray-400">
+                                <h2 className="ml-3 mb-2 text-[12px] text-gray-600 font-medium">
                                   Người lớn
                                 </h2>
-                                <div className="flex items-center space-x-3">
+                                <div className="flex items-center space-x-3 font-medium text-gray-600">
                                   <button
                                     onClick={() =>
                                       handleAdultChange1(index, room.adults - 1)
                                     }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                    className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
                                   >
                                     <AiOutlineMinus />
                                   </button>
@@ -348,7 +351,7 @@ export const SearchQuickHotel = () => {
                                     onClick={() =>
                                       handleAdultChange1(index, room.adults + 1)
                                     }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                    className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
                                   >
                                     <AiOutlinePlus />
                                   </button>
@@ -356,10 +359,10 @@ export const SearchQuickHotel = () => {
                                 </div>
                               </span>
                               <span>
-                                <h2 className="ml-3 mb-2 text-[13px] text-gray-400">
+                                <h2 className="ml-3 mb-2 text-[13px] text-gray-600 font-medium">
                                   Trẻ em
                                 </h2>
-                                <div className="flex items-center space-x-3">
+                                <div className="flex items-center space-x-3 text-gray-600 font-medium">
                                   <button
                                     onClick={() =>
                                       handleChildrenChange1(
@@ -367,7 +370,7 @@ export const SearchQuickHotel = () => {
                                         room.children - 1
                                       )
                                     }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                    className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
                                   >
                                     <AiOutlineMinus />
                                   </button>
@@ -379,7 +382,7 @@ export const SearchQuickHotel = () => {
                                         room.children + 1
                                       )
                                     }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                    className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full"
                                   >
                                     <AiOutlinePlus />
                                   </button>
@@ -387,10 +390,10 @@ export const SearchQuickHotel = () => {
                                 </div>
                               </span>
                               <span>
-                                <h2 className="ml-3 mb-2 text-[13px] text-gray-400">
+                                <h2 className="ml-3 mb-2 text-[13px] text-gray-600 font-medium">
                                   Em bé
                                 </h2>
-                                <div className="flex items-center space-x-3">
+                                <div className="flex items-center space-x-3 text-gray-600 font-medium ">
                                   <button
                                     onClick={() =>
                                       handleInfantChange1(
@@ -398,19 +401,19 @@ export const SearchQuickHotel = () => {
                                         room.infants - 1
                                       )
                                     }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                    className="border border-gray-600 text-[12px] text-gray-400 px-1 py-1 rounded-full"
                                   >
                                     <AiOutlineMinus />
                                   </button>
                                   <a href="">{room.infants}</a>
-                                  <button
+                                  <button 
                                     onClick={() =>
                                       handleInfantChange1(
                                         index,
                                         room.infants + 1
                                       )
                                     }
-                                    className="border border-gray-400 text-[12px] text-gray-400 px-1 py-1 rounded-full"
+                                    className="border border-gray-600 text-[12px] text-gray-600 px-1 py-1 rounded-full "
                                   >
                                     <AiOutlinePlus />
                                   </button>
@@ -421,7 +424,7 @@ export const SearchQuickHotel = () => {
                           </div>
                         ))}
                       </div>
-                      <p className="mt-3 text-gray-400 text-[12px] mr-[60px]">
+                      <p className="mt-3 text-gray-600 text-[12px] text-center font-medium ">
                         *Em bé: Dưới 2 tuổi/ Trẻ em: Từ 2 - dưới 12 tuổi
                       </p>
                     </div>
@@ -432,8 +435,8 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2">
-            <div className="flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-40 h-[57px] border border-[#e0e0e0] rounded">
-              <span className="xl:text-[23px] lg:text-[16px] sm:text-[12px] mr-4 ">
+            <div className="group flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-40 h-[57px] border border-[#e0e0e0] hover:border-[#e8952f] rounded">
+              <span className="xl:text-[23px] lg:text-[16px] sm:text-[12px] mr-4 group-hover:text-[#e8952f]">
                 <AiOutlineIdcard />
               </span>
               <span className="xl:text-[14px] lg:text-[13px] sm:text-[8px] font-medium text-[#353c46]">
