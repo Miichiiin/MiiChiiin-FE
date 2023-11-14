@@ -309,7 +309,7 @@ export const SearchHotel = () => {
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
                   <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-semibold ">
-                    <label htmlFor="" className='cursor-pointer'>Số phòng </label>
+                    <label htmlFor="" className='cursor-pointer'>Số phòng</label>
                     <label htmlFor="" className='cursor-pointer pl-[20px]'>Số người </label>
                   </div>
                   <div

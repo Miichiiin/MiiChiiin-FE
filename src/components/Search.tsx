@@ -124,7 +124,7 @@ const Search = () => {
             <span className="xl:text-[22px] lg:text-[19px] mr-4"><AiOutlineUser /></span>
             <div onClick={handleDivClick} className="lg:w-[170px]">
               <div className="xl:text-[12px] xl:space-x-7 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-medium">
-                <label htmlFor="">Số phòng </label>
+                <label htmlFor="">Số phòng</label>
                 <label htmlFor="">Số người </label>
               </div>
               <div onClick={toggleDropdown} className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46]">
@@ -136,7 +136,7 @@ const Search = () => {
             </div>
             <div ref={refCalen}>
               {isDropdownOpen && (
-                <div className="absolute  lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 ">
+                <div className="absolute  lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-700 shadow-lg px-5 py-4 start-5 top-14 ">
                   <div className="flex items-center justify-between cursor-pointer text-[15px]">
                     <span className="font-medium text-[#353c46]">Số phòng</span>
                     <div className="flex items-center space-x-4">

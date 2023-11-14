@@ -14,10 +14,14 @@ import SearchOrder from "./SearchOrder";
 const Header = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
   const { data: hotels } = useGetHotel_homesQuery();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+  const toggleDropdown1 = () => {
+    setIsDropdownOpen1(!isDropdownOpen1);
   };
   /*click ngoài = out*/
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,6 +45,7 @@ const Header = () => {
 
       if (isDropdownOpen && !target?.closest(".dropdown-button")) {
         setIsDropdownOpen(false);
+        
       }
     };
 
@@ -114,7 +119,7 @@ const Header = () => {
 
   return (
     <div>
-      <header className=" ">
+      <header className="mb-[-120px] ">
         <div>
           <video
             className="w-full relative mb-5 "
@@ -124,9 +129,9 @@ const Header = () => {
             loop
           />
           <div
-            className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${
+            className={`w-full h-[135px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
-                ? "fixed  top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]"
+                ? "fixed  top-0 left-0 duration-800 animate-slide-down bg-[#151b40] pl-[120px]"
                 : "duration-500 "
             }`}
           >
@@ -134,32 +139,49 @@ const Header = () => {
               <div className="flex items-center justify-end space-x-2 mt-6 text-white lg:text-[15px] ">
                 <span className="text-[28px] ">
                   {""}
-                  <button className="h-[40px] pb-3 " onClick={toggleMenu}>
+                  <button className="h-[40px] pt-3 " onClick={toggleMenu}>
                     <AiOutlineSearch />
                   </button>
                 </span>{" "}
                 {loggedIn ? (
                   <>
-                    <div className="text-white me-3">
-                      Xin chào : {loggedIn?.name}
+                    <div className="text-white pt-1">
+                      <button onClick={toggleDropdown1}>
+                          <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
+                          {isDropdownOpen1 && (
+                          <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-20 bg-white border border-gray-300 shadow-lg">
+                            <ul className="leading-9 text-black">
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-10">
+                                <button
+                                  onClick={handleLogout}
+                                  className=""
+                                >
+                                {" "}
+                                Logout
+                              </button>
+                              </li>
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-7">
+                                Thông tin User
+                              </li>
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-5">
+                                Voucher
+                              </li>
+                            </ul>
+                          </div>
+                          )}
+                      </button> 
                     </div>
-                    <button
-                      onClick={handleLogout}
-                      className=" px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-                      style={{ marginRight: "30px" }}
-                    >
-                      {" "}
-                      Logout
-                    </button>
+                    
                   </>
                 ) : (
                   <>
+                  {}
                     <Link
                       to="/login"
                       className="hover:underline"
                       style={{ textShadow: "1px 2px 3px #000" }}
                     >
-                      Đăng nhập
+                      Đăng nhập 
                     </Link>
                     <AiOutlineRight />
                   </>
@@ -171,7 +193,7 @@ const Header = () => {
                   className="flex items-center border-white space-x-1 dropdown-button"
                 >
                   <img
-                    className="rounded-full w-5 h-5"
+                    className="rounded-full w-7 h-7"
                     src="https://st.quantrimang.com/photos/image/2021/09/05/Co-Vietnam.png"
                     alt=""
                   />
@@ -315,14 +337,14 @@ const Header = () => {
                         New
                       </a>
                     </li>
-                    <li>
+                    {/* <li>
                       <a
                         href="/loginadmin"
-                        style={{ textShadow: "2px 2px 4px #000" }}
+                        
                       >
                         Quan tri
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -335,14 +357,14 @@ const Header = () => {
                   className="lg:text-[35px] text-white mb-5 sm:text-[30px] font-bold "
                   style={{ textShadow: "1px 2px 3px #000" }}
                 >
-                  Chào mừng đến với Vinpearl
+                  Chào mừng đến với Miichii
                 </h1>
                 <p
                   className="text-white sm:text-[11px] lg:text-[16px] font-semibold"
                   style={{ textShadow: "1px 2px 3px #000" }}
                 >
                   Đánh thức mọi giác quan với hệ sinh thái nghỉ dưỡng ven biển
-                  đẳng cấp của Vinpearl
+                  đẳng cấp của Miichii
                 </p>
               </div>
             </div>
