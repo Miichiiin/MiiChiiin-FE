@@ -18,13 +18,10 @@ import moment from 'moment';
 
 const ChooseRoom = () => {
  
-  
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
-  console.log("selectroom", selectedRooms);
   
   const [totalPrice, setTotalPrice] = useState<any>(0);
   const searchSlide = useParams();
-  console.log("search", searchSlide);
   // const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [selectedRoomCount, setSelectedRoomCount] = useState(0);
 
@@ -44,14 +41,12 @@ const ChooseRoom = () => {
         return roomDetails;
       });
   }
-  console.log("numberPeople", numberPeople);
 
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
     const timeArray = searchSlide.date.split(",");
     date = timeArray.map((time) => new Date(time));
   }
-  console.log("date1", date);
 
   let hotel: string[] = [];
   if (searchSlide && searchSlide.nameHotel) {
@@ -157,11 +152,9 @@ const ChooseRoom = () => {
       }
     });
   });
-  console.log("totalAdults" , totalAdults+ totalChildren);
   
   const { data: hotels } = useGetCategory_homeByIdQuery({id:hotel?.[0],check_in: moment(date[0]).format('YYYY-MM-DD'), check_out: moment(date[1]).format('YYYY-MM-DD'), number_people: totalAdults+ totalChildren, total_room: searchSlide.numberRoom});
   console.log("hotels", hotels);
-  // console.log("dữ liệu khách sạn", hotel?.[0],moment(date[0]).format('YYYY-MM-DD'), moment(date[1]).format('YYYY-MM-DD'), totalAdults+ totalChildren,searchSlide.numberRoom );
   
 
   // Lấy dữ liệu từ local storage
@@ -171,7 +164,6 @@ const ChooseRoom = () => {
   // Sử dụng dữ liệu từ local storage nếu có hoặc fallback là uniqueSelectedRooms
   const roomsToDisplay = uniqueSelectedRooms.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
   const navigate = useNavigate();
-  console.log("uniqueSelectedRooms", uniqueSelectedRooms);
 
   interface Room {
     count: number;
@@ -186,6 +178,7 @@ const ChooseRoom = () => {
     // Kiểm tra xem dữ liệu có tồn tại trong Local Storage không
     if (storedSelectedRooms && storedTotalPrice) {
       const parsedSelectedRooms = JSON.parse(storedSelectedRooms);
+      
       const parsedTotalPrice = parseFloat(storedTotalPrice);
 
       // Cập nhật trạng thái với dữ liệu lấy từ Local Storage
@@ -227,7 +220,6 @@ const ChooseRoom = () => {
     const cartItems = JSON.parse(localStorage.getItem("cart") as any);
     cartItems.push(newCart);
     localStorage.setItem("cart", JSON.stringify(cartItems));
-
     const url = `/choose-service/${hotel}/${date}/${encodedSelectedRooms}/${encodedGuests}`;
     navigate(url);
   };
@@ -238,7 +230,7 @@ const ChooseRoom = () => {
       <div className="mb-[150px]">
         <HeaderHotelType />
       </div>
-      <SearchHotel />
+      <SearchHotel/>
       <div className="max-w-7xl mx-auto">
         <div className="max-w-5xl mx-auto my-5">
           <section className="border grid grid-cols-3 gap-4 px-2 py-3">

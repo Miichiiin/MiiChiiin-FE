@@ -31,6 +31,10 @@ const category_HomeApi = createApi({
             }),
             invalidatesTags: ['Category_home']
         }),
+        getCategory_detail: builder.query<any, any>({
+            query: (product) => `/cateRoom/${product.id}/hotel=${product.id_hotel}`,
+            providesTags: ['Category_home']
+        }),
         updateCategory_home: builder.mutation({
             query: (product) => ({
                 url: `/category_home/${product.id}`,
@@ -49,7 +53,7 @@ const category_HomeApi = createApi({
     })
 })
 export const { 
- useAddCategory_homeMutation, useGetCategory_homeByIdQuery, useGetCategory_homeQuery, useRemoveCategory_homeMutation, useUpdateCategory_homeMutation
+ useAddCategory_homeMutation, useGetCategory_homeByIdQuery, useGetCategory_homeQuery, useRemoveCategory_homeMutation, useUpdateCategory_homeMutation,useGetCategory_detailQuery
  } = category_HomeApi;
 export const category_HomeReducer = category_HomeApi.reducer;
 export default category_HomeApi;

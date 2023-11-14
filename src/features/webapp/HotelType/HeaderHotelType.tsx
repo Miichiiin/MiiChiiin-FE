@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  AiOutlineSearch,
   AiOutlineRight,
   AiOutlineMenu,
   AiOutlineDown,
@@ -76,7 +75,7 @@ const HeaderHotelType = () => {
   /*slideshow*/
 
    const clearLocalStorageData = () => {
-    localStorage.removeItem('selectRoom');
+    localStorage.removeItem('selectedRooms');
     localStorage.removeItem('totalPrice');
   };
 

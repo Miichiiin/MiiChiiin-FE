@@ -36,15 +36,19 @@ const bookingUserApi = createApi({
             }),
             invalidatesTags: ['BookingUser']
         }),
-        getBokingUserTest: builder.query<any[], any>({
-            query: () => `/bookingTest`,
-            providesTags: ['BookingUser']
+        findBooking: builder.mutation<any,any>({
+            query: (product) => ({
+                url: `/user/find_booking`,
+                method: "POST",
+                body: product
+            }),
+            invalidatesTags: ['BookingUser']
         }),
     })
 
 })
 export const { 
- useGetBokingUserQuery, useGetBookingDetailUserQuery, useAddBookingUserMutation, useGetBokingUserTestQuery, useGetSearchOrderQuery
+ useGetBokingUserQuery, useGetBookingDetailUserQuery, useAddBookingUserMutation, useFindBookingMutation, useGetSearchOrderQuery
  } = bookingUserApi;
 export const bookingUserReducer = bookingUserApi.reducer;
 export default bookingUserApi;

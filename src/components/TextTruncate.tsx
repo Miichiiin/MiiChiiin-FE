@@ -16,6 +16,6 @@ export const TextTruncate = ({ text, maxLength }:TextTruncateProps) => {
     }
   }, [text, maxLength]);
 
-  return <p className='w-[380px]'>{truncatedText}</p>;
+  return <p className='max-w-prose mx-auto'>{truncatedText}</p>;
 };
 

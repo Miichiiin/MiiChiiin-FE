@@ -23,7 +23,7 @@ export const SearchHotel = () => {
   const [hotelsData, setHotelsData] = useState([]);
 
   const searchSlide = useParams()
-  console.log("param", searchSlide);
+  console.log("param111", searchSlide);
 
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
@@ -119,7 +119,7 @@ export const SearchHotel = () => {
 
   // Sử dụng useEffect để gọi API khi component được mount
   useEffect(() => {
-    axios.get("http://localhost:3000/hotel_home") // Thay đổi đường dẫn dựa vào cấu hình của bạn
+    axios.get("http://127.0.0.1:8000/api/hotel") // Thay đổi đường dẫn dựa vào cấu hình của bạn
       .then((response) => {
         setHotelsData(response.data); // Lưu dữ liệu từ API vào state
       })
@@ -309,7 +309,7 @@ export const SearchHotel = () => {
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
                   <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-semibold ">
-                    <label htmlFor="" className='cursor-pointer'>Số phòng </label>
+                    <label htmlFor="" className='cursor-pointer'>Số phòng</label>
                     <label htmlFor="" className='cursor-pointer pl-[20px]'>Số người </label>
                   </div>
                   <div
