@@ -15,13 +15,16 @@ import { useAddBookingUserMutation } from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
 import { divide } from "lodash";
+import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
+import Login from "../auth/Login/login";
+
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
   const { data: serviceData } = useGetService_hotelQuery();
   console.log("serviceData chooservice", serviceData);
   const [addBookingUser] = useAddBookingUserMutation();
-  const [userData, setUserData] = useState<any>({});
+  const [userData, setUserData] = useState<any | null>(null);
   console.log("iduserData", userData);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -32,6 +35,8 @@ const BookingInformation = () => {
       setUserData(JSON.parse(user));
     });
   }, []);
+
+  const user_id = userData?.id;
 
   let hotel: string[] = [];
   if (dataParam && dataParam.hotel) {
@@ -163,8 +168,77 @@ const BookingInformation = () => {
     console.log("data form", data);
     console.log("newDataBooking", dataBooking);
   };
-  
-  
+
+  // add voucher
+  const [showVoucherModal, setShowVoucherModal] = useState(false);
+  const [selectedVoucher, setSelectedVoucher] = useState(null);
+  const [isScrollLocked, setIsScrollLocked] = useState(false);
+
+  // Assume that the vouchers fetched from useGetVoucher_hotelIdQuery have properties: id, name, expiryDate, discount
+  const { data: vouchers } = useGetVoucher_hotelIdQuery({
+    id: user_id || undefined,
+  });
+
+  /* Khóa cuộn trang */
+  useEffect(() => {
+    if (isScrollLocked) {
+      document.documentElement.style.overflow = "hidden"; // Khóa cuộn trang
+    } else {
+      document.documentElement.style.overflow = "auto"; // Cho phép cuộn trang
+    }
+
+    return () => {
+      document.documentElement.style.overflow = "auto";
+    };
+  }, [isScrollLocked]);
+
+  useEffect(() => {
+    // Lưu selectedVoucher vào local storage khi thay đổi
+    localStorage.setItem("selectedVoucher", selectedVoucher || ""); // Chắc chắn selectedVoucher không phải là null
+  }, [selectedVoucher]);
+
+  const openVoucherModal = () => {
+    setIsScrollLocked(true);
+    setShowVoucherModal(true);
+  };
+
+  const closeVoucherModal = () => {
+    setIsScrollLocked(false);
+    setShowVoucherModal(false);
+  };
+
+  // Chặn sự kiện lan bấm tự đóng modal
+  const handleModalClick = (e: any) => {
+    e.stopPropagation();
+  };
+
+  const handleVoucherSelect = (voucher: any) => {
+    // Kiểm tra nếu voucher không phải là null trước khi gọi setSelectedVoucher
+    setSelectedVoucher(voucher);
+  };
+
+  const handleUseVoucher = () => {
+    // Kiểm tra nếu có voucher được chọn
+    if (selectedVoucher !== null && selectedVoucher !== undefined) {
+      const { id, name, expire_at, discount } = selectedVoucher;
+      console.log("Id:", id);
+      console.log("Tên:", name);
+      console.log("Hạn sử dụng:", expire_at);
+      console.log("Giảm giá:", discount);
+
+      // Lưu trạng thái đã sử dụng voucher vào local storage hoặc thực hiện các hành động khác
+      localStorage.setItem("isVoucherUsed", "true");
+
+      // Lưu thông tin voucher được chọn vào local storage
+      localStorage.setItem(
+        "selectedVoucherDetails",
+        JSON.stringify(selectedVoucher)
+      );
+
+      // Đóng modal hoặc thực hiện các hành động khác cần thiết
+      closeVoucherModal();
+    }
+  };
 
   return (
     <div>
@@ -243,7 +317,6 @@ const BookingInformation = () => {
                           value="Khác"
                           {...register("gender", { required: true })}
                           // value={formData.gender}
-        
                         />{" "}
                         Khác
                       </label>
@@ -268,7 +341,6 @@ const BookingInformation = () => {
                       type="text"
                       placeholder="Ex: Nguyen"
                       {...register("lastName", { required: true })}
-                    
                       name="lastName"
                     />
                     {errors.lastName && (
@@ -286,8 +358,6 @@ const BookingInformation = () => {
                       type="text"
                       placeholder="Ex: Anh Duy"
                       {...register("firstName", { required: true })}
-                 
-                  
                     />
                     {errors.firstName && (
                       <span className="text-red-500">
@@ -310,7 +380,6 @@ const BookingInformation = () => {
                       type="email"
                       placeholder="Ex: abc@gmail.com"
                       {...register("email", { required: true })}
-                    
                       name="email"
                     />
                     {errors.email && (
@@ -328,7 +397,6 @@ const BookingInformation = () => {
                       type="tel"
                       placeholder="Ex: Anh Duy"
                       {...register("phone", { required: true })}
-                      
                       name="phone"
                     />
                     {errors.phone && (
@@ -388,6 +456,143 @@ const BookingInformation = () => {
                   </a>
                 </span>
               </div>
+
+              {/* ADD mã voucher */}
+
+              <div
+                className={`border border-black rounded-md w-[800px] pb-10 mt-4 voucher-list overflow-auto max-h-90`}
+              >
+                <div className="border border-b-[#f9f9f9] bg-[#f5f6fa] px-5 py-5 flex items-center justify-between">
+                  <span className="font-medium text-[18px]">
+                    MiiChii Ưu Đãi
+                  </span>
+                </div>
+
+                {/* Modal overlay */}
+                {showVoucherModal && (
+                  <div
+                    className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+                    onClick={closeVoucherModal}
+                  >
+                    {/* Nội dung modal lớn hơn */}
+                    <div
+                      className="bg-white p-8 rounded-md shadow-lg w-[800px] overflow-y-auto"
+                      onClick={handleModalClick}
+                    >
+                      {/* Tiêu đề của modal */}
+                      <div className="mb-4">
+                        <h2 className="text-xl font-semibold">
+                          Danh sách Voucher
+                        </h2>
+                        {/* Ô tìm kiếm */}
+                        <div className="mt-2 relative rounded-md border border-gray-300 shadow-sm flex">
+                          <input
+                            type="text"
+                            name="search"
+                            id="search"
+                            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm rounded-md"
+                            placeholder="Tìm kiếm..."
+                          />
+                          <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 px-3 flex items-center bg-gray-200 rounded-md "
+                            value={"Tìm"}
+                            onClick={handleModalClick}
+                          >
+                            Tìm kiếm
+                            <svg
+                              className="h-5 w-5 text-gray-500"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              {/* Biểu tượng tìm kiếm của bạn */}
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Thông tin voucher */}
+                      <ul className="voucher-list overflow-auto max-h-90">
+                        {vouchers?.map((voucher: any, index: any) => (
+                          <li
+                            key={index}
+                            className="flex items-center space-x-4 mb-4"
+                          >
+                            <input
+                              type="radio"
+                              id={`voucher${index}`}
+                              name="voucher"
+                              value={`voucher${index}`}
+                              checked={selectedVoucher === `voucher${index}`}
+                              onChange={() =>
+                                handleVoucherSelect(`voucher${index}`)
+                              }
+                            />
+
+                            {/* Thêm thông tin cho mỗi voucher */}
+                            <div className="flex items-center">
+                              <img
+                                className="w-10 h-10 rounded-full mr-2"
+                                src={voucher.image}
+                                alt={`Voucher ${index + 1} Image`}
+                              />
+                              <div>
+                                <p className="font-bold">{voucher.name}</p>
+                                <p>Hạn sử dụng: {voucher.expiryDate}</p>
+                                <p>Giá trị giảm: {voucher.discount}%</p>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {/* Nút sử dụng voucher */}
+                      <button
+                        className="font-medium bg-blue-500 px-4 py-2 text-white rounded-md ml-auto flex"
+                        onClick={handleUseVoucher}
+                      >
+                        Sử dụng
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* COIN */}
+                <div className="flex">
+                  <div className="flex items-center ml-5 mt-2">
+                    <input
+                      type="checkbox"
+                      id="useCoin"
+                      name="useCoin"
+                      className="mr-2"
+                    />
+                    <label
+                      htmlFor="useCoin"
+                      className="text-sm text-gray-600 cursor-pointer"
+                    >
+                      Sử dụng số coin đang có
+                    </label>
+                  </div>
+
+                  <div className="flex items-center ml-5 mt-2">
+                    <input
+                      type="checkbox"
+                      id="useCoin"
+                      name="useCoin"
+                      className="mr-2"
+                    />
+                    <div
+                      className={`text-sm text-gray-600 cursor-pointer ${
+                        showVoucherModal ? "opacity-50 pointer-events-none" : ""
+                      }`}
+                      onClick={openVoucherModal}
+                    >
+                      Chọn voucher
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* end */}
 
               <div className="border boder-black  rounded-md w-[800px] pb-10 mt-4">
                 <div className="border border-b-[#bg-[#f9f9f9]]  bg-[#f5f6fa] px-5 py-5">
@@ -500,6 +705,12 @@ const BookingInformation = () => {
                         </ul>
                       </div>
                     )}
+
+                    <div className="border-gray-100 bg-gray-100 px-2 rounded mt-5">
+                      <p className="text-sm pb-3 font-semibold">
+                        Voucher được áp dụng
+                      </p>
+                    </div>
                   </div>
                 );
               })}

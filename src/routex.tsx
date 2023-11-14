@@ -59,8 +59,10 @@ import HotelChainStatistic from "./features/admin/HotelChainStatistics";
 import LoginAdmin from "./features/webapp/LoginAdmin/Login";
 import AddPermission from "./features/admin/Permission/AddPermission";
 import BookingSuccess from "./features/webapp/order";
+import MyWallet from "./features/webapp/profileUser/component/myWallet";
 import Error403 from "./err/Error403";
 import Error401 from "./err/Error401";
+import PhatVoucher from "./features/admin/ManagerVoucher/PhatVoucher";
 
 // chặn link
 const dataPermission = localStorage.getItem('userAdmin')
@@ -163,7 +165,11 @@ export const router = createBrowserRouter([
             {
                 path: "myorder",
                 element: <MyOrder /> ,
-            }
+            },
+            {
+              path: "mywallet",
+              element: <MyWallet/> ,
+          }
 
         ],
     },
@@ -348,6 +354,14 @@ export const router = createBrowserRouter([
                   ) : (
                     <Error403/>
                   ),
+            },
+            {
+              path: "phatvoucher",
+              element: hasAddUserPermission("get voucher") ? (
+                  <PhatVoucher />
+                ) : (
+                  <Error403/>
+                ),
             },
             {
                 path: "updatevoucher/:id",
