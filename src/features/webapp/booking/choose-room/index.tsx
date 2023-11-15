@@ -1,10 +1,16 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GrLocation } from "react-icons/gr";
 import { HiOutlineUser } from "react-icons/hi";
 import {
   AiOutlineExpandAlt,
   AiOutlineInfoCircle,
   AiOutlineArrowRight,
+  AiOutlineRight,
+  AiFillStar ,
+  AiOutlineFrown,
+  AiOutlineLeft ,
+  AiOutlineEye,AiOutlineCloseCircle,AiOutlineLike,
+  AiOutlineCalendar
 } from "react-icons/ai";
 import HeaderHotelType from "src/features/webapp/HotelType/HeaderHotelType";
 import { SearchHotel } from "./searchHotel";
@@ -15,6 +21,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { Button } from "antd";
 import moment from 'moment';
+import "./swper.css";
+import Slider from "react-slick";
 
 const ChooseRoom = () => {
  
@@ -52,6 +60,8 @@ const ChooseRoom = () => {
   if (searchSlide && searchSlide.nameHotel) {
     hotel = searchSlide.nameHotel.split(",");
   }
+  console.log("hotel",hotel);
+  
 
   const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
 
@@ -224,40 +234,75 @@ const ChooseRoom = () => {
     navigate(url);
   };
 
+//Silde
+  let settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+  const sliderRef = React.useRef<Slider>(null);
 
+    const handleNext = () => {
+        if (sliderRef.current) {
+            sliderRef.current.slickNext();
+        }
+    };
+
+    const handlePrev = () => {
+        if (sliderRef.current) {
+            sliderRef.current.slickPrev();
+        }
+    };
+    
   return (
     <div>
-      <div className="mb-[150px]">
+      <div className="mb-[100px]">
         <HeaderHotelType />
       </div>
-      <SearchHotel/>
+     <div className="mb-20">
+      <SearchHotel />
+     </div>
       <div className="max-w-7xl mx-auto">
         <div className="max-w-5xl mx-auto my-5">
-          <section className="border grid grid-cols-3 gap-4 px-2 py-3">
-            <div className="">
-              <img
-                src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg"
-                alt=""
-                className="w-full rounded-md"
-              />
+          <section className="group rounded-md border grid grid-cols-3 gap-4 px-2 py-3 hover:border-[#e8952f] hover:rounded-md hover:shadow-xl ">
+            <div className="relative">
+              <button onClick={handlePrev} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-2 py-2 absolute z-10 top-[45%] start-[-12px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft class="text-[13px]"/></button>
+              <button onClick={handleNext} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-2 py-2 ml-[800px] z-10 absolute top-[42%]  end-[-13px]  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight class="text-[13px]"/></button>
+              <Slider {...settings} ref={sliderRef}>
+                <img className="rounded-xl" src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg" alt="" />
+                <img className="rounded-xl" src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg" alt="" />
+                <img className="rounded-xl" src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg" alt="" />
+              </Slider>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-2 ml-2">
               <a className="text-xl hover:underline font-semibold ">
                 {hotel_detail?.[0]?.name}
               </a>
-              <div className="flex items-center py-4">
+              <div className="flex py-3 flex-col space-y-2">
+               <div className="flex items-center">
                 <GrLocation />
-                <p className="text-sm pl-4">
-                  Địa chỉ: {hotel_detail?.[0]?.address}/ {hotel_detail?.[0]?.city_name}
+                  <p className="text-sm pl-2">
+                    Địa chỉ: {hotel_detail?.[0]?.address}/ {hotel_detail?.[0]?.city_name}
+                  </p>
+               </div>
+                <p className="flex items-center font-medium space-x-2">
+                  <AiOutlineFrown /> 
+                  {Array.from({ length: hotel_detail?.[0]?.star }, (_, index) => (
+                    <span key={index} className="flex items-center text-[#e8952f]">
+                      <AiFillStar />
+                    </span>
+                  ))}
                 </p>
               </div>
-              <p className="text-lg py-2">{hotel_detail?.[0]?.description}</p>
+              <p className="pb-4">{hotel_detail?.[0]?.description}</p>
               <Link
                 to={`/hotel/${hotel_detail?.[0]?.id}`}
-                className="font-semibold text-blue-700 hover:text-blue-500 hover:underline"
+                className="font-semibold text-blue-700 hover:text-blue-500 hover:underline flex items-center "
               >
                 {" "}
-                Xem chi tiết{" "}
+                Xem chi tiết <AiOutlineRight class="mt-1 ml-1"/>{" "}
               </Link>
             </div>
           </section>
@@ -281,43 +326,62 @@ const ChooseRoom = () => {
                   >
                     <div className="image">
                       <img
-                        src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg"
+                        src={hotel?.image}
                         alt=""
                         className="w-full h-full rounded-md"
                       />
                     </div>
                     <div className="col-span-2">
-                      <a className="text-xl hover:underline font-medium">{hotel?.name}</a>
-                      <div className="flex items-center py-4">
-                        <HiOutlineUser />
-                        <p className="text-sm px-2">
-                          {hotel?.quantity_of_people} người
-                        </p>
-                        <AiOutlineExpandAlt />
-                        <p className="text-sm px-2">
-                          {hotel?.acreage}m
-                          <span className="text-[10px]">2</span>
-                        </p>
-                        
+                      <a className="text-xl hover:underline font-medium flex items-center">
+                        {hotel?.name}
+                        <p className="text-[18px] mt-1 ml-2">
+                            ({hotel.Total_rooms < 4 ? (
+                              <span style={{ color: "red" }}>
+                                Còn {hotel.Total_rooms} 
+                              </span>
+                            ) : (
+                              <span>Còn {hotel.Total_rooms}</span>
+                            )})
+                          </p>
+                      </a>
+                      <div className="flex items-center mt-2 font-normal justify-between">
+                        <div className="flex items-center">
+                          <HiOutlineUser class="text-[18px]"/>
+                          <p className="text-sm px-1 mr-4">
+                            {hotel?.quantity_of_people} người
+                          </p>
+                          <AiOutlineExpandAlt class="text-[18px]"/>
+                          <p className="text-sm px-1">
+                            {hotel?.acreage}m
+                            <span className="text-[10px]">2</span>
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-5">
+                          <span className="flex items-center "><AiOutlineEye class="pr-1 text-[23px] font-medium"/>{hotel?.views}</span>
+                          <span className="flex items-center"><AiOutlineLike class="pr-1 text-[23px] font-medium"/>{hotel?.likes}</span>
+                        </div>
                       </div>
-                      <p className=" text-right">
-                        {" "}
-                        Giá công bố:{" "}
-                        <span className="font-semibold text-lg">
-                          {hotel?.price.toLocaleString('vi-VN')} vnđ
-                        </span>{" "}
-                      </p>
-                      <p className=" flex justify-end items-center">
-                        <AiOutlineInfoCircle />{" "}
-                        <span className="px-2"> Giá thành viên:</span>{" "}
-                        <span className="font-semibold text-xl">
-                          {hotel?.price.toLocaleString('vi-VN')}vnđ
-                        </span>{" "}
-                      </p>
-                      {/* ... */}
-                      <div className="justify-between flex items-center">
+                     
+                      <div className="justify-between flex items-center mt-10 space-x-2">
                         <div>
-                          <p>
+                            <p className=" text-left">
+                            {" "}
+                            Giá công bố:{" "}
+                            <span className="font-semibold text-md text-gray-500">
+                              {hotel?.price.toLocaleString('vi-VN')} đ
+                            </span>{" "}
+                          </p>
+                          <p className=" flex justify-end items-center text-left space-x-2">
+                            {" "}
+                            <span className=""> Giá thành viên:</span>{" "}
+                            <span className="font-semibold text-md ">
+                              {hotel?.price.toLocaleString('vi-VN')} đ 
+                            </span><AiOutlineInfoCircle class='text-red-500'/>{" "}
+                          </p>
+                          {/* ... */}
+                        </div>
+                        <div>
+                          {/* <p>
                             {hotel.Total_rooms < 4 ? (
                               <span style={{ color: "red" }}>
                                 Còn {hotel.Total_rooms} phòng
@@ -325,10 +389,10 @@ const ChooseRoom = () => {
                             ) : (
                               <span>Còn {hotel.Total_rooms} phòng</span>
                             )}
-                          </p>
+                          </p> */}
                         </div>
                         <button
-                          className="flex border px-8 py-3 mt-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full"
+                          className="flex border px-5 py-2 mt-4 bg-[#2a398c] hover:bg-blue-800 text-white rounded-full font-medium"
                           onClick={() => handleRoomSelect(hotel)}
                         >
                           Chọn
@@ -339,22 +403,23 @@ const ChooseRoom = () => {
                 ))}
               </div>
             </div>
-            <div className="booking-column">
+            <div className="booking-column ">
               <div className="border px-2 py-3 bg-gray-100 rounded my-3">
                 <h1 className="text-lg font-bold ">Chuyến đi</h1>
               </div>
               <div className="border rounded px-2 py-4">
                 <div>
                   <div className="flex items-center justify-between">
-                    <h1 className="font-semibold">{hotel_detail?.[0]?.name}</h1>
-                    <button className="text-sm">Chỉnh sửa</button>
+                    <h1 className="font-semibold text-lg">{hotel_detail?.[0]?.name}</h1>
+                    <button className="text-sm text-blue-500 font-medium hover:underline">Chỉnh sửa</button>
                   </div>
-                  <p className="text-sm pt-3 items-center flex">
+                  <p className="text-sm pt-3 items-center flex  mb-1">
+                    <AiOutlineCalendar class="text-[17px] mr-2"/>
                     {date[0].toISOString().slice(0, 10)}
-                    <AiOutlineArrowRight className="inline-block mx-1" />
+                    <AiOutlineArrowRight className="inline-block mx-2" />
                     {date[1].toISOString().slice(0, 10)}
                   </p>
-                  <p className="text-sm pb-3">
+                  <p className="text-sm pb-3 ">
                     {differenceInDays(
                       parseISO(date[1].toISOString().slice(0, 10)),
                       parseISO(date[0].toISOString().slice(0, 10))
@@ -364,28 +429,27 @@ const ChooseRoom = () => {
                 </div>
                 <hr className="my-4" />
                 <div className="pb-6">
-                  <h1 className="font-semibold">Danh sách phòng đã chọn:</h1>
+                  <h1 className="font-semibold text-lg">Danh sách phòng đã chọn:</h1>
                   {roomsToDisplay.length > 0 ? (
                     <ul>
                       {roomsToDisplay.map((room: any, index: any) => (
                         <li key={index} className="flex flex-col">
                           <div className="flex items-center justify-between">
-                            <span className="basis-2/3">
-                              {room.name} - {room.price.toLocaleString('vi-VN')}vnđ{" "}
+                            <span className="basis-2/3  mt-2">
+                              {room.name} - {room.price.toLocaleString('vi-VN')} đ{" "}
                               {room.count > 1 ? `x${room.count}` : ""}
                             </span>
                             <button
                               onClick={() => handleRemoveRoom(room)}
-                              className="text-red-500 hover:text-red-500 focus:outline-none"
+                              className="text-red-500 hover:text-red-500 focus:outline-none text-xl transition-transform transform scale-100 hover:scale-125"
                             >
-                              x
+                              <AiOutlineCloseCircle />
                             </button>
                           </div>
-                          <span className="basis-1/3">
-                            <p className="text-sm pt-3">
+                          <span className="basis-1/3 mb-4">
+                            <p className="text-sm pt-1 ">
                               2 Người lớn, 2 Trẻ em
                             </p>
-                            <hr className="my-4" />
                           </span>
                         </li>
                       ))}
@@ -403,40 +467,42 @@ const ChooseRoom = () => {
                     </div>
                   )}
                   <hr className="my-2" />
-                  <div className="flex items-center justify-between">
-                    <h1 className="font-semibold">Tổng cộng:</h1>
+                  <div className="flex items-center justify-between mt-5">
+                    <h1 className="font-medium text-lg">Tổng cộng:</h1>
                     {totalPrice ? (
-                      <h1 className="text-xl font-bold text-yellow-500">
-                        {totalPrice *
+                      <h1 className="text-xl font-semibold text-yellow-500 ">
+                        {(totalPrice *
                           differenceInDays(
                             parseISO(date[1].toISOString().slice(0, 10)),
                             parseISO(date[0].toISOString().slice(0, 10))
-                          )}
-                        vnđ
+                          )
+                        ).toLocaleString('vi-VN')}
+                       <span className="pl-1">đ</span>
                       </h1>
                     ) : (
-                      <h1 className="text-xl font-bold text-yellow-500">
-                        {savedRoomInfo.price *
+                      <h1 className="text-xl font-semibold text-yellow-500 ">
+                        {(savedRoomInfo.price *
                           differenceInDays(
                             parseISO(date[1].toISOString().slice(0, 10)),
                             parseISO(date[0].toISOString().slice(0, 10))
-                          )}
-                        vnđ
+                          )
+                        ).toLocaleString('vi-VN')}
+                       <span className="pl-1">đ</span>
                       </h1>
                     )}
                   </div>
                 </div>
 
-                <Button
+                <button
                   onClick={onHandSubmit}
-                  className={`bg-yellow-500 hover:bg-yellow-600 text-white text-lg font-bold rounded-full w-full ${
+                  className={`bg-[#e8952f] h-12 hover:bg-yellow-600 text-white text-lg font-medium rounded-full w-full ${
                     selectedRoomCount === parseInt(searchSlide?.numberRoom, 10)
                       ? ""
                       : "opacity-50 pointer-events-none" // Ẩn và vô hiệu hóa nút nếu chưa đủ số phòng
                   }`}
                 >
                   Tiếp tục
-                </Button>
+                </button>
               </div>
             </div>
           </section>
