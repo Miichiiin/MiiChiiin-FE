@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { AiOutlineShoppingCart, AiFillDelete } from "react-icons/ai";
 import { Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
-
+import "../components/Css/index.css";
 const Cart = () => {
   const newCart: any = localStorage.getItem("cart");
   const newArrayWithId = JSON.parse(newCart);
@@ -42,15 +42,15 @@ const Cart = () => {
   // const totalPrice = roomList.reduce((total: any, room: any) => total + room.price, 0);
 
   const roomListDropdown = (
-    <Menu className="w-[500px] h-[300px]">
-      <h1 className="font-semibold text-lg mb-4 ml-3 mt-5">Phòng mới thêm:</h1>
+    <Menu className="w-[500px] h-[315px] overflow-auto absolute">
+      <h1 className="font-semibold text-lg mb-4 ml-3 mt-5  sticky top-[-5px] bg-white h-[40px] z-10">Phòng mới thêm:</h1>
       {roomList?.map((room: any, index: any) => (
         <Menu.Item key={room?.id} className="p-4">
           <div className="flex items-center justify-between">
             <Link to={`/choose-service/${room?.hotel} /${room?.date}/${encodeURIComponent(JSON.stringify(room?.numberRoom))}/${JSON.stringify(room?.numberPeople .map((details: any) => {
         return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
       })
-      .join("&"))}`} className="flex items-center">
+      .join("&"))}`} className="flex items-center ">
               <img
                 src="https://booking-static.vinpearl.com/room_types/be5c1e189982470b8968ef37841168ee_VH1PQ_Standard%20Room1.jpg"
                 alt={`Hình ảnh`}
@@ -65,7 +65,9 @@ const Cart = () => {
             </Link>
             <span className="font-semibold">{room?.hotel.split(",")[1]}</span>
             <div className="flex items-center">
-              <span className="text-red-500">{room?.price} Vnđ</span>
+              <span className="text-red-500 font-medium">
+                  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(room?.price)} 
+                </span>
             </div>
             {roomToDelete === room?.id ? (
               // Hiển thị nút xác nhận xóa và nút hủy bỏ
@@ -108,8 +110,8 @@ const Cart = () => {
         onMouseLeave={() => setIsCartHovered(false)}
         className="relative"
       >
-        <Dropdown overlay={roomListDropdown} visible={isCartHovered}>
-          <AiOutlineShoppingCart size={30} />
+        <Dropdown overlay={roomListDropdown} visible={isCartHovered} >
+          <AiOutlineShoppingCart size={30}  />
         </Dropdown>
         {selectedRoomCount > 0 && (
           <div

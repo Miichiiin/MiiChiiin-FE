@@ -70,7 +70,7 @@ const DetailTypeofRoom = () => {
                   id_category: idRoom,
                   rating: roomRating,
                   content: commentText,
-                  status: 0 // Tùy thuộc vào cách bạn quản lý trạng thái
+                  status: 1 // Tùy thuộc vào cách bạn quản lý trạng thái
               });
     
               if (response.data) {
