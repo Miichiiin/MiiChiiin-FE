@@ -53,8 +53,9 @@
     display: none !important;
   }
   .ant-picker-input {
-    font-weight: 600;
+    font-weight: 600 !important;  
   }
+ 
 
 
 

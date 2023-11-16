@@ -5,7 +5,7 @@ const Footer = () => {
         <div className="bg-[#151b40] w-full mt-10 pt-10 pb-10 " >
             <div className="w-[1280px] mx-auto grid grid-cols-4 gap-10">
                 <div className="text-white">
-                    <img className="mb-4" src="https://vinpearl.com/themes/porto/images/logos/logo_vp_footer.svg" alt="" />
+                    <img className="mb-4 w-[80%]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
                     <p className="flex  space-x-2"><span className="mt-2 text-[#f2ba50] "><AiFillEnvironment/></span> <span className="text-[14px]">Đảo Hòn Tre, Phường Vĩnh Nguyên, Thành phố Nha Trang, Tỉnh Khánh Hòa, Việt Nam</span></p>
                     <p className="text-[#f2ba50] flex items-center space-x-2 mt-4"><AiTwotoneMail/><span>callcenter@vinpearl.com</span></p>
                     <p className="text-[#f2ba50] flex items-center space-x-2 mt-4 mb-4"><AiTwotonePhone/><span> 1900 23 23 89 (Nhánh số 3)</span></p>

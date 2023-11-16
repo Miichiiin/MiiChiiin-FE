@@ -35,6 +35,8 @@ const Index = () => {
             sliderRef.current.slickPrev();
         }
     };
+   console.log("hâhhah",booking);
+   
     return (
         <div>
             <Header />
@@ -81,18 +83,21 @@ const Index = () => {
                                             alt=""
                                         />
                                         <figcaption>
-                                        <h2 className="pb-3">Phòng <span className="px-2">Đặt  </span>Nhiều nhất</h2>
+                                        <h2 className="pb-3">Khách sạn <span className="px-2">Nổi bật  </span>nhất</h2>
                                         <div className="flex items-center space-x-5 font-medium">
-                                            <p className="flex items-center space-x-2"><AiFillEye/> <span>203 lượt</span></p>
-                                            <p className="flex items-center space-x-2"><AiFillLike/> <span>899 lượt</span></p>
-                                            <p className="flex items-center space-x-2"><AiOutlineComment/> <span>899 lượt</span></p>
+                                            <p className="flex items-center space-x-1">
+                                                <span className="font-medium ">Hạng khách sạn:</span> 
+                                                {Array.from({ length: item?.star }, (_, index) => (
+                                                    <span key={index} className="flex items-center ">
+                                                    <AiFillStar />
+                                                    </span>
+                                                ))}
+                                            </p>
+                                            <p className="flex items-center space-x-2"><AiOutlineComment/> <span>{item?.total_rating_content} lượt</span></p>
                                         </div>
-                                        <p className="flex items-center space-x-1">
-                                            <span className="font-medium ">Đánh giá :</span> <AiFillStar/> <AiFillStar/><AiFillStar/><AiFillStar/><AiFillStar/>
-                                        </p>
+                                        
                                         <p className="max-w-prose mx-auto ">
-                                           {/* <span className="font-medium">Mô tả:</span> */}
-                                           <TextTruncate text={"Mô tả: " + "Lắng nghe tiếng sóng biển rì rào, cảm nhận làn nước hồ bơi vô cực mát lạnh, đắm chìm trong hương vị cocktail dịu ngọt là những trải nghiệm không thể bỏ qua khi ghé thăm nơi này."} maxLength={150} /> 
+                                            <TextTruncate text={"Mô tả: " + item?.description || ''} maxLength={150} />
                                         </p>
                                         <a href="#"></a>
                                         </figcaption>
