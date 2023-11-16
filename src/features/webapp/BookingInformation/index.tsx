@@ -163,7 +163,20 @@ const BookingInformation = () => {
     console.log("data form", data);
     console.log("newDataBooking", dataBooking);
   };
-  
+  const userLocal = localStorage.getItem("user");
+
+// Kiểm tra xem giá trị từ Local Storage có tồn tại hay không
+if (userLocal) {
+  try {
+    const userObject = JSON.parse(userLocal);
+    console.log("userObject", userObject);
+  } catch (error) {
+    console.error("Không thể chuyển đổi chuỗi JSON:", error);
+  }
+} else {
+  console.log("Không tìm thấy dữ liệu trong Local Storage");
+}
+
   
 
   return (

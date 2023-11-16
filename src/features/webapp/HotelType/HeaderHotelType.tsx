@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  AiOutlineSearch,
   AiOutlineRight,
   AiOutlineMenu,
   AiOutlineDown,
@@ -16,6 +15,7 @@ const HeaderHotelType = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+ 
   /*cố định menu*/
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -24,10 +24,10 @@ const HeaderHotelType = () => {
     setIsMenuOpen(!isMenuOpen);
     setIsScrollLocked(!isMenuOpen);
   };
-
   const closeMenu = () => {
     setIsMenuOpen(false);
     setIsScrollLocked(false); // Đặt giá trị trạng thái cuộn trang
+
   };
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -76,7 +76,7 @@ const HeaderHotelType = () => {
   /*slideshow*/
 
    const clearLocalStorageData = () => {
-    localStorage.removeItem('selectRoom');
+    localStorage.removeItem('selectedRooms');
     localStorage.removeItem('totalPrice');
   };
 
@@ -99,12 +99,12 @@ const HeaderHotelType = () => {
     <div>
       <header className=" ">
         <div>
-          <div className="fixed top-0 left-0 w-full  z-10 bg-white ">
-            <div className="border-b-2 pb-6 mb-10 ">
+          <div className="fixed top-0 left-0 w-full  z-20 bg-white ">
+            <div className="border-b-2 pb-6  ">
               <div
-                className="xl:w-[1280px] xl:mx-auto h-[50px] flex items-center justify-between
+                className="xl:w-[1024px] xl:mx-auto h-[50px] flex items-center justify-between
                             lg:text-[15px] lg:mr-10 text-[#616971]
-                            sm:mr-10
+                            sm:mr-10 relative
                             "
               >
                 <div onClick={toggleMenu} className="text-[25px] pt-6">
@@ -113,69 +113,58 @@ const HeaderHotelType = () => {
                 <Link to="/homepage" onClick={clearLocalStorageData}>
                   {/* Đặt hàm clearLocalStorageData khi click vào liên kết */}
                   <img
-                    src="https://booking.vinpearl.com/static/media/vinpearl-logo@2x.cc2b881d.svg"
+                    src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png"
                     alt=""
+                    className="absolute top-2 w-[200px] end-[45%]"
                   />
                 </Link>
 
                 <div className="flex items-center justify-end space-x-2 mt-6 text-gray-800 lg:text-[15px]">
                 {loggedIn ? (
                   <>
-                    <div className="text-black me-3">
-                      Xin chào : {loggedIn?.name}
+                    <div className="text-white pt-1">
+                      <button  onClick={toggleDropdown}>
+                          <img className="w-7 h-7 rounded-full " src={loggedIn?.image} alt="" />
+                      </button> 
+                      {isDropdownOpen && (
+                          <div className="flex-col flex absolute bg-white text-black absolute mt-1 end-5 bg-white border border-gray-300 shadow-lg transform transition-tranform durtion-500">
+                            <ul className="leading-9 text-black text-center">
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-10">
+                                <button
+                                  onClick={handleLogout}
+                                  className=""
+                                >
+                                {" "}
+                                Logout
+                              </button>
+                              </li>
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-7">
+                                Thông tin User
+                              </li>
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-5">
+                                Voucher
+                              </li>
+                            </ul>
+                          </div>
+                          )}
                     </div>
-                    <button
-                      onClick={handleLogout}
-                      className=" px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-                      style={{ marginRight: "30px" }}
-                    >
-                      {" "}
-                      Logout
-                    </button>
-
+                    
                   </>
                 ) : (
                   <>
-                    <Link to="/login" className="hover:underline" style={{ textShadow: '1px 2px 3px #000' }}>
-                      Đăng nhập
+                  {}
+                    <Link
+                      to="/login"
+                      className="hover:underline font-medium"
+                    >
+                      Đăng nhập 
                     </Link>
                     <AiOutlineRight />
                   </>
                 )}
                   <AiOutlineRight />
                   <span className="pl-2 pr-1 text-[14px]">/</span>
-                  <button
-                    type="submit"
-                    onClick={toggleDropdown}
-                    className="flex items-center border-white space-x-1 "
-                  >
-                    <img
-                      className="rounded-full w-5 h-5"
-                      src="https://st.quantrimang.com/photos/image/2021/09/05/Co-Vietnam.png"
-                      alt=""
-                    />
-                    <span className="font-medium text-[16px] hover:">VIE</span>{" "}
-                    <AiOutlineRight />
-                  </button>
                   <Cart />
-                  {isDropdownOpen && (
-                    <div className="absolute mt-[180px] bg-white border border-gray-300 shadow-lg ">
-                      <ul className="leading-9 text-black">
-                        <li className="hover:bg-[#f2ba50] hover:text-white px-10  ">
-                          Tiếng việt
-                        </li>
-                        <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                          English
-                        </li>
-                        <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                          China
-                        </li>
-                        <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                          Korea
-                        </li>
-                      </ul>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -185,7 +174,7 @@ const HeaderHotelType = () => {
       {isMenuOpen && (
         <div
           ref={menuRef}
-          className={`fixed top-0 z-30 box-shadow left-0 w-[400px] h-full bg-white text-white  transition-transform duration-300 ease-in-out transform 
+          className={`fixed top-0 z-30 box-shadow left-0 w-[355px] h-full bg-white text-white  transition-transform duration-800 ease-in-out transform 
             ${
               isMenuOpen
                 ? "translate-x-0 fixed top-0  left-0 duration-800  text-white "
@@ -200,24 +189,22 @@ const HeaderHotelType = () => {
               <span>&times;</span>
             </button>
           </div>
-          <div className="text-gray-800 text-[21px] leading-[50px] px-10 py-10 font-medium">
+          <div className="text-gray-800 text-[17px] leading-[50px] px-10 py-10 font-medium">
             <div className="flex items-center justify-between">
               <a href="/hoteltype">Khách sạn</a>{" "}
               <span className="mt-1 text-[12px] ">
-                <AiOutlineDown />
               </span>
             </div>
             <p className="flex items-center justify-between">
-              <a href="">Trải nghiệm</a>{" "}
+              <a href="/">Trang chủ</a>{" "}
               <span className="mt-1 text-[12px] ">
-                <AiOutlineDown />
               </span>
             </p>
             <p>
               <a href="/promotion">Ưu đãi khuyến mãi</a>
             </p>
             <p>
-              <a href="">New</a>
+              <a href="/new">New</a>
             </p>
           </div>
         </div>

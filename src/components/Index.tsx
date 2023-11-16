@@ -1,12 +1,12 @@
-import { AiOutlineArrowRight, AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
+import { AiOutlineArrowRight, AiOutlineRight, AiOutlineLeft ,AiFillEye,AiFillLike,AiOutlineComment,AiFillStar} from "react-icons/ai";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import React from "react";
 import { TextTruncate } from "../components/TextTruncate"
 import Header from "./Header";
-import Search from "./Search";
-
+// import Search from "./Search";
+import "./Css/hover.css"
 import { Link } from "react-router-dom";
 import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
 import { useGetVoucherQuery } from "@/api/admin/voucher";
@@ -67,18 +67,37 @@ const Index = () => {
                     <span className="flex items-center space-x-6 text-[#f2ba50] hover:underline hover:underline-offset-4"><Link to="/hoteltype">Xem thêm</Link> <AiOutlineArrowRight /></span>
                 </div>
 
-                <div className="relative ">
-                    <button onClick={handlePrev} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[130px] start-[-15px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft /></button>
-                    <button onClick={handleNext} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[130px] end-2  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight /></button>
+                <div className="relative">
+                    <button onClick={handlePrev} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[110px] start-[-15px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft /></button>
+                    <button onClick={handleNext} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[110px] end-0  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight /></button>
                     <Slider {...settings} ref={sliderRef} className="w-[1280px] mx-auto">
                         {booking?.map((item: any) => {
                             return <>
                                 <Link to={`/hotel/${item?.id}`} key={item?.id} className="w-[400px] relative overflow-hidden">
-                                    <div className="relative overflow-hidden mb-4">
+                                    <div className="relative overflow-hidden mb-[-15px]">
+                                    <figure className="snip0016">
                                         <img className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                                             src={item?.image?.[0]?.image}
                                             alt=""
                                         />
+                                        <figcaption>
+                                        <h2 className="pb-3">Phòng <span className="px-2">Đặt  </span>Nhiều nhất</h2>
+                                        <div className="flex items-center space-x-5 font-medium">
+                                            <p className="flex items-center space-x-2"><AiFillEye/> <span>203 lượt</span></p>
+                                            <p className="flex items-center space-x-2"><AiFillLike/> <span>899 lượt</span></p>
+                                            <p className="flex items-center space-x-2"><AiOutlineComment/> <span>899 lượt</span></p>
+                                        </div>
+                                        <p className="flex items-center space-x-1">
+                                            <span className="font-medium ">Đánh giá :</span> <AiFillStar/> <AiFillStar/><AiFillStar/><AiFillStar/><AiFillStar/>
+                                        </p>
+                                        <p className="max-w-prose mx-auto ">
+                                           {/* <span className="font-medium">Mô tả:</span> */}
+                                           <TextTruncate text={"Mô tả: " + "Lắng nghe tiếng sóng biển rì rào, cảm nhận làn nước hồ bơi vô cực mát lạnh, đắm chìm trong hương vị cocktail dịu ngọt là những trải nghiệm không thể bỏ qua khi ghé thăm nơi này."} maxLength={150} /> 
+                                        </p>
+                                        <a href="#"></a>
+                                        </figcaption>
+                                    </figure>
+                                        
                                     </div>
                                     <h2 className="text-xl hover:text-[#f2ba50]">{item.name} </h2>
                                     <Link className="hover:text-[#f2ba50]" to={`/hotel/${item?.id}`}><TextTruncate text={item.description} maxLength={52} /></Link>
@@ -91,14 +110,14 @@ const Index = () => {
             <div className="mt-10 relative bg-[#585c5b]" style={{ textShadow: '1px 2px 3px #000' }}>
                 <div className="w-[740px] mx-auto absolute inset-0 top-[300px] items-center">
                     <p className="text-[#f2ba50] font-bold text-[35px] text-center pb-1" style={{ textShadow: '1px 3px 4px #000' }}>
-                        Pearl Club
+                        Miichii Club
                     </p>
                     <p className="text-[25px] text-center pb-2 text-white font-medium" >
                         Đặc quyền nghỉ dưỡng thượng lưu
                     </p>
                     <p className="text-white text-center font-semibold text-[18px]" style={{ textShadow: '2px 2px 4px #000' }}>
-                        Pearl Club là chương trình khách hàng thân thiết của Vinpearl. Khách hàng có thể đăng ký là thành viên miễn phí và tích
-                        lũy giao dịch để nâng hạng, trải nghiệm ngay các đặc quyền ưu đãi trong toàn bộ hệ sinh thái Vinpearl.
+                        Miichi Club là chương trình khách hàng thân thiết của Vinpearl. Khách hàng có thể đăng ký là thành viên miễn phí và tích
+                        lũy giao dịch để nâng hạng, trải nghiệm ngay các đặc quyền ưu đãi trong toàn bộ hệ sinh thái Miichii.
                     </p>
                 </div>
                 <img className="w-full bg-[#585c5b]" src="https://statics.vinpearl.com/styles/1920x860/public/2023_01/About%20Pearl%20Club_1673079019.jpg.webp?itok=f-G5FUpc" alt="" />
@@ -111,22 +130,24 @@ const Index = () => {
                         </Link> <AiOutlineArrowRight /></span>
                     </div>
                     <div className="sm:grid xl:grid-cols-3 flex lg:grid-cols-2 sm:justify-center ">
-                        <Slider {...settings} ref={sliderRef} className="w-[1280px] mx-auto">
+                        <div  className="w-[1280px] mx-auto">
                             {voucher?.map((item: any) => {
                                 return <>
                                     <div className="w-[400px] ">
                                         <div className="relative overflow-hidden mb-4">
+                                            
                                             <img className=" h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                                                 src={item.image} width="400px" height="300px"
 
                                                 alt=""
                                             />
+                                            
                                         </div>
                                         <a className="hover:text-[#f2ba50]" href="/promotion" key={item?.id}>{item?.name}</a>
                                     </div>
                                 </>
                             })}
-                        </Slider>
+                        </div>
                     </div>
                 </div>
             </div>

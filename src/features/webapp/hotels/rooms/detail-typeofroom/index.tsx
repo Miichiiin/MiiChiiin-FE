@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 // import type { DatePickerProps, RadioChangeEvent } from 'antd';
 import { DatePicker,  message } from 'antd';
-import { useGetCategory_homeByIdQuery } from '@/api/webapp/category_home';
+import { useGetCategory_detailQuery } from '@/api/webapp/category_home';
 import { useGetHotel_homeByIdQuery } from '@/api/webapp/hotel_home';
 import { useAddRate_homeMutation } from '@/api/webapp/comment_home';
 import { useGetRating_homeQuery } from '@/api/webapp/rates_home';
@@ -26,10 +26,9 @@ const images = [
 const DetailTypeofRoom = () => {
   const [roomRating, setRoomRating] = useState(0);// đánh giá
   const { idHotel, idRoom } = useParams()
-  console.log("idHotelnw",idHotel);
   
   const {data:hotelData} = useGetHotel_homeByIdQuery(idHotel);
-  const { data } = useGetCategory_homeByIdQuery(idRoom);
+  const { data } = useGetCategory_detailQuery({id:idRoom, id_hotel:idHotel});
   // const dispatch = useAppDispatch();
   const navigate = useNavigate()
   const [addRate] = useAddRate_homeMutation();
@@ -66,12 +65,12 @@ const DetailTypeofRoom = () => {
             
             
             try {
-              const response = await addRate({
+              const response:any = await addRate({
                   id_user: userData.id, // Sử dụng id từ userData
                   id_category: idRoom,
                   rating: roomRating,
                   content: commentText,
-                  status: 0 // Tùy thuộc vào cách bạn quản lý trạng thái
+                  status: 1 // Tùy thuộc vào cách bạn quản lý trạng thái
               });
     
               if (response.data) {
@@ -136,7 +135,7 @@ const DetailTypeofRoom = () => {
       
       const hotel = `${idHotel}, ${hotelData?.[0]?.name}`
       
-      console.log("hotelnew",hotel);
+      console.log("hotelnew",hotelData?.[0]?.name);
       const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${numberOfRooms1}`;
      
       console.log("url", url);
@@ -197,7 +196,7 @@ const DetailTypeofRoom = () => {
   return (
     <div className='max-w-7xl mx-auto my-5'>
       <div className="flex justify-between pb-5">
-        <h1 className=' uppercase'><span className='text-2xl font-bold text-blue-900 italic'>{hotelData?.name}</span> - <span className='text-lg font-semibold'>{data?.name}</span></h1>
+        <h1 className=' uppercase'><span className='text-2xl font-bold text-blue-900 italic'>{hotelData?.[0]?.name}</span> - <span className='text-lg font-semibold'>{data?.[0]?.name}</span></h1>
         <button className='flex items-center text-red-500 font-semibold hover:text-red-700'><AiOutlineHeart className='mx-2' /> Yêu thích</button>
       </div>
       <div className='grid grid-cols-5 gap-8'>
@@ -259,7 +258,7 @@ const DetailTypeofRoom = () => {
       <div className='pb-5'>
         <div className='flex space-x-3 items-center'>
           <h1 className='text-xl font-semibold pb-4'>Giá: </h1>
-          <h1 className='text-red-500 text-xl font-semibold pb-4'>{data?.price} VND</h1>
+          <h1 className='text-red-500 text-xl font-semibold pb-4'>{data?.[0]?.price} VND</h1>
         </div>
         <div className='flex items-center space-x-8'>
           <RangePicker onChange={handleRangeChange} />
@@ -281,8 +280,8 @@ const DetailTypeofRoom = () => {
         </div>
       </div>
       <div className='py-5'>
-        <h1 className='text-xl font-semibold pb-2'>{data?.name}</h1>
-        <p className='text-md pb-2'>{data?.description}</p>
+        <h1 className='text-xl font-semibold pb-2'>{data?.[0]?.name}</h1>
+        <p className='text-md pb-2'>{data?.[0]?.description}</p>
         <h1 className='text-xl font-semibold pb-2'>Tiện nghi</h1>
         <div className='grid grid-cols-5 gap-2 pb-2'>
           <h1 className='flex items-center text-md'><BsPeople /><span className='px-2'>8 người</span></h1>

@@ -70,7 +70,6 @@ const hasAddUserPermission = (permissions:any) => {
 };
 
 export const router = createBrowserRouter([
-    
     {
         path: "/",
         element: (
