@@ -17,9 +17,13 @@ const HeaderHotel = () => {
   const { data: hotelData } = useGetHotel_homeByIdQuery(id);
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+  const toggleDropdown1 = () => {
+    setIsDropdownOpen1(!isDropdownOpen1);
   };
   /*cố định menu*/
   const [isFixed, setIsFixed] = useState(false);
@@ -132,28 +136,45 @@ const HeaderHotel = () => {
                 className="flex items-center justify-end space-x-2 mt-6 text-white 
                          lg:text-[15px] "
               >
-                {loggedIn ? (
+                 {loggedIn ? (
                   <>
-                    <div className="text-white me-3">
-                      Xin chào : {loggedIn?.name}
+                    <div className="text-white pt-1">
+                      <button onClick={toggleDropdown1}>
+                          <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
+                          {isDropdownOpen1 && (
+                          <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-20 bg-white border border-gray-300 shadow-lg">
+                            <ul className="leading-9 text-black">
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-10">
+                                <button
+                                  onClick={handleLogout}
+                                  className=""
+                                >
+                                {" "}
+                                Logout
+                              </button>
+                              </li>
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-7">
+                                Thông tin User
+                              </li>
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-5">
+                                Voucher
+                              </li>
+                            </ul>
+                          </div>
+                          )}
+                      </button> 
                     </div>
-                    <button
-                      onClick={handleLogout}
-                      className=" px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-                      style={{ marginRight: "30px" }}
-                    >
-                      {" "}
-                      Logout
-                    </button>
+                    
                   </>
                 ) : (
                   <>
+                  {}
                     <Link
                       to="/login"
                       className="hover:underline"
                       style={{ textShadow: "1px 2px 3px #000" }}
                     >
-                      Đăng nhập
+                      Đăng nhập 
                     </Link>
                     <AiOutlineRight />
                   </>
@@ -199,7 +220,7 @@ const HeaderHotel = () => {
                                 "
                   >
                     <button onClick={toggleMenuu} className="h-[40px] pb-3 ">
-                      <AiOutlineMenu />
+                      {/* <AiOutlineMenu /> */}
                     </button>
                     <li className="group  h-[40px]  after-4 font-medium">
                       <div className="">
@@ -228,7 +249,7 @@ const HeaderHotel = () => {
                   />
                   <a
                     href=""
-                    className="px-5 py-2 bg-[#e8952f] text-white font-medium"
+                    className="px-5 py-2  bg-[#e8952f] text-white font-medium"
                   >
                     Đặt ngay
                   </a>
