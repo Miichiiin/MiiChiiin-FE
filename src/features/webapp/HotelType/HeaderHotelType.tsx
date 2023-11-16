@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  AiOutlineRight,
-  AiOutlineMenu,
-  AiOutlineDown,
-} from "react-icons/ai";
+import { AiOutlineRight, AiOutlineMenu, AiOutlineDown } from "react-icons/ai";
 import "../../../components/Css/index.css";
 import Cart from "@/components/cart";
 import { Link } from "react-router-dom";
@@ -74,11 +70,11 @@ const HeaderHotelType = () => {
   }, [isScrollLocked]);
   /*slideshow*/
 
-   const clearLocalStorageData = () => {
-    localStorage.removeItem('selectedRooms');
-    localStorage.removeItem('totalPrice');
+  const clearLocalStorageData = () => {
+    localStorage.removeItem("selectedRooms");
+    localStorage.removeItem("totalPrice");
+    localStorage.removeItem("selectedVoucherDetails");
   };
-
 
   const [loggedIn, setLoggedIn] = useState<any | null>(() => {
     const user = localStorage.getItem("user");
@@ -86,7 +82,7 @@ const HeaderHotelType = () => {
   });
 
   const handleLogout = () => {
-    const confirm = window.confirm("Bạn có muốn đăng xuất")
+    const confirm = window.confirm("Bạn có muốn đăng xuất");
     if (confirm) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
@@ -118,29 +114,32 @@ const HeaderHotelType = () => {
                 </Link>
 
                 <div className="flex items-center justify-end space-x-2 mt-6 text-gray-800 lg:text-[15px]">
-                {loggedIn ? (
-                  <>
-                    <div className="text-black me-3">
-                      Xin chào : {loggedIn?.name}
-                    </div>
-                    <button
-                      onClick={handleLogout}
-                      className=" px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-                      style={{ marginRight: "30px" }}
-                    >
-                      {" "}
-                      Logout
-                    </button>
-
-                  </>
-                ) : (
-                  <>
-                    <Link to="/login" className="hover:underline" style={{ textShadow: '1px 2px 3px #000' }}>
-                      Đăng nhập
-                    </Link>
-                    <AiOutlineRight />
-                  </>
-                )}
+                  {loggedIn ? (
+                    <>
+                      <div className="text-black me-3">
+                        Xin chào : {loggedIn?.name}
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className=" px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+                        style={{ marginRight: "30px" }}
+                      >
+                        {" "}
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        className="hover:underline"
+                        style={{ textShadow: "1px 2px 3px #000" }}
+                      >
+                        Đăng nhập
+                      </Link>
+                      <AiOutlineRight />
+                    </>
+                  )}
                   <AiOutlineRight />
                   <span className="pl-2 pr-1 text-[14px]">/</span>
                   <button

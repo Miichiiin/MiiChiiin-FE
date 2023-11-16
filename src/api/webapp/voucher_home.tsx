@@ -18,7 +18,7 @@ const voucher_HotelApi = createApi({
             providesTags: ['Voucher_hotel']
         }),
         getVoucher_hotelId: builder.query<any,{ id: number}>({
-            query: ({id}) => `/profile/${id}/voucher`,
+            query: ({id}) => `/profile/${id}/wallet`,
             providesTags: ['Voucher_hotel']
         }),
         addVoucher_hotel: builder.mutation({

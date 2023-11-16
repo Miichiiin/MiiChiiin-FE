@@ -111,6 +111,7 @@ const BookingInformation = () => {
 
   const sumprice = totalPrice1 + serviceTotalPrice;
 
+
   const {
     register,
     handleSubmit,
@@ -147,7 +148,7 @@ const BookingInformation = () => {
       name: data.firstName + data.lastName,
       message: "...",
       people_quantity: totalChildren + totalAdults,
-      total_amount: sumprice,
+      total_amount: priceAfterVoucher,      
       cccd: data.id,
       nationality: data.country,
       phone: data.phone,
@@ -174,8 +175,7 @@ const BookingInformation = () => {
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [isScrollLocked, setIsScrollLocked] = useState(false);
 
-  // Assume that the vouchers fetched from useGetVoucher_hotelIdQuery have properties: id, name, expiryDate, discount
-  const { data: vouchers } = useGetVoucher_hotelIdQuery({
+  const { data: myvoucher } = useGetVoucher_hotelIdQuery({
     id: user_id || undefined,
   });
 
@@ -194,7 +194,12 @@ const BookingInformation = () => {
 
   useEffect(() => {
     // Lưu selectedVoucher vào local storage khi thay đổi
-    localStorage.setItem("selectedVoucher", selectedVoucher || ""); // Chắc chắn selectedVoucher không phải là null
+    localStorage.setItem("selectedVoucher", selectedVoucher || "");
+  }, [selectedVoucher]);
+
+  // Lắng nghe sự thay đổi trong selectedVoucher và cập nhật state appliedVoucher
+  useEffect(() => {
+    setAppliedVoucher(selectedVoucher);
   }, [selectedVoucher]);
 
   const openVoucherModal = () => {
@@ -220,25 +225,34 @@ const BookingInformation = () => {
   const handleUseVoucher = () => {
     // Kiểm tra nếu có voucher được chọn
     if (selectedVoucher !== null && selectedVoucher !== undefined) {
-      const { id, name, expire_at, discount } = selectedVoucher;
-      console.log("Id:", id);
-      console.log("Tên:", name);
-      console.log("Hạn sử dụng:", expire_at);
-      console.log("Giảm giá:", discount);
-
       // Lưu trạng thái đã sử dụng voucher vào local storage hoặc thực hiện các hành động khác
       localStorage.setItem("isVoucherUsed", "true");
 
       // Lưu thông tin voucher được chọn vào local storage
+      const { id, name, expire_at, discount } = selectedVoucher;
+      const selectedVoucherDetails = { id, name, expire_at, discount };
+
       localStorage.setItem(
         "selectedVoucherDetails",
-        JSON.stringify(selectedVoucher)
+        JSON.stringify(selectedVoucherDetails)
       );
 
       // Đóng modal hoặc thực hiện các hành động khác cần thiết
       closeVoucherModal();
     }
   };
+
+  const [appliedVoucher, setAppliedVoucher] = useState<any | null>(null);
+
+  useEffect(() => {
+    const storedVoucherData = localStorage.getItem("selectedVoucherDetails");
+    storedVoucherData.then((selectedVoucherDetails: any) => {
+      setAppliedVoucher(JSON.parse(selectedVoucherDetails));
+    });
+  }, []);
+
+  
+  const priceAfterVoucher = sumprice - (sumprice * (appliedVoucher?.discount || 0) / 100);
 
   return (
     <div>
@@ -513,37 +527,37 @@ const BookingInformation = () => {
 
                       {/* Thông tin voucher */}
                       <ul className="voucher-list overflow-auto max-h-90">
-                        {vouchers?.map((voucher: any, index: any) => (
-                          <li
-                            key={index}
-                            className="flex items-center space-x-4 mb-4"
-                          >
-                            <input
-                              type="radio"
-                              id={`voucher${index}`}
-                              name="voucher"
-                              value={`voucher${index}`}
-                              checked={selectedVoucher === `voucher${index}`}
-                              onChange={() =>
-                                handleVoucherSelect(`voucher${index}`)
-                              }
-                            />
-
-                            {/* Thêm thông tin cho mỗi voucher */}
-                            <div className="flex items-center">
-                              <img
-                                className="w-10 h-10 rounded-full mr-2"
-                                src={voucher.image}
-                                alt={`Voucher ${index + 1} Image`}
+                        {myvoucher?.vouchers?.map(
+                          (voucher: any, index: any) => (
+                            <li
+                              key={index}
+                              className="flex items-center space-x-4 mb-4"
+                            >
+                              <input
+                                type="radio"
+                                id={`voucher${index}`}
+                                name="voucher"
+                                value={`voucher${index}`}
+                                checked={selectedVoucher === voucher}
+                                onChange={() => handleVoucherSelect(voucher)}
                               />
-                              <div>
-                                <p className="font-bold">{voucher.name}</p>
-                                <p>Hạn sử dụng: {voucher.expiryDate}</p>
-                                <p>Giá trị giảm: {voucher.discount}%</p>
+
+                              {/* Thêm thông tin cho mỗi voucher */}
+                              <div className="flex items-center">
+                                <img
+                                  className="w-10 h-10 rounded-full mr-2"
+                                  src={voucher.image}
+                                  alt={`Hình ảnh Voucher ${index + 1}`}
+                                />
+                                <div>
+                                  <p className="font-bold">{voucher.name}</p>
+                                  <p>Hạn sử dụng: {voucher.expiryDate}</p>
+                                  <p>Giảm giá: {voucher.discount}%</p>
+                                </div>
                               </div>
-                            </div>
-                          </li>
-                        ))}
+                            </li>
+                          )
+                        )}
                       </ul>
 
                       {/* Nút sử dụng voucher */}
@@ -705,20 +719,53 @@ const BookingInformation = () => {
                         </ul>
                       </div>
                     )}
-
-                    <div className="border-gray-100 bg-gray-100 px-2 rounded mt-5">
-                      <p className="text-sm pb-3 font-semibold">
-                        Voucher được áp dụng
-                      </p>
+                    <div>
+                      <div className="border-gray-100 bg-gray-100 px-2 rounded mt-5">
+                        <p className="text-sm pb-3 font-semibold">
+                          Voucher được áp dụng:
+                        </p>
+                      </div>
+                      <div className="border-gray-100 px-2 rounded mt-3">
+                        {appliedVoucher ? (
+                          <>
+                            <p>
+                              {appliedVoucher.name} - Giảm giá:{" "}
+                              {appliedVoucher.discount}%
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-sm pb-3 font-semibold">
+                            Không có voucher được áp dụng
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
               })}
               <div className=" mt-4 border-t-2 pt-4">
                 <div className="flex items-center justify-between ">
-                  <h2 className="text-[18px] font-medium">Tổng cộng:</h2>
+                  <h2 className="text-[18px] font-medium">Số tiền tạm tính:</h2>
                   <a className="text-[18px] font-medium text-[#e8952f]" href="">
                     {sumprice}
+                  </a>
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <h2 className="text-[18px] font-medium">
+                    {" "}
+                    Số tiền được giảm
+                  </h2>
+                  <a className="text-[15px] font-medium text-red-600" href="">
+                    - { (sumprice * appliedVoucher?.discount || 0) / 100}
+                  </a>
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <h2 className="text-[18px] font-medium">
+                    {" "}
+                    Tổng cộng:
+                  </h2>
+                  <a className="text-[18px] font-medium text-[#e8952f]" href="">
+                  {priceAfterVoucher}
                   </a>
                 </div>
                 <div className="text-[13px] mt-2">
