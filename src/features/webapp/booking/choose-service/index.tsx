@@ -190,14 +190,14 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                       <h1 className="">Biệt thự 1 phòng ngủ</h1>
                       <button
                         onClick={() => toggleShowService(roomIndex)}
-                        className="text-yellow-700 hover:text-yellow-500 font-semibold"
+                        className="text-[#e8952f] hover:text-yellow-500 font-medium"
                       >
                         {isServiceOpen[roomIndex] ? (
-                          <span className="flex items-center space-x-2 text-md font-medium">
+                          <span className="flex text-sm items-center space-x-2 text-md font-medium">
                             <span>Ẩn dịch vụ</span> <AiFillCaretUp />
                           </span>
                         ) : (
-                          <span className="flex items-center">
+                          <span className="flex text-sm items-center">
                             Hiện dịch vụ <AiFillCaretDown />
                           </span>
                         )}
@@ -206,24 +206,24 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                   </div>
                   <hr className="my-2" />
                   {isServiceOpen[roomIndex] && (
-                    <div className="grid grid-cols-3 gap-2 pt-2">
+                    <div className="grid grid-cols-3 gap-3 pt-2 ">
                       {serviceData?.map((item: any) => (
-                        <div className="column border" key={item.id}>
-                          <img src={item?.image} className="w-full" />
-                          <h1 className="pl-2 pt-2 pb-5">{item.name}</h1>
-                          <p className="pl-2 pb-2 font-semibold text-yellow-800 text-lg">
+                        <div className="column border rounded-lg hover:shadow-xl" key={item.id}>
+                          <img src={item?.image} className="w-full rounded-t-lg" />
+                          <h1 className="pl-2 pt-2 pb-5 text-base font-medium">{item.name}</h1>
+                          <p className="pl-2 pb-2 font-semibold text-black text-lg">
                             {item.price}
-                            <span className="text-sm"> vnđ</span>
+                            <span className="text-sm"> đ</span>
                           </p>
-                          <div className="flex justify-between items-center px-2 py-3">
+                          <div className="flex justify-between items-center px-2 py-3 ">
                             <button className="flex items-center hover:text-yellow-500">
-                              <AiOutlineInfoCircle />
-                              <span className="pl-1">Chi tiết</span>
+                              <AiOutlineInfoCircle class="text-blue-500 font-medium"/>
+                              <span className="pl-1 text-xs text-blue-500 font-medium ">Chi tiết</span>
                             </button>
                             <label className="items-center flex">
                               <input
                                 type="checkbox"
-                                className="w-5 h-5 text-yellow-600 bg-yellow-500 border-yellow-500 rounded checked:bg-yellow-500"
+                                className="w-4 h-4 text-yellow-600 bg-yellow-500 border-yellow-500 rounded checked:bg-yellow-500"
                                 onChange={() =>
                                   toggleServiceSelection(
                                     item.id,
@@ -237,7 +237,7 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                                     service.roomIndex === roomIndex
                                 )}
                               />
-                              <span className="ml-2 text-sm font-medium text-yellow-800">
+                              <span className="ml-2 text-sm font-medium text-[#e8952f]">
                                 Thêm
                               </span>
                             </label>
@@ -259,17 +259,17 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
             <div className="border rounded px-2 py-4">
               <div>
                 <div className="flex items-center justify-between">
-                  <h1 className="font-semibold">{hotel[1]}</h1>
+                  <h1 className="font-semibold text-lg">{hotel[1]}</h1>
                   <button onClick={onhanldeGoBack} className="text-sm text-blue-500 font-medium hover:underline">
                     Chỉnh sửa
                   </button>
                 </div>
-                <p className="text-sm pt-3 items-center flex">
+                <p className="text-sm pt-3 items-center flex font-medium text-gray-500">
                   {date[0].toISOString().slice(0, 10)}
                   <AiOutlineArrowRight className="inline-block mx-1" />
                   {date[1].toISOString().slice(0, 10)}
                 </p>
-                <p className="text-sm pb-3">
+                <p className="text-sm pb-3 font-medium text-gray-500">
                   {differenceInDays(
                     parseISO(date[1].toISOString().slice(0, 10)),
                     parseISO(date[0].toISOString().slice(0, 10))
@@ -293,11 +293,11 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                         {item?.price.toLocaleString('vi-VN')} đ
                       </button>
                     </div>
-                    <p className="text-sm pt-3 items-center flex">
+                    <p className="text-sm pt-3 items-center flex text-gray-500 font-medium">
                       <span className="pr-1">x{item?.count}</span>
                       {item?.name}
                     </p>
-                    <p className="text-sm pb-3">2 Người lớn, 2 Trẻ em</p>
+                    <p className="text-sm pb-3 text-gray-500 font-medium">2 Người lớn, 2 Trẻ em</p>
                     {/* Dịch vụ đã chọn */}
                     {selectedServicesInRoom.length > 0 && (
                       <div className="border-gray-100 bg-gray-100 px-2 rounded">
