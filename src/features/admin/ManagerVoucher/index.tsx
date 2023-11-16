@@ -191,6 +191,13 @@ const confirmDelete = (id: number) => {
             }}
           />
         </div>
+        <Button
+            type="primary"
+            style={{ background: "#FFD700", borderColor: "#FFD700", marginLeft: "350px" }}
+           
+          >
+            <Link to={`/admin/phatvoucher`}>Phát Voucher</Link>
+          </Button>
         {hasAddUserPermission('add voucher') && (
             <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
             <Link to={`/admin/addvoucher`}>Thêm Voucher</Link>

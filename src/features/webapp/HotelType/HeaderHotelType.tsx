@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  AiOutlineRight,
-  AiOutlineMenu,
-  AiOutlineDown,
-} from "react-icons/ai";
+import { AiOutlineRight, AiOutlineMenu, AiOutlineDown } from "react-icons/ai";
 import "../../../components/Css/index.css";
 import Cart from "@/components/cart";
 import { Link } from "react-router-dom";
@@ -75,11 +71,11 @@ const HeaderHotelType = () => {
   }, [isScrollLocked]);
   /*slideshow*/
 
-   const clearLocalStorageData = () => {
-    localStorage.removeItem('selectedRooms');
-    localStorage.removeItem('totalPrice');
+  const clearLocalStorageData = () => {
+    localStorage.removeItem("selectedRooms");
+    localStorage.removeItem("totalPrice");
+    localStorage.removeItem("selectedVoucherDetails");
   };
-
 
   const [loggedIn, setLoggedIn] = useState<any | null>(() => {
     const user = localStorage.getItem("user");
@@ -87,7 +83,7 @@ const HeaderHotelType = () => {
   });
 
   const handleLogout = () => {
-    const confirm = window.confirm("Bạn có muốn đăng xuất")
+    const confirm = window.confirm("Bạn có muốn đăng xuất");
     if (confirm) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
