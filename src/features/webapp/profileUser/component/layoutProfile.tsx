@@ -46,7 +46,7 @@ export const LayoutProfile = () => {
 
           <div className="text-[18px]  mt-6 leading-7 ml-[70px]">
             <label className="space-x-3 flex items-center text-white"><AiOutlineUser/> <Link to="">Thông tin tài khoản</Link></label><br />
-            <label className="space-x-3 flex items-center text-white"><AiOutlineShoppingCart/> <Link to="">Ưu đãi của tôi</Link></label><br />
+            <label className="space-x-3 flex items-center text-white"><AiOutlineShoppingCart/> <Link to="/profileUser/mywallet">Ví của tôi</Link></label><br />
             <label className="space-x-3 flex items-center text-white"><BsFillCartCheckFill/> <Link to="/profileUser/myorder">Đơn hàng của tôi</Link></label><br />
             <label className="space-x-3 flex items-center text-white"><BiLogOut/> <Link to="">Đăng xuất</Link></label>
           </div>

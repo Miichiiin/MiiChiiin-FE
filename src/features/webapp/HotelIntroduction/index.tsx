@@ -18,6 +18,7 @@ import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { useUseGetRating_hotel_homeQueryQuery } from "@/api/webapp/rate_hotel_home";
 import { SearchQuickHotel } from "@/components/SearchQuickHotel";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
+import { useViewDetailRoomMutation } from "@/api/bookingUser";
 
 const HotelIntroduction = () => {
   const { data: voucher } = useGetVoucherQuery();
@@ -76,6 +77,12 @@ const HotelIntroduction = () => {
       sliderRef1.current.slickNext();
     }
   };
+
+  const [addView] = useViewDetailRoomMutation()
+
+  const view = (id:any) => {
+    addView(id)
+  }
 
   return (
     <div>
@@ -155,7 +162,7 @@ const HotelIntroduction = () => {
                   <>
                     <div>
                       <div className="relative overflow-hidden mb-4">
-                        <Link to={`/hotel/${idHotel}/rooms/detail/${item.id}`}>
+                        <Link onClick={() => view(item?.id)} to={`/hotel/${idHotel}/rooms/detail/${item?.id}`}>
                           <img
                             className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
                             src={item.image}

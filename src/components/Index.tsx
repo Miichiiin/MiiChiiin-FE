@@ -35,6 +35,8 @@ const Index = () => {
             sliderRef.current.slickPrev();
         }
     };
+
+
     return (
         <div>
             <Header />
