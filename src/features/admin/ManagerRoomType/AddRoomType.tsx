@@ -53,34 +53,28 @@ const AddRoomType = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div className="text-xl font-semibold">Thêm Loại Phòng</div>
 
-        <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
-          <Link to={`/admin/manageroomtype`} className='items-center flex'>
+        <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={()=>navigate("/admin/manageroomtype")}>
+          
             <ArrowLeftOutlined className='pr-2'/> Quay lại
-          </Link>
-        </Button>
+          
+        </button>
       </div>
 
       <Form
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 16 }}
+        labelCol={{ span: 5 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
 
+        <div className='flex justify-between space-x-4'>
+        <div className='w-1/2'>
         <Form.Item
           label="Tên loại phòng"
           name="name"
           rules={[{ required: true, message: 'Vui lòng nhập tên loại phòng!' }]}
         >
           <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="image"
-          label="Upload"
-        >
-          <input type='file' onChange={handleChange} />
         </Form.Item>
 
         <Form.Item
@@ -97,50 +91,59 @@ const AddRoomType = () => {
         >
           <Input.TextArea />
         </Form.Item>
+        <Form.Item
+          label="Trạng thái"
+          name="status"
+          rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
+        >
+          <Select placeholder="Chọn trạng thái" >
+            <Select.Option value={2}>Đang hoạt động</Select.Option>
+            <Select.Option value={1}>Đang bảo trì</Select.Option>
+            <Select.Option value={0}>Đang chờ</Select.Option>
+          </Select>
+        </Form.Item>
+        </div>
 
+        <div className='w-1/2'>
         <Form.Item
           label="Số tầng"
           name="floor"
           rules={[{ required: true, message: 'Vui lòng nhập số tầng!' }]}
         >
-          <InputNumber />
+          <InputNumber className='w-1/2'/>
         </Form.Item>
         <Form.Item
           label="Số người"
           name="quantity_of_people"
           rules={[{ required: true, message: 'Vui lòng nhập số người!' }]}
         >
-          <InputNumber />
+          <InputNumber className='w-1/2'/>
         </Form.Item>
         <Form.Item
           label="Giá"
           name="price"
           rules={[{ required: true, message: 'Vui lòng nhập giá phòng!' }]}
         >
-          <InputNumber />
+          <InputNumber className='w-1/2'/>
         </Form.Item>
         <Form.Item
           label="Diện tích"
           name="acreage"
           rules={[{ required: true, message: 'Vui lòng nhập diện tích!' }]}
         >
-          <InputNumber />
+          <InputNumber className='w-1/2'/>
         </Form.Item>
+        
         <Form.Item
-          label="Trạng thái phòng"
-          name="status"
-          rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
+          name="image"
+          label="Upload"
         >
-          <Select placeholder="Chọn trạng thái">
-            <Select.Option value={2}>Đang hoạt động</Select.Option>
-            <Select.Option value={1}>Đang bảo trì</Select.Option>
-            <Select.Option value={0}>Đang chờ</Select.Option>
-          </Select>
+          <input type='file' onChange={handleChange} />
         </Form.Item>
+        </div>
+        </div>
 
-
-
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Form.Item >
           <Button type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>
             Thêm loại phòng
           </Button>
