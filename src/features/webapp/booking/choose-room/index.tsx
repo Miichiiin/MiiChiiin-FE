@@ -26,10 +26,21 @@ import Slider from "react-slick";
 
 const ChooseRoom = () => {
  
-  const [selectedRooms, setSelectedRooms] = useState<any>([]);
+  const searchSlide = useParams();
+  console.log("1", searchSlide.numberRoom);
+  
+  const selectRoom = (searchSlide?.numberRoom === 1 ? ["vler"] : []);
+
+const [selectedRooms, setSelectedRooms] = useState<any>(
+ selectRoom
+  );
+
+
+
   
   const [totalPrice, setTotalPrice] = useState<any>(0);
-  const searchSlide = useParams();
+  console.log("searchSlide",searchSlide);
+  
   // const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [selectedRoomCount, setSelectedRoomCount] = useState(0);
 
@@ -81,7 +92,7 @@ const ChooseRoom = () => {
         setSelectedRooms([...selectedRooms, selectedHotel]);
         const price = selectedHotel.price;
         setTotalPrice(totalPrice + price);
-        setSelectedRoomCount(selectedRooms.length + 1); // Tăng số lượng phòng đã chọn
+        setSelectedRoomCount(selectedRooms?.length + 1); // Tăng số lượng phòng đã chọn
         // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage
         localStorage.setItem(
           "selectedRooms",
@@ -113,7 +124,7 @@ const ChooseRoom = () => {
       const priceToRemove = room.price;
       setTotalPrice(totalPrice - priceToRemove);
 
-      setSelectedRoomCount(selectedRooms.length - 1); // Giảm số lượng phòng đã chọn
+      setSelectedRoomCount(selectedRooms?.length - 1); // Giảm số lượng phòng đã chọn
 
       // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage sau khi xóa
       localStorage.setItem(
@@ -127,7 +138,7 @@ const ChooseRoom = () => {
     }
   };
 
-  const uniqueSelectedRooms = selectedRooms.reduce((acc: any, room: any) => {
+  const uniqueSelectedRooms = selectedRooms?.reduce((acc: any, room: any) => {
     // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
     const existingRoom = acc.find((r: any) => r.id === room.id);
 
@@ -172,7 +183,7 @@ const ChooseRoom = () => {
   const savedRoomInfo = savedRoomInfoJSON ? JSON.parse(savedRoomInfoJSON) : [];
 
   // Sử dụng dữ liệu từ local storage nếu có hoặc fallback là uniqueSelectedRooms
-  const roomsToDisplay = uniqueSelectedRooms.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
+  const roomsToDisplay = uniqueSelectedRooms?.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
   const navigate = useNavigate();
 
   interface Room {
@@ -196,12 +207,12 @@ const ChooseRoom = () => {
       setTotalPrice(parsedTotalPrice);
 
       // Cập nhật selectedRoomCount dựa trên độ dài của danh sách phòng đã chọn
-      setSelectedRoomCount(parsedSelectedRooms.length);
+      setSelectedRoomCount(parsedSelectedRooms?.length);
     }
   }, []);
 
   const onHandSubmit = () => {
-    const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
+    const updatedSelectedRooms: Room = uniqueSelectedRooms?.map((room: any) => ({
       id_cate: room.id,
       count: room.count,
       name: room.name,
@@ -313,7 +324,7 @@ const ChooseRoom = () => {
                   <h1 className="text-lg font-bold">
                     Chọn phòng:{" "}
                     <span>
-                      {selectedRooms.length}/{searchSlide.numberRoom}
+                      {selectedRooms?.length}/{searchSlide?.numberRoom}
                     </span>
                   </h1>
                 </div>
@@ -368,14 +379,14 @@ const ChooseRoom = () => {
                             {" "}
                             Giá công bố:{" "}
                             <span className="font-semibold text-md text-gray-500">
-                              {hotel?.price.toLocaleString('vi-VN')} đ
+                              {hotel?.price?.toLocaleString('vi-VN')} đ
                             </span>{" "}
                           </p>
                           <p className=" flex justify-end items-center text-left space-x-2">
                             {" "}
                             <span className=""> Giá thành viên:</span>{" "}
                             <span className="font-semibold text-md ">
-                              {hotel?.price.toLocaleString('vi-VN')} đ 
+                              {hotel?.price?.toLocaleString('vi-VN')} đ 
                             </span><AiOutlineInfoCircle class='text-red-500'/>{" "}
                           </p>
                           {/* ... */}
@@ -430,14 +441,14 @@ const ChooseRoom = () => {
                 <hr className="my-4" />
                 <div className="pb-6">
                   <h1 className="font-semibold text-lg">Danh sách phòng đã chọn:</h1>
-                  {roomsToDisplay.length > 0 ? (
+                  {roomsToDisplay?.length > 0 ? (
                     <ul>
                       {roomsToDisplay.map((room: any, index: any) => (
                         <li key={index} className="flex flex-col">
                           <div className="flex items-center justify-between">
                             <span className="basis-2/3  mt-2">
-                              {room.name} - {room.price.toLocaleString('vi-VN')} đ{" "}
-                              {room.count > 1 ? `x${room.count}` : ""}
+                              {room?.name} - {room?.price?.toLocaleString('vi-VN')} đ{" "}
+                              {room?.count > 1 ? `x${room?.count}` : ""}
                             </span>
                             <button
                               onClick={() => handleRemoveRoom(room)}

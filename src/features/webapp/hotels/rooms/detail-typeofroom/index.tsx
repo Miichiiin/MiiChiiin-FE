@@ -131,12 +131,12 @@ const DetailTypeofRoom = () => {
         price: data?.price
       }];
       const numberOfRooms1 = [`adults:1,children:0,infants:0`];
-      const encodedSelectedRooms = 1
+      // const encodedSelectedRooms = 1
       
       const hotel = `${idHotel}, ${hotelData?.[0]?.name}`
       
       console.log("hotelnew",hotelData?.[0]?.name);
-      const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${numberOfRooms1}`;
+      const url = `/choose-room/${hotel}/${selectedRange}/1/${numberOfRooms1}`;
      
       console.log("url", url);
 
