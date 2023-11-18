@@ -14,7 +14,7 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export const ManagerRoomType = () => {
@@ -24,6 +24,7 @@ export const ManagerRoomType = () => {
     current: 1,
     pageSize: 5,
   });
+  const navigate = useNavigate()
   // phân quyền
   const dataPermission = localStorage.getItem('userAdmin')
   const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
@@ -136,8 +137,8 @@ export const ManagerRoomType = () => {
         return (
           <div className="flex items-center">
             {hasAddUserPermission('update category') && (
-              <button className="mr-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-                <Link to={`/admin/updateroomtype/${record.key}`}>Sửa</Link>
+              <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={()=>navigate(`/admin/updateroomtype/${record.key}`)}>
+                Sửa
               </button>
             )}
             {hasAddUserPermission('delete category') && (
@@ -152,7 +153,7 @@ export const ManagerRoomType = () => {
                 okText="Có"
                 cancelText="Không"
               >
-                <button className="bg-red-500 px-2 py-2 text-white rounded-md">Xóa</button>
+                <button className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md">Xóa</button>
               </Popconfirm>
             )}
           </div>
@@ -230,8 +231,8 @@ export const ManagerRoomType = () => {
           />
         </div>
         {hasAddUserPermission('add category') && (
-          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-            <Link to={`/admin/addroomtype`}>Thêm loại phòng</Link>
+          <button className="ml-2 px-2 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={()=>navigate(`/admin/addroomtype`)}>
+            Thêm loại phòng
           </button>
         )}
       </div>

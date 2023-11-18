@@ -1,4 +1,5 @@
 import { useGetCategory_adminByIdQuery, useUpdateCategory_adminMutation } from "@/api/admin/category_admin";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Button, Form, Image, Input, InputNumber, Select, Skeleton, Spin, message } from "antd";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -67,8 +68,11 @@ const UpdateRoomType = () => {
   return (
     <div>
       {isUploading && <Spin className='animate' />}
-      <header className="flex justify-between items-center my-5 mx-3">
+      <header className="flex justify-between items-center mb-5">
         <h2 className="text-2xl ">Cập nhật dịch vụ: <span className='text-blue-700 font-semibold'>{data?.name}</span></h2>
+        <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={()=>navigate("/admin/manageroomtype")}>
+            <ArrowLeftOutlined className='pr-2'/> Quay lại
+        </button>
       </header>
 
       <Form
@@ -77,28 +81,18 @@ const UpdateRoomType = () => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 1000 }}
+        labelCol={{ span: 6 }}
+        layout="vertical"
       >
-        <div className="">
-          <Form.Item
+        <div className="flex justify-between space-x-4">
+         <div className="w-1/2">
+         <Form.Item
             label="Tên loại phòng"
             name="name"
             rules={[{ required: true, message: 'Vui lòng nhập tên loại phòng!' }]}
           >
             <Input />
           </Form.Item>
-
-          <Form.Item
-            name="image"
-            label="Upload"
-          >
-            <Image src={data?.image} width={100} height={100} alt="Current Image" />
-            <input type='file' onChange={handleChange} />
-          </Form.Item>
-
-
           <Form.Item
             label="Mô tả"
             name="description"
@@ -113,37 +107,8 @@ const UpdateRoomType = () => {
           >
             <Input.TextArea />
           </Form.Item>
-
           <Form.Item
-            label="Số tầng"
-            name="floor"
-            rules={[{ required: true, message: 'Vui lòng nhập số tầng!' }]}
-          >
-            <InputNumber />
-          </Form.Item>
-          <Form.Item
-            label="Số người"
-            name="quantity_of_people"
-            rules={[{ required: true, message: 'Vui lòng nhập số người!' }]}
-          >
-            <InputNumber />
-          </Form.Item>
-          <Form.Item
-            label="Giá"
-            name="price"
-            rules={[{ required: true, message: 'Vui lòng nhập giá phòng!' }]}
-          >
-            <InputNumber />
-          </Form.Item>
-          <Form.Item
-            label="Diện tích"
-            name="acreage"
-            rules={[{ required: true, message: 'Vui lòng nhập diện tích!' }]}
-          >
-            <InputNumber />
-          </Form.Item>
-          <Form.Item
-            label="Trạng thái phòng"
+            label="Trạng thái"
             name="status"
             rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
           >
@@ -153,15 +118,52 @@ const UpdateRoomType = () => {
             <Select.Option value={0}>Đang chờ</Select.Option>
           </Select>
           </Form.Item>
+         </div>
+
+          <div className='w-1/2'>
+          <Form.Item
+            label="Số tầng"
+            name="floor"
+            rules={[{ required: true, message: 'Vui lòng nhập số tầng!' }]}
+          >
+            <InputNumber className='w-full'/>
+          </Form.Item>
+          <Form.Item
+            label="Số người"
+            name="quantity_of_people"
+            rules={[{ required: true, message: 'Vui lòng nhập số người!' }]}
+          >
+            <InputNumber className='w-full'/>
+          </Form.Item>
+          <Form.Item
+            label="Giá"
+            name="price"
+            rules={[{ required: true, message: 'Vui lòng nhập giá phòng!' }]}
+          >
+            <InputNumber className='w-full'/>
+          </Form.Item>
+          <Form.Item
+            label="Diện tích"
+            name="acreage"
+            rules={[{ required: true, message: 'Vui lòng nhập diện tích!' }]}
+          >
+            <InputNumber className='w-full'/>
+          </Form.Item>
+          
+          <Form.Item
+            name="image"
+            label="Upload"
+          >
+            <input type='file' onChange={handleChange} className="my-2"/>
+            <Image src={data?.image} width={100} height={100} alt="Current Image"  />
+          </Form.Item>
+          </div>
         </div>
 
 
         <Form.Item >
           <Button type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>
             Cập nhật phòng
-          </Button>
-          <Button type="primary" danger className='mx-2' onClick={() => navigate("/admin/manageroomtype")}>
-            Quay lại
           </Button>
         </Form.Item>
       </Form>

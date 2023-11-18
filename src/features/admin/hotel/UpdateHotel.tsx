@@ -1,5 +1,6 @@
 import { useGetHotel_adminByIdQuery, useUpdateHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { Button, Form, Input, InputNumber, Select, Spin, Upload, message } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Form, Image, Input, InputNumber, Select, Spin, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -7,45 +8,22 @@ const UpdateHotel = () => {
     const navigate = useNavigate()
     const [updateHotel, { isLoading }] = useUpdateHotel_adminMutation()
     const [selectedFiles, setSelectedFiles] = useState<File[]>();
-    const onFinish = (values: any) => {
-        const body = new FormData()
-        if (id) {
-            body.append('id', id);
-        }
-        body.append('name', values.name)
-        body.append('address', values.address)
-        body.append('email', values.email)
-        body.append('phone', values.phone)
-        body.append('description', values.description)
-        body.append('star', values.star)
-        body.append('quantity_of_room', values.quantity_of_room)
-        body.append('quantity_floor', values.quantity_floor)
-        body.append('status', values.status)
-        body.append('id_city', values.id_city)
-        // Lặp qua danh sách các tệp ảnh và thêm chúng vào FormData
-        if (selectedFiles) {
-            selectedFiles.forEach((file, index) => {
-                body.append(`images[${index}]`, file);
-            });
-        }
+    const [isImageChanged, setIsImageChanged] = useState(false);
 
-        console.log(body);
-        console.log("ảnh", selectedFiles as File);
-
-
-        updateHotel(body).unwrap().then(() => navigate('/admin/hotelManagement'));
-    };
     const { id } = useParams<{ id: string }>()
-    const { data: hotelData } = useGetHotel_adminByIdQuery(id)
-
+    const { data } = useGetHotel_adminByIdQuery(id)
+    const hotelData = data?.[0]
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = event.target;
         const selectedFiles = files as FileList;
+        // Tạo một mảng mới để lưu trữ tệp đã chọn
         const filesArray: File[] = Array.from(selectedFiles);
+        // Ghi đè mảng selectedFiles bằng các tệp mới
         setSelectedFiles(filesArray);
+        setIsImageChanged(true);
     };
     const [form] = Form.useForm();
     useEffect(() => {
@@ -65,11 +43,50 @@ const UpdateHotel = () => {
             image_urls: hotelData?.image_urls,
         })
     }, [hotelData])
+    const onFinish = (values: any) => {
+        const body = new FormData()
+        if (id) {
+            body.append('id', id);
+        }
+        body.append('name', values.name)
+        body.append('address', values.address)
+        body.append('email', values.email)
+        body.append('phone', values.phone)
+        body.append('description', values.description)
+        body.append('star', values.star)
+        body.append('quantity_of_room', values.quantity_of_room)
+        body.append('quantity_floor', values.quantity_floor)
+        body.append('status', values.status)
+        body.append('id_city', values.id_city)
+        // Lặp qua danh sách các tệp ảnh và thêm chúng vào FormData
+        if (isImageChanged) {
+            if (selectedFiles) {
+                selectedFiles.forEach((file, index) => {
+                    body.append(`images[${index}]`, file);
+                });
+            }
+        }
+        else {
+            body.append('image', hotelData?.image)
+        }
+
+
+        updateHotel(body).unwrap().then(() => {
+            message.success({ content: 'Sửa khách sạn thành công', key: 'uploading' });
+            navigate('/admin/hotelmanagement');
+        }).catch(() => {
+            message.error({ content: 'Sửa khách sạn thất bại', key: 'uploading' });
+        })
+    };
+
     return (
         <div>
 
-            <header className="flex justify-between items-center my-5 mx-3">
+            <header className="flex justify-between items-center mb-5">
                 <h2 className="text-xl font-semibold ">Sửa khách sạn : <span className='text-2xl font-semibold text-blue-800'>{hotelData?.name}</span></h2>
+                <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/hotelmanagement")}>
+                    <ArrowLeftOutlined className="pr-2" /> Quay lại
+                </button>
             </header>
             <Form
                 name="basic"
@@ -78,9 +95,10 @@ const UpdateHotel = () => {
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
                 form={form}
+                layout='vertical'
             >
-                <div className='flex justify-center '>
-                    <div className='w-[500px] p-4 bg-white mr-4'>
+                <div className='flex justify-between '>
+                    <div className='w-1/2 p-4 bg-white mr-4'>
                         <Form.Item
                             label="Tên Khách sạn"
                             name="name"
@@ -100,13 +118,6 @@ const UpdateHotel = () => {
                         </Form.Item>
 
                         <Form.Item
-                            name="image"
-                            label="Upload"
-                        >
-                            <input type='file' multiple onChange={handleChange} />
-                        </Form.Item>
-
-                        <Form.Item
                             label="Email khách sạn"
                             name="email"
                             rules={[{ required: true, message: 'Hãy nhập email khách sạn!' },
@@ -118,14 +129,6 @@ const UpdateHotel = () => {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            label="Số điện thoại"
-                            name="phone"
-                            rules={[{ required: true, message: 'Hãy nhập số điện thoại!' },
-                            { whitespace: true, message: 'Không được để trống!' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item
                             label="Mô tả"
                             name="description"
                             rules={[{ required: true, message: 'Hãy nhập mô tả!' },
@@ -133,14 +136,21 @@ const UpdateHotel = () => {
                         >
                             <Input.TextArea placeholder="Nội dung" allowClear />
                         </Form.Item>
+                        <Form.Item
+                            name="image"
+                            label="Upload"
+                        >
+                            <input type='file' multiple onChange={handleChange} />
+                            <Image src={hotelData?.image[0]?.image} width={100} height={100} className='mt-4 ' />
+                        </Form.Item>
                     </div>
-                    <div className='w-[500px] p-4 bg-white mr-4'>
+                    <div className='w-1/2 p-4 bg-white mr-4'>
                         <Form.Item
                             label="Số lượng phòng"
                             name="quantity_of_room"
                             rules={[{ required: true, message: 'Hãy nhập số lượng phòng' }]}
                         >
-                            <InputNumber />
+                            <InputNumber className='w-full' />
                         </Form.Item>
 
                         <Form.Item
@@ -155,24 +165,32 @@ const UpdateHotel = () => {
                             name="star"
                             rules={[{ required: true, message: 'Hãy nhập số sao!' }]}
                         >
-                            <InputNumber />
+                            <InputNumber className='w-full' />
                         </Form.Item>
 
                         <Form.Item
                             label="Trạng thái"
                             name="status"
                         >
-                            <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
+                            <Select placeholder="Chọn trạng thái" style={{ width: '100%' }}>
                                 <Select.Option value={1}>Còn</Select.Option>
                                 <Select.Option value={0}>Hết</Select.Option>
                             </Select>
+                        </Form.Item>
+                        <Form.Item
+                            label="Số điện thoại"
+                            name="phone"
+                            rules={[{ required: true, message: 'Hãy nhập số điện thoại!' },
+                            { whitespace: true, message: 'Không được để trống!' }]}
+                        >
+                            <Input />
                         </Form.Item>
                         <Form.Item
                             label="ID thành phố"
                             name="id_city"
                             rules={[{ required: true, message: 'Hãy nhập chọn id city!' }]}
                         >
-                            <Select placeholder="Chọn thành phố" style={{ width: '150px' }}>
+                            <Select placeholder="Chọn thành phố" style={{ width: '100%' }}>
                                 <Select.Option value={1}>{hotelData?.name_cities}</Select.Option>
                             </Select>
                         </Form.Item>
@@ -185,10 +203,9 @@ const UpdateHotel = () => {
                         {isLoading ? (
                             <Spin />
                         ) : (
-                            "Update"
+                            "Cập nhật khách sạn"
                         )}
                     </Button>
-                    <Button danger className="mx-2" onClick={() => navigate("/admin/hotelmanagement")}>Quay lại</Button>
                 </Form.Item>
 
             </Form>

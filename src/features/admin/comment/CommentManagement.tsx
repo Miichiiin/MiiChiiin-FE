@@ -69,15 +69,15 @@ export const CommentManagement = () => {
             title: 'Tên người dùng',
             dataIndex: 'user_name',
             key: 'user_name',
-            render: (text: any, item: any) => {
-                return (
-                    <>
-                        {hasAddUserPermission("update rate") && (
-                            <Link to={`/admin/editcomment/${item.key}`}>{text}</Link>
-                        )}
-                    </>
-                )
-            }
+            // render: (text: any, item: any) => {
+            //     return (
+            //         <>
+            //             {hasAddUserPermission("update rate") && (
+            //                 <Link to={`/admin/editcomment/${item.key}`}>{text}</Link>
+            //             )}
+            //         </>
+            //     )
+            // }
         },
         {
             title: 'Tên loại phòng',

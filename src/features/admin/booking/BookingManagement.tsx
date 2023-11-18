@@ -8,7 +8,7 @@ import 'dayjs/locale/vi';
 import 'dayjs/plugin/utc';
 import 'dayjs/plugin/timezone';
 dayjs.locale('vi');
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
@@ -19,7 +19,7 @@ export const BookingManagement = () => {
     const [searchText, setSearchText] = useState("");
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
-
+    const navigate = useNavigate()
 
     const data = dataBooking?.map(({ id, check_in, check_out, email, name, people_quantity, total_amount, status, cccd, nationality, id_user, phone, promotion, cart }: DataType) => ({
         key: id,
@@ -65,15 +65,6 @@ export const BookingManagement = () => {
             title: 'Tên khách hàng',
             dataIndex: 'name',
             key: 'name',
-            render: (text: any, item: any) => {
-                return (
-                  <>
-                  {hasAddUserPermission("delete booking") && (
-                    <Link to={`/admin/updatebooking/${item.key}`}>{text}</Link>
-                  )}
-                  </>
-                )
-              }
         },
         {
             title: 'Email',
@@ -96,19 +87,19 @@ export const BookingManagement = () => {
             key: 'status',
             render: (_, record) => {
                 let statusText = '';
-                
+
                 if (record.status === 2) {
                     statusText = 'Đã check in';
                 } else if (record.status === 3) {
                     statusText = 'Đã thanh toán';
                 } else if (record.status === 4) {
-                    statusText = 'Hoàn thành'; 
+                    statusText = 'Hoàn thành';
                 } else if (record.status === 1) {
                     statusText = 'Đã Huỷ';
                 } else if (record.status === 0) {
                     statusText = 'Đang chờ';
                 }
-    
+
                 return <span>{statusText}</span>;
             },
         },
@@ -145,10 +136,10 @@ export const BookingManagement = () => {
             key: "action",
             render: (_, record) => (
                 <div>
-                    <button className='px-2 py-2 bg-blue-500 text-white rounded-md mr-2'>
-                        <Link to={`/admin/detailbooking/${record.key}`} >Chi tiết</Link></button>
+                    <button className='px-3 py-2 hover:bg-emerald-600 bg-emerald-500 text-white rounded-md mr-2' onClick={()=>navigate(`/admin/detailbooking/${record.key}`)}>
+                        Chi tiết</button>
                     {hasAddUserPermission("delete booking") && (
-                        <button className='px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 hover:text-white' onClick={() => removeBooking(record.key)}>Xóa</button>
+                        <button className='px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 hover:text-white' onClick={() => removeBooking(record.key)}>Xóa</button>
                     )}
                 </div>
 
@@ -167,17 +158,17 @@ export const BookingManagement = () => {
             selectedStatus === undefined ? true : item.status === selectedStatus
         ) : [];
     // phân quyền
- const dataPermission = localStorage.getItem('userAdmin')
- const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
- const hasAddUserPermission = (permissions:any) => {
-   return currentUserPermissions.includes(permissions);
- };
+    const dataPermission = localStorage.getItem('userAdmin')
+    const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+    const hasAddUserPermission = (permissions: any) => {
+        return currentUserPermissions.includes(permissions);
+    };
     if (isLoading) {
         return <Skeleton active />;
-      }
-      if(isError){
+    }
+    if (isError) {
         return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
-      }
+    }
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>

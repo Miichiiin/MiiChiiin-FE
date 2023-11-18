@@ -98,7 +98,7 @@ const HeaderHotelType = () => {
           <div className="fixed top-0 left-0 w-full  z-20 bg-white ">
             <div className="border-b-2 pb-6  ">
               <div
-                className="xl:w-[1024px] xl:mx-auto h-[50px] flex items-center justify-between
+                className="xl:w-[1280px] xl:mx-auto h-[50px] flex items-center justify-between
                             lg:text-[15px] lg:mr-10 text-[#616971]
                             sm:mr-10 relative
                             "
@@ -124,7 +124,7 @@ const HeaderHotelType = () => {
                       </button> 
                       {isDropdownOpen && (
                           <div className="flex-col flex absolute bg-white text-black absolute mt-1 end-5 bg-white border border-gray-300 shadow-lg transform transition-tranform durtion-500">
-                            <ul className="leading-9 text-black text-center">
+                            <ul className="leading-9 text-black text-center font-medium">
                               <li className="hover:bg-[#f2ba50] hover:text-white px-10">
                                 <button
                                   onClick={handleLogout}
