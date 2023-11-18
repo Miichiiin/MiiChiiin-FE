@@ -9,7 +9,7 @@ import {
   AiFillStar ,
   AiOutlineFrown,
   AiOutlineLeft ,
-  AiOutlineEye,AiOutlineCloseCircle,AiOutlineLike,
+  AiOutlineEye,AiOutlineCloseCircle,AiOutlineLike,AiOutlineSchedule,AiOutlineForm,AiOutlineTeam,
   AiOutlineCalendar
 } from "react-icons/ai";
 import HeaderHotelType from "src/features/webapp/HotelType/HeaderHotelType";
@@ -416,29 +416,32 @@ const ChooseRoom = () => {
                     <h1 className="font-semibold text-lg">{hotel_detail?.[0]?.name}</h1>
                     <button className="text-sm text-blue-500 font-medium hover:underline">Chỉnh sửa</button>
                   </div>
-                  <p className="text-sm pt-3 items-center flex  mb-1">
-                    <AiOutlineCalendar class="text-[17px] mr-2"/>
-                    {date[0].toISOString().slice(0, 10)}
-                    <AiOutlineArrowRight className="inline-block mx-2" />
-                    {date[1].toISOString().slice(0, 10)}
-                  </p>
-                  <p className="text-sm pb-3 ">
-                    {differenceInDays(
-                      parseISO(date[1].toISOString().slice(0, 10)),
-                      parseISO(date[0].toISOString().slice(0, 10))
-                    )}{" "}
-                    Đêm
-                  </p>
+                 <div className="border-b-2 pb-3">
+                  <p className="text-sm pt-3 items-center flex  mb-1 text-gray-500 font-medium">
+                      <AiOutlineCalendar class="text-lg mr-2"/>
+                      {date[0].toISOString().slice(0, 10)}
+                      <AiOutlineArrowRight className="inline-block mx-2" />
+                      {date[1].toISOString().slice(0, 10)}
+                    </p>
+                    <p className="text-sm pb-3 flex items-center text-gray-500 font-medium">
+                      <AiOutlineSchedule class="text-lg mr-2"/>
+                      {differenceInDays(
+                        parseISO(date[1].toISOString().slice(0, 10)),
+                        parseISO(date[0].toISOString().slice(0, 10))
+                      )}{" "}
+                      Đêm
+                    </p>
+                 </div>
                 </div>
-                <hr className="my-4" />
                 <div className="pb-6">
-                  <h1 className="font-semibold text-lg">Danh sách phòng đã chọn:</h1>
+                  <h1 className="font-semibold text-lg pt-4">Danh sách phòng đã chọn:</h1>
                   {roomsToDisplay.length > 0 ? (
                     <ul>
                       {roomsToDisplay.map((room: any, index: any) => (
                         <li key={index} className="flex flex-col">
                           <div className="flex items-center justify-between">
-                            <span className="basis-2/3  mt-2">
+                            <span className="text-base  mt-2 flex items-center text-gray-500 font-medium">
+                              <AiOutlineForm class="text-lg mr-2"/>
                               {room.name} - {room.price.toLocaleString('vi-VN')} đ{" "}
                               {room.count > 1 ? `x${room.count}` : ""}
                             </span>
@@ -449,8 +452,9 @@ const ChooseRoom = () => {
                               <AiOutlineCloseCircle />
                             </button>
                           </div>
-                          <span className="basis-1/3 mb-4">
-                            <p className="text-sm pt-1 ">
+                          <span className="basis-1/3 mb-4 text-gray-500 font-medium border-b-2 pb-7">
+                            <p className="text-sm pt-1 flex items-center">
+                              <AiOutlineTeam class="text-lg mr-2"/>
                               2 Người lớn, 2 Trẻ em
                             </p>
                           </span>
@@ -469,8 +473,7 @@ const ChooseRoom = () => {
                       )}
                     </div>
                   )}
-                  <hr className="my-2" />
-                  <div className="flex items-center justify-between mt-5">
+                  <div className="flex items-center justify-between mt-3">
                     <h1 className="font-medium text-lg">Tổng cộng:</h1>
                     {totalPrice ? (
                       <h1 className="text-xl font-semibold text-yellow-500 ">
