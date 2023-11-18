@@ -7,12 +7,12 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const HotelManagement = () => {
     const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
-    const { data: HotelData, isLoading, isError } = useGetHotel_adminsQuery({});  
+    const { data: HotelData, isLoading, isError } = useGetHotel_adminsQuery({});
     const [removeHotel] = useRemoveHotel_adminMutation({})
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState("");
 
-    const data = HotelData?.map(({ id, name,image, email, description, quantity_of_room, star, phone, quantity_floor, status, name_cities,address }: DataType) => ( {
+    const data = HotelData?.map(({ id, name, image, email, description, quantity_of_room, star, phone, quantity_floor, status, name_cities, address }: DataType) => ({
         key: id,
         name,
         email,
@@ -26,8 +26,8 @@ export const HotelManagement = () => {
         address,
         image,
     }))
-    
-    
+
+
     interface DataType {
         key: number;
         id: string | number;
@@ -60,7 +60,7 @@ export const HotelManagement = () => {
             dataIndex: "image",
             key: "image",
             render: (image) => <Image src={image[0]?.image} width={100} height={100} />,
-          },
+        },
         {
             title: 'City',
             dataIndex: 'name_cities',
@@ -111,7 +111,7 @@ export const HotelManagement = () => {
             key: 'status',
             render: (_, record) => {
                 let statusText = '';
-                
+
                 if (record.status === 2) {
                     statusText = 'Hoạt động';
                 } else if (record.status === 1) {
@@ -119,7 +119,7 @@ export const HotelManagement = () => {
                 } else if (record.status === 0) {
                     statusText = 'Đang chờ';
                 }
-        
+
                 return <span>{statusText}</span>;
             },
         },
@@ -130,28 +130,29 @@ export const HotelManagement = () => {
                 return (
                     <>
                         <div>
-                        {hasAddUserPermission("delete hotel") && (
-                          <Popconfirm
-                            title="Xóa Khách sạn"
-                            description="Bạn có muốn xóa không??"
-                            onConfirm={() => {
-                              removeHotel(item.key).unwrap().then(() => {
-                                message.success("Xóa thành công");
-                              })
-                            }}
-                            okText="Có"
-                            cancelText="Không"
-                          >
-                            <Button danger>Xóa</Button>
-                          </Popconfirm>
-                          )}
-                          {hasAddUserPermission("update hotel") && (
-                            <Button className="mx-2 px-4 py-1 border border-blue-700 rounded" onClick={()=>navigate(`/admin/updatehotel/${item.key}`)}>Sửa</Button>
-                        )}
+                            {hasAddUserPermission("update hotel") && (
+                                <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={() => navigate(`/admin/updatehotel/${item.key}`)}>Sửa</button>
+                            )}
+                            {hasAddUserPermission("delete hotel") && (
+                                <Popconfirm
+                                    title="Xóa Khách sạn"
+                                    description="Bạn có muốn xóa không??"
+                                    onConfirm={() => {
+                                        removeHotel(item.key).unwrap().then(() => {
+                                            message.success("Xóa thành công");
+                                        })
+                                    }}
+                                    okText="Có"
+                                    cancelText="Không"
+                                >
+                                    <button className="mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" >Xóa</button>
+                                </Popconfirm>
+                            )}
+
                         </div>
-                      
+
                     </>
-                  )
+                )
             }
         }
     ];
@@ -165,17 +166,17 @@ export const HotelManagement = () => {
     const filteredData = data ? data.filter((item: DataType) => {
         const nameMatch = item.name.toLowerCase().includes(searchText.toLowerCase());
         const addressMatch = !addressFilter || item.name_cities.includes(addressFilter);
-    
+
         return nameMatch && addressMatch;
     }) : [];
     // phân quyền
     const dataPermission = localStorage.getItem('userAdmin')
-    const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
-    const hasAddUserPermission = (permissions:any) => {
-    return currentUserPermissions.includes(permissions);
+    const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+    const hasAddUserPermission = (permissions: any) => {
+        return currentUserPermissions.includes(permissions);
     };
-  if(isLoading) return <Skeleton active/>
-    if(isError) return <div>Error</div>
+    if (isLoading) return <Skeleton active />
+    if (isError) return <div>Error</div>
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
@@ -199,7 +200,7 @@ export const HotelManagement = () => {
                 </div>
                 {
                     hasAddUserPermission("add hotel") && (
-                        <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/addhotel'}>Thêm khách sạn</Link></button>
+                        <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => navigate('/admin/addhotel')}>Thêm khách sạn</button>
                     )
                 }
             </div>
@@ -231,9 +232,9 @@ export const HotelManagement = () => {
                     pagination={{
                         ...pagination,
                         onChange: (page) => {
-                          setPagination({ ...pagination, current: page });
+                            setPagination({ ...pagination, current: page });
                         },
-                      }}
+                    }}
                 />
             </div>
         </div>

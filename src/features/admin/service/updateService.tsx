@@ -1,5 +1,6 @@
 
 import { useGetService_adminIdQuery, useUpdateService_adminMutation } from '@/api/admin/service_admin';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Form, Image, Input, InputNumber, Select, message, Skeleton, Spin } from 'antd';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -69,14 +70,16 @@ export const UpdateService = () => {
   return (
     <div>
       {isUploading && <Spin className='animate' />}
-      <header className="flex justify-between items-center my-5 mx-3">
-        <h2 className="text-2xl ">Cập nhật dịch vụ: <span className='text-blue-700 font-semibold'>{data?.name}</span></h2>
+      <header className="flex justify-between items-center mb-5">
+        <h2 className="text-xl font-semibold ">Cập nhật dịch vụ: <span className='text-2xl text-blue-700 font-semibold'>{data?.name}</span></h2>
+        <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/service")}>
+          <ArrowLeftOutlined className="pr-2" /> Quay lại
+        </button>
       </header>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        layout='vertical'
         initialValues={data} // Sử dụng dữ liệu hiện có để điền vào các trường
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -87,7 +90,7 @@ export const UpdateService = () => {
         </Form.Item>
 
         <Form.Item label="Giá" name="price" rules={[{ required: true, message: 'Hãy nhập giá dịch vụ!' }]}>
-          <InputNumber />
+          <InputNumber className='w-full' />
         </Form.Item>
 
         <Form.Item
@@ -95,7 +98,7 @@ export const UpdateService = () => {
           label="Upload"
         >
           <input type='file' onChange={handleChange} />
-          <Image src={data?.image} className='w-[100px] h-[100px] my-2' />
+          <Image src={data?.image} className='my-2' width={100} height={100} />
         </Form.Item>
 
         <Form.Item
@@ -103,11 +106,11 @@ export const UpdateService = () => {
           name="quantity"
           rules={[{ required: true, message: 'Hãy nhập số lượng dịch vụ!' }]}
         >
-          <InputNumber />
+          <InputNumber className='w-full' />
         </Form.Item>
 
         <Form.Item label="Trạng thái" name="status" >
-          <Select placeholder="Chọn trạng thái " style={{ width: '150px' }}>
+          <Select placeholder="Chọn trạng thái " >
             <Select.Option value={1} >Đang chờ</Select.Option>
             <Select.Option value={0}>Ẩn</Select.Option>
             <Select.Option value={2}>Hoạt động</Select.Option>
@@ -118,12 +121,9 @@ export const UpdateService = () => {
           <Input.TextArea placeholder="Nội dung" allowClear />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item >
           <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
             Cập nhật
-          </Button>
-          <Button type="primary" danger className='mx-2' onClick={() => navigate("/admin/service")}>
-            Quay lại
           </Button>
         </Form.Item>
       </Form>

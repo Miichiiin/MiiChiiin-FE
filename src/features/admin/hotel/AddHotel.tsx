@@ -1,4 +1,5 @@
 import { useAddHotel_adminMutation } from '@/api/admin/hotel_admin';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Spin, message } from 'antd';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
@@ -56,9 +57,12 @@ export const AddHotel = () => {
     };
     return (
         <div>
-            {isUploading && <Spin className='animate'/>}
-            <header className="flex justify-between items-center my-5 mx-3">
-                <h2 className="text-2xl  text-blue-700">Thêm khách sạn</h2>
+            {isUploading && <Spin className='animate' />}
+            <header className="flex justify-between items-center mb-5">
+                <h2 className="text-2xl  text-blue-900 font-semibold">Thêm khách sạn</h2>
+                <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/hotelmanagement")}>
+                    <ArrowLeftOutlined className="pr-2" /> Quay lại
+                </button>
             </header>
             <Form
                 name="basic"
@@ -66,9 +70,10 @@ export const AddHotel = () => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                layout='vertical'
             >
-                <div className='flex justify-center'>
-                    <div className='w-[500px] p-4 bg-white mr-4'>
+                <div className='flex justify-between'>
+                    <div className='w-1/2 p-4 bg-white mr-4'>
                         <Form.Item
                             label="Tên Khách sạn"
                             name="name"
@@ -99,14 +104,6 @@ export const AddHotel = () => {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            label="Số điện thoại"
-                            name="phone"
-                            rules={[{ required: true, message: 'Hãy nhập số điện thoại!' },
-                            { whitespace: true, message: 'Không được để trống!' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item
                             label="Mô tả"
                             name="description"
                             rules={[{ required: true, message: 'Hãy nhập mô tả!' },
@@ -128,20 +125,20 @@ export const AddHotel = () => {
                             </ul>
                         </Form.Item>
                     </div>
-                    <div className='w-[500px] p-4 bg-white mr-4'>
+                    <div className='w-1/2 p-4 bg-white mr-4'>
                         <Form.Item
                             label="Số sao"
                             name="star"
                             rules={[{ required: true, message: 'Hãy nhập số sao!' }]}
                         >
-                            <InputNumber />
+                            <InputNumber className='w-full' />
                         </Form.Item>
                         <Form.Item
                             label="Số lượng phòng"
                             name="quantity_of_room"
                             rules={[{ required: true, message: 'Hãy nhập số lượng phòng' }]}
                         >
-                            <InputNumber />
+                            <InputNumber className='w-full' />
                         </Form.Item>
 
                         <Form.Item
@@ -149,23 +146,31 @@ export const AddHotel = () => {
                             name="quantity_floor"
                             rules={[{ required: true, message: 'Hãy nhập số lượng tầng' }]}
                         >
-                            <InputNumber />
+                            <InputNumber className='w-full' />
                         </Form.Item>
                         <Form.Item
                             label="Trạng thái"
                             name="status"
                         >
-                            <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
+                            <Select placeholder="Chọn trạng thái" style={{ width: '100%' }}>
                                 <Select.Option value={0}>Đang dùng</Select.Option>
                                 <Select.Option value={1}>Có sẵn</Select.Option>
                             </Select>
+                        </Form.Item>
+                        <Form.Item
+                            label="Số điện thoại"
+                            name="phone"
+                            rules={[{ required: true, message: 'Hãy nhập số điện thoại!' },
+                            { whitespace: true, message: 'Không được để trống!' }]}
+                        >
+                            <Input />
                         </Form.Item>
                         <Form.Item
                             label="Thành phố"
                             name="id_city"
                             rules={[{ required: true, message: 'Hãy nhập chọn id city!' }]}
                         >
-                            <Select placeholder="Chọn thành phố" style={{ width: '150px' }}>
+                            <Select placeholder="Chọn thành phố" style={{ width: '100%' }}>
                                 <Select.Option value={1}>Hà Nội</Select.Option>
                                 <Select.Option value={2}>Đà Nẵng</Select.Option>
                                 <Select.Option value={3}>Hồ Chí Minh</Select.Option>
@@ -183,7 +188,6 @@ export const AddHotel = () => {
                             "Add new hotel"
                         )}
                     </Button>
-                    <Button danger className='mx-2' onClick={() => navigate("/admin/hotelmanagement")}>Quay lại</Button>
                 </Form.Item>
             </Form>
         </div>

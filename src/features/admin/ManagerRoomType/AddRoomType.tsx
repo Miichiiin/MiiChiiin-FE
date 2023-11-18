@@ -54,20 +54,19 @@ const AddRoomType = () => {
         <div className="text-xl font-semibold">Thêm Loại Phòng</div>
 
         <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={()=>navigate("/admin/manageroomtype")}>
-          
             <ArrowLeftOutlined className='pr-2'/> Quay lại
-          
         </button>
       </div>
 
       <Form
-        labelCol={{ span: 5 }}
+        labelCol={{ span: 6 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        layout='vertical'
       >
 
-        <div className='flex justify-between space-x-4'>
+        <div className='flex justify-between space-x-8'>
         <div className='w-1/2'>
         <Form.Item
           label="Tên loại phòng"
@@ -110,28 +109,28 @@ const AddRoomType = () => {
           name="floor"
           rules={[{ required: true, message: 'Vui lòng nhập số tầng!' }]}
         >
-          <InputNumber className='w-1/2'/>
+          <InputNumber className='w-full'/>
         </Form.Item>
         <Form.Item
           label="Số người"
           name="quantity_of_people"
           rules={[{ required: true, message: 'Vui lòng nhập số người!' }]}
         >
-          <InputNumber className='w-1/2'/>
+          <InputNumber className='w-full'/>
         </Form.Item>
         <Form.Item
           label="Giá"
           name="price"
           rules={[{ required: true, message: 'Vui lòng nhập giá phòng!' }]}
         >
-          <InputNumber className='w-1/2'/>
+          <InputNumber className='w-full'/>
         </Form.Item>
         <Form.Item
           label="Diện tích"
           name="acreage"
           rules={[{ required: true, message: 'Vui lòng nhập diện tích!' }]}
         >
-          <InputNumber className='w-1/2'/>
+          <InputNumber className='w-full'/>
         </Form.Item>
         
         <Form.Item

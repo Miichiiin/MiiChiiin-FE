@@ -1,13 +1,14 @@
 
 import { useGetAdmin_admin_AdminQuery, useRemoveAdmin_admin_AdminMutation } from "@/api/admin/admin_admin_admin";
-import { Table, Divider, Radio, Input, Select, Button } from "antd";
+import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export const ManagerEmployee = () => {
   const { data: emploData } = useGetAdmin_admin_AdminQuery({})
+  const navigate = useNavigate()
   const [removeEployee,{isLoading: isRemoveEmployee}] = useRemoveAdmin_admin_AdminMutation()
   const dataSource = emploData?.map(({ id, name, id_role, email, password, image, description, gender, date, address, status, phone }: DataType) => ({
     key: id,
@@ -51,13 +52,6 @@ export const ManagerEmployee = () => {
       title: "Tên nhân viên",
       dataIndex: "name",
       key: "name",
-      render: (text: any, item: any) => {
-        return (
-          <>
-            <Link to={`/admin/updateemployee/${item.key}`}>{text}</Link>
-          </>
-        )
-      }
     },
     {
       title: "Email",
@@ -112,28 +106,40 @@ export const ManagerEmployee = () => {
       title: "Thao tác",
       dataIndex: "action",
       key: "action",
-      render: (text, item) => (
-        <div className="flex space-x-2">
+      render: (_, item) => (
+        <div className="flex">
+          {hasAddUserPermission("update user") && (
+            <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={()=>navigate(`/admin/updateemployee/${item.key}`)}>
+              Sửa
+            </button>
+          )}
           {hasAddUserPermission("delete user") && (
-            <Button loading={isRemoveEmployee}
-              className='px-4 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md'
-              onClick={() => confirmDelete(item.key)}
+             <Popconfirm
+             title="Xóa Khách sạn"
+             description="Bạn có muốn xóa không??"
+             onConfirm={() => {
+              removeEployee(item.key).unwrap().then(() => {
+                 message.success("Xóa thành công");
+               })
+             }}
+             okText="Có"
+             cancelText="Không"
+           >
+             <button 
+              className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
             >
               Xóa
-            </Button>
+            </button>
+           </Popconfirm>
+            
           )}
-          {hasAddUserPermission("update user") && (
-            <Button type="primary" className='bg-[#3b82f6]'>
-              <Link to={`/admin/updateemployee/${item.key}`}>Sửa</Link>
-            </Button>
-          )}
+          
         </div >
       ),
     },
   ];
 
   const [searchText, setSearchText] = useState("");
-  const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
   const filteredData = dataSource ? dataSource
@@ -144,14 +150,6 @@ export const ManagerEmployee = () => {
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
 
-  const confirmDelete = (id: number) => {
-    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
-    if (isConfirmed) {
-      removeEployee(id).unwrap().then(() => {
-        setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
-      });
-    }
-  };
   // phân quyền
   const dataPermission = localStorage.getItem('userAdmin')
   const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
@@ -208,8 +206,8 @@ export const ManagerEmployee = () => {
           />
         </div>
         {hasAddUserPermission('add user') && (
-          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-                <Link to={`/admin/addemployee`}>Thêm Nhân Viên</Link>
+          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={()=>navigate(`/admin/addemployee`)}>
+                Thêm Nhân Viên
           </button>
           )}
       </div>

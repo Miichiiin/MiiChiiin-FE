@@ -48,7 +48,7 @@ export const HeaderAdmin = () => {
                 <div className='relative'>
                     <h3 className='text-md px-2 flex items-center cursor-pointer ' onClick={toggleDropdown} >{name} <MdArrowDropDown /></h3>
                     {isDropdownOpen && (
-                        <div className='absolute right-0 pl-2 py-2 bg-gray-100 rounded shadow-lg'>
+                        <div className='absolute right-0 w-[185px] pl-2 py-2 bg-gray-100 rounded shadow-lg'>
                             {/* Adjusted size for smaller dropdown */}
                             <ul className='text-sm'>
                                 <li className='hover:text-blue-500 py-1 cursor-pointer' onClick={()=>navigate(`admininfo/${idLC}`)}>Thông tin tài khoản</li>
