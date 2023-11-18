@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { AiFillSignal, AiOutlineCreditCard } from "react-icons/ai";
 import { BiSolidBed, BiHotel } from "react-icons/bi";
@@ -12,6 +12,7 @@ import { MdMedicalServices } from "react-icons/md";
 import { TbBrandBooking } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
 import { FaHotel } from "react-icons/fa";
+import { AnyAction } from "@reduxjs/toolkit";
 const { Content, Footer, Sider } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -29,33 +30,21 @@ function getItem(
 }
 
 export const LayoutAdmin = () => {
+  const location = useLocation();
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const userAdminLocal = localStorage.getItem('userAdmin')
-  const idLC = userAdminLocal ? JSON.parse(userAdminLocal)?.id : null;
-  console.log("user",userAdminLocal);
   let imageLC = ""
- if(userAdminLocal) {
-  const data = JSON.parse(userAdminLocal);
-  imageLC = data.image; 
-  // id = data.id,
- }
+  if (userAdminLocal) {
+    const data = JSON.parse(userAdminLocal);
+    imageLC = data.image;
+  }
 
   // Lấy quyền hạn của người dùng hiện tại (lấy ví dụ từ người dùng đầu tiên trong danh sách)
   const currentUserPermissions = (userAdminLocal && JSON.parse(userAdminLocal).permissions) || [];
-  const image403 = () => {
-    return (
-        <img 
-            src="https://blog.task.com.br/wp-content/uploads/erro-403-forbidden.jpg" 
-            alt=""
-            className="mx-auto object-cover" 
-        />
-    )
-}
-  // Tạo menu dựa trên quyền hạn của người dùng
   const getMenuItems = () => {
     const menuItems = [];
 
@@ -182,10 +171,69 @@ export const LayoutAdmin = () => {
     return menuItems;
   };
 
+  const getCurrentBreadcrumb = () => {
+    // Tách đoạn đường dẫn thành các phần từ, loại bỏ các phần tử rỗng (có thể xuất hiện do các dấu '/' liên tiếp)
+    const pathSnippets = location.pathname.split('/').filter((i) => i);
+    const menuItems = getMenuItems();
+    // Tạo mảng Breadcrumb bằng cách duyệt qua từng đoạn đường dẫn
+    return pathSnippets.map((path, index) => {
+      // tạo url
+      const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+      // Tìm mục trong menu có đường dẫn trùng với URL đã tạo
+      const menuItem = menuItems.find((item:any) => item.path === url);
+      // Định dạng lại đoạn đường dẫn: nếu là đoạn đầu tiên, viết hoa chữ cái đầu và chuyển phần còn lại thành chữ thường
+      const formattedPath =
+        index === 0 ? path.charAt(0).toUpperCase() + path.slice(1).toLowerCase() : path;
+      return (
+        <Breadcrumb.Item key={url}>
+          {menuItem ? <Link to={url}>{formattedPath}</Link> : <span>{formattedPath}</span>}
+        </Breadcrumb.Item>
+      );
+    });
+  };
+  
   useEffect(() => {
-  if(!localStorage.getItem('tokenAdmin') )
-    navigate('/error/401')
+    if (!localStorage.getItem('tokenAdmin'))
+      navigate('/error/401')
   }, [])
+
+  const getLogoContent = () => {
+    if (collapsed) {
+      return (
+        <div className="text-center my-8 flex justify-center items-center cursor-pointer" onClick={()=>navigate("/admin")}>
+          <img
+            src={
+              'https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png'
+            }
+            alt="Logo"
+            className="w-full"
+          />
+        </div>
+      );
+    } else {
+      return (
+        <>
+          <div className="flex items-center justify-center my-3 cursor-pointer" onClick={()=>navigate("/admin")}>
+            <img
+              src={
+                'https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png'
+              }
+              alt="Logo"
+              className="w-1/2"
+            />
+            <h1 className="text-center text-lg text-orange-100 italic font-semibold ">
+              The Michii
+            </h1>
+          </div>
+          <div>
+            <p className="text-center text-[10px] text-orange-100 mb-2 italic font-semibold">
+              Dừng chân tại đây, để bắt đầu một hành trình đáng nhớ
+            </p>
+          </div>
+        </>
+      );
+    }
+  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -194,16 +242,7 @@ export const LayoutAdmin = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div className="flex flex-col items-center justify-center my-5 text-white">
-          <Link to={`admininfo/${idLC}`} className="flex items-center">
-            <img
-              src={imageLC}
-              alt="Logo"
-              className="rounded-full w-[100px] h-[100px]"
-              width={100}
-            />
-          </Link>
-        </div>
+        {getLogoContent()}
         <hr />
         <Menu
           theme="dark"
@@ -217,11 +256,7 @@ export const LayoutAdmin = () => {
         <HeaderAdmin />
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>
-              <Link to="/admin">Thống kê</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item></Breadcrumb.Item>
-            <Breadcrumb.Item></Breadcrumb.Item>
+            {getCurrentBreadcrumb()}
           </Breadcrumb>
           <div
             style={{

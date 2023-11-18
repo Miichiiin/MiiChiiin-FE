@@ -10,6 +10,7 @@ import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
 import { useGetService_adminQuery } from '@/api/admin/service_admin';
 import { useGetCategory_BookingQuery } from '@/api/admin/category_booking';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -267,7 +268,7 @@ const AddBooking = () => {
     addBooking(formattedValues).unwrap().then((response) => {
       const bookingId = response.error_message.id;
       console.log(bookingId);
-      
+
       message.success('Thêm thành công');
       setTimeout(() => {
         navigate(`/admin/detailbooking/${bookingId}`);
@@ -291,7 +292,12 @@ const AddBooking = () => {
   return (
 
     <div className="mx-auto overflow-auto scroll-smooth">
-      <h1 className='text-2xl font-bold pb-5'>Thêm Booking mới </h1>
+      <header className='flex justify-between items-center mb-3'>
+        <h1 className='text-2xl font-bold pb-5'>Thêm Booking mới </h1>
+        <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
+          <ArrowLeftOutlined className="pr-2" /> Quay lại
+        </button>
+      </header>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -427,7 +433,7 @@ const AddBooking = () => {
                 labelCol={{ span: 24 }}
 
               >
-                <Input className='w-[100px]' />
+                <Input className='w-[250px]' />
               </Form.Item>
               <Form.Item
                 label="Quốc tịch"
@@ -452,7 +458,7 @@ const AddBooking = () => {
                   },]}
                 labelCol={{ span: 24 }}
               >
-                <InputNumber className='w-[100px]'
+                <InputNumber className='w-[250px]'
 
                   onChange={(value: any) => {
                     handleEnterPress(value);
@@ -465,7 +471,7 @@ const AddBooking = () => {
                 labelCol={{ span: 24 }}
                 rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
               >
-                <Select className='w-[250px]' placeholder="Hay chọn trạng thái">
+                <Select style={{ width: "250px" }} placeholder="Hay chọn trạng thái">
                   <Select.Option value={0}>Đang chờ</Select.Option>
                   <Select.Option value={1}>Đã huỷ</Select.Option>
                   <Select.Option value={2} >Đã check in</Select.Option>
@@ -618,10 +624,7 @@ const AddBooking = () => {
           <Form.Item >
             <div className="flex justify-start items-center space-x-4">
               <Button type="primary" className="bg-blue-500 text-white" htmlType="submit" >
-                Thêm mới
-              </Button>
-              <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
-                Quay lại
+                Thêm booking mới
               </Button>
             </div>
           </Form.Item>

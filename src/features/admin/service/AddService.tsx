@@ -1,4 +1,5 @@
 import { useAddService_adminMutation } from '@/api/admin/service_admin';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 import { Button, Form, Input, InputNumber, Select, Spin, message } from 'antd';
 import { useState } from 'react';
@@ -8,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const AddService = () => {
   const navigate = useNavigate();
-  const [addServiceAdmin, {isLoading}] = useAddService_adminMutation();
+  const [addServiceAdmin, { isLoading }] = useAddService_adminMutation();
   const [selectedFile, setSelectedFile] = useState<File>();
   const [isUploading, setIsUploading] = useState(false)
   const onFinish = (values: any) => {
@@ -24,9 +25,9 @@ export const AddService = () => {
     message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
     addServiceAdmin(body).unwrap().then(() => {
       navigate("/admin/service")
-      message.success({content: 'Thêm dịch vụ thành công', key: 'uploading'})
+      message.success({ content: 'Thêm dịch vụ thành công', key: 'uploading' })
     }).catch(() => {
-      message.error({content: 'Thêm dịch vụ thất bại', key: 'uploading'})
+      message.error({ content: 'Thêm dịch vụ thất bại', key: 'uploading' })
     }).finally(() => {
       setIsUploading(false);
     })
@@ -38,22 +39,23 @@ export const AddService = () => {
     setSelectedFile(selectedFiles?.[0])
   };
 
-   const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
-
   return (
     <div>
-      {isUploading && <Spin className='animate'/>}
-      <header className="flex justify-between items-center my-5 mx-3">
-        <h2 className="text-2xl text-blue-700">Thêm dịch vụ</h2>
+      {isUploading && <Spin className='animate' />}
+      <header className="flex justify-between items-center mb-5">
+        <h2 className="text-2xl text-blue-900 font-semibold">Thêm dịch vụ</h2>
+        <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/service")}>
+          <ArrowLeftOutlined className="pr-2" /> Quay lại
+        </button>
       </header>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        layout='vertical'
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -71,7 +73,7 @@ export const AddService = () => {
           name="price"
           rules={[{ required: true, message: 'Hãy nhập giá dịch vụ!' }]}
         >
-          <InputNumber />
+          <InputNumber className='w-full' />
         </Form.Item>
         <Form.Item
           name="image"
@@ -84,14 +86,14 @@ export const AddService = () => {
           name="quantity"
           rules={[{ required: true, message: 'Hãy nhập số lượng dịch vụ!' }]}
         >
-          <InputNumber />
+          <InputNumber className='w-full' />
         </Form.Item>
         <Form.Item
           label="Trạng thái"
           name="status"
           rules={[{ required: true, message: 'Chọn trạng thái đi ' }]}
         >
-          <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}>
+          <Select placeholder="Chọn trạng thái" >
             <Select.Option value={1} >Đang chờ</Select.Option>
             <Select.Option value={0}>Ẩn</Select.Option>
             <Select.Option value={2}>Hoạt động</Select.Option>
@@ -100,15 +102,14 @@ export const AddService = () => {
         <Form.Item label="Mô tả" name="description">
           <Input.TextArea placeholder="Nội dung" allowClear />
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item>
           <Button type="primary" className="bg-blue-500 text-white" htmlType="submit">
-          {isLoading ? (
+            {isLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />
             ) : (
-              "Add"
+              "Thêm dịch vụ"
             )}
           </Button>
-          <Button type='primary' danger className='mx-2' onClick={()=>navigate("/admin/service")}>Quay lại</Button>
         </Form.Item>
       </Form>
     </div>

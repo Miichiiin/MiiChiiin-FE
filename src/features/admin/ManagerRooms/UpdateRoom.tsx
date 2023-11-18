@@ -14,13 +14,13 @@ const UpdateRoomPage = () => {
   const { data: RoomCategories } = useGetCategory_adminQuery()
   const navigate = useNavigate();
   const { id } = useParams();
-  const {data, isLoading, isError} = useGetRoom_AdminByIdQuery(id)
+  const { data, isLoading, isError } = useGetRoom_AdminByIdQuery(id)
   const roomData = data?.[0]
-  
+
   const [updateRoom] = useUpdateRoom_AdminMutation();
   const onFinish = (values: any) => {
     console.log("Form values:", values);
-    updateRoom({...values, id}).unwrap().then(() => {
+    updateRoom({ ...values, id }).unwrap().then(() => {
       navigate("/admin/managerroom");
       message.success('Sửa phòng thành công');
     })
@@ -37,19 +37,20 @@ const UpdateRoomPage = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div className="text-xl font-semibold">Cập Nhật Phòng: <span className="text-3xl text-blue-800">{data.name}</span></div>
 
-        <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
-          <Link to={`/admin/managerroom`}>
-            <ArrowLeftOutlined /> Quay lại
-          </Link>
-        </Button>
+        <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={() => navigate(`/admin/managerroom`)}>
+          <ArrowLeftOutlined className="mr-2" /> Quay lại
+        </button>
       </div>
 
-      <Form 
-       name="updateRoom"
-      initialValues={roomData} 
-       onFinish={onFinish}>
-        <div className="flex justify-center">
-          <div className="w-1/2 p-4 bg-white ">
+      <Form
+        name="updateRoom"
+        initialValues={roomData}
+        onFinish={onFinish}
+        layout="vertical"
+        labelCol={{ span: 8 }}
+      >
+        <div className="flex">
+          <div className="w-1/2 bg-white pr-2">
             <Form.Item label="Tên Phòng" name="name" rules={[{ required: true, message: 'Nhập tên phòng' }]}>
               <Input />
             </Form.Item>
@@ -62,8 +63,11 @@ const UpdateRoomPage = () => {
               </Select>
 
             </Form.Item>
+
+          </div>
+          <div className="w-1/2 bg-white pr-2">
             <Form.Item label="Trạng Thái" name="status" rules={[{ required: true, message: 'Hãy chọn trạng thái ' }]}>
-            <Select placeholder="Chọn trạng thái">
+              <Select placeholder="Chọn trạng thái">
                 <Select.Option value={1}>Đã ẩn</Select.Option>
                 <Select.Option value={0}>Đang chờ</Select.Option>
                 <Select.Option value={2}>Hoạt động</Select.Option>

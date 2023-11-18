@@ -4,7 +4,6 @@ import {
   Table,
   Divider,
   Radio,
-  Button,
   Select,
   Input,
   Image,
@@ -15,7 +14,7 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export const ServiceManagement = () => {
@@ -26,12 +25,13 @@ export const ServiceManagement = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-   // phân quyền
- const dataPermission = localStorage.getItem('userAdmin')
- const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
- const hasAddUserPermission = (permissions:any) => {
-   return currentUserPermissions.includes(permissions);
- };
+  const navigate = useNavigate();
+  // phân quyền
+  const dataPermission = localStorage.getItem('userAdmin')
+  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+  const hasAddUserPermission = (permissions: any) => {
+    return currentUserPermissions.includes(permissions);
+  };
   interface DataType {
     key: string;
     name: string;
@@ -52,15 +52,6 @@ export const ServiceManagement = () => {
       title: "Tên dịch vụ",
       dataIndex: "name",
       key: "name",
-      render: (text: any, item: any) => {
-        return (
-          <>
-            {hasAddUserPermission("update service") && (
-              <Link to={`/admin/updateservice/${item.id}`}>{text}</Link>
-            )}
-          </>
-        )
-      }
     },
     {
       title: "Giá dịch vụ",
@@ -71,7 +62,7 @@ export const ServiceManagement = () => {
       title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
-      render: (text: any) => <Image src={text} width={100} height={100}/>,
+      render: (text: any) => <Image src={text} width={100} height={100} />,
     },
     {
       title: "Số lượng",
@@ -84,17 +75,16 @@ export const ServiceManagement = () => {
       key: "status",
       render: (_, record) => {
         let statusText = '';
-        
         if (record.status === 2) {
-            statusText = 'Hoạt động';
+          statusText = 'Hoạt động';
         } else if (record.status === 1) {
-            statusText = 'Đã ẩn';
+          statusText = 'Đã ẩn';
         } else if (record.status === 0) {
-            statusText = 'Đang chờ';
+          statusText = 'Đang chờ';
         }
 
         return <span>{statusText}</span>;
-    },
+      },
     },
     {
       title: "Mô tả",
@@ -108,28 +98,29 @@ export const ServiceManagement = () => {
       render: (_, item: any) => {
         return (
           <>
-           
-             <div className="flex items-center">
-             {hasAddUserPermission("delete service") && (
-               <Popconfirm
-                title="Xóa sản phẩm"
-                description="Bạn có muốn xóa không??"
-                onConfirm={() => {
-                  removeService(item.id).unwrap().then(() => {
-                    message.success("Xóa thành công");
-                  })
-                }}
-                okText="Có"
-                cancelText="Không"
-              >
-                <Button danger>Xóa</Button>
-              </Popconfirm>
-              )}
+
+            <div className="flex items-center">
               {hasAddUserPermission("update service") && (
-              <Link className="mx-2 px-4 py-1 border border-blue-700 rounded" to={`/admin/updateservice/${item.id}`}>Sửa</Link>
+                <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={() => navigate(`/admin/updateservice/${item.id}`)}>Sửa</button>
               )}
-             </div>
-           
+              {hasAddUserPermission("delete service") && (
+                <Popconfirm
+                  title="Xóa sản phẩm"
+                  description="Bạn có muốn xóa không??"
+                  onConfirm={() => {
+                    removeService(item.id).unwrap().then(() => {
+                      message.success("Xóa thành công");
+                    })
+                  }}
+                  okText="Có"
+                  cancelText="Không"
+                >
+                  <button className="mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" >Xóa</button>
+                </Popconfirm>
+              )}
+
+            </div>
+
 
           </>
         )
@@ -175,7 +166,7 @@ export const ServiceManagement = () => {
     ) : [];
 
   if (isLoading) {
-    return <Skeleton active/>;
+    return <Skeleton active />;
   }
   if (isError) {
     return <div>Error</div>;
@@ -231,8 +222,8 @@ export const ServiceManagement = () => {
           />
         </div>
         {hasAddUserPermission("add service") && (
-          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-            <Link to={`/admin/addservice`}>Thêm dịch vụ</Link>
+          <button className="ml-2 px-2 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={() => navigate(`/admin/addservice`)}>
+            Thêm dịch vụ
           </button>
         )}
       </div>

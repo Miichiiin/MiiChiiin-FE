@@ -1,5 +1,5 @@
 import { Card, Form, Button, Upload, message ,Input} from "antd";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useGetAdmin_admin_AdminByIdQuery, useRemoveAdmin_admin_AdminMutation } from "@/api/admin/admin_admin_admin";
 
@@ -14,8 +14,7 @@ const AdminInfoPage = () => {
   const idLC = userAdminLocal ? JSON.parse(userAdminLocal)?.id : null;
   const data = idLC === dataUser?.data?.id;
   const list = data ? dataUser.data : null;  
-console.log("k",dataUser);
-
+  const navigate = useNavigate()
   
   useEffect(() => {
     if (list) {
@@ -129,6 +128,7 @@ console.log("k",dataUser);
                 >
                   Lưu
                 </Button>
+                <Button className="mx-2" type="primary" danger onClick={()=>navigate(`/admin`)}>Quay lại</Button>
               </Form.Item>
               {/* <div className="text-center">
                 <Link to="/quen-mat-khau">Quên mật khẩu</Link> |{" "}

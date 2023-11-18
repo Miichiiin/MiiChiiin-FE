@@ -59,13 +59,11 @@ const UpdateVoucherPage = () => {
     } else {
       body.append('image', voucherData?.image);
     }
-    console.log('body', body);
     updateVoucher(body).unwrap().then(() => {
       navigate("/admin/managervouchers")
       message.success('Update khách hàng thành công!');
 
     })
-    console.log('Form values:', values);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,106 +96,95 @@ const UpdateVoucherPage = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div className="text-lg font-semibold">Update Voucher</div>
 
-        <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
-          <Link to={`/admin/managervouchers`}>
-            <ArrowLeftOutlined /> Quay lại
-          </Link>
-        </Button>
+        <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={() => navigate(`/admin/managervouchers`)}>
+          <ArrowLeftOutlined className='pr-2' /> Quay lại
+        </button>
       </div>
       <Form
         form={form}
-        layout="vertical"
         name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
+        labelCol={{ span: 5 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        className="flex"
+        layout='vertical'
       >
-        {/* Form fields on the left */}
-        <div className="w-1/2 p-4 bg-white">
-          <Form.Item<FieldType>
-            label="Mã Voucher "
-            name="slug"
-            rules={[{ required: true, message: 'Please enter voucher code' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Tên Voucher "
-            name="name"
-            rules={[{ required: true, message: 'Please enter voucher name' }]}>
-            <Input />
-          </Form.Item>
-          {/* <Form.Item<FieldType> 
-              label="Loại Type" 
-              name="discount" 
-              rules={[{ required: true, message: 'Please select voucher type' }]}>
-              <Select>
-                <Option value="discount">30</Option>
-                <Option value="freebie">10</Option>
+        <div className="flex justify-between space-x-4">
+          <div className="w-1/2 p-4 bg-white">
+            <Form.Item<FieldType>
+              label="Mã Voucher "
+              name="slug"
+              rules={[{ required: true, message: 'Please enter voucher code' }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item<FieldType>
+              label="Tên Voucher "
+              name="name"
+              rules={[{ required: true, message: 'Please enter voucher name' }]}>
+              <Input />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              label="Mô tả dài"
+              name="description">
+              <Input.TextArea rows={2} />
+            </Form.Item>
+            <Form.Item<FieldType>
+              label="Mô tả ngắn"
+              name="meta">
+              <Input.TextArea rows={2} />
+            </Form.Item>
+            <Form.Item<FieldType>
+              label="Status"
+              name="status"
+              rules={[{ required: true, message: 'Please select status' }]}>
+              <Select placeholder="Chọn trạng thái">
+                <Option value={1}>Ẩn</Option>
+                <Option value={0}>Đang chờ</Option>
+                <Option value={2}>Hoạt động</Option>
               </Select>
-            </Form.Item> */}
-          <Form.Item<FieldType>
-            label="Mô tả ngắn"
-            name="meta">
-            <Input.TextArea rows={2} />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Mô tả dài"
-            name="description">
-            <Input.TextArea rows={4} />
-          </Form.Item>
-          <Form.Item label="Discount Value" name="discount" rules={[{ required: true, message: 'Please enter discount value' }]}>
-            <InputNumber min={0} />
-          </Form.Item>
-        </div>
+            </Form.Item>
+          </div>
+          <div className="w-1/2 p-4">
 
-        {/* Form fields on the right */}
-        <div className="w-1/2 p-4">
+            <Form.Item<FieldType>
+              label="Start Date"
+              name="start_at"
+              rules={[{ required: true, message: 'Please select start date' }]}>
+              <DatePicker className='w-full' />
+            </Form.Item>
+            <Form.Item<FieldType>
+              label="End Date"
+              name="expire_at"
+              rules={[{ required: true, message: 'Please select end date' }]}>
+              <DatePicker className='w-full' />
+            </Form.Item>
+            <Form.Item<FieldType>
+              label="Quantity"
+              name="quantity"
+              rules={[{ required: true, message: 'Please enter quantity' }]}>
+              <InputNumber className='w-full' />
+            </Form.Item>
 
-          <Form.Item<FieldType>
-            label="Start Date"
-            name="start_at"
-            rules={[{ required: true, message: 'Please select start date' }]}>
-            <DatePicker />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="End Date"
-            name="expire_at"
-            rules={[{ required: true, message: 'Please select end date' }]}>
-            <DatePicker />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Quantity"
-            name="quantity"
-            rules={[{ required: true, message: 'Please enter quantity' }]}>
-            <InputNumber min={1} />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Status"
-            name="status"
-            rules={[{ required: true, message: 'Please select status' }]}>
-            <Select placeholder="Chọn trạng thái">
-              <Option value={1}>Ẩn</Option>
-              <Option value={0}>Đang chờ</Option>
-              <Option value={2}>Hoạt động</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="image"
-            label="Upload"
-          >
-            <input type='file' onChange={handleChange} />
-            <div className='w-[150px] mt-5'>
-              <Image src={voucherData?.image} />
-            </div>
-          </Form.Item>
-          <Form.Item>
-            <Button loading={isUpdateVoucher} type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>Update Voucher</Button>
-          </Form.Item>
+            <Form.Item label="Discount Value" name="discount" rules={[{ required: true, message: 'Please enter discount value' }]}>
+              <InputNumber className='w-full' />
+            </Form.Item>
+            <Form.Item
+              name="image"
+              label="Upload"
+            >
+              <input type='file' onChange={handleChange} />
+              <div className='w-[150px] mt-5'>
+                <Image src={voucherData?.image} />
+              </div>
+            </Form.Item>
+          </div>
+
         </div>
+        <Form.Item>
+          <Button loading={isUpdateVoucher} type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>Update Voucher</Button>
+        </Form.Item>
       </Form>
     </div>
 

@@ -39,18 +39,16 @@ const DetailBooking = () => {
   return (
     <div className="w-[100%] mx-auto">
       <div className='flex justify-end mb-5'>
-        <Button type="primary" danger onClick={() => navigate("/admin/bookingmanagement")}>
+        <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
           Quay lại
-        </Button>
-        <Button type="primary" className='bg-green-500 mx-2'>
+        </button>
+        <button className='px-3 py-2 hover:bg-green-600 bg-green-500 text-white rounded-md mx-2'>
           Export PDF
-        </Button>
-        <Button type="primary" className='bg-blue-500'> <a href={`/admin/updatebooking/${booking?.id}`}>Sửa</a></Button>
+        </button>
+        <button className='px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={()=>navigate(`/admin/updatebooking/${booking?.id}`)}>Sửa</button>
       </div>
       <section className='grid grid-cols-2 gap-8'>
-
         <div key={booking?.id} className=''>
-
           <h1 className="font-semibold text-lg mb-2">Thông tin đặt phòng : <span className='font-bold text-xl text-blue-800'>{booking?.slug}</span></h1>
           <div className='flex flex-col border rounded-lg px-2 mb-4 py-3 leading-[25px] '>
             <div className='grid grid-cols-2 gap-4'>

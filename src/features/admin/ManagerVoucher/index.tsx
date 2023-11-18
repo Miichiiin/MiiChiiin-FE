@@ -3,7 +3,7 @@ import { useGetVoucherQuery, useRemoveVoucherMutation } from "@/api/admin/vouche
 import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message, Skeleton, } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface DataType {
   key: number;
@@ -26,15 +26,8 @@ export const ManagerVouchers = () => {
     key:id,
     name,image,discount,start_at,expire_at,description,quantity,status
   }))
-// xóa 
-const confirmDelete = (id: number) => {
-  const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa khách sạn này?');
-  if (isConfirmed) {
-    remove(id).unwrap().then(() => {
-      setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
-    });
-  }
-};
+  const navigate = useNavigate()
+
  // phân quyền
  const dataPermission = localStorage.getItem('userAdmin')
  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
@@ -109,20 +102,33 @@ const confirmDelete = (id: number) => {
       dataIndex: "action",
       key: "action",
       render: (_, item) => (
-        <div className="flex space-x-2">
+        <div className="flex">
+          {hasAddUserPermission("update voucher") && (
+            <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={()=>navigate(`/admin/updatevoucher/${item.key}`)}>
+              Sửa
+            </button>
+          )}
           {hasAddUserPermission("delete voucher") && (
-            <Button loading={isRemoveVoucher}
-              className='px-4 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md'
-              onClick={() => confirmDelete(item.key)}
+            <Popconfirm
+            title="Xóa Khách sạn"
+            description="Bạn có muốn xóa không??"
+            onConfirm={() => {
+              remove(item.key).unwrap().then(() => {
+                message.success("Xóa thành công");
+              })
+            }}
+            okText="Có"
+            cancelText="Không"
+          >
+            <button 
+              className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
             >
               Xóa
-            </Button>
+            </button>
+          </Popconfirm>
+            
           )}
-          {hasAddUserPermission("update voucher") && (
-            <Button type="primary" className='bg-[#3b82f6]'>
-              <Link to={`/admin/updatevoucher/${item.key}`}>Sửa</Link>
-            </Button>
-          )}
+          
         </div >
       ),
     },
@@ -130,7 +136,6 @@ const confirmDelete = (id: number) => {
 
 
   const [searchText, setSearchText] = useState("");
-  const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
   const filteredData = dataSource ? dataSource
@@ -142,8 +147,10 @@ const confirmDelete = (id: number) => {
     ) : [];
   if (Loading) return <Skeleton active/>;
   if (isError) return <div>error...</div>;
+  if(isRemoveVoucher) return message.loading({content:'Đang xóa', key:'removeVoucher'});
   return (
     <div>
+      
       <div
         style={{
           display: "flex",
@@ -194,13 +201,12 @@ const confirmDelete = (id: number) => {
         <Button
             type="primary"
             style={{ background: "#FFD700", borderColor: "#FFD700", marginLeft: "350px" }}
-           
           >
             <Link to={`/admin/phatvoucher`}>Phát Voucher</Link>
           </Button>
         {hasAddUserPermission('add voucher') && (
-            <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-            <Link to={`/admin/addvoucher`}>Thêm Voucher</Link>
+            <button className="ml-2 px-2 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={()=>navigate(`/admin/addvoucher`)}>
+            Thêm Voucher
           </button>
         )}
       </div>
