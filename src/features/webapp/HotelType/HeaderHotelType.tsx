@@ -98,7 +98,7 @@ const HeaderHotelType = () => {
           <div className="fixed top-0 left-0 w-full  z-20 bg-white ">
             <div className="border-b-2 pb-6  ">
               <div
-                className="xl:w-[1024px] xl:mx-auto h-[50px] flex items-center justify-between
+                className="xl:w-[1280px] xl:mx-auto h-[50px] flex items-center justify-between
                             lg:text-[15px] lg:mr-10 text-[#616971]
                             sm:mr-10 relative
                             "

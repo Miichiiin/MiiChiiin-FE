@@ -2,7 +2,7 @@ import {
   AiOutlineLeft,
   AiOutlineCheck,
   AiOutlineArrowRight,
-  AiOutlineHome,
+  AiOutlineHome,AiOutlineCalendar,AiOutlineSchedule,AiOutlineTeam,AiOutlineForm,AiOutlineGift
 } from "react-icons/ai";
 import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
@@ -256,19 +256,19 @@ const BookingInformation = () => {
 
   return (
     <div>
-      <HeaderHotelType />
+      <HeaderHotelType /><br /><br /><br />
       <div className="">
         <div className="flex items-center w-[1280px] mx-auto mt-[60px] ">
-          <span className="flex items-center mr-[300px] space-x-3 text-[#6181bb]">
+          <span className="flex items-center mr-[300px] space-x-3 text-blue-500 font-medium">
             <AiOutlineLeft />
-            <a href="">Chọn phòng</a>
+            <a href="" className="">Chọn phòng</a>
           </span>
           <div className="flex items-center space-x-8">
-            <a className="flex items-center space-x-3 text-[#e8952f]" href="">
-              <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
-                <AiOutlineCheck />
+            <a className="flex items-center space-x-3 " href="">
+            <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">
+                1
               </span>
-              <span className="font-medium text-[14px]">Chọn phòng</span>
+              <span className="font-medium text-[14px] text-gray-500">Chọn phòng</span>
             </a>
             <a className="flex items-center space-x-3 text-[#e8952f]" href="">
               <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">
@@ -279,10 +279,10 @@ const BookingInformation = () => {
               </span>
             </a>
             <a className="flex items-center space-x-3 text-[#e8952f]" href="">
-              <span className="bg-[#f5f6fa] px-4 py-2 font-medium text-[#6a6971] rounded-full">
-                3
+            <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
+                <AiOutlineCheck />
               </span>
-              <span className="text-[#6a6971] text-[14px] font-medium">
+              <span className="text-[#e8952f] text-[14px] font-medium">
                 Thanh toán
               </span>
             </a>
@@ -504,18 +504,18 @@ const BookingInformation = () => {
                             type="text"
                             name="search"
                             id="search"
-                            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm rounded-md"
-                            placeholder="Tìm kiếm..."
+                            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-5 py-3 sm:text-sm rounded-md"
+                            placeholder="Nhập voucher cần tìm kiếm..."
                           />
                           <button
                             type="button"
-                            className="absolute inset-y-0 right-0 px-3 flex items-center bg-gray-200 rounded-md "
+                            className="absolute inset-y-0 right-0 px-3 flex pl-6 items-center bg-gray-200 rounded-md font-medium"
                             value={"Tìm"}
                             onClick={handleModalClick}
                           >
                             Tìm kiếm
                             <svg
-                              className="h-5 w-5 text-gray-500"
+                              className="h-5 w-2 text-gray-500"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -562,7 +562,7 @@ const BookingInformation = () => {
 
                       {/* Nút sử dụng voucher */}
                       <button
-                        className="font-medium bg-blue-500 px-4 py-2 text-white rounded-md ml-auto flex"
+                        className="font-medium bg-blue-500 px-6 py-2 text-white rounded-md ml-auto flex"
                         onClick={handleUseVoucher}
                       >
                         Sử dụng
@@ -614,23 +614,25 @@ const BookingInformation = () => {
                     Phương thức thanh toán
                   </span>
                 </div>
-                <a href="" className="text-[15px] px-5 text-left">
-                  Khi nhấp vào "Thanh toán", bạn đồng ý cung cấp các thông tin
-                  trên và đồng ý với các
-                  <span className="text-[#80c3fa] underline-offset-1 underline">
-                    điều khoản,điều kiện{" "}
-                  </span>{" "}
-                  và
-                  <span className="text-[#80c3fa] underline-offset-1 underline">
-                    {" "}
-                    chính sách và quyền riêng
-                  </span>{" "}
-                  tư của Vinpearl.
-                </a>
+                <div className="px-5 py-3">
+                  <a href="" className="text-[15px]   text-left">
+                    Khi nhấp vào "Thanh toán", bạn đồng ý cung cấp các thông tin
+                    trên và đồng ý với các
+                    <span className="text-[#80c3fa] underline-offset-1 underline">
+                      điều khoản,điều kiện{" "}
+                    </span>{" "}
+                    và
+                    <span className="text-[#80c3fa] underline-offset-1 underline ">
+                      {" "}
+                      chính sách và quyền riêng
+                    </span>{" "}
+                    tư của <span className="font-medium">Miichii</span>
+                  </a>
+                </div>
                 <div>
                   <button
                     type="submit"
-                    className="bg-[#e8952f] text-white rounded-full px-[50px] pt-3 pb-3 text-[20px] font-medium ml-[500px] "
+                    className="bg-[#e8952f] text-white rounded-full px-[50px] pt-3 pb-3 text-[20px] font-medium ml-[500px] transform transition-tranform hover:scale-105 duration-300"
                   >
                     Thanh toán
                   </button>
@@ -640,7 +642,7 @@ const BookingInformation = () => {
 
             {/* endForm */}
           </div>
-          <div className="border boder-black  rounded-md w-[460px] pb-10 h-[400px]">
+          <div className="border boder-black  rounded-md w-[460px] pb-10 h-full">
             <div className="border border-b-[#bg-[#f9f9f9]]  bg-[#f5f6fa] px-5 py-5">
               <span className="font-medium text-[18px]">Chuyến đi</span>
             </div>
@@ -648,17 +650,19 @@ const BookingInformation = () => {
               <div className=" mt-4">
                 <div className="flex items-center justify-between ">
                   <h2 className="text-[18px] font-medium">{hotel[1]}</h2>
-                  <a className="text-[12px]" href="">
+                  <a className="text-sm text-blue-500 font-medium hover:underline" href="">
                     Chỉnh sửa
                   </a>
                 </div>
-                <div className="text-[13px] mt-2">
-                  <p className="text-sm pt-3 items-center flex">
+                <div className="text-[13px] mt-2 border-b-2 pb-2">
+                  <p className="text-sm pt-3 items-center flex text-gray-500 font-medium">
+                    <AiOutlineCalendar class="text-lg mr-2"/>
                     {date[0].toISOString().slice(0, 10)}
-                    <AiOutlineArrowRight className="inline-block mx-1" />
+                    <AiOutlineArrowRight className="inline-block mx-1 " />
                     {date[1].toISOString().slice(0, 10)}
                   </p>
-                  <p className="text-sm pb-3">
+                  <p className="text-sm pb-3 text-gray-500 font-medium flex items-center mt-1">
+                    <AiOutlineSchedule class="text-lg mr-2"/>
                     {differenceInDays(
                       parseISO(date[1].toISOString().slice(0, 10)),
                       parseISO(date[0].toISOString().slice(0, 10))
@@ -676,17 +680,23 @@ const BookingInformation = () => {
 
                 return (
                   <div key={index}>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between pt-5">
                       <h1 className="font-semibold">{roomNumber}</h1>
-                      <button className="text-lg font-semibold italic">
-                        {item?.price}
+                      <button className="text-base font-semibold ">
+                        {item?.price.toLocaleString('vi-VN')} đ
                       </button>
                     </div>
-                    <p className="text-sm pt-3 items-center flex">
-                      <span className="pr-1">x{item?.count}</span>
-                      {item?.name}
-                    </p>
-                    <p className="text-sm pb-3">2 Người lớn, 2 Trẻ em</p>
+                    <div className="border-b-2 pb-3">
+                      <p className="text-sm pt-3 items-center flex text-gray-500 font-medium">
+                        <AiOutlineForm class="text-lg mr-2"/>
+                        <span className="pr-1">0{item?.count}</span>
+                        {item?.name}
+                      </p>
+                      <span className="flex text-gray-500 mt-1">
+                        <AiOutlineTeam class="text-lg mr-2"/>
+                        <p className="text-sm pb-3 font-medium ">2 Người lớn, 2 Trẻ em</p>
+                      </span>
+                    </div>
                     {/* Dịch vụ đã chọn */}
                     {selectedServicesInRoom.length > 0 && (
                       <div className="border-gray-100 bg-gray-100 px-2 rounded">
@@ -720,8 +730,8 @@ const BookingInformation = () => {
                       </div>
                     )}
                     <div>
-                      <div className="border-gray-100 bg-gray-100 px-2 rounded mt-5">
-                        <p className="text-sm pb-3 font-semibold">
+                      <div className="border-gray-100  px-2 rounded mt-5">
+                        <p className="text-[17px] pb-3 font-semibold">
                           Voucher được áp dụng:
                         </p>
                       </div>
@@ -734,7 +744,8 @@ const BookingInformation = () => {
                             </p>
                           </>
                         ) : (
-                          <p className="text-sm pb-3 font-semibold">
+                          <p className="text-sm pb-3 font-medium text-gray-500 flex items-center">
+                           <AiOutlineGift class="text-lg mr-2"/>
                             Không có voucher được áp dụng
                           </p>
                         )}
@@ -745,18 +756,18 @@ const BookingInformation = () => {
               })}
               <div className=" mt-4 border-t-2 pt-4">
                 <div className="flex items-center justify-between ">
-                  <h2 className="text-[18px] font-medium">Số tiền tạm tính:</h2>
-                  <a className="text-[18px] font-medium text-[#e8952f]" href="">
-                    {sumprice}
+                  <h2 className="text-[17px] font-medium">Số tiền tạm tính:</h2>
+                  <a className="text-[18px] font-semibold text-[#e8952f]" href="">
+                    {sumprice.toLocaleString('vi-VN')} đ
                   </a>
                 </div>
                 <div className="flex items-center justify-between mt-4">
-                  <h2 className="text-[18px] font-medium">
+                  <h2 className="text-[17px] font-medium">
                     {" "}
-                    Số tiền được giảm
+                    Số tiền được giảm :
                   </h2>
                   <a className="text-[15px] font-medium text-red-600" href="">
-                    - { (sumprice * appliedVoucher?.discount || 0) / 100}
+                    - { ((sumprice * appliedVoucher?.discount || 0) / 100).toLocaleString('vi-VN')}
                   </a>
                 </div>
                 <div className="flex items-center justify-between mt-4">
@@ -765,12 +776,7 @@ const BookingInformation = () => {
                     Tổng cộng:
                   </h2>
                   <a className="text-[18px] font-medium text-[#e8952f]" href="">
-                  {priceAfterVoucher}
-                  </a>
-                </div>
-                <div className="text-[13px] mt-2">
-                  <a className="" href="">
-                    Bao gồm cả thuế
+                  {priceAfterVoucher.toLocaleString('vi-VN')} đ
                   </a>
                 </div>
               </div>
