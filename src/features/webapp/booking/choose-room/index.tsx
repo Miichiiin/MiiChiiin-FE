@@ -64,6 +64,9 @@ const ChooseRoom = () => {
   
 
   const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
+ 
+
+  
 
 
   // Lấy dữ liệu từ localStorage

@@ -10,6 +10,7 @@ import Cart from "./cart";
 import { Link } from "react-router-dom";
 import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
 import SearchOrder from "./SearchOrder";
+import { TextTruncate } from "../components/TextTruncate"
 
 const Header = () => {
   /*Hàm Dropdow*/
@@ -135,8 +136,8 @@ const Header = () => {
                 : "duration-500 "
             }`}
           >
-            <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 lg:text-[15px] lg:mr-10 sm:mr-10">
-              <div className="flex items-center justify-end space-x-2 mt-6 text-white lg:text-[15px] ">
+            <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 lg:text-[15px] lg:mr-10 sm:mr-10 flex ">
+              {/* <div className="flex items-center justify-end space-x-2 mt-6 text-white lg:text-[15px] ">
                 <span className="text-[28px] ">
                   {""}
                   <button className="h-[40px] pt-3 " onClick={toggleMenu}>
@@ -146,10 +147,10 @@ const Header = () => {
                 {loggedIn ? (
                   <>
                     <div className="text-white pt-1">
-                      <button onClick={toggleDropdown1}>
+                      <button onClick={toggleDropdown}>
                           <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
-                          {isDropdownOpen1 && (
-                          <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-20 bg-white border border-gray-300 shadow-lg">
+                          {isDropdownOpen && (
+                          <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-0 bg-white border border-gray-300 shadow-lg">
                             <ul className="leading-9 text-black">
                               <li className="hover:bg-[#f2ba50] hover:text-white px-10">
                                 <button
@@ -187,51 +188,12 @@ const Header = () => {
                   </>
                 )}
                 <span className="pl-2 pr-1 text-[14px]">/</span>
-                <button
-                  type="submit"
-                  onClick={toggleDropdown}
-                  className="flex items-center border-white space-x-1 dropdown-button"
-                >
-                  <img
-                    className="rounded-full w-7 h-7"
-                    src="https://st.quantrimang.com/photos/image/2021/09/05/Co-Vietnam.png"
-                    alt=""
-                  />
-                  <span
-                    className="font-medium text-[16px] hover:underline"
-                    style={{ textShadow: "1px 2px 3px #000" }}
-                  >
-                    VIE
-                  </span>{" "}
-                  <AiOutlineRight />
-                </button>
                 <Cart />
-                {isDropdownOpen && (
-                  <div className="absolute mt-[200px] bg-white border border-gray-300 shadow-lg ">
-                    <ul className="leading-9 text-black">
-                      <li className="hover:bg-[#f2ba50] hover:text-white px-10 ">
-                        Tiếng việt
-                      </li>
-                      <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                        English
-                      </li>
-                      <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                        China
-                      </li>
-                      <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                        Korea
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </div>
+              </div> */}
 
               <div className="">
                 <div
-                  className="flex items-center mx-auto mt-6 justify-between  
-                                lg:ml-10
-
-                            "
+                  className="flex items-center mx-auto mt-10 justify-between w-[1280px] "
                 >
                   <ul
                     className="flex items-center space-x-[30px] text-[12px] text-white 
@@ -324,6 +286,9 @@ const Header = () => {
                         </div>
                       </div>
                     </li>
+                    <li>
+                      <img className="w-[180px]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
+                    </li>
                     <li className="h-[40px] after-3">
                       <a
                         href="/promotion"
@@ -336,16 +301,64 @@ const Header = () => {
                       <a href="/new" style={{ textShadow: "2px 2px 4px #000" }}>
                         New
                       </a>
-                    </li>
-                    {/* <li>
-                      <a
-                        href="/loginadmin"
-                        
-                      >
-                        Quan tri
-                      </a>
-                    </li> */}
+                    </li>          
                   </ul>
+                  <div className="flex items-center justify-end space-x-2  text-white lg:text-[15px] ">
+                          <span className="text-[28px] ">
+                            {""}
+                            <button className="h-[40px] pt-3 " onClick={toggleMenu}>
+                              <AiOutlineSearch />
+                            </button>
+                          </span>{" "}
+                          {loggedIn ? (
+                            <>
+                              <div className="text-white pt-1">
+                                <button className="relative" onClick={toggleDropdown}>
+                                    <div className="flex items-center space-x-3">
+                                      <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
+                                      <span> <TextTruncate text={loggedIn?.name} maxLength={3} /> </span>
+                                    </div>
+                                    {isDropdownOpen && (
+                                    <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-20px ] bg-white border border-gray-300 shadow-lg">
+                                      <ul className="leading-9 text-black">
+                                        <li className="hover:bg-[#f2ba50] hover:text-white px-14">
+                                          <button
+                                            onClick={handleLogout}
+                                            className=""
+                                          >
+                                          {" "}
+                                          Logout
+                                        </button>
+                                        </li>
+                                        <li className="hover:bg-[#f2ba50] hover:text-white px-7">
+                                          Thông tin User
+                                        </li>
+                                        <li className="hover:bg-[#f2ba50] hover:text-white px-5">
+                                          Voucher
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    )}
+                                </button> 
+                              </div>
+                              
+                            </>
+                          ) : (
+                            <>
+                            {}
+                              <Link
+                                to="/login"
+                                className="hover:underline"
+                                style={{ textShadow: "1px 2px 3px #000" }}
+                              >
+                                Đăng nhập 
+                              </Link>
+                              <AiOutlineRight />
+                            </>
+                          )}
+                          <span className="pl-2 pr-1 text-[14px]">/</span>
+                          <Cart />
+                      </div>
                 </div>
               </div>
               

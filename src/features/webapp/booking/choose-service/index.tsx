@@ -6,7 +6,7 @@ import {
   AiOutlineCheckCircle,
   AiOutlineDown,
   AiOutlineUp,
-  AiOutlineArrowRight,
+  AiOutlineArrowRight,AiFillCaretDown ,AiFillCaretUp
 } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
@@ -144,18 +144,18 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
         <section className="flex space-x-16 items-center px-2 py-3">
           <Button
             onClick={onhanldeGoBack}
-            className="underline text-yellow-500 text-md font-bold flex justify-start pr-32 border-none"
+            className="hover:underline text-blue-500 text-md font-bold flex justify-start pr-32 border-none"
           >
-            Chọn phòng{" "}
+            Chọn Phòng{" "}
           </Button>
           <h1 className="flex items-center">
             {" "}
-            <AiFillCheckCircle className="text-yellow-500 text-4xl" />{" "}
+            <AiOutlineCheckCircle className="text-4xl " />
             <span className="px-2">Chọn phòng</span>{" "}
           </h1>
           <h1 className="flex items-center">
             {" "}
-            <AiOutlineCheckCircle className="text-4xl" />
+            <AiFillCheckCircle className="text-yellow-500 text-4xl" />{" "}
             <span className="px-2">Dịch vụ</span>{" "}
           </h1>
           <h1 className="flex items-center">
@@ -183,22 +183,22 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                   className="border rounded-lg px-2 py-3 my-2"
                 >
                   <div className="px-2">
-                    <h1 className="font-semibold text-xl">
+                    <h1 className="font-bold text-lg">
                       Phòng {roomIndex + 1}
                     </h1>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between font-medium">
                       <h1 className="">Biệt thự 1 phòng ngủ</h1>
                       <button
                         onClick={() => toggleShowService(roomIndex)}
-                        className="text-yellow-700 hover:text-yellow-500 font-semibold"
+                        className="text-[#e8952f] hover:text-yellow-500 font-medium"
                       >
                         {isServiceOpen[roomIndex] ? (
-                          <span className="flex items-center">
-                            Ẩn dịch vụ <AiOutlineUp />
+                          <span className="flex text-sm items-center space-x-2 text-md font-medium">
+                            <span>Ẩn dịch vụ</span> <AiFillCaretUp />
                           </span>
                         ) : (
-                          <span className="flex items-center">
-                            Hiện dịch vụ <AiOutlineDown />
+                          <span className="flex text-sm items-center">
+                            Hiện dịch vụ <AiFillCaretDown />
                           </span>
                         )}
                       </button>
@@ -206,24 +206,24 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                   </div>
                   <hr className="my-2" />
                   {isServiceOpen[roomIndex] && (
-                    <div className="grid grid-cols-3 gap-2 pt-2">
+                    <div className="grid grid-cols-3 gap-3 pt-2 ">
                       {serviceData?.map((item: any) => (
-                        <div className="column border" key={item.id}>
-                          <img src={item?.image} className="w-full" />
-                          <h1 className="pl-2 pt-2 pb-5">{item.name}</h1>
-                          <p className="pl-2 pb-2 font-semibold text-yellow-800 text-lg">
+                        <div className="column border rounded-lg hover:shadow-xl" key={item.id}>
+                          <img src={item?.image} className="w-full rounded-t-lg" />
+                          <h1 className="pl-2 pt-2 pb-5 text-base font-medium">{item.name}</h1>
+                          <p className="pl-2 pb-2 font-semibold text-black text-lg">
                             {item.price}
-                            <span className="text-sm"> vnđ</span>
+                            <span className="text-sm"> đ</span>
                           </p>
-                          <div className="flex justify-between items-center px-2 py-3">
+                          <div className="flex justify-between items-center px-2 py-3 ">
                             <button className="flex items-center hover:text-yellow-500">
-                              <AiOutlineInfoCircle />
-                              <span className="pl-1">Chi tiết</span>
+                              <AiOutlineInfoCircle class="text-blue-500 font-medium"/>
+                              <span className="pl-1 text-xs text-blue-500 font-medium ">Chi tiết</span>
                             </button>
                             <label className="items-center flex">
                               <input
                                 type="checkbox"
-                                className="w-5 h-5 text-yellow-600 bg-yellow-500 border-yellow-500 rounded checked:bg-yellow-500"
+                                className="w-4 h-4 text-yellow-600 bg-yellow-500 border-yellow-500 rounded checked:bg-yellow-500"
                                 onChange={() =>
                                   toggleServiceSelection(
                                     item.id,
@@ -237,7 +237,7 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                                     service.roomIndex === roomIndex
                                 )}
                               />
-                              <span className="ml-2 text-sm font-medium text-yellow-800">
+                              <span className="ml-2 text-sm font-medium text-[#e8952f]">
                                 Thêm
                               </span>
                             </label>
@@ -259,17 +259,17 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
             <div className="border rounded px-2 py-4">
               <div>
                 <div className="flex items-center justify-between">
-                  <h1 className="font-semibold">{hotel[1]}</h1>
-                  <button onClick={onhanldeGoBack} className="text-sm">
+                  <h1 className="font-semibold text-lg">{hotel[1]}</h1>
+                  <button onClick={onhanldeGoBack} className="text-sm text-blue-500 font-medium hover:underline">
                     Chỉnh sửa
                   </button>
                 </div>
-                <p className="text-sm pt-3 items-center flex">
+                <p className="text-sm pt-3 items-center flex font-medium text-gray-500">
                   {date[0].toISOString().slice(0, 10)}
                   <AiOutlineArrowRight className="inline-block mx-1" />
                   {date[1].toISOString().slice(0, 10)}
                 </p>
-                <p className="text-sm pb-3">
+                <p className="text-sm pb-3 font-medium text-gray-500">
                   {differenceInDays(
                     parseISO(date[1].toISOString().slice(0, 10)),
                     parseISO(date[0].toISOString().slice(0, 10))
@@ -289,15 +289,15 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                   <div key={index}>
                     <div className="flex items-center justify-between">
                       <h1 className="font-semibold">{roomNumber}</h1>
-                      <button className="text-lg font-semibold italic">
-                        {item?.price}
+                      <button className="text-md font-semibold ">
+                        {item?.price.toLocaleString('vi-VN')} đ
                       </button>
                     </div>
-                    <p className="text-sm pt-3 items-center flex">
+                    <p className="text-sm pt-3 items-center flex text-gray-500 font-medium">
                       <span className="pr-1">x{item?.count}</span>
                       {item?.name}
                     </p>
-                    <p className="text-sm pb-3">2 Người lớn, 2 Trẻ em</p>
+                    <p className="text-sm pb-3 text-gray-500 font-medium">2 Người lớn, 2 Trẻ em</p>
                     {/* Dịch vụ đã chọn */}
                     {selectedServicesInRoom.length > 0 && (
                       <div className="border-gray-100 bg-gray-100 px-2 rounded">
@@ -320,7 +320,7 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                                       Phòng {selectedRoom}:{" "}
                                       {selectedServiceData.name}
                                     </p>
-                                    <p>{selectedServiceData.price} vnđ</p>
+                                    <p>{selectedServiceData.price} đ</p>
                                   </div>
                                 </li>
                               );
@@ -337,15 +337,15 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
               <div className="pb-6">
                 {/*tổng cộng*/}
                 <div className="flex items-center justify-between">
-                  <h1 className="font-semibold">Tổng cộng:</h1>
-                  <h1 className="text-xl font-bold text-yellow-500">
-                    {sumprice} vnđ
+                  <h1 className="font-semibold text-xl ">Tổng cộng:</h1>
+                  <h1 className="text-lg font-bold text-yellow-500">
+                    {sumprice.toLocaleString('vi-VN')} đ
                   </h1>
                 </div>
               </div>
               <button
                 onClick={onhanldeSubmit}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-2 text-lg font-bold rounded-full w-full"
+                className="bg-[#e8952f] hover:bg-yellow-600 text-white py-3 mt-3 px-2 text-lg font-bold rounded-full w-full"
               >
                 Tiếp tục
               </button>
