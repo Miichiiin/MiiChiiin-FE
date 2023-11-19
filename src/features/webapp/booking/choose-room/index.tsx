@@ -26,18 +26,10 @@ import Slider from "react-slick";
 
 const ChooseRoom = () => {
  
-  const searchSlide = useParams();
-  console.log("1", searchSlide.numberRoom);
-  
-  // const selectRoom = (searchSlide?.numberRoom === 1 ? ["vler"] : []);
-
-const [selectedRooms, setSelectedRooms] = useState<any>(
-[]
-  );
+  const [selectedRooms, setSelectedRooms] = useState<any>([]);
   
   const [totalPrice, setTotalPrice] = useState<any>(0);
-  console.log("searchSlide",searchSlide);
-  
+  const searchSlide = useParams();
   // const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [selectedRoomCount, setSelectedRoomCount] = useState(0);
 
@@ -92,7 +84,7 @@ const [selectedRooms, setSelectedRooms] = useState<any>(
         setSelectedRooms([...selectedRooms, selectedHotel]);
         const price = selectedHotel.price;
         setTotalPrice(totalPrice + price);
-        setSelectedRoomCount(selectedRooms?.length + 1); // Tăng số lượng phòng đã chọn
+        setSelectedRoomCount(selectedRooms.length + 1); // Tăng số lượng phòng đã chọn
         // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage
         localStorage.setItem(
           "selectedRooms",
@@ -124,7 +116,7 @@ const [selectedRooms, setSelectedRooms] = useState<any>(
       const priceToRemove = room.price;
       setTotalPrice(totalPrice - priceToRemove);
 
-      setSelectedRoomCount(selectedRooms?.length - 1); // Giảm số lượng phòng đã chọn
+      setSelectedRoomCount(selectedRooms.length - 1); // Giảm số lượng phòng đã chọn
 
       // Lưu danh sách phòng đã chọn và tổng giá tiền vào localStorage sau khi xóa
       localStorage.setItem(
@@ -138,7 +130,7 @@ const [selectedRooms, setSelectedRooms] = useState<any>(
     }
   };
 
-  const uniqueSelectedRooms = selectedRooms?.reduce((acc: any, room: any) => {
+  const uniqueSelectedRooms = selectedRooms.reduce((acc: any, room: any) => {
     // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
     const existingRoom = acc.find((r: any) => r.id === room.id);
 
@@ -152,8 +144,6 @@ const [selectedRooms, setSelectedRooms] = useState<any>(
 
     return acc;
   }, []);
-
-
   const individuals:any = searchSlide.numberPeople && searchSlide.numberPeople.split("&");
 
   let totalAdults = 0;
@@ -185,7 +175,7 @@ const [selectedRooms, setSelectedRooms] = useState<any>(
   const savedRoomInfo = savedRoomInfoJSON ? JSON.parse(savedRoomInfoJSON) : [];
 
   // Sử dụng dữ liệu từ local storage nếu có hoặc fallback là uniqueSelectedRooms
-  const roomsToDisplay = uniqueSelectedRooms?.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
+  const roomsToDisplay = uniqueSelectedRooms.length > 0 ? uniqueSelectedRooms : savedRoomInfo;
   const navigate = useNavigate();
 
   interface Room {
@@ -209,12 +199,12 @@ const [selectedRooms, setSelectedRooms] = useState<any>(
       setTotalPrice(parsedTotalPrice);
 
       // Cập nhật selectedRoomCount dựa trên độ dài của danh sách phòng đã chọn
-      setSelectedRoomCount(parsedSelectedRooms?.length);
+      setSelectedRoomCount(parsedSelectedRooms.length);
     }
   }, []);
 
   const onHandSubmit = () => {
-    const updatedSelectedRooms: Room = uniqueSelectedRooms?.map((room: any) => ({
+    const updatedSelectedRooms: Room = uniqueSelectedRooms.map((room: any) => ({
       id_cate: room.id,
       count: room.count,
       name: room.name,
@@ -326,7 +316,7 @@ const [selectedRooms, setSelectedRooms] = useState<any>(
                   <h1 className="text-lg font-bold">
                     Chọn phòng:{" "}
                     <span>
-                      {selectedRooms?.length}/{searchSlide?.numberRoom}
+                      {selectedRooms.length}/{searchSlide.numberRoom}
                     </span>
                   </h1>
                 </div>
@@ -381,14 +371,14 @@ const [selectedRooms, setSelectedRooms] = useState<any>(
                             {" "}
                             Giá công bố:{" "}
                             <span className="font-semibold text-md text-gray-500">
-                              {hotel?.price?.toLocaleString('vi-VN')} đ
+                              {hotel?.price.toLocaleString('vi-VN')} đ
                             </span>{" "}
                           </p>
                           <p className=" flex justify-end items-center text-left space-x-2">
                             {" "}
                             <span className=""> Giá thành viên:</span>{" "}
                             <span className="font-semibold text-md ">
-                              {hotel?.price?.toLocaleString('vi-VN')} đ 
+                              {hotel?.price.toLocaleString('vi-VN')} đ 
                             </span><AiOutlineInfoCircle class='text-red-500'/>{" "}
                           </p>
                           {/* ... */}
