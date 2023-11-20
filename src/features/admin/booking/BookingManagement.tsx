@@ -8,7 +8,7 @@ import 'dayjs/locale/vi';
 import 'dayjs/plugin/utc';
 import 'dayjs/plugin/timezone';
 dayjs.locale('vi');
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -225,7 +225,7 @@ export const BookingManagement = () => {
 
                 </div>
                 {hasAddUserPermission("add booking") && (
-                    <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md"><Link to={'/admin/addbooking'}>Thêm booking</Link></button>
+                    <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={()=>navigate('/admin/addbooking')}>Thêm booking</button>
                 )}
             </div>
             {/* Phần CSS tùy chỉnh cho bảng */}

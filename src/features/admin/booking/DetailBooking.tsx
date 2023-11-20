@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetBooking_adminByIdQuery } from "@/api/admin/booking_admin";
-import { Button, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 //import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';

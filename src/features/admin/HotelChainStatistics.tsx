@@ -27,10 +27,8 @@ const HotelChainStatistic = () => {
     year: selectedYear,
   });
 
-  console.log("HotelChainStatistics", HotelChainStatistics);
 
   const [filteredData1, setFilteredData1] = useState<any>([]);
-  console.log("filteredData1", filteredData1);
 
   const [chartMode, setChartMode] = useState("revenue");
 
@@ -85,7 +83,6 @@ const HotelChainStatistic = () => {
     setIsDropdownVisiblesv(!isDropdownVisiblesv);
   };
 
-  console.log("filteredData2");
 
   const handleMonthChangesv = (event: any) => {
     const selectedMonth = parseInt(event.target.value);
@@ -108,7 +105,6 @@ const HotelChainStatistic = () => {
   });
 
 
-  console.log("HotelChainStatisticRt", HotelChainStatisticRt);
 
   let statisticalChainRoomtype: any;
 
@@ -167,9 +163,9 @@ const HotelChainStatistic = () => {
         <button
           className={`mr-2 py-2 px-4 rounded ${
             chartMode === "revenue"
-              ? "bg-blue-500 text-white"
+              ? "bg-orange-500 text-white"
               : "bg-gray-300 text-gray-700"
-          } hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out`}
+          } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleRevenueChartModeChange}
         >
           Revenue Distribution
@@ -178,9 +174,9 @@ const HotelChainStatistic = () => {
         <button
           className={`py-2 px-4 rounded mr-2 ${
             chartMode === "service"
-              ? "bg-blue-500 text-white"
+              ? "bg-orange-500 text-white"
               : "bg-gray-300 text-gray-700"
-          } hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out`}
+          } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleServiceChartModeChange}
         >
           Service statistics
@@ -189,9 +185,9 @@ const HotelChainStatistic = () => {
         <button
           className={`py-2 px-4 rounded ${
             chartMode === "roomtype"
-              ? "bg-blue-500 text-white"
+              ? "bg-orange-500 text-white"
               : "bg-gray-300 text-gray-700"
-          } hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out`}
+          } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleRoomTypeChartModeChange}
         >
           RoomType Statistics
@@ -203,7 +199,7 @@ const HotelChainStatistic = () => {
         {chartMode === "revenue" && (
           <div>
             <h1
-              className="text-2xl font-semibold text-blue-600 mb-4"
+              className="text-2xl font-semibold text-orange-600 mb-4"
               onClick={handleTitleClick1}
             >
               Biểu đồ thống kê tổng doanh thu và số booking
@@ -306,7 +302,7 @@ const HotelChainStatistic = () => {
         {chartMode === "service" && (
           <div>
             <h2
-              className="text-2xl font-semibold text-blue-600 mb-4"
+              className="text-2xl font-semibold text-orange-600 mb-4"
               onClick={handleTitleClick2}
             >
               Biểu đồ thống kê dịch vụ chuỗi khách sạn
@@ -392,7 +388,7 @@ const HotelChainStatistic = () => {
         {chartMode === "roomtype" && (
           <div>
             <h1
-              className="text-2xl font-semibold text-blue-600 mb-4"
+              className="text-2xl font-semibold text-orange-600 mb-4"
               onClick={handleTitleClick1}
             >
               Biểu đồ thống kê loại phòng và số lượt đánh giá

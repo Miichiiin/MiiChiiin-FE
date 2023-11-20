@@ -389,7 +389,7 @@ const UpdateBooking = () => {
         message.success('Cập nhật thành công');
         setTimeout(() => {
           navigate(`/admin/detailbooking/${id}`)
-        }, 3000);
+        }, 2000);
       });
     }
 

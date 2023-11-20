@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Row, Col, Table, Statistic, Progress } from "antd";
+import { Card, Row, Col, Statistic, Progress } from "antd";
 import { UserOutlined, RiseOutlined, DollarOutlined } from "@ant-design/icons";
 import {
   XAxis,
@@ -17,7 +17,6 @@ import {
 import { useGetStatisticalQuery } from "../../api/admin/statistical";
 import { useGetStatisticalServiceQuery } from "@/api/admin/statistical_Service";
 import { useGetStatisticalRoomtypeQuery } from "@/api/admin/statistical_RoomType";
-import { useParams } from 'react-router-dom';
 
 const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f0e", "#99CCFF"];
 
@@ -108,11 +107,8 @@ if (userAdminLocal !== null) {
     dataLogin = userAdminLocal;
   }
 
-  console.log("dataLoginAdmin", dataLogin.id_hotel);
 }
   
-
-
   // Biểu đồ 1
 
   const [selectedYear, setSelectedYear] = useState(2023);
@@ -125,13 +121,10 @@ if (userAdminLocal !== null) {
 
   if (statisticalData1) {
     statisticalData = statisticalData1.booking_data_by_month;
-    console.log("statisticalData", statisticalData);
   } else {
-    console.log("Không có dữ liệu thống kê.");
+    
   }
 
-  // statisticalData có thể được truy cập trong phạm vi hiện tại sau đây
-  console.log("statisticalData ngoài", statisticalData);
 
   const [filteredData1, setFilteredData1] = useState<any>([]);
 
@@ -144,7 +137,6 @@ if (userAdminLocal !== null) {
     ? statisticalData.filter((item: any) => item.Year == selectedYear)
     : [];
 
-  console.log("thang", dataofYear);
 
   // Nếu trùng năm thì không hiện
   const uniqueYears = [
@@ -153,7 +145,6 @@ if (userAdminLocal !== null) {
     ),
   ];
 
-  console.log("uniqueYears", uniqueYears);
 
   useEffect(() => {
     // Gọi lại API khi selectedYear thay đổi
@@ -223,7 +214,6 @@ if (userAdminLocal !== null) {
   const handleh1Click = () => {
     setIsDropdownVisibleSv(!isDropdownVisibleSv);
   };
-  console.log("click", handleh1Click);
 
   // Biểu đồ 3
   const [selectedYearRt, setSelectedYearRt] = useState(2023);
@@ -250,10 +240,9 @@ if (userAdminLocal !== null) {
   if (statisticalroomtype1) {
     statisticalroomtype = statisticalroomtype1.rating_comment_booking;
   } else {
-    console.log("Không có dữ liệu thống kê.");
+    
   }
 
-  console.log("statisticalData", statisticalroomtype);
   
   const statisticalRoom =
     statisticalroomtype &&
@@ -262,11 +251,7 @@ if (userAdminLocal !== null) {
       bookingCount: item.bookingCount,
       rating: item.rating,
     }));
-  console.log("statisticalRoom", statisticalRoom);
 
-  console.log("statisticalroomtype1", statisticalroomtype1);
-
-  console.log("statisticalroomtype", statisticalroomtype);
 
   useEffect(() => {
     if (statisticalroomtype && Array.isArray(statisticalroomtype)) {
@@ -343,9 +328,9 @@ if (userAdminLocal !== null) {
         <button
           className={`mr-2 py-2 px-4 rounded ${
             chartMode === "revenue"
-              ? "bg-blue-500 text-white"
+              ? "bg-orange-500 text-white"
               : "bg-gray-300 text-gray-700"
-          } hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out`}
+          } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleRevenueChartModeChange}
         >
           Revenue Distribution
@@ -354,9 +339,9 @@ if (userAdminLocal !== null) {
         <button
           className={`py-2 px-4 rounded mr-2 ${
             chartMode === "service"
-              ? "bg-blue-500 text-white"
+              ? "bg-orange-500 text-white"
               : "bg-gray-300 text-gray-700"
-          } hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out`}
+          } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleServiceChartModeChange}
         >
           Service statistics
@@ -365,9 +350,9 @@ if (userAdminLocal !== null) {
         <button
           className={`py-2 px-4 rounded ${
             chartMode === "roomtype"
-              ? "bg-blue-500 text-white"
+              ? "bg-orange-500 text-white"
               : "bg-gray-300 text-gray-700"
-          } hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out`}
+          } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleRoomTypeChartModeChange}
         >
           RoomType Statistics
@@ -383,7 +368,7 @@ if (userAdminLocal !== null) {
                   className="flex items-center justify-between cursor-pointer "
                   onClick={handleTitleClick}
                 >
-                  <h1 className="text-2xl font-semibold text-blue-600 mb-4 ">
+                  <h1 className="text-2xl font-semibold text-orange-600 mb-4 ">
                     Biểu đồ thống kê doanh thu và số lượng booking
                   </h1>
                 </div>
@@ -481,7 +466,7 @@ if (userAdminLocal !== null) {
       {chartMode === "service" && (
   <div>
     <h1
-      className="text-2xl font-semibold text-blue-600 mb-4 "
+      className="text-2xl font-semibold text-orange-600 mb-4 cursor-pointer"
       onClick={handleh1Click}
     >
       Thống kê số lượng dịch vụ của khách sạn
@@ -562,7 +547,7 @@ if (userAdminLocal !== null) {
         {chartMode === "roomtype" && (
           <div>
             <h1
-              className="text-2xl font-semibold text-blue-600 mb-4"
+              className="text-2xl font-semibold text-orange-600 mb-4 cursor-pointer"
               onClick={handleh3Click}
             >
               Thống kê số loại phòng
