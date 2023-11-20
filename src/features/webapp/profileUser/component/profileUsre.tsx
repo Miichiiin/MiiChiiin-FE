@@ -59,7 +59,7 @@ const UserProfileForm = () => {
                 className="block text-sm text-gray-600 font-bold mb-1"
                 htmlFor="phone"
               >
-                Phone
+                Số điện thoại
               </label>
               <input
                 className="bg-gray-100 rounded-lg px-4 py-2 w-full"
@@ -74,7 +74,7 @@ const UserProfileForm = () => {
                 className="block text-sm text-gray-600 font-bold mb-1"
                 htmlFor="dob"
               >
-                Date of Birth
+                Sinh nhật
               </label>
               <input
                 className="bg-gray-100 rounded-lg px-4 py-2 w-full"
@@ -89,7 +89,7 @@ const UserProfileForm = () => {
                 className="block text-sm text-gray-600 font-bold mb-1"
                 htmlFor="gender"
               >
-                Gender
+                Giới tính
               </label>
               <select
                 className="bg-gray-100 rounded-lg px-4 py-2 w-full"
@@ -108,7 +108,7 @@ const UserProfileForm = () => {
                 className="block text-sm text-gray-600 font-bold mb-1"
                 htmlFor="cccd"
               >
-                CCCD
+                Căn cước công dân
               </label>
               <input
                 className="bg-gray-100 rounded-lg px-4 py-2 w-full"
@@ -123,7 +123,7 @@ const UserProfileForm = () => {
                 className="block text-sm text-gray-600 font-bold mb-1"
                 htmlFor="nationality"
               >
-                Nationality
+                Quốc tịch
               </label>
               <input
                 className="bg-gray-100 rounded-lg px-4 py-2 w-full"
@@ -138,7 +138,7 @@ const UserProfileForm = () => {
                 className="block text-sm text-gray-600 font-bold mb-1"
                 htmlFor="address"
               >
-                Address
+                Địa chỉ
               </label>
               <textarea
                 className="bg-gray-100 rounded-lg px-4 py-2 w-full"
@@ -151,7 +151,7 @@ const UserProfileForm = () => {
         </div>
         <div className="flex justify-end">
           <button
-            className="bg-[#f2ba50] hover:bg-[#9f7a36] text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 text-white font-bold py-2 px-6 rounded-md transform transiton-transform hover:scale-105 duration-300"
             onClick={handleSubmit}
           >
             Save

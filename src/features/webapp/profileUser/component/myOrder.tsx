@@ -318,7 +318,7 @@ const MyOrder = () => {
                   Hiện tại chưa có sản phẩm nào trong giỏ hàng!
                 </p>
                 <Link
-                  className="rounded-2xl bg-red-500 text-white px-5 py-2 font-medium"
+                  className="rounded-2xl bg-blue-500 transform transition-transfrom hover:scale-105 duration-300 text-white px-5 py-2 font-medium"
                   to="/homepage"
                 >
                   Đặt hàng ngay

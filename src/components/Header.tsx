@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   AiOutlineSearch,
   AiOutlineRight,
-  AiOutlineEnvironment,
+  AiOutlineEnvironment,AiOutlineLogout,AiOutlineUser,AiOutlineIdcard
 } from "react-icons/ai";
 import video from "../video/vdeo.mp4";
 import "../components/Css/index.css";
@@ -15,15 +15,12 @@ import { TextTruncate } from "../components/TextTruncate"
 const Header = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
   const { data: hotels } = useGetHotel_homesQuery();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const toggleDropdown1 = () => {
-    setIsDropdownOpen1(!isDropdownOpen1);
-  };
+
   /*click ngoài = out*/
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -137,60 +134,6 @@ const Header = () => {
             }`}
           >
             <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 lg:text-[15px] lg:mr-10 sm:mr-10 flex ">
-              {/* <div className="flex items-center justify-end space-x-2 mt-6 text-white lg:text-[15px] ">
-                <span className="text-[28px] ">
-                  {""}
-                  <button className="h-[40px] pt-3 " onClick={toggleMenu}>
-                    <AiOutlineSearch />
-                  </button>
-                </span>{" "}
-                {loggedIn ? (
-                  <>
-                    <div className="text-white pt-1">
-                      <button onClick={toggleDropdown}>
-                          <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
-                          {isDropdownOpen && (
-                          <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-0 bg-white border border-gray-300 shadow-lg">
-                            <ul className="leading-9 text-black">
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                                <button
-                                  onClick={handleLogout}
-                                  className=""
-                                >
-                                {" "}
-                                Logout
-                              </button>
-                              </li>
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-7">
-                                Thông tin User
-                              </li>
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-5">
-                                Voucher
-                              </li>
-                            </ul>
-                          </div>
-                          )}
-                      </button> 
-                    </div>
-                    
-                  </>
-                ) : (
-                  <>
-                  {}
-                    <Link
-                      to="/login"
-                      className="hover:underline"
-                      style={{ textShadow: "1px 2px 3px #000" }}
-                    >
-                      Đăng nhập 
-                    </Link>
-                    <AiOutlineRight />
-                  </>
-                )}
-                <span className="pl-2 pr-1 text-[14px]">/</span>
-                <Cart />
-              </div> */}
-
               <div className="">
                 <div
                   className="flex items-center mx-auto mt-10 justify-between w-[1280px] "
@@ -319,22 +262,27 @@ const Header = () => {
                                       <span> <TextTruncate text={loggedIn?.name} maxLength={3} /> </span>
                                     </div>
                                     {isDropdownOpen && (
-                                    <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-20px ] bg-white border border-gray-300 shadow-lg">
+                                    <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-30px] bg-white border border-gray-300 shadow-lg">
                                       <ul className="leading-9 text-black">
-                                        <li className="hover:bg-[#f2ba50] hover:text-white px-14">
+                                        <li className="hover:bg-[#f2ba50] hover:text-white px-12 justify-center pr-14">
                                           <button
                                             onClick={handleLogout}
                                             className=""
                                           >
                                           {" "}
-                                          Logout
+                                          <span className="flex items-center">
+                                            <AiOutlineLogout class="mr-2 "/>
+                                            Logout
+                                          </span>
                                         </button>
                                         </li>
-                                        <li className="hover:bg-[#f2ba50] hover:text-white px-7">
-                                          Thông tin User
+                                        <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
+                                          <AiOutlineUser class="mr-2 "/>
+                                         <a href="/profileUser"> Tài khoản</a>
                                         </li>
-                                        <li className="hover:bg-[#f2ba50] hover:text-white px-5">
-                                          Voucher
+                                        <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
+                                          <AiOutlineIdcard class="mr-2 "/>
+                                          <a href="/profileUser">Voucher</a>
                                         </li>
                                       </ul>
                                     </div>

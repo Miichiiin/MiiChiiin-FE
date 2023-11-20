@@ -32,7 +32,7 @@ const SearchOrder = () => {
   };
   return (
     <div className="">
-      <div className=" w-[1024px] absolute start-[220px] top-[-50px] z-10 p-5 text-black">
+      <div className=" w-[1024px] absolute start-[220px] top-[50%] z-10 p-5 text-black">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex items-center text-white w-[1024px] bg-white py-1"
@@ -211,7 +211,27 @@ const SearchOrder = () => {
             <h2 className="text-[23px] font-medium mb-3 py-3">
               Thông tin tìm kiếm
             </h2>
-            <div>Không có dữ liệu</div>
+            <div className="flex flex-col justify-center items-center ">
+              <div className="flex items-center justify-between">
+                <div className="w-[500px] border-r-2">
+                  <h3 className="text-[17px] h-10 font-medium px-2 py-2 bg-gray-300 mb-2 pl-5">
+                    Thông tin khách hàng
+                  </h3>
+                  <img className="object-cover h-[230px] ml-[130px]" 
+                  src="https://t4.ftcdn.net/jpg/04/75/01/23/360_F_475012363_aNqXx8CrsoTfJP5KCf1rERd6G50K0hXw.jpg" 
+                  alt="" />
+                </div>
+               <div className="w-[505px] flex flex-col justify-center">
+                  <h3 className="text-[17px] h-10 font-medium px-2 py-2 bg-gray-300 mb-2 pl-5">
+                    Thông tin đặt phòng
+                  </h3>
+                  <img className="object-cover h-[230px] w-[230px] flex ml-[150px]" 
+                  src="https://t4.ftcdn.net/jpg/04/75/01/23/360_F_475012363_aNqXx8CrsoTfJP5KCf1rERd6G50K0hXw.jpg" 
+                  alt="" />
+               </div>
+              </div>
+              
+            </div>
           </div>
         )}
       </div>
