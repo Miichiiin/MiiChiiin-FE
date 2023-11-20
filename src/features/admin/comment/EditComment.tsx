@@ -34,7 +34,7 @@ export const EditComment = () => {
     };
 
     const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
+
     };
 
     type FieldType = {

@@ -8,7 +8,6 @@ const rate_HomeApi = createApi({
         baseUrl: "http://localhost:8000/api",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
-                console.log("token",token);
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`)
             }

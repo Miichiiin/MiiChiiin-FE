@@ -111,7 +111,6 @@ const HotelChainStatistic = () => {
   if (HotelChainStatistics) {
     statisticalChainRoomtype = HotelChainStatistics.rating_comment_booking;
   } else {
-    console.log("Không có dữ liệu thống kê.");
   }
 
   let statisticalRoom: any[] = [];
@@ -127,7 +126,6 @@ const HotelChainStatistic = () => {
         })) || []
     );
   } else {
-    console.log("Không có dữ liệu thống kê.");
   }
 
 

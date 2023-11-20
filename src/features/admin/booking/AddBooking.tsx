@@ -195,7 +195,6 @@ const AddBooking = () => {
   };
 
   const handleCancelRemoveRoom = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
     message.error('Click on No');
   };
   const handleCheckInDateChange = (selectedDate: dayjs.Dayjs | null) => {
@@ -220,10 +219,8 @@ const AddBooking = () => {
       // Tính tổng giá tiền của các loại phòng đã chọn dựa trên số ngày thuê
       cart.forEach((roomData) => {
         const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
-        console.log(selectedCategory);
 
         if (selectedCategory) {
-          console.log(selectedCategory);
           totalRoom += selectedCategory?.price * days
         }
 
@@ -267,7 +264,6 @@ const AddBooking = () => {
     };
     addBooking(formattedValues).unwrap().then((response) => {
       const bookingId = response.error_message.id;
-      console.log(bookingId);
 
       message.success('Thêm thành công');
       setTimeout(() => {
@@ -277,7 +273,6 @@ const AddBooking = () => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
     message.error('Thêm thất bại');
   };
 

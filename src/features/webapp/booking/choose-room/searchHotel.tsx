@@ -45,7 +45,6 @@ export const SearchHotel = () => {
     const timeArray = searchSlide.date.split(",");
     date = timeArray.map(time => new Date(time));
   }
-  console.log("date1", date);
 
   let hotel: string[] = [];
   if (searchSlide && searchSlide.nameHotel) {
@@ -53,7 +52,6 @@ export const SearchHotel = () => {
   }
 
   const [selectedRange, setSelectedRange] = useState(date);
-  console.log("dsadsa", selectedRange);
 
   const [selectedHotel, setSelectedHotel] = useState(hotel[1]);
 
@@ -61,9 +59,6 @@ export const SearchHotel = () => {
   const navigate = useNavigate();
 
   const dateFormat = 'YYYY/MM/DD';
-  console.log("dayydsyayds", [dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]);
-
-
   type FieldType = {
     nameHotel?: string;
     password?: string;
@@ -226,7 +221,6 @@ export const SearchHotel = () => {
   };
   /*Cuộn trang*/
   const shouldShowScroll = numberOfRooms1 > 1;
-  console.log("date", searchSlide.date)
   return (
     <div className="justify-center w-full  items-center h-[90px] ">
       <Form

@@ -136,7 +136,6 @@ const UpdateBooking = () => {
     // Cập nhật giá trị tổng thanh toán
     setTotalAmount(total);
   };
-  console.log(bookingData);
 
   //set giá trị phòng cũ vào form
   useEffect(() => {
@@ -281,7 +280,6 @@ const UpdateBooking = () => {
     setIsUpdateRoom(true);
   };
   const handleCancelRemoveRoom = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
     message.error('Click on No');
   };
 
@@ -292,7 +290,6 @@ const UpdateBooking = () => {
   const [hiddenSelectingRooms, setHiddenSelectingRooms] = useState(false);
 
   const getRoomName = (roomId: any) => {
-    console.log(roomsData);
 
     const roomData = roomsData?.find((room: any) => room?.id === roomId);
 
@@ -312,8 +309,6 @@ const UpdateBooking = () => {
     if (selectedRoomIndex !== null) {
       const updatedCartData = [...cartData];
       updatedCartData[selectedRoomIndex].id_room = Number(selectedRoom);
-      console.log(updatedCartData);
-
       setSelectedRoom(Number(selectedRoom));
       setCartData(updatedCartData);
       form.setFieldsValue({ cart: updatedCartData });
