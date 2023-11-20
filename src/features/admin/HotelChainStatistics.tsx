@@ -27,11 +27,8 @@ const HotelChainStatistic = () => {
     year: selectedYear,
   });
 
-  console.log("HotelChainStatistics", HotelChainStatistics);
 
   const [filteredData1, setFilteredData1] = useState<any>([]);
-  console.log("filteredData1", filteredData1);
-
   const [chartMode, setChartMode] = useState("revenue");
 
   const handleRevenueChartModeChange = () => {
@@ -85,8 +82,6 @@ const HotelChainStatistic = () => {
     setIsDropdownVisiblesv(!isDropdownVisiblesv);
   };
 
-  console.log("filteredData2");
-
   const handleMonthChangesv = (event: any) => {
     const selectedMonth = parseInt(event.target.value);
     setSelectedMonthsv(selectedMonth);
@@ -108,14 +103,11 @@ const HotelChainStatistic = () => {
   });
 
 
-  console.log("HotelChainStatisticRt", HotelChainStatisticRt);
-
   let statisticalChainRoomtype: any;
 
   if (HotelChainStatistics) {
     statisticalChainRoomtype = HotelChainStatistics.rating_comment_booking;
   } else {
-    console.log("Không có dữ liệu thống kê.");
   }
 
   let statisticalRoom: any[] = [];
@@ -131,7 +123,6 @@ const HotelChainStatistic = () => {
         })) || []
     );
   } else {
-    console.log("Không có dữ liệu thống kê.");
   }
 
 

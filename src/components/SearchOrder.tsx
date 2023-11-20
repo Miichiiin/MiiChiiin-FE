@@ -14,7 +14,6 @@ const SearchOrder = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data: any) => {
-    console.log("dữ liệu",data);
     
     try {
       const response:any = await find_booking(data);

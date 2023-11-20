@@ -1,4 +1,5 @@
 import { useGetComfortByIdQuery, useUpdateComfortMutation } from '@/api/admin/comfort_admin';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Select, Skeleton, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -38,14 +39,16 @@ const UpdateUtilitiesPage = () => {
 
   return (
     <div>
-      <header className="flex justify-between items-center my-5 mx-3">
-        <h2 className="text-2xl  text-blue-700">Sửa tiện ích: <span className='font-semibold'>{data?.name}</span></h2>
+      <header className="flex justify-between items-center mb-5">
+        <h2 className="text-xl font-semibold">Sửa tiện ích: <span className='text-2xl text-blue-900 font-semibold'>{data?.name}</span></h2>
+        <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/managerutilities")}>
+          <ArrowLeftOutlined className="pr-2" /> Quay lại
+        </button>
       </header>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        layout='vertical'
         initialValues={data}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -64,7 +67,7 @@ const UpdateUtilitiesPage = () => {
           name="status"
           rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
         >
-          <Select placeholder="Chọn trạng thái" style={{ width: '150px' }}
+          <Select placeholder="Chọn trạng thái"
           >
             <Select.Option value={0}>Đang chờ</Select.Option>
             <Select.Option value={1}>Đã ẩn</Select.Option>
@@ -82,12 +85,9 @@ const UpdateUtilitiesPage = () => {
         </Form.Item>
 
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item >
           <Button type="primary" className='bg-blue-500 text-white' htmlType="submit">
             Update Tiện ích
-          </Button>
-          <Button type="primary" danger className='mx-2' onClick={() => navigate("/admin/managerutilities")}>
-            Quay lại
           </Button>
         </Form.Item>
       </Form>

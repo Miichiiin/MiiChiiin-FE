@@ -30,10 +30,8 @@ export const SearchQuickHotel = () => {
     const roomDetailsString = roomDetails1?.map((details) => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
-    console.log("roomDetailsString", roomDetailsString);
 
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
-    console.log("url",url)
     navigate(url);
   }
 
@@ -138,7 +136,6 @@ export const SearchQuickHotel = () => {
   }, [divClicked1]);
   //
 
-  console.log("user", localStorage.getItem("user"));
 
 
   /*Tăng số lượng phòng*/
@@ -152,8 +149,6 @@ export const SearchQuickHotel = () => {
     { adults: 1, children: 0, infants: 0 },
   ]);
   const [numberOfRooms1, setNumberOfRooms1] = useState(1);
-  console.log("số phòng", numberOfRooms1);
-  console.log("số người", roomDetails1);
 
   const handleRoomChange1 = (value: number) => {
     if (value >= 1) {

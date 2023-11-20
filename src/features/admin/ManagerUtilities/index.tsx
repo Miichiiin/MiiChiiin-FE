@@ -13,25 +13,24 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
 export const ManagerUtilities = () => {
   // phân quyền
   const dataPermission = localStorage.getItem('userAdmin')
-  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
-  const hasAddUserPermission = (permissions:any) => {
+  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+  const hasAddUserPermission = (permissions: any) => {
     return currentUserPermissions.includes(permissions);
   };
 
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
   const [searchText, setSearchText] = useState("");
-  const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const { data: Ultilities, isLoading, isError } = useGetComfortQuery({});
   const [removeUtility] = useRemoveComfortMutation();
-
+  const navigate = useNavigate();
   interface DataType {
     key: number;
     id: string | number;
@@ -40,7 +39,7 @@ export const ManagerUtilities = () => {
     status: string | number;
     alt: string;
   }
-  const data = Ultilities?.map(({ id, name, description,status, alt }: DataType) => ({
+  const data = Ultilities?.map(({ id, name, description, status, alt }: DataType) => ({
     key: id,
     name,
     description,
@@ -79,15 +78,15 @@ export const ManagerUtilities = () => {
       key: "status",
       render: (_, record) => {
         let statusText = '';
-        
+
         if (record.status === 2) {
-            statusText = 'Hoạt động';
+          statusText = 'Hoạt động';
         } else if (record.status === 1) {
-            statusText = 'Đã ẩn';
+          statusText = 'Đã ẩn';
         } else if (record.status === 0) {
-            statusText = 'Đang chờ';
+          statusText = 'Đang chờ';
         }
-      
+
         return <span>{statusText}</span>;
       }
     },
@@ -100,7 +99,12 @@ export const ManagerUtilities = () => {
       title: "Action",
       key: "action",
       render: (_: any, record: any) => (
-        <div className="flex space-x-2">
+        <div className="flex">
+          {hasAddUserPermission("update comfort") && (
+            <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={() => navigate(`/admin/updateUtilities/${record.key}`)}>
+              Sửa
+            </button>
+          )}
           {hasAddUserPermission("delete comfort") && (
             <Popconfirm
               title="Bạn có chắc chắn muốn xóa?"
@@ -112,32 +116,18 @@ export const ManagerUtilities = () => {
               okText="Xóa"
               cancelText="Hủy"
             >
-              <button className="mr-2 text-white font-semibold py-2 px-4 hover:bg-red-400  border border-red-400 rounded-lg tracking-wide bg-red-500 hover:text-white">
+              <button className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'>
                 Xóa
               </button>
             </Popconfirm>
-          )}
-          {hasAddUserPermission("update comfort") && (
-            <button className="mr-2 text-white font-semibold py-2 px-4 hover:bg-blue-400  border border-blue-400 rounded-lg tracking-wide bg-blue-500 hover:text-white">
-              <Link to={`/admin/updateUtilities/${record.key}`}>Sửa</Link>
-            </button>
           )}
         </div>
       ),
     }
   ];
 
-  // Alert xác nhận xoá
-  const confirmDelete = (id: number) => {
-    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa comment này?');
-    if (isConfirmed) {
-      removeUtility(id).unwrap().then(() => {
-        setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((row) => row.key !== id));
-      });
-    }
-  };
 
-  if (isLoading) return <Skeleton active/>;
+  if (isLoading) return <Skeleton active />;
   if (isError) return <div>Đã xảy ra lỗi khi tải dữ liệu</div>;
   return (
     <div>
@@ -190,9 +180,9 @@ export const ManagerUtilities = () => {
           {/*Nút Thêm */}
         </div>
         {hasAddUserPermission("add comfort") && (
-          <Button type="primary" className="ml-2 mt-1 bg-gray-500">
-          <Link to={`/admin/addUtilities`}>Thêm</Link>
-        </Button>
+          <button onClick={() => navigate(`/admin/addUtilities`)} className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+            Thêm tiện ích
+          </button>
         )}
       </div>
 

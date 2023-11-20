@@ -108,7 +108,6 @@ if (userAdminLocal !== null) {
     dataLogin = userAdminLocal;
   }
 
-  console.log("dataLoginAdmin", dataLogin.id_hotel);
 }
   
 

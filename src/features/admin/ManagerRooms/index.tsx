@@ -13,13 +13,13 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export const ManagerRoom = () => {
 
   const { data: roomData, isLoading, isError } = useGetRoom_AdminsQuery({})
-  
+  const navigate = useNavigate();
   const [removeRoom] = useRemoveRoom_AdminMutation();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
@@ -206,8 +206,8 @@ export const ManagerRoom = () => {
           />
         </div>
         {hasAddUserPermission("add room") && (
-          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md">
-            <Link to={`/admin/addroom`}>Thêm phòng</Link>
+          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={()=>navigate(`/admin/addroom`)}>
+            Thêm phòng
           </button>
         )}
       </div>
