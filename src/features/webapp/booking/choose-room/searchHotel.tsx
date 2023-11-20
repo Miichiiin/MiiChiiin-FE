@@ -24,7 +24,6 @@ export const SearchHotel = () => {
   const [hotelsData, setHotelsData] = useState([]);
 
   const searchSlide = useParams()
-  console.log("param111", searchSlide);
 
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
@@ -40,7 +39,6 @@ export const SearchHotel = () => {
       return roomDetails;
     });
   }
-  console.log("numberPeople", numberPeople);
 
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
@@ -54,9 +52,8 @@ export const SearchHotel = () => {
     hotel = searchSlide.nameHotel.split(",");
   }
 
-  console.log("khách sạn", hotel);
   const [selectedRange, setSelectedRange] = useState(date);
-  console.log("dsadsa", selectedRange[0]);
+  console.log("dsadsa", selectedRange);
 
   const [selectedHotel, setSelectedHotel] = useState(hotel[1]);
 
@@ -78,7 +75,6 @@ export const SearchHotel = () => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
-    console.log("roomDetailsString", roomDetailsString)
     navigate(url);
   }
 
