@@ -8,7 +8,6 @@ export const AddUser = () => {
     const navigate = useNavigate()
     const [image, setImage] = useState("");
     const [selectedRange, setSelectedRange] = useState<any>();
-
     const handleRangeChange = (dates: any) => {
       setSelectedRange(dates?.toDate() || null);
     };
@@ -18,7 +17,6 @@ export const AddUser = () => {
             ...values,
             date: selectedRange.toISOString().slice(0, 10)
         }
-        // console.log(values);
         
         addUser(newValue).unwrap().then(() => {
             console.log("thanh cong", newValue);
@@ -26,18 +24,7 @@ export const AddUser = () => {
             message.success('Thêm khách hàng thành công!');
             
         })
-        // try {
-        //     const resultAction = await addUser(values);
-        //     if ('error' in resultAction) {
-        //       console.error('Error:', resultAction.error);
-        //     } else {
-        //       const data = resultAction.data;
-        //       navigate("/admin/usermanagement"); 
-        //       console.log('Form values:', data);
-        //     }
-        //   } catch (error) {
-        //     console.error('Error:', error);
-        //   }
+
       
     };
 
@@ -70,8 +57,8 @@ export const AddUser = () => {
     return (
         <div>
 
-            <header className="flex justify-between items-center my-5 mx-3">
-                <h2 className="text-2xl  text-blue-700">Thêm dịch vụ</h2>
+            <header className="flex justify-between items-center mb-5">
+                <h2 className="text-lg font-bold text-orange-500">Thêm dịch vụ</h2>
             </header>
             <Form
                 name="basic"

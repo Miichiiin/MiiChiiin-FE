@@ -71,7 +71,7 @@ export const UpdateService = () => {
     <div>
       {isUploading && <Spin className='animate' />}
       <header className="flex justify-between items-center mb-5">
-        <h2 className="text-xl font-semibold ">Cập nhật dịch vụ: <span className='text-2xl text-blue-700 font-semibold'>{data?.name}</span></h2>
+        <h2 className="text-lg font-bold text-orange-500">Cập nhật dịch vụ: <span className=' text-orange-900 font-semibold'>{data?.name}</span></h2>
         <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/service")}>
           <ArrowLeftOutlined className="pr-2" /> Quay lại
         </button>

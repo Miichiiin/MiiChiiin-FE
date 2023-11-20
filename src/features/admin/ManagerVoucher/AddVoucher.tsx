@@ -48,7 +48,7 @@ const AddVoucherPage = () => {
     <div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <div className="text-lg font-semibold">Thêm Voucher</div>
+        <div className="text-lg font-bold text-orange-500">Thêm Voucher</div>
 
         <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={()=>navigate(`/admin/managervouchers`)}>
             <ArrowLeftOutlined className='pr-2'/> Quay lại

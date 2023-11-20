@@ -77,7 +77,7 @@ const UpdateUserPage = () => {
     <div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <div className="text-lg font-semibold">Update User</div>
+        <div className="text-lg font-bold text-orange-500">Update User</div>
 
         <button className='flex justify-center items-center bg-red-500 text-white px-2 py-1.5 mx-2 rounded-lg hover:bg-red-400' onClick={() => navigate("/admin/usermanagement")}><ArrowLeftOutlined className='mr-2'/> Quay lại</button>
       </div>

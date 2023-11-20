@@ -153,7 +153,7 @@ export const UserManagement = () => {
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <div className="text-lg font-semibold">Quản lý khách hàng</div>
+                <div className="text-lg font-bold text-orange-500">Quản lý khách hàng</div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} />
                     <Select

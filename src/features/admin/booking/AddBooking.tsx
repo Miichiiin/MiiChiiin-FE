@@ -293,7 +293,7 @@ const AddBooking = () => {
 
     <div className="mx-auto overflow-auto scroll-smooth">
       <header className='flex justify-between items-center mb-3'>
-        <h1 className='text-2xl font-bold pb-5'>Thêm Booking mới </h1>
+        <h1 className='text-xl text-orange-500 font-bold pb-5'>Thêm Booking mới </h1>
         <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
           <ArrowLeftOutlined className="pr-2" /> Quay lại
         </button>

@@ -134,7 +134,7 @@ export const CommentManagement = () => {
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
-                <div className="text-lg font-semibold">Quản lý Comment</div>
+                <div className="text-lg font-bold text-orange-500">Quản lý Comment</div>
                 <div className='flex items-center'>
                     <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
                     <Select

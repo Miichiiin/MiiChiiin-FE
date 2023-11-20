@@ -172,7 +172,7 @@ export const BookingManagement = () => {
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
-                <div className="text-lg font-semibold">Quản lý đơn hàng</div>
+                <div className="text-lg font-bold text-orange-500">Quản lý đơn hàng</div>
                 <div className='flex items-center '>
                     <Space.Compact className='mx-2'>
                         <Search placeholder="Nhập vào để tìm kiếm" allowClear className='w-[250px]' onSearch={(value) => { setSearchText(value) }} />

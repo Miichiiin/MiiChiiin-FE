@@ -51,7 +51,7 @@ const AddRoomType = () => {
     <div>
       {isUploading && <Spin className='animate'/>}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <div className="text-xl font-semibold">Thêm Loại Phòng</div>
+        <div className="text-lg font-bold text-orange-500">Thêm Loại Phòng</div>
 
         <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={()=>navigate("/admin/manageroomtype")}>
             <ArrowLeftOutlined className='pr-2'/> Quay lại
