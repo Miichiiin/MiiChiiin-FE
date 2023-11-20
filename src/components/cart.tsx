@@ -10,7 +10,6 @@ const Cart = () => {
   const cartArray: any = newArrayWithId && Array.isArray(newArrayWithId)
   ? newArrayWithId.map((item, index) => ({ ...item, id: index + 1 }))
   : [];
-  console.log("mảng cart", cartArray.hotel);
   
   const [roomList, setRoomList] = useState(cartArray);
 

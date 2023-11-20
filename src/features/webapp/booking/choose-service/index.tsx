@@ -8,9 +8,9 @@ import {
   AiOutlineUp,AiOutlineForm,AiOutlineTeam,
   AiOutlineArrowRight,AiFillCaretDown ,AiFillCaretUp,AiOutlineCalendar,AiOutlineSchedule
 } from "react-icons/ai";
-import { useNavigate, useParams } from "react-router-dom";
+import { json, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
-import { useGetService_hotelIdQuery, useGetService_hotelQuery } from "@/api/webapp/service_hotel";
+import { useGetService_hotelIdQuery} from "@/api/webapp/service_hotel";
 import { Button } from "antd";
 import HeaderHotelType from "../../HotelType/HeaderHotelType";
 
@@ -62,13 +62,32 @@ const ChooseService = () => {
     hotel = dataParam.nameHotel.split(",");
   }
   const { data: serviceData } = useGetService_hotelIdQuery(hotel[0]);
-  console.log("hotel", hotel);
 
   let date: Date[] = [];
   if (dataParam && dataParam.date) {
     const timeArray = dataParam.date.split(",");
     date = timeArray.map((time) => new Date(time));
   }
+
+
+  let roomDetailsString:any = []
+  if(dataParam && dataParam?.numberPeople){
+    roomDetailsString = JSON.stringify(dataParam?.numberPeople).split("&").map((item:any )=> item.replace(/^"|"$/g, ''))
+  }
+  const NumberPeople: { [key: string]: number }[] = [];
+
+  roomDetailsString.forEach((item:any) => {
+    const obj: { [key: string]: number } = {};
+    const keyValuePairs: string[] = item.split(',');
+  
+    keyValuePairs.forEach(pair => {
+      const [key, value]: string[] = pair.split(':');
+      obj[key] = parseInt(value);
+    });
+  
+    NumberPeople.push(obj);
+  });
+  
   
   let roomNumber: any[] = [];
   if (dataParam && dataParam.numberRoom) {
@@ -79,7 +98,6 @@ const ChooseService = () => {
 
   const onhanldeSubmit = () => {
     const service = JSON.stringify(selectedServices);
-    console.log("submithotel", hotel);
     const url = `/booking/${hotel}/${date}/${JSON.stringify(roomNumber)}/${service}/${dataParam.numberPeople}`;
     navigate(url);
     // navigate(`/booking`)
@@ -87,22 +105,14 @@ const ChooseService = () => {
   
 
 
-  let roomDetailsString = "";
 
-if (Array.isArray(dataParam.numberPeople)) {
-  roomDetailsString = dataParam.numberPeople.map((details: any) => {
-    return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
-  }).join('&');
-  // Rest of your code that uses roomDetailsString
-}
 let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.numberPeople.replace(/"/g, '') : undefined;
+
   const onhanldeGoBack = () => {
 
     const url = `/choose-room/${dataParam?.nameHotel}/${dataParam?.date}/${numberOfRooms}/${cleanedNumberPeople}`;
 
     navigate(url);
-    
-    console.log("numberRoom:", dataParam?.numberRoom)
   };
   // Tính tổng tiền của dịch vụ trong phòng
   const serviceTotalPrice = selectedServices.reduce(
@@ -118,7 +128,6 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
     },
     0
   );
-  console.log("tien dịch vụ", serviceTotalPrice);
   let totalPrice1 = 0;
 
   roomNumber.map((item: any) => {
@@ -130,9 +139,7 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
 
     totalPrice1 += item.price * numberOfDays * item.count;
   });
-
-  // Hiển thị tổng tiền
-  console.log("Tổng tiền: ", totalPrice1);
+  
 
   const sumprice = totalPrice1 + serviceTotalPrice;
 
@@ -317,7 +324,10 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                     </p>
                    <div className="flex text-gray-500 mt-1 border-b-2 pb-3">
                       <AiOutlineTeam class="text-lg mr-2"/>
-                      <p className="text-sm pb-3 text-gray-500 font-medium">2 Người lớn, 2 Trẻ em</p>
+                      <p className="text-sm pb-3 text-gray-500 font-medium">  
+                      {NumberPeople && NumberPeople?.filter((item:any, index1:any) => index1 == index).map(( {adults, children, infants}:any, index:any) => (
+                                  <div key={index}>Người lớn:{adults}, Trẻ em:{children}, Em bé: {infants}</div>
+                                ))}</p>
                    </div>
                     {/* Dịch vụ đã chọn */}
                     {selectedServicesInRoom.length > 0 && (

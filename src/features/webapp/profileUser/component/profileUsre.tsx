@@ -11,12 +11,12 @@ const UserProfileForm = () => {
     address:""
 
   });
+  
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-    console.log("storedUser", storedUser);
   }, []);
 
   const handleChange = (e: any) => {
@@ -28,7 +28,6 @@ const UserProfileForm = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(user);
   };
 
   return (

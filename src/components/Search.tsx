@@ -13,7 +13,6 @@ const Search = () => {
   const [divClicked, setDivClicked] = useState(false); 
   const refCalen = useRef<HTMLDivElement>(null);
   const searchHotel = useAppSelector((state: any) => state.searchSlice?.items);
-  console.log("Ten ks new:", searchHotel)
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
