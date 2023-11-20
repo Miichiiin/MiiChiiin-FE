@@ -2,7 +2,7 @@ import {
   AiOutlineArrowRight,
   AiFillWechat,
   AiOutlineRight,
-  AiOutlineLeft,
+  AiOutlineLeft,AiFillStar,AiOutlineComment
 } from "react-icons/ai";
 import React from "react";
 import "slick-carousel/slick/slick.css";
@@ -24,6 +24,8 @@ const HotelIntroduction = () => {
   const { data: service } = useGetService_hotelQuery();
   const { id: idHotel } = useParams<{ id: string }>();
   const { data } = useGetCategory_homeQuery(idHotel);
+  console.log("data",data);
+  
   const {data: hotelData} = useGetHotel_homeByIdQuery(idHotel);
   console.log("hotelData",hotelData);
   
@@ -145,13 +147,13 @@ const HotelIntroduction = () => {
           <div className="mt-10 w-[1280px] mx-auto relative">
             <button
               onClick={handlePrev}
-              className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[130px] start-[-15px] transition-transform transform scale-100 hover:scale-125"
+              className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[130px] start-[-15px] "
             >
               <AiOutlineLeft />
             </button>
             <button
               onClick={handleNext}
-              className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[130px] end-2  transition-transform transform scale-100 hover:scale-125"
+              className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[130px] end-2  "
             >
               <AiOutlineRight />
             </button>
@@ -162,18 +164,43 @@ const HotelIntroduction = () => {
                     <div>
                       <div className="relative overflow-hidden mb-4">
                         <Link onClick={() => view(item?.id)} to={`/hotel/${idHotel}/rooms/detail/${item?.id}`}>
-                          <img
-                            className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                          <figure className="snip0016">
+                              <img className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                                  src={item?.image}
+                                  alt=""
+                              />
+                              <figcaption>
+                              <h2 className="pb-3">Loại phòng <span className="px-2">Nổi bật  </span>nhất</h2>
+                              <div className="flex items-center space-x-5 font-medium">
+                                  <p className="flex items-center space-x-1">
+                                      <span className="font-medium ">Hạng khách sạn:</span> 
+                                      {Array.from({ length: item?.star }, (_, index) => (
+                                          <span key={index} className="flex items-center ">
+                                          <AiFillStar />
+                                          </span>
+                                      ))}
+                                  </p>
+                                  <p className="flex items-center space-x-2"><AiOutlineComment/> <span>{item?.total_rating_content} lượt</span></p>
+                              </div>
+                              
+                              <p className="max-w-prose mx-auto ">
+                                  <TextTruncate text={"Mô tả: " + item?.description || ''} maxLength={150} />
+                              </p>
+                              <a href="#"></a>
+                              </figcaption>
+                          </figure>
+                          {/* <img
+                            className="w-[400px] h-[250px] object-cover rounded-md"
                             src={item.image}
                             alt=""
-                          />
+                          /> */}
                         </Link>
                       </div>
                       <h1 className="text-[24px] font-normal pb-2">
                         {item.name}
                       </h1>
                       <h2 className="text-[20px] font-normal pb-2 text-red-500">
-                        {item.price}
+                        {item.price.toLocaleString('vi-VN')} đ
                       </h2>
                       <p className="text-[#8e9399] text-[14px] mb-3">
                         {" "}
