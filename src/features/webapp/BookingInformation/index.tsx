@@ -6,7 +6,7 @@ import {
 } from "react-icons/ai";
 import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";
@@ -14,18 +14,14 @@ import localStorage from "redux-persist/es/storage";
 import { useAddBookingUserMutation } from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
-import { divide } from "lodash";
 import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
-import Login from "../auth/Login/login";
 
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
   const { data: serviceData } = useGetService_hotelQuery();
-  console.log("serviceData chooservice", serviceData);
   const [addBookingUser] = useAddBookingUserMutation();
   const [userData, setUserData] = useState<any | null>(null);
-  console.log("iduserData", userData);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -58,9 +54,29 @@ const BookingInformation = () => {
   if (dataParam && dataParam.selectedServices) {
     selectedServices = JSON.parse(dataParam.selectedServices);
   }
+
+  let roomDetailsString:any = []
+  if(dataParam && dataParam?.people){
+    roomDetailsString = JSON.stringify(dataParam?.people).split("&").map((item:any )=> item.replace(/^"|"$/g, ''))
+  }
+  const NumberPeople: { [key: string]: number }[] = [];
+
+  roomDetailsString.forEach((item:any) => {
+    const obj: { [key: string]: number } = {};
+    const keyValuePairs: string[] = item.split(',');
+  
+    keyValuePairs.forEach(pair => {
+      const [key, value]: string[] = pair.split(':');
+      obj[key] = parseInt(value);
+    });
+  
+    NumberPeople.push(obj);
+  });
+  console.log(" dataParam?.people", dataParam?.people);
+  
   //Tính số người
   // Tách chuỗi thành các phần tử riêng biệt
-  const individuals: any = dataParam.people && dataParam.people.split("&");
+  const individuals: any = dataParam?.people && dataParam.people.split("&");
 
   let totalAdults = 0;
   let totalChildren = 0;
@@ -137,7 +153,6 @@ const BookingInformation = () => {
       services: services,
     };
   });
-  console.log("cart111", cart);
 
   const onSubmit = (data: any) => {
     const dataBooking = {
@@ -165,9 +180,6 @@ const BookingInformation = () => {
           setModalIsOpen(true);
         }
       });
-
-    console.log("data form", data);
-    console.log("newDataBooking", dataBooking);
   };
 
   // add voucher
@@ -694,7 +706,11 @@ const BookingInformation = () => {
                       </p>
                       <span className="flex text-gray-500 mt-1">
                         <AiOutlineTeam class="text-lg mr-2"/>
-                        <p className="text-sm pb-3 font-medium ">2 Người lớn, 2 Trẻ em</p>
+                        <p className="text-sm pb-3 font-medium ">
+                        {NumberPeople && NumberPeople?.filter((item:any, index1:any) => index1 == index).map(( {adults, children, infants}:any, index:any) => (
+                                  <div key={index}>Người lớn:{adults}, Trẻ em:{children}, Em bé: {infants}</div>
+                                ))}
+                          </p>
                       </span>
                     </div>
                     {/* Dịch vụ đã chọn */}

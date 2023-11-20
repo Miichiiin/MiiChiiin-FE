@@ -24,7 +24,6 @@ export const SearchHotel = () => {
   const [hotelsData, setHotelsData] = useState([]);
 
   const searchSlide = useParams()
-  console.log("param111", searchSlide);
 
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
@@ -40,23 +39,19 @@ export const SearchHotel = () => {
       return roomDetails;
     });
   }
-  console.log("numberPeople", numberPeople);
 
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
     const timeArray = searchSlide.date.split(",");
     date = timeArray.map(time => new Date(time));
   }
-  console.log("date1", date);
 
   let hotel: string[] = [];
   if (searchSlide && searchSlide.nameHotel) {
     hotel = searchSlide.nameHotel.split(",");
   }
 
-  console.log("khách sạn", hotel);
   const [selectedRange, setSelectedRange] = useState(date);
-  console.log("dsadsa", selectedRange[0]);
 
   const [selectedHotel, setSelectedHotel] = useState(hotel[1]);
 
@@ -64,9 +59,6 @@ export const SearchHotel = () => {
   const navigate = useNavigate();
 
   const dateFormat = 'YYYY/MM/DD';
-  console.log("dayydsyayds", [dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]);
-
-
   type FieldType = {
     nameHotel?: string;
     password?: string;
@@ -78,7 +70,6 @@ export const SearchHotel = () => {
       return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
     }).join('&');
     const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
-    console.log("roomDetailsString", roomDetailsString)
     navigate(url);
   }
 
@@ -230,7 +221,6 @@ export const SearchHotel = () => {
   };
   /*Cuộn trang*/
   const shouldShowScroll = numberOfRooms1 > 1;
-  console.log("date", searchSlide.date)
   return (
     <div className="justify-center w-full  items-center h-[90px] ">
       <Form
