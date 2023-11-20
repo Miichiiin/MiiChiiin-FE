@@ -6,11 +6,11 @@ import {
   AiOutlineIdcard,
   AiOutlineMinus,
   AiOutlinePlus,
-  AiOutlineUser,
+  AiOutlineUser,AiOutlineCalendar
 } from 'react-icons/ai';
 import { isYesterday } from 'date-fns';
 import { useGetHotel_homesQuery } from '@/api/webapp/hotel_home';
-
+import '../components/Css/index.css'
 
 const { RangePicker } = DatePicker;
 
@@ -220,13 +220,14 @@ export const SearchQuickHotel = () => {
             <div ref={refCalen} onClick={handleDivClick}>
               <div onClick={toggleDropdown} className="relative cursor-pointer group">
                 <div
-                  className="border rounded border-[#e0e0e0] xl:w-[410px] xl:h-[57px] xl:pl-[55px] 
+                  className="border rounded border-[#e0e0e0] xl:w-[370px] xl:h-[57px] xl:pl-[55px] 
                         lg:w-[200px] lg:h-[55px] xl:text-[16px] lg:text-[11px] lg:pl-[40px] 
                         sm:w-[130px] h-[45px] sm:text-[10px] sm:pl-[38px] transition-all duration-300 ease-in-out group-hover:border-[#e8952f] hover:shadow-md"
                 >
-                  <span className="text-gray-700 absolute pt-[13px] font-medium">
+                  <span className="text-gray-700 absolute top-6 font-medium">
                     {selectedHotel || "Bạn nhập nơi muốn đến..."}
                   </span>
+                  <span className='pt-2 pt-1 text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Khách sạn - Điểm đến</span>
                 </div>
                 <span className="text-gray-700 absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4 group-hover:text-[#e8952f]">
                   <AiOutlineEnvironment />
@@ -254,17 +255,21 @@ export const SearchQuickHotel = () => {
             </div>
           </Form.Item>
 
-          <Form.Item className="flex-grow ml-2">
+          <Form.Item className="flex-grow ml-2 group">
+            <AiOutlineCalendar class="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]"/>
             <RangePicker
               className="w-[280px] text-[16px] h-[57px] border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               format="DD/MM/YYYY"
+              separator=""
               onChange={handleRangeChange}
               disabledDate={(current) => {
                 // Vô hiệu hóa các ngày hôm trước
                 return current && current.isBefore(new Date(), 'day');
               }}
-              style={{ color: 'black', fontWeight: 'medium' }}
+              popupStyle={{ overflow: 'hidden' }}
+              style={{ color: 'red', fontWeight: 'bold', paddingTop:"20px", paddingLeft:"45px"}}
             />
+            <span className='absolute flex top-1 start-11 font-medium text-sm text-gray-500 group-hover:text-[#e8952f] '>Ngày nhận - Ngày trả</span>
           </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
@@ -277,15 +282,15 @@ export const SearchQuickHotel = () => {
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
                   <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 font-bold sm:space-x-2 font-semibold ">
-                    <label htmlFor="" className='cursor-pointer group-hover:text-[#e8952f]'>Số phòng</label>
-                    <label htmlFor="" className='cursor-pointer pl-[20px] group-hover:text-[#e8952f]'>Số người </label>
+                    <label htmlFor="" className='cursor-pointer group-hover:text-[#e8952f] ml-[-35px] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Số phòng - Số người</label>
+                    {/* <label htmlFor="" className='cursor-pointer pl-[20px] group-hover:text-[#e8952f] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Số người </label> */}
                   </div>
                   <div
                     onClick={toggleDropdown1}
                     className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46] w-[320px] cursor-pointer "
                   >
-                    <label htmlFor="" className='cursor-pointer pl-0.5'>{numberOfRooms1} phòng</label>
-                    <label htmlFor="" className='cursor-pointer '>
+                    <label htmlFor="" className='cursor-pointer '>{numberOfRooms1} phòng </label>
+                    <label htmlFor="" className=' cursor-pointer text-gray-700 font-semibold'>
                       {roomDetails1.reduce((total, room) => total + room.adults, 0)}{" "}
                       người lớn - {" "}
                       {roomDetails1.reduce((total, room) => total + room.children, 0)}{" "}

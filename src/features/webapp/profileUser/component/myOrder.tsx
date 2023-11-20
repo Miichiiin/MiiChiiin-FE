@@ -5,9 +5,6 @@ import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import dayjs from "dayjs";
 const MyOrder = () => {
-  // const [isProductInCart, setIsProductInCart] = useState();
-  // console.log("isProductInCart", isProductInCart);
-
   const [user, setUser] = useState({
     id: "",
     email: "",
@@ -19,30 +16,20 @@ const MyOrder = () => {
     address: "",
   });
   const [idBoking, setIdBooking] = useState<any>("");
-
   const { data: booking } = useGetBokingUserQuery(user?.id);
-
-  // const { data: booking } = useGetBokingUserTestQuery();
-
-  console.log("booking2333", booking);
-  
-
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
 
-    console.log("storedUser", storedUser);
   }, []);
 
   const handleBookingDetail = (id_booking:any) => {
     setIdBooking(id_booking)
   }
-  console.log("id_bôking", idBoking);
   
   const { data: bookingDetail } = useGetBookingDetailUserQuery({id_user: user?.id, id_booking: idBoking});
-  console.log("booking2333detail", bookingDetail);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -136,14 +123,13 @@ const MyOrder = () => {
                           contentLabel="Chi tiết"
                           style={{
                             overlay: {
-                              backgroundColor: "rgba(0, 0, 0, 0.5)",
+                              backgroundColor: "rgba(0, 0, 0, 0.1)",
                             },
                             content: {
                               width: "1100px",
                               maxHeight: "auto",
                               overflowY: "auto",
                               margin: "auto",
-                              paddingTop: "180px",
                               display: "flex",
                               flexDirection: "column",
                               justifyContent: "center",
