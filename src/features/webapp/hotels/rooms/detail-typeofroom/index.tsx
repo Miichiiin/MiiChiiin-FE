@@ -129,7 +129,6 @@ const DetailTypeofRoom = () => {
       message.error("Vui lòng đăng nhập để bình luận.");
       navigate("/login");
     }
-   
   };
   //
   const [selectedRange, setSelectedRange] = useState<
@@ -187,7 +186,9 @@ const DetailTypeofRoom = () => {
       const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${numberOfRooms1}`;
 
       const jsondata = {
-        id: 2, name: "Phòng gia đình", description: "Est quo consequatur.",
+        id: 2,
+        name: "Phòng gia đình",
+        description: "Est quo consequatur.",
         Total_comfort: 3,
         Total_rooms: 7,
         acreage: 4,
@@ -196,7 +197,8 @@ const DetailTypeofRoom = () => {
         image: "https://via.placeholder.com/640x480.png/0099bb?text=a",
         imageUrl: [
           {
-            image: "https://via.placeholder.com/640x480.png/00aa55?text=sapiente",
+            image:
+              "https://via.placeholder.com/640x480.png/00aa55?text=sapiente",
           },
         ],
         likes: 68,
@@ -204,10 +206,10 @@ const DetailTypeofRoom = () => {
         price: 1907705,
         quantity_of_people: 6,
         updated_at: "2023-11-18T14:51:54.000000Z",
-        views: 5
-      }
-      localStorage.setItem("selectedRooms",JSON.stringify(jsondata));
-      navigate(url);
+        views: 5,
+      };
+      localStorage.setItem("selectedRooms", JSON.stringify(jsondata));
+      navigate(url, { replace: true });
     } else {
       message.error(
         "Vui lòng chọn ngày check-in và check-out trước khi đặt phòng."
