@@ -3,7 +3,7 @@ import {
   AiOutlineSearch,
   AiOutlineRight,
   AiOutlineMenu,
-  AiOutlineDown,
+  AiOutlineDown,AiOutlineUser,AiOutlineLogout,AiOutlineIdcard
 } from "react-icons/ai";
 import "../../../components/Css/index.css";
 import Cart from "@/components/cart";
@@ -12,12 +12,14 @@ import {
   useGetHotel_homesQuery,
 } from "@/api/webapp/hotel_home";
 import { Link, useParams } from "react-router-dom";
+import { TextTruncate } from "@/components/TextTruncate";
 const HeaderHotel = () => {
   const { id } = useParams<{ id: string }>();
   const { data: hotelData } = useGetHotel_homeByIdQuery(id);
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -49,20 +51,18 @@ const HeaderHotel = () => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        closeMenu();
-      }
-      if (isDropdownOpen && !target?.closest(".dropdown-button")) {
+    const handleClickOutside = (event:MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
-    window.addEventListener("mousedown", handleClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, []);
   /*menu điều hướng*/
   const toggleMenuu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -122,7 +122,7 @@ const HeaderHotel = () => {
           <div
             className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
-                ? "fixed top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]"
+                ? "fixed top-0 left-0 duration-800 animate-slide-down bg-[#151b40] pl-[120px]"
                 : "duration-500 "
             }`}
           >
@@ -132,80 +132,7 @@ const HeaderHotel = () => {
                         sm:mr-10
                         "
             >
-              <div
-                className="flex items-center justify-end space-x-2 mt-6 text-white 
-                         lg:text-[15px] "
-              >
-                 {loggedIn ? (
-                  <>
-                    <div className="text-white pt-1">
-                      <button onClick={toggleDropdown1}>
-                          <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
-                          {isDropdownOpen1 && (
-                          <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-20 bg-white border border-gray-300 shadow-lg">
-                            <ul className="leading-9 text-black">
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                                <button
-                                  onClick={handleLogout}
-                                  className=""
-                                >
-                                {" "}
-                                Logout
-                              </button>
-                              </li>
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-7">
-                                Thông tin User
-                              </li>
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-5">
-                                Voucher
-                              </li>
-                            </ul>
-                          </div>
-                          )}
-                      </button> 
-                    </div>
-                    
-                  </>
-                ) : (
-                  <>
-                  {}
-                    <Link
-                      to="/login"
-                      className="hover:underline"
-                      style={{ textShadow: "1px 2px 3px #000" }}
-                    >
-                      Đăng nhập 
-                    </Link>
-                    <AiOutlineRight />
-                  </>
-                )}
-                <span className="pl-2 pr-1 text-[14px]">/</span>
-                <button
-                  type="submit"
-                  onClick={toggleDropdown}
-                  className="flex items-center border-white space-x-1 "
-                >
-                  <img
-                    className="rounded-full w-5 h-5"
-                    src="https://st.quantrimang.com/photos/image/2021/09/05/Co-Vietnam.png"
-                    alt=""
-                  />
-                  <span className="font-medium text-[16px] hover:">VIE</span>{" "}
-                  <AiOutlineRight />
-                </button>
-                <Cart />
-
-                {isDropdownOpen && (
-                  <div className="absolute mt-[220px] bg-white border border-gray-300 shadow-lg ">
-                    <ul className="py-3 px-6 leading-9 text-black">
-                      <li>Vietnamese</li>
-                      <li>English</li>
-                      <li>China</li>
-                      <li>Korea</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
+              
               <div className="">
                 <div
                   className="flex items-center mx-auto mt-6 justify-between  
@@ -213,10 +140,10 @@ const HeaderHotel = () => {
                             "
                 >
                   <ul
-                    className="flex items-center space-x-[30px] text-[12px] text-white 
+                    className="flex mt-8 justify-between items-center space-x-[30px] text-[12px] text-white 
                                     xl:space-x-[80px] xl:text-[17px]
                                     lg:space-x-[60px] lg:text-[15px] lg:block lg:flex
-                                    sm:hidden
+                                    sm:hidden ml-[-110px]
                                 "
                   >
                     <button onClick={toggleMenuu} className="h-[40px] pb-3 ">
@@ -238,7 +165,68 @@ const HeaderHotel = () => {
                     <li className="h-[40px] after-4 font-medium">
                       <a href="/new">Ưu đãi</a>
                     </li>
+                    <li>
+                      <img className="w-[230px] ml-[-40px]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
+                    </li>
                   </ul>
+                  <div
+                      className="flex items-center justify-end space-x-2  text-white 
+                              lg:text-[15px] "
+                    >
+                      {loggedIn ? (
+                          <>
+                            <div className="text-white pt-1" ref={dropdownRef}>
+                              <button className="relative" onClick={toggleDropdown}>
+                                  <div className="flex items-center space-x-3">
+                                    <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
+                                    <span> <TextTruncate text={loggedIn?.name} maxLength={3} /> </span>
+                                  </div>
+                                  {isDropdownOpen && (
+                                  <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-30px] bg-white border border-gray-300 shadow-lg">
+                                    <ul className="leading-9 text-black">
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-12 justify-center pr-14">
+                                        <button
+                                          onClick={handleLogout}
+                                          className=""
+                                        >
+                                        {" "}
+                                        <span className="flex items-center">
+                                          <AiOutlineLogout class="mr-2 "/>
+                                          Logout
+                                        </span>
+                                      </button>
+                                      </li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
+                                        <AiOutlineUser class="mr-2 "/>
+                                      <a href="/profileUser"> Tài khoản</a>
+                                      </li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
+                                        <AiOutlineIdcard class="mr-2 "/>
+                                        <a href="/profileUser">Voucher</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  )}
+                              </button> 
+                            </div>
+                            
+                          </>
+                        ) : (
+                        <>
+                        {}
+                          <Link
+                            to="/login"
+                            className="hover:underline"
+                            style={{ textShadow: "1px 2px 3px #000" }}
+                          >
+                            Đăng nhập 
+                          </Link>
+                          <AiOutlineRight />
+                        </>
+                      )}
+                      <span>/</span>
+                      <Cart />
+                  </div>
                   <button className="h-[40px] pb-3 lg:hidden ml-5">
                     <AiOutlineMenu />
                   </button>
@@ -247,12 +235,12 @@ const HeaderHotel = () => {
                     src="https://vinpearl.com/themes/porto/img/vinpearl/vp.svg"
                     alt=""
                   />
-                  <a
+                  {/* <a
                     href=""
                     className="px-5 py-2  bg-[#e8952f] text-white font-medium"
                   >
                     Đặt ngay
-                  </a>
+                  </a> */}
                 </div>
               </div>
               <div
@@ -297,13 +285,13 @@ const HeaderHotel = () => {
           </div>
           <div className="text-gray-800 text-[21px] leading-[50px] px-10 py-10 font-medium">
             <div className="flex items-center justify-between">
-              <a href="">Khách sạn</a>{" "}
+              <a href="/">Trang chủ</a>{" "}
               <span className="mt-1 text-[12px] ">
                 <AiOutlineDown />
               </span>
             </div>
             <p className="flex items-center justify-between">
-              <a href="">Trải nghiện</a>{" "}
+              <a href="">Thông tin tài khoản</a>{" "}
               <span className="mt-1 text-[12px] ">
                 <AiOutlineDown />
               </span>
@@ -312,7 +300,7 @@ const HeaderHotel = () => {
               <a href="">Ưu đãi khuyến mãi</a>
             </p>
             <p>
-              <a href="">New</a>
+              <a href="/new">New</a>
             </p>
           </div>
         </div>

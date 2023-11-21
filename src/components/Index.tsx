@@ -20,6 +20,8 @@ const Index = () => {
         slidesToScroll: 1,
     };
     const { data: booking } = useGetHotel_homesQuery();
+    console.log("data",booking);
+    
     const { data: voucher } = useGetVoucherQuery();
 
     const sliderRef = React.useRef<Slider>(null);
@@ -88,7 +90,7 @@ const Index = () => {
                                             <p className="flex items-center space-x-1">
                                                 <span className="font-medium ">Hạng khách sạn:</span> 
                                                 {Array.from({ length: item?.star }, (_, index) => (
-                                                    <span key={index} className="flex items-center ">
+                                                    <span key={index} className="flex items-center">
                                                     <AiFillStar />
                                                     </span>
                                                 ))}

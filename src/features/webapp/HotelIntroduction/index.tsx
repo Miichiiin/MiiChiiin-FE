@@ -2,14 +2,14 @@ import {
   AiOutlineArrowRight,
   AiFillWechat,
   AiOutlineRight,
-  AiOutlineLeft,
+  AiOutlineLeft,AiFillStar,AiOutlineShrink,AiFillLike,AiFillEye,AiOutlineTeam,AiOutlineInsertRowLeft,AiOutlineSlackSquare
 } from "react-icons/ai";
 import React from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import '../../../components/Css/hover.css'
 import { TextTruncate } from "../../../components/TextTruncate";
-import Search from "../../../components/Search";
 import HeaderHotel from "./HeaderHotel";
 import { Link, useParams } from "react-router-dom";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
@@ -25,6 +25,8 @@ const HotelIntroduction = () => {
   const { data: service } = useGetService_hotelQuery();
   const { id: idHotel } = useParams<{ id: string }>();
   const { data } = useGetCategory_homeQuery(idHotel);
+  console.log("datahai",data);
+  
   const {data: hotelData} = useGetHotel_homeByIdQuery(idHotel);
   console.log("hotelData",hotelData);
   
@@ -33,7 +35,7 @@ const HotelIntroduction = () => {
 
   let settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -146,13 +148,13 @@ const HotelIntroduction = () => {
           <div className="mt-10 w-[1280px] mx-auto relative">
             <button
               onClick={handlePrev}
-              className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[130px] start-[-15px] transition-transform transform scale-100 hover:scale-125"
+              className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[130px] start-[-15px] transform transition-tranform hover:scale-125 duration-300 "
             >
               <AiOutlineLeft />
             </button>
             <button
               onClick={handleNext}
-              className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[130px] end-2  transition-transform transform scale-100 hover:scale-125"
+              className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute transform transition-tranform hover:scale-125 duration-300  top-[130px] end-0  "
             >
               <AiOutlineRight />
             </button>
@@ -161,21 +163,51 @@ const HotelIntroduction = () => {
                 return (
                   <>
                     <div>
-                      <div className="relative overflow-hidden mb-4">
+                      <div className="relative overflow-hidden ">
                         <Link onClick={() => view(item?.id)} to={`/hotel/${idHotel}/rooms/detail/${item?.id}`}>
-                          <img
-                            className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                            src={item.image}
-                            alt=""
-                          />
+                          <figure className="snip0016">
+                              <img className="w-[400px] h-[250px] object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                                  src={item?.image}
+                                  alt=""
+                              />
+                              <figcaption>
+                              <h2 className="pb-3">Loại phòng <span className="px-2">Nổi bật  </span>nhất</h2>
+                              <div className="flex items-center space-x-5 font-medium">
+                                  <p className="flex items-center space-x-1">
+                                      <span className="font-medium ">Thông tin phòng cơ bản :</span> 
+                                      {/* {Array.from({ length: item?.star }, (_, index) => (
+                                          <span key={index} className="flex items-center ">
+                                          <AiFillStar />
+                                          </span>
+                                      ))} */}
+                                  </p>
+                              </div>
+                              <p className="flex items-center space-x-9">
+                                <span className="flex items-center"> <AiOutlineShrink class="mr-2"/> {item?.acreage} m2</span>
+                                <span className="flex items-center"><AiOutlineTeam class="mr-2"/> {item?.quantity_of_people} người</span>
+                                <span className="flex items-center"><AiOutlineSlackSquare class="mr-2"/> {item?.total_comfort} tiện ích</span> 
+                              </p>
+                              <p className="flex items-center space-x-6"> 
+                                <span className="flex items-center"><AiFillEye class="mr-2"/> {item?.views} lượt</span>
+                                <span className="flex items-center"><AiFillLike class="mr-2"/> {item?.likes} lượt</span>
+                                <span className="flex items-center"> <AiOutlineInsertRowLeft class="mr-2"/> {item?.total_rooms} phòng</span>
+                              </p>
+                              <p className="max-w-prose mx-auto ">
+                                  <TextTruncate text={"Mô tả: " + item?.description || ''} maxLength={150} />
+                              </p>
+                              <a href="#"></a>
+                              </figcaption>
+                          </figure>
                         </Link>
                       </div>
-                      <h1 className="text-[24px] font-normal pb-2">
-                        {item.name}
-                      </h1>
-                      <h2 className="text-[20px] font-normal pb-2 text-red-500">
-                        {item.price}
-                      </h2>
+                      <div className="flex items-center ">
+                        <h1 className="text-[24px] font-normal pb-2 w-[50%]">
+                          {item.name}
+                        </h1>
+                        <h2 className=" w-[50%] text-[20px] font-medium pb-2 flex justify-center text-center">
+                          {item.price.toLocaleString('vi-VN')} đ
+                        </h2>
+                      </div>
                       <p className="text-[#8e9399] text-[14px] mb-3">
                         {" "}
                         <TextTruncate text={item.description} maxLength={100} />
