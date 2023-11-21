@@ -1,195 +1,238 @@
 import { useEffect, useState } from 'react';
-import { Input, DatePicker, InputNumber, Select, Button, Upload, Form, message } from 'antd';
-import { CloudUploadOutlined, ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useGetUserIdQuery, useUpdateUserMutation } from '@/api/users';
+import { Input, DatePicker, Select, Button, Form, message, Radio, Skeleton, Image, Spin } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
-
+import { useGetUser_adminByIdQuery, useUpdateUser_adminMutation } from '@/api/admin/admin_usermanage';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const UpdateUserPage = () => {
-  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
-  const { data: userData } = useGetUserIdQuery(id || "")
-  const [updateUser] = useUpdateUserMutation()
-  const [imageUrl, setImageUrl] = useState(null);
-  const [form] = Form.useForm();
+  const { data: userData, isLoading: LoadingUser } = useGetUser_adminByIdQuery(id)
 
+  const [updateUser, { isLoading }] = useUpdateUser_adminMutation()
+  const navigate = useNavigate()
+  const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue({
-      name: userData?.name,
-      email: userData?.email,
-      image: userData?.image,
-      gender: userData?.gender,
-      date: dayjs(userData?.date).tz('Asia/Ho_Chi_Minh'),
-      address: userData?.address,
-      phone: userData?.phone,
-      cccd: userData?.cccd,
-      nationality: userData?.nationality,
-    })
-  }, [userData])
+    if (userData) {
+      form.setFieldsValue({
+        name: userData?.name,
+        email: userData?.email,
+        gender: userData?.gender,
+        date: dayjs(userData?.date)?.tz('Asia/Ho_Chi_Minh'),
+        phone: userData?.phone,
+        address: userData?.address,
+        password: userData?.password,
+        nationality: userData?.nationality,
+        cccd: userData?.cccd,
+        status: userData?.status,
+        description: userData?.description,
+      })
+    }
+  })
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const [isUploading, setIsUploading] = useState(false)
+  const [selectedRange, setSelectedRange] = useState<any>();
+  const handleRangeChange = (dates: any) => {
+    setSelectedRange(dates?.toDate() || null);
+  };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target
+    const selectedFiles = files as FileList
+    setSelectedFile(selectedFiles?.[0])
+    setIsImageChanged(true);
+  };
+  const [isImageChanged, setIsImageChanged] = useState(false);
 
   const onFinish = (values: any) => {
-    updateUser({ ...values, id: id }).unwrap().then(() => {
+    const body = new FormData()
+    const date= dayjs(selectedRange).format('YYYY-MM-DD')
+    if (id) {
+      body.append('id', id);
+    }
+    body.append('name', values.name)
+    body.append('email', values.email)
+    body.append('password', values.password)
+    body.append('gender', values.gender)
+    body.append('description', values.description)
+    body.append('date', date)
+    body.append('phone', values.phone)
+    body.append('address', values.address)
+    body.append('cccd', values.cccd)
+    body.append('nationality', values.nationality)
+    if (isImageChanged) {
+      body.append('image', selectedFile as File);
+    } else {
+      body.append('image', userData?.image);
+    }
+    setIsUploading(true);
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
+
+    updateUser(body).unwrap().then(() => {
       navigate("/admin/usermanagement")
-      message.success('Update khách hàng thành công!');
+      message.success({ content: 'Thêm khách hàng thành công', key: 'uploading' })
+    }).catch(() => {
+      message.error({ content: 'Thêm khách hàng thất bại', key: 'uploading' })
+    }).finally(() => { setIsUploading(false) })
+  };
+  if(LoadingUser) return <Skeleton active />
 
-    })
-    console.log('Form values:', values);
-  };
 
-  const handleImageUpload = (info: any) => {
-    if (info.file.status === 'done') {
-      // Get URL of the uploaded image
-      setImageUrl(info.file.response.url);
-    }
-  };
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-  type FieldType = {
-    name: string,
-    email: string,
-    image: string,
-    description: string,
-    phone: number
-    address: string,
-    status: number,
-    gender: number,
-    date: string,
-    nationality: string,
-    cccd: number,
-    created_at: string,
-    updated_at: string
-  };
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
   return (
     <div>
-
+      {isUploading && <Spin className='animate' />}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <div className="text-lg font-semibold">Update User</div>
+        <div className="text-lg font-bold text-orange-500">Update User</div>
 
-        <button className='flex justify-center items-center bg-red-500 text-white px-2 py-1.5 mx-2 rounded-lg hover:bg-red-400' onClick={() => navigate("/admin/usermanagement")}><ArrowLeftOutlined className='mr-2'/> Quay lại</button>
+        <button className='flex justify-center items-center bg-red-500 text-white px-2 py-1.5 mx-2 rounded-lg hover:bg-red-400' onClick={() => navigate("/admin/usermanagement")}><ArrowLeftOutlined className='mr-2' /> Quay lại</button>
       </div>
       <Form
-        form={form}
-        layout="vertical"
         name="basic"
         labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
+        layout='vertical'
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
-        className="flex"
+        form={form}
       >
-        <div className="w-1/2 p-4 bg-white">
-          <Form.Item<FieldType>
-            label="Họ và tên"
-            name="name"
-            rules={[{ required: true, message: 'Hãy nhập tên dịch Tên!' }]}
-          >
-            <Input allowClear />
-          </Form.Item>
-
-          <Form.Item<FieldType>
-            label="Email"
-            name="email"
-            rules={[{ required: false, message: 'Hãy nhập tên dịch Email!' },
-            { type: "email", message: 'Email không đúng định dạng' }
-            ]}
-          >
-            <Input allowClear />
-          </Form.Item>
-
-          <Form.Item label="Ảnh" valuePropName="image" getValueFromEvent={normFile}>
-            <Upload action="/upload.do" listType="picture-card">
-              <div>
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
-              </div>
-            </Upload>
-          </Form.Item>
-
-
-          <Form.Item<FieldType>
-            label="Giới tính"
-            name="gender"
-          >
-            <Select defaultValue="all" style={{ width: '150px' }}>
-              <Select.Option value="all">Nam</Select.Option>
-              <Select.Option value="available">Nữ</Select.Option>
-              <Select.Option value="occupied">Khác</Select.Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="Ngày sinh"
-            name="date"
-          >
-            <DatePicker
-              format="YYYY-MM-DD"
-              placeholder="Chọn ngày và giờ"
-              className='w-[250px]'
-              value={form.getFieldValue('date')}
-            />
-          </Form.Item>
-
-          <Form.Item<FieldType>
-            label="Địa chỉ"
-            name="address"
-          >
-            <Input allowClear />
-          </Form.Item>
-
-          <Form.Item<FieldType>
-            label="Sdt"
-            name="phone"
-          >
-            <Input allowClear />
-          </Form.Item>
-
-          {/* <Form.Item<FieldType>
-                label="CCCD"
-                name="cccd"
+        <div className='flex space-x-4'>
+          <div className='w-1/2'>
+            <Form.Item
+              label="Họ và tên"
+              name="name"
+              rules={[
+                { required: true, message: 'Hãy nhập tên dịch Tên!' },
+                { whitespace: true, message: 'Không được để trống!' },
+              ]}
             >
-                <Input allowClear/>
+              <Input allowClear />
             </Form.Item>
 
-            <Form.Item<FieldType>
-                label="Quốc tịch"
-                name="nationality"
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[{ required: true, message: 'Hãy nhập tên dịch Email!' },
+              { type: "email", message: 'Email không đúng định dạng' },
+              { whitespace: true, message: 'Không được để trống!' }
+              ]}
             >
-                <Input allowClear/>
-            </Form.Item> */}
+              <Input allowClear />
+            </Form.Item>
 
-          {/* <Form.Item<FieldType> 
-            label="Image" 
-            name="image">
-              <Upload
-                action="/api/upload" // Replace with your image upload API endpoint
-                showUploadList={false}
-                onChange={handleImageUpload}
-              >
-                <Button icon={<CloudUploadOutlined />}>Upload Image</Button>
-              </Upload>
-              {imageUrl && <img src={imageUrl} alt="Voucher" className="mt-2 max-w-full h-32 object-contain" />}
-            </Form.Item> */}
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className=' bg-blue-600 text-white rounded-md'>Update User</Button>
+            <Form.Item label="Giới Tính" name="gender" rules={[{ required: true }]}>
+              <Radio.Group className="w-full">
+                <Radio value={0}>Nam</Radio>
+                <Radio value={1}>Nữ</Radio>
+                <Radio value={2}>Khác</Radio>
+              </Radio.Group>
+            </Form.Item>
 
-          </Form.Item>
+            <Form.Item
+              name="image"
+              label="Upload"
+            >
+              <input type='file' onChange={handleChange} />
+              <Image src={userData?.image} width={100} height={100} className='my-2' />
+            </Form.Item>
+
+            <Form.Item
+              label="Trạng thái"
+              name="status"
+              rules={[{ required: true, message: 'Chọn trạng thái đi ' }]}
+            >
+              <Select placeholder="Chọn trạng thái" >
+                <Select.Option value={1}>Hoạt động</Select.Option>
+                <Select.Option value={0}>Chờ</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item label="Mô tả" name="description" rules={[
+              { required: true, message: 'Vui lòng nhập mật khẩu! ' },
+              { whitespace: true, message: 'Không được để trống!' }
+            ]}>
+              <Input.TextArea />
+            </Form.Item>
+          </div>
+
+          <div className='w-1/2'>
+            {/* <Form.Item label="Mật khẩu" name="password"
+              rules={[
+                { required: true, message: 'Vui lòng nhập mật khẩu! ' },
+                { min: 6, message: "Mật khẩu chứa ít nhất 6 kí tự!" },
+                { whitespace: true, message: 'Không được để trống!' }
+              ]}>
+              <Input.Password />
+            </Form.Item> */}
+            <Form.Item
+              label="Ngày sinh"
+              name="date"
+              rules={[{ required: true, message: 'Hãy chọn ngày sinh!' }]}
+            >
+              <DatePicker value={form.getFieldValue('date')} format="DD-MM-YYYY" onChange={handleRangeChange} className='w-full cursor-pointer' placeholder="Chọn ngày và giờ" />
+            </Form.Item>
+            <Form.Item
+              label="Địa chỉ"
+              name="address"
+              rules={[{ required: true, message: 'Hãy nhập  địa chỉ!' },
+              { whitespace: true, message: 'Không được để trống!' }]}
+            >
+              <Input allowClear />
+            </Form.Item>
+            <Form.Item
+              label="Số điện thoại"
+              name="phone"
+              rules={[
+                { required: true, message: 'Hãy nhập số vào !' },
+                { whitespace: true, message: 'Không được để trống!' },
+                {
+                  pattern: /^0[0-9]*$/,
+                  message: 'Hãy nhập số đúng định dạng ',
+                },
+              ]}
+            >
+              <Input allowClear />
+            </Form.Item>
+
+            <Form.Item
+              label="Căn cước công dân"
+              name="cccd"
+              rules={[
+                { required: true, message: 'Hãy nhập!' },
+                { whitespace: true, message: 'Không được để trống!' },
+                {
+                  pattern: /^[0-9]*$/,
+                  message: 'Căn cước không có chữ',
+                },
+              ]}
+            >
+              <Input allowClear />
+            </Form.Item>
+
+            <Form.Item
+              label="Quốc tịch"
+              name="nationality"
+              rules={[{ required: true, message: 'Hãy nhập quốc tịch!' },
+              { whitespace: true, message: 'Không được để trống!' }]}
+            >
+              <Input allowClear />
+            </Form.Item>
+          </div>
         </div>
+
+        <Form.Item>
+          <Button type="primary" className='bg-blue-500 text-white' htmlType="submit">
+            {isLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              "Sửa khách hàng"
+            )}
+          </Button>
+        </Form.Item>
       </Form>
     </div>
 

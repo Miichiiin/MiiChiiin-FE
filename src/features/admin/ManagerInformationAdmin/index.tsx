@@ -56,10 +56,11 @@ const AdminInfoPage = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
+            layout="vertical"
         >
         <div className="flex">
-          <div className="w-1/3 p-4 border-r flex flex-col items-center justify-center space-y-3">
-          <Form.Item label="" name="image" className="mt-5">
+          <div className="w-1/3 border-r flex flex-col items-center justify-center ">
+          <Form.Item label="" name="image" className="">
             <Upload
               action="/api/upload" // Thay thế bằng đường dẫn API của bạn cho việc tải file lên
               showUploadList={false}
@@ -80,20 +81,21 @@ const AdminInfoPage = () => {
               </div>
             </Upload>
           </Form.Item>
-            <Form.Item label="Địa chỉ" name="address" className="mt-5">
-                <Input/>
+            <div className="w-full mr-7">
+            <Form.Item label="Địa chỉ" name="address" >
+                <Input className="w-full"/>
             </Form.Item>
-            <Form.Item label="Email" name="email" className="mt-5">
+            <Form.Item label="Email" name="email" >
                  <Input/>
             </Form.Item>
-            <Form.Item label="Phone" name="phone" className="mt-5">
+            <Form.Item label="Phone" name="phone">
                <Input/>
             </Form.Item>
+            </div>
           </div>
           <div className="w-2/3 p-4" >
               <Form.Item label="Tên" name="name" className="mb-4">
                 <Input  className="border-b-2"
-                 
                 />
               </Form.Item>
               <Form.Item label="Tuổi" name="date" className="mb-4">
@@ -124,11 +126,11 @@ const AdminInfoPage = () => {
                   type="primary"
                   htmlType="submit"
                   onClick={() => message.success("Thông tin đã được lưu")}
-                  className="bg-[#0ea5e9]"
+                  className="bg-[#0ea5e9] "
                 >
                   Lưu
                 </Button>
-                <Button className="mx-2" type="primary" danger onClick={()=>navigate(`/admin`)}>Quay lại</Button>
+                <button className="mx-2 px-3 py-[4.5px] border hover:bg-orange-600 bg-orange-500 text-white rounded-md"  onClick={()=>navigate(`/admin`)}>Quay lại</button>
               </Form.Item>
               {/* <div className="text-center">
                 <Link to="/quen-mat-khau">Quên mật khẩu</Link> |{" "}

@@ -159,7 +159,7 @@ export const ManagerVouchers = () => {
           marginBottom: "16px",
         }}
       >
-        <div className="text-lg font-semibold">Quản Lý Vouchers</div>
+        <div className="text-lg font-bold text-orange-500">Quản Lý Vouchers</div>
         <div className='flex items-center'>
           <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
           <Select

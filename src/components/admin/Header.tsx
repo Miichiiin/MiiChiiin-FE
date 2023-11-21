@@ -1,10 +1,9 @@
 import { Layout, theme } from 'antd';
-import { BiLogOut } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 const { Header } = Layout;
 import { MdArrowDropDown } from "react-icons/md";
 import { useState } from 'react';
-
+import { CiLogout, CiUser } from "react-icons/ci";
 export const HeaderAdmin = () => {
     const navigate = useNavigate();
     const userAdminLocal = localStorage.getItem('userAdmin')
@@ -40,19 +39,18 @@ export const HeaderAdmin = () => {
         <Header style={{ padding: 0, background: colorBgContainer }} className='flex justify-between items-center py-5 '>
 
             <div className='flex justify-between items-center mx-6'>
-
-                <h3 className='text-xl font-bold italic '>{nameHotel}</h3>
+                <h3 className='text-xl font-bold italic text-orange-500'>{nameHotel}</h3>
             </div>
-            <div className='flex items-center'>
-                <img src={imageLC} alt="" className='h-10 w-10 object-cover rounded-full' />
+            <div className='flex items-center mr-3'>
+                <img src={imageLC} className='h-10 w-10 object-cover rounded-full' />
                 <div className='relative'>
                     <h3 className='text-md px-2 flex items-center cursor-pointer ' onClick={toggleDropdown} >{name} <MdArrowDropDown /></h3>
                     {isDropdownOpen && (
                         <div className='absolute right-0 w-[185px] pl-2 py-2 bg-gray-100 rounded shadow-lg'>
                             {/* Adjusted size for smaller dropdown */}
                             <ul className='text-sm'>
-                                <li className='hover:text-blue-500 py-1 cursor-pointer' onClick={()=>navigate(`admininfo/${idLC}`)}>Thông tin tài khoản</li>
-                                <li className='hover:text-blue-500 py-1 cursor-pointer' onClick={handleLogout}>Đăng xuất</li>
+                                <li className='hover:text-blue-500 py-1 cursor-pointer flex items-center' onClick={()=>navigate(`admininfo/${idLC}`)}><CiUser className="mx-2"/>Thông tin tài khoản</li>
+                                <li className='hover:text-blue-500 py-1 cursor-pointer flex items-center' onClick={handleLogout}><CiLogout className="mx-2"/>Đăng xuất</li>
                             </ul>
                         </div>
                     )}
