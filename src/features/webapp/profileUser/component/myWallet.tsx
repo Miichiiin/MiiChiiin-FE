@@ -29,8 +29,8 @@ const myWallet = () => {
     <div className="bg-white shadow-md border border-gray-300 p-8 mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 mt-10 rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-2xl">
     <section>
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <div className="bg-white shadow-md border border-gray-300 p-8 mx-auto max-w-screen-xl px-4 sm:px-6 sm:py-12 lg:px-8 flex items-center justify-between">
-          <header>
+        <div className="bg-white shadow-md border border-gray-300 p-8 mx-auto max-w-screen-xl px-4 sm:px-6 sm:py-12 lg:px-8 flex items-center justify-between pt-[200px]">
+          <header className="">
             <h2 className="font-bold text-[20px]">Voucher Của Tôi</h2>
             <p className="text-red-500 font-bold">Lưu ý: Một Coin tương ứng với 1.000 Vnđ</p>
           </header>
@@ -45,12 +45,12 @@ const myWallet = () => {
         <div className="mt-8 flex gap-4">
           {myvoucher?.vouchers?.map((voucher:any) => (
             <div key={voucher?.id} className="mb-4">
-              <div className="flex gap-4">
+              <div className="gird grid-cols-3 gap-4">
                 <div className="group flex-1">
                   <img
                     src={voucher?.image}
                     alt={`Hình ảnh ${voucher?.name}`}
-                    className="w-full h-auto"
+                    className="w-"
                   />
                   <div className="relative bg-white pt-3 mt-2">
                     <h3 className="text-xl text-gray-700 group-hover:underline group-hover:underline-offset-4">
