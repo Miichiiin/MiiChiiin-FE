@@ -4,20 +4,25 @@ import {
   Select,
   Button,
   message,
+  Popconfirm,
 } from "antd";
 const { Option } = Select;
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useGetCategory_adminQuery } from "@/api/admin/category_admin";
-import { useGetRoom_AdminByIdQuery, useUpdateRoom_AdminMutation } from "@/api/admin/room_admin";
+import { useGetRoom_AdminByIdQuery, useRemoveRoom_AdminMutation, useUpdateRoom_AdminMutation } from "@/api/admin/room_admin";
 const UpdateRoomPage = () => {
   const { data: RoomCategories } = useGetCategory_adminQuery()
+  
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>()
   const { data, isLoading, isError } = useGetRoom_AdminByIdQuery(id)
+  
   const roomData = data?.[0]
 
   const [updateRoom] = useUpdateRoom_AdminMutation();
+  const [removeRoom] = useRemoveRoom_AdminMutation();
+
   const onFinish = (values: any) => {
     console.log("Form values:", values);
     updateRoom({ ...values, id }).unwrap().then(() => {
@@ -68,9 +73,9 @@ const UpdateRoomPage = () => {
           <div className="w-1/2 bg-white pr-2">
             <Form.Item label="Trạng Thái" name="status" rules={[{ required: true, message: 'Hãy chọn trạng thái ' }]}>
               <Select placeholder="Chọn trạng thái">
-                <Select.Option value={1}>Đã ẩn</Select.Option>
-                <Select.Option value={0}>Đang chờ</Select.Option>
-                <Select.Option value={2}>Hoạt động</Select.Option>
+                <Select.Option value={0}>Ngừng hoạt động</Select.Option>
+                <Select.Option value={1}>Đang sử dụng</Select.Option>
+                <Select.Option value={2}>Trống</Select.Option>
               </Select>
             </Form.Item>
           </div>
@@ -84,8 +89,28 @@ const UpdateRoomPage = () => {
           >
             Cập Nhật Phòng
           </Button>
+
+
         </Form.Item>
       </Form>
+      <Popconfirm
+        title="Xóa sản phẩm"
+        description="Bạn có muốn xóa không??"
+        onConfirm={() => {
+          removeRoom(id || "")?.unwrap().then(() => {
+            message.success("Xóa thành công");
+            navigate("/admin/managerroom");
+          });
+        }}
+        okText="Có"
+        cancelText="Không"
+      >
+        <button
+          className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
+        >
+          Xóa
+        </button>
+      </Popconfirm>
     </div>
   );
 };

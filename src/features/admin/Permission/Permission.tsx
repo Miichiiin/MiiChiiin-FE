@@ -70,10 +70,8 @@ const Permission = () => {
       permissions: numericTargetKeys,
     };
   
-    console.log("numericTargetKeys",numericTargetKeys )
      // Gửi dữ liệu cập nhật lên máy chủ
     updateRole(updatedData).unwrap().then(() => {
-      console.log("data",updatedData);
       message.success('Cập nhật chức vụ thành công!');
       navigate("/admin/indexPermission");
     });
@@ -93,8 +91,6 @@ const Permission = () => {
   const handleSearch = (dir: TransferDirection, value: string) => {
     console.log('search:', dir, value);
   };
-  console.log('sourceData', sourceData)
-  console.log('targetKeys', targetKeys)
 
   return (
     <>

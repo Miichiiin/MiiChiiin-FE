@@ -47,7 +47,7 @@ export const AddService = () => {
     <div>
       {isUploading && <Spin className='animate' />}
       <header className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl text-blue-900 font-semibold">Thêm dịch vụ</h2>
+        <h2 className="text-lg font-bold text-orange-500">Thêm dịch vụ</h2>
         <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/service")}>
           <ArrowLeftOutlined className="pr-2" /> Quay lại
         </button>

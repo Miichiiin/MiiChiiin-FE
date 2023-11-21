@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetBooking_adminByIdQuery } from "@/api/admin/booking_admin";
-import { Button, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 //import { useGetService_hotelQuery } from '@/api/webapp/service_hotel';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -49,7 +49,7 @@ const DetailBooking = () => {
       </div>
       <section className='grid grid-cols-2 gap-8'>
         <div key={booking?.id} className=''>
-          <h1 className="font-semibold text-lg mb-2">Thông tin đặt phòng : <span className='font-bold text-xl text-blue-800'>{booking?.slug}</span></h1>
+          <h1 className="font-bold text-lg mb-2 text-orange-500">Thông tin đặt phòng : <span className='font-bold text-xl text-orange-900'>{booking?.slug}</span></h1>
           <div className='flex flex-col border rounded-lg px-2 mb-4 py-3 leading-[25px] '>
             <div className='grid grid-cols-2 gap-4'>
               <p className='font-semibold'>Tên khách hàng: <span className='text-lg font-medium text-blue-900'>{booking?.name}</span></p>

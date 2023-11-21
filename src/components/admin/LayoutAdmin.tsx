@@ -12,7 +12,6 @@ import { MdMedicalServices } from "react-icons/md";
 import { TbBrandBooking } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
 import { FaHotel } from "react-icons/fa";
-import { AnyAction } from "@reduxjs/toolkit";
 const { Content, Footer, Sider } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -214,13 +213,9 @@ export const LayoutAdmin = () => {
       return (
         <>
           <div className="flex items-center justify-center my-3 cursor-pointer" onClick={()=>navigate("/admin")}>
-            <img
-              src={
-                'https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png'
-              }
+            <img src={'https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png'}
               alt="Logo"
-              className="w-1/2"
-            />
+              className="w-[50px]"/>
             <h1 className="text-center text-lg text-orange-100 italic font-semibold ">
               The Michii
             </h1>
@@ -241,6 +236,7 @@ export const LayoutAdmin = () => {
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
+        
       >
         {getLogoContent()}
         <hr />

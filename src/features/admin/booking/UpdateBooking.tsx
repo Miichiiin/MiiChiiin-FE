@@ -384,7 +384,7 @@ const UpdateBooking = () => {
         message.success('Cập nhật thành công');
         setTimeout(() => {
           navigate(`/admin/detailbooking/${id}`)
-        }, 3000);
+        }, 2000);
       });
     }
 
@@ -411,7 +411,7 @@ const UpdateBooking = () => {
   return (
     <div className="mx-auto overflow-auto scroll-smooth">
       <header className='flex justify-between items-center mb-3'>
-        <h1 className='text-xl font-semibold pb-5'>Cập nhật Booking: <span className='font-bold text-blue-800 text-2xl'>{bookingData?.slug}</span></h1>
+        <h1 className='text-xl text-orange-500 font-bold pb-5'>Cập nhật Booking: <span className='font-semibold text-orange-900 text-2xl'>{bookingData?.slug}</span></h1>
         <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate(`/admin/detailbooking/${id}`)}>
           <ArrowLeftOutlined className="pr-2" /> Quay lại
         </button>
