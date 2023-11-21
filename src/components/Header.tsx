@@ -17,9 +17,25 @@ const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: hotels } = useGetHotel_homesQuery();
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event:MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   /*click ngoài = out*/
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,25 +49,6 @@ const Header = () => {
     setIsMenuOpen(false);
     setIsScrollLocked(false); // Đặt giá trị trạng thái cuộn trang
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        closeMenu();
-      }
-
-      if (isDropdownOpen && !target?.closest(".dropdown-button")) {
-        setIsDropdownOpen(false);
-        
-      }
-    };
-
-    window.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isDropdownOpen]);
   /*menu điều hướng*/
   const toggleMenuu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -129,7 +126,7 @@ const Header = () => {
           <div
             className={`w-full h-[135px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
-                ? "fixed  top-0 left-0 duration-800 animate-slide-down bg-[#151b40] pl-[120px]"
+                ? "fixed  top-0 left-0 duration-800 animate-slide-down bg-[#151b40] "
                 : "duration-500 "
             }`}
           >
@@ -142,7 +139,7 @@ const Header = () => {
                     className="flex items-center space-x-[30px] text-[12px] text-white 
                                     xl:space-x-[80px] xl:text-[17px]
                                     lg:space-x-[60px] lg:text-[15px] lg:block lg:flex
-                                    sm:hidden
+                                    sm:hidden ml-[-80px]
                                 "
                   >
                     <button className="h-[40px] pb-3 " onClick={toggleMenuu}>
@@ -154,7 +151,7 @@ const Header = () => {
                           href="/hoteltype"
                           style={{ textShadow: "2px 2px 4px #000" }}
                         >
-                          Khách sạn
+                          Khách sạn 
                         </a>
                         <div className="top-9 bg-white px-6 py-3 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute hidden group-hover:block group-hover:flex transition duration-2000 border rounded shadow-md">
                           {hotels?.map((hotel: any) => (
@@ -229,9 +226,7 @@ const Header = () => {
                         </div>
                       </div>
                     </li>
-                    <li>
-                      <img className="w-[180px]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
-                    </li>
+                    
                     <li className="h-[40px] after-3">
                       <a
                         href="/promotion"
@@ -240,6 +235,9 @@ const Header = () => {
                         Ưu đãi khuyến mãi
                       </a>
                     </li>
+                    <li>
+                      <img className="w-[180px]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
+                    </li>
                     <li className="h-[40px] after-3">
                       <a href="/new" style={{ textShadow: "2px 2px 4px #000" }}>
                         New
@@ -247,66 +245,66 @@ const Header = () => {
                     </li>          
                   </ul>
                   <div className="flex items-center justify-end space-x-2  text-white lg:text-[15px] ">
-                          <span className="text-[28px] ">
-                            {""}
-                            <button className="h-[40px] pt-3 " onClick={toggleMenu}>
-                              <AiOutlineSearch />
-                            </button>
-                          </span>{" "}
-                          {loggedIn ? (
-                            <>
-                              <div className="text-white pt-1">
-                                <button className="relative" onClick={toggleDropdown}>
-                                    <div className="flex items-center space-x-3">
-                                      <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
-                                      <span> <TextTruncate text={loggedIn?.name} maxLength={3} /> </span>
-                                    </div>
-                                    {isDropdownOpen && (
-                                    <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-30px] bg-white border border-gray-300 shadow-lg">
-                                      <ul className="leading-9 text-black">
-                                        <li className="hover:bg-[#f2ba50] hover:text-white px-12 justify-center pr-14">
-                                          <button
-                                            onClick={handleLogout}
-                                            className=""
-                                          >
-                                          {" "}
-                                          <span className="flex items-center">
-                                            <AiOutlineLogout class="mr-2 "/>
-                                            Logout
-                                          </span>
-                                        </button>
-                                        </li>
-                                        <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
-                                          <AiOutlineUser class="mr-2 "/>
-                                         <a href="/profileUser"> Tài khoản</a>
-                                        </li>
-                                        <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
-                                          <AiOutlineIdcard class="mr-2 "/>
-                                          <a href="/profileUser">Voucher</a>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    )}
-                                </button> 
-                              </div>
-                              
-                            </>
-                          ) : (
-                            <>
-                            {}
-                              <Link
-                                to="/login"
-                                className="hover:underline"
-                                style={{ textShadow: "1px 2px 3px #000" }}
-                              >
-                                Đăng nhập 
-                              </Link>
-                              <AiOutlineRight />
-                            </>
-                          )}
-                          <span className="pl-2 pr-1 text-[14px]">/</span>
-                          <Cart />
-                      </div>
+                        <span className="text-[28px] ">
+                          {""}
+                          <button className="h-[40px] pt-3 " onClick={toggleMenu}>
+                            <AiOutlineSearch />
+                          </button>
+                        </span>{" "}
+                        {loggedIn ? (
+                          <>
+                            <div className="text-white pt-1" ref={dropdownRef}>
+                              <button className="relative" onClick={toggleDropdown}>
+                                  <div className="flex items-center space-x-3">
+                                    <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
+                                    <span> <TextTruncate text={loggedIn?.name} maxLength={3} /> </span>
+                                  </div>
+                                  {isDropdownOpen && (
+                                  <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-30px] bg-white border border-gray-300 shadow-lg">
+                                    <ul className="leading-9 text-black">
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-12 justify-center pr-14">
+                                        <button
+                                          onClick={handleLogout}
+                                          className=""
+                                        >
+                                        {" "}
+                                        <span className="flex items-center">
+                                          <AiOutlineLogout class="mr-2 "/>
+                                          Logout
+                                        </span>
+                                      </button>
+                                      </li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
+                                        <AiOutlineUser class="mr-2 "/>
+                                        <a href="/profileUser"> Tài khoản</a>
+                                      </li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
+                                        <AiOutlineIdcard class="mr-2 "/>
+                                        <a href="/profileUser">Voucher</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  )}
+                              </button> 
+                            </div>
+                            
+                          </>
+                        ) : (
+                          <>
+                          {}
+                            <Link
+                              to="/login"
+                              className="hover:underline"
+                              style={{ textShadow: "1px 2px 3px #000" }}
+                            >
+                              Đăng nhập 
+                            </Link>
+                            <AiOutlineRight />
+                          </>
+                        )}
+                        <span className="pl-2 pr-1 text-[14px]">/</span>
+                        <Cart />
+                    </div>
                 </div>
               </div>
               
@@ -336,7 +334,7 @@ const Header = () => {
       {isMenuOpen && (
         <div
           ref={menuRef}
-          className={`fixed top-[100px] z-30 box-shadow left-0 transition-transform duration-300 ease-in-out transform 
+          className={`fixed top-[100px] z-30 box-shadow h-[400px] left-0 transition-transform duration-300 ease-in-out transform 
             ${
               isMenuOpen
                 ? "translate-x-0 fixed top-0  left-0 duration-800  text-white "

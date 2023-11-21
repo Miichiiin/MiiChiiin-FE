@@ -31,7 +31,7 @@ const SearchOrder = () => {
   };
   return (
     <div className="">
-      <div className=" w-[1024px] absolute start-[220px] top-[50%] z-10 p-5 text-black">
+      <div className=" w-[1024px] absolute start-[220px] top-0 z-10 p-5 text-black">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex items-center text-white w-[1024px] bg-white py-1"

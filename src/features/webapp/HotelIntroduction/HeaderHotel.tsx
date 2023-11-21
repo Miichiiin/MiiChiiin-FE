@@ -19,6 +19,7 @@ const HeaderHotel = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -50,20 +51,18 @@ const HeaderHotel = () => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        closeMenu();
-      }
-      if (isDropdownOpen && !target?.closest(".dropdown-button")) {
+    const handleClickOutside = (event:MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
-    window.addEventListener("mousedown", handleClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, []);
   /*menu điều hướng*/
   const toggleMenuu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -123,7 +122,7 @@ const HeaderHotel = () => {
           <div
             className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
-                ? "fixed top-0 left-0 duration-800 animate-slide-down bg-gray-800 pl-[120px]"
+                ? "fixed top-0 left-0 duration-800 animate-slide-down bg-[#151b40] pl-[120px]"
                 : "duration-500 "
             }`}
           >
@@ -144,7 +143,7 @@ const HeaderHotel = () => {
                     className="flex mt-8 justify-between items-center space-x-[30px] text-[12px] text-white 
                                     xl:space-x-[80px] xl:text-[17px]
                                     lg:space-x-[60px] lg:text-[15px] lg:block lg:flex
-                                    sm:hidden
+                                    sm:hidden ml-[-110px]
                                 "
                   >
                     <button onClick={toggleMenuu} className="h-[40px] pb-3 ">
@@ -166,7 +165,9 @@ const HeaderHotel = () => {
                     <li className="h-[40px] after-4 font-medium">
                       <a href="/new">Ưu đãi</a>
                     </li>
-                    
+                    <li>
+                      <img className="w-[230px] ml-[-40px]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
+                    </li>
                   </ul>
                   <div
                       className="flex items-center justify-end space-x-2  text-white 
@@ -174,7 +175,7 @@ const HeaderHotel = () => {
                     >
                       {loggedIn ? (
                           <>
-                            <div className="text-white pt-1">
+                            <div className="text-white pt-1" ref={dropdownRef}>
                               <button className="relative" onClick={toggleDropdown}>
                                   <div className="flex items-center space-x-3">
                                     <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
@@ -284,13 +285,13 @@ const HeaderHotel = () => {
           </div>
           <div className="text-gray-800 text-[21px] leading-[50px] px-10 py-10 font-medium">
             <div className="flex items-center justify-between">
-              <a href="">Khách sạn</a>{" "}
+              <a href="/">Trang chủ</a>{" "}
               <span className="mt-1 text-[12px] ">
                 <AiOutlineDown />
               </span>
             </div>
             <p className="flex items-center justify-between">
-              <a href="">Trải nghiện</a>{" "}
+              <a href="">Thông tin tài khoản</a>{" "}
               <span className="mt-1 text-[12px] ">
                 <AiOutlineDown />
               </span>
@@ -299,7 +300,7 @@ const HeaderHotel = () => {
               <a href="">Ưu đãi khuyến mãi</a>
             </p>
             <p>
-              <a href="">New</a>
+              <a href="/new">New</a>
             </p>
           </div>
         </div>
