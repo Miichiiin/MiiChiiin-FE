@@ -124,7 +124,7 @@ const Header = () => {
             loop
           />
           <div
-            className={`w-full h-[135px] z-20 text-white p-4 transition duration-300 ease-in-out ${
+            className={`w-full h-[115px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
                 ? "fixed  top-0 left-0 duration-800 animate-slide-down bg-[#151b40] "
                 : "duration-500 "
@@ -133,7 +133,7 @@ const Header = () => {
             <div className="xl:w-[1280px] xl:mx-auto inset-0 absolute top-0 lg:text-[15px] lg:mr-10 sm:mr-10 flex ">
               <div className="">
                 <div
-                  className="flex items-center mx-auto mt-10 justify-between w-[1280px] "
+                  className="flex items-center mx-auto mt-5 justify-between w-[1280px] "
                 >
                   <ul
                     className="flex items-center space-x-[30px] text-[12px] text-white 
@@ -236,7 +236,7 @@ const Header = () => {
                       </a>
                     </li>
                     <li>
-                      <img className="w-[180px]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
+                      <img className="w-[80px] pb-11" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" />
                     </li>
                     <li className="h-[40px] after-3">
                       <a href="/new" style={{ textShadow: "2px 2px 4px #000" }}>
@@ -317,14 +317,14 @@ const Header = () => {
                   className="lg:text-[35px] text-white mb-5 sm:text-[30px] font-bold "
                   style={{ textShadow: "1px 2px 3px #000" }}
                 >
-                  Chào mừng đến với Miichii
+                  Chào mừng đến với Miichi
                 </h1>
                 <p
                   className="text-white sm:text-[11px] lg:text-[16px] font-semibold"
                   style={{ textShadow: "1px 2px 3px #000" }}
                 >
                   Đánh thức mọi giác quan với hệ sinh thái nghỉ dưỡng ven biển
-                  đẳng cấp của Miichii
+                  đẳng cấp của Miichi
                 </p>
               </div>
             </div>

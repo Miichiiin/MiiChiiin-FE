@@ -125,6 +125,12 @@ const HeaderHotelType = () => {
                       {isDropdownOpen && (
                           <div className="flex-col flex absolute bg-white text-black absolute mt-1 end-5 bg-white border border-gray-300 shadow-lg transform transition-tranform durtion-500">
                             <ul className="leading-9 text-black text-center font-medium">
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-7">
+                                Tài khoản 
+                              </li>
+                              <li className="hover:bg-[#f2ba50] hover:text-white px-5">
+                                Voucher
+                              </li>
                               <li className="hover:bg-[#f2ba50] hover:text-white px-10">
                                 <button
                                   onClick={handleLogout}
@@ -133,12 +139,6 @@ const HeaderHotelType = () => {
                                 {" "}
                                 Logout
                               </button>
-                              </li>
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-7">
-                                Thông tin User
-                              </li>
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-5">
-                                Voucher
                               </li>
                             </ul>
                           </div>

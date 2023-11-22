@@ -1,4 +1,4 @@
-import { AiOutlineArrowRight, AiOutlineRight, AiOutlineLeft ,AiFillEye,AiFillLike,AiOutlineComment,AiFillStar} from "react-icons/ai";
+import { AiOutlineArrowRight, AiOutlineRight, AiOutlineLeft ,AiFillEye,AiFillLike,AiOutlineComment,AiFillStar,AiOutlineShrink,AiOutlineTeam,AiOutlineSlackSquare,AiOutlineInsertRowLeft} from "react-icons/ai";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -86,7 +86,7 @@ const Index = () => {
                                         />
                                         <figcaption>
                                         <h2 className="pb-3">Khách sạn <span className="px-2">Nổi bật  </span>nhất</h2>
-                                        <div className="flex items-center space-x-5 font-medium">
+                                        <div className=" items-center font-medium">
                                             <p className="flex items-center space-x-1">
                                                 <span className="font-medium ">Hạng khách sạn:</span> 
                                                 {Array.from({ length: item?.star }, (_, index) => (
@@ -95,7 +95,13 @@ const Index = () => {
                                                     </span>
                                                 ))}
                                             </p>
-                                            <p className="flex items-center space-x-2"><AiOutlineComment/> <span>{item?.total_rating_content} lượt</span></p>
+                                           <p>
+                                            <p className="flex items-center space-x-4">
+                                                    <span className="flex items-center"><AiOutlineSlackSquare class="mr-2"/> {item?.total_comforts} tiện ích</span> 
+                                                    <span className="flex items-center"> <AiOutlineInsertRowLeft class="mr-2"/> {item?.total_rooms} phòng</span>
+                                                    <span className="flex items-center"> <AiOutlineComment class="mr-2"/> {item?.total_rating_content} lượt</span>
+                                                </p>
+                                           </p>
                                         </div>
                                         
                                         <p className="max-w-prose mx-auto ">
@@ -117,14 +123,14 @@ const Index = () => {
             <div className="mt-10 relative bg-[#585c5b]" style={{ textShadow: '1px 2px 3px #000' }}>
                 <div className="w-[740px] mx-auto absolute inset-0 top-[300px] items-center">
                     <p className="text-[#f2ba50] font-bold text-[35px] text-center pb-1" style={{ textShadow: '1px 3px 4px #000' }}>
-                        Miichii Club
+                        Miichi Club
                     </p>
                     <p className="text-[25px] text-center pb-2 text-white font-medium" >
                         Đặc quyền nghỉ dưỡng thượng lưu
                     </p>
                     <p className="text-white text-center font-semibold text-[18px]" style={{ textShadow: '2px 2px 4px #000' }}>
                         Miichi Club là chương trình khách hàng thân thiết của Vinpearl. Khách hàng có thể đăng ký là thành viên miễn phí và tích
-                        lũy giao dịch để nâng hạng, trải nghiệm ngay các đặc quyền ưu đãi trong toàn bộ hệ sinh thái Miichii.
+                        lũy giao dịch để nâng hạng, trải nghiệm ngay các đặc quyền ưu đãi trong toàn bộ hệ sinh thái Miichi.
                     </p>
                 </div>
                 <img className="w-full bg-[#585c5b]" src="https://statics.vinpearl.com/styles/1920x860/public/2023_01/About%20Pearl%20Club_1673079019.jpg.webp?itok=f-G5FUpc" alt="" />
