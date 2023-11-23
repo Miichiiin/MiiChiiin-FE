@@ -179,7 +179,7 @@ export const LayoutAdmin = () => {
       // tạo url
       const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
       // Tìm mục trong menu có đường dẫn trùng với URL đã tạo
-      const menuItem = menuItems.find((item:any) => item.path === url);
+      const menuItem = menuItems.find((item: any) => item.path === url);
       // Định dạng lại đoạn đường dẫn: nếu là đoạn đầu tiên, viết hoa chữ cái đầu và chuyển phần còn lại thành chữ thường
       const formattedPath =
         index === 0 ? path.charAt(0).toUpperCase() + path.slice(1).toLowerCase() : path;
@@ -190,7 +190,7 @@ export const LayoutAdmin = () => {
       );
     });
   };
-  
+
   useEffect(() => {
     if (!localStorage.getItem('tokenAdmin'))
       navigate('/error/401')
@@ -199,23 +199,29 @@ export const LayoutAdmin = () => {
   const getLogoContent = () => {
     if (collapsed) {
       return (
-        <div className="text-center my-8 flex justify-center items-center cursor-pointer" onClick={()=>navigate("/admin")}>
-          <img
-            src={
-              'https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png'
-            }
-            alt="Logo"
-            className="w-full"
-          />
+        <div onClick={() => navigate("/admin")}>
+          <div className="my-8 flex justify-center items-center cursor-pointer">
+            <img
+              src={
+                '../public/icon.png'
+              }
+              alt="Logo"
+              className="w-[50px]"
+            />
+          </div>
+
+          {/* <h1 className="text-center text-md mb-4 text-orange-100 italic font-semibold ">
+            The Michii
+          </h1> */}
         </div>
       );
     } else {
       return (
         <>
-          <div className="flex items-center justify-center my-3 cursor-pointer" onClick={()=>navigate("/admin")}>
-            <img src={'https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png'}
+          <div className="flex items-center justify-center my-3 cursor-pointer" onClick={() => navigate("/admin")}>
+            <img src={'../public/icon.png'}
               alt="Logo"
-              className="w-[50px]"/>
+              className="w-[50px]" />
             <h1 className="text-center text-lg text-orange-100 italic font-semibold ">
               The Michii
             </h1>
@@ -236,7 +242,7 @@ export const LayoutAdmin = () => {
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
-        
+
       >
         {getLogoContent()}
         <hr />
