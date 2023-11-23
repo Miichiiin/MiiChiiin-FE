@@ -120,7 +120,7 @@ const HeaderHotel = () => {
             alt=""
           />
           <div
-            className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${
+            className={`w-full h-[105px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
                 ? "fixed top-0 left-0 duration-800 animate-slide-down bg-[#151b40] pl-[120px]"
                 : "duration-500 "
@@ -135,7 +135,7 @@ const HeaderHotel = () => {
               
               <div className="">
                 <div
-                  className="flex items-center mx-auto mt-6 justify-between  
+                  className="flex items-center mx-auto mt-[-20px] justify-between  
                                 lg:ml-10
                             "
                 >
@@ -166,11 +166,11 @@ const HeaderHotel = () => {
                       <a href="/new">Ưu đãi</a>
                     </li>
                     <li>
-                      <img className="w-[230px] ml-[-40px]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
+                      <img className="w-[80px] pb-10" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" />
                     </li>
                   </ul>
                   <div
-                      className="flex items-center justify-end space-x-2  text-white 
+                      className="flex items-center justify-end space-x-2 pt-7 text-white 
                               lg:text-[15px] "
                     >
                       {loggedIn ? (

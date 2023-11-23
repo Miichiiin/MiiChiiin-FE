@@ -136,15 +136,15 @@ const ChooseRoom = () => {
     selectedRooms.length > 0 &&
     selectedRooms.reduce((acc: any, room: any) => {
       // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
-      const existingRoom = acc.find((r: any) => r.id === room.id);
-
-      // Nếu phòng đã tồn tại, tăng số lượng
-      if (existingRoom) {
-        existingRoom.count++;
-      } else {
-        // Nếu không, thêm phòng vào danh sách mới
-        acc.push({ ...room, count: 1 });
-      }
+      // const existingRoom = acc.find((r: any) => r.id === room.id);
+      acc.push({ ...room, count: 1 });
+      // // Nếu phòng đã tồn tại, tăng số lượng
+      // if (existingRoom) {
+      //   existingRoom.count++;
+      // } else {
+      //   // Nếu không, thêm phòng vào danh sách mới
+      //   acc.push({ ...room, count: 1 });
+      // }
 
       return acc;
     }, []);
