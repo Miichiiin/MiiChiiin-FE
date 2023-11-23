@@ -8,7 +8,9 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
 
-import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
+import { AiOutlineDown, AiOutlineTool, AiOutlineUp } from 'react-icons/ai';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { BiExport } from 'react-icons/bi';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -38,15 +40,7 @@ const DetailBooking = () => {
 
   return (
     <div className="w-[100%] mx-auto">
-      <div className='flex justify-end mb-5'>
-        <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
-          Quay lại
-        </button>
-        <button className='px-3 py-2 hover:bg-green-600 bg-green-500 text-white rounded-md mx-2'>
-          Export PDF
-        </button>
-        <button className='px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={()=>navigate(`/admin/updatebooking/${booking?.id}`)}>Sửa</button>
-      </div>
+
       <section className='grid grid-cols-2 gap-8'>
         <div key={booking?.id} className=''>
           <h1 className="font-bold text-lg mb-2 text-orange-500">Thông tin đặt phòng : <span className='font-bold text-xl text-orange-900'>{booking?.slug}</span></h1>
@@ -73,7 +67,7 @@ const DetailBooking = () => {
 
         </div>
         <div className="">
-          <h1 className="text-lg font-semibold mb-2 ml-4">Danh sách phòng và dịch vụ đã đặt</h1>
+          <h1 className="text-lg font-bold mb-2 ml-4 text-orange-500">Danh sách phòng và dịch vụ đã đặt</h1>
           <ul>
             {booking?.room?.map((item: any, index: any) => {
               return (
@@ -110,7 +104,15 @@ const DetailBooking = () => {
         </div>
 
       </section>
-
+      <div className='flex justify-end mb-5'>
+        <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
+          <ArrowLeftOutlined className="pr-2" />Quay lại
+        </button>
+        <button className='px-3 py-2 hover:bg-green-600 bg-green-500 text-white rounded-md mx-2 text-lg'>
+          <BiExport />
+        </button>
+        <button className='px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md text-xl items-center' onClick={() => navigate(`/admin/updatebooking/${booking?.id}`)}><AiOutlineTool /></button>
+      </div>
     </div>
   );
 }

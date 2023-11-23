@@ -1,12 +1,12 @@
 import { useGetPermissions1Query } from '@/api/admin/permisstion1_admin';
-import { useAddRole1Mutation} from '@/api/admin/role1_admin';
+import { useAddRole1Mutation } from '@/api/admin/role1_admin';
 // import { CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Transfer ,message} from 'antd';
+import { Button, Form, Input, Transfer, message } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { TransferDirection } from 'antd/es/transfer';
 import { useEffect, useState } from 'react';
-import {  useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 interface RecordType {
   key: string;
   title: string;
@@ -23,20 +23,20 @@ const AddPermission = () => {
   const navigate = useNavigate();
   const [addRole] = useAddRole1Mutation();
   const { data: perData } = useGetPermissions1Query({});
-  
+
   // Lưu danh sách các quyền đã chọn
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
   useEffect(() => {
     if (perData) {
       // Tạo mảng sourceData từ perData
-        const sourceDataArray: RecordType[] = perData.map((item: any) => ({
+      const sourceDataArray: RecordType[] = perData.map((item: any) => ({
         key: item.id.toString(),
         title: item.name,
         guard_name: "admins",
         chosen: targetKeys.includes(item.id.toString()),
       }));
       // Cập nhật trạng thái sourceData
-      setSourceData(sourceDataArray);      
+      setSourceData(sourceDataArray);
     }
   }, [perData, targetKeys]);
 
@@ -51,14 +51,13 @@ const AddPermission = () => {
     setSourceData(updatedSourceData);
     setSelectedPermissions([]); // Đặt lại danh sách các quyền đã chọn
   };
- 
+
   const onFinish = (values: any) => {
     const numericTargetKeys = targetKeys.map(Number);
     values.guard_name = "admins";
     values.permissions = numericTargetKeys;
     // Gửi dữ liệu cập nhật lên máy chủ, bao gồm 'guard_name' và 'permissions'
     addRole(values).unwrap().then(() => {
-      console.log("values thêm:", values);
       navigate("/admin/indexPermission");
       message.success('Thêm chức vụ thành công!');
     });
@@ -69,11 +68,12 @@ const AddPermission = () => {
   };
   return (
     <>
-        {/* <Button className="ml-2 px-3 pb-3 bg-red-500 text-white rounded-md">
-          <Link to={`/admin/managervouchers`}>
-            <ArrowLeftOutlined /> Quay lại
-          </Link>
-      </Button> */}
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <h1 className="text-lg font-bold text-orange-500">Thêm Role</h1>
+        <button className='mr-2 px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/indexPermission")}>
+          <ArrowLeftOutlined className="pr-2" />Quay lại
+        </button>
+      </header>
       <Form form={form} layout="vertical" onFinish={onFinish}>
 
         <Form.Item
@@ -110,18 +110,19 @@ const AddPermission = () => {
             onChange={setOneWay}
             className='mt-1 bg-gray-500'
           /> */}
-           {/* Nút để thêm quyền từ trái sang phải */}
-           <Button
+          {/* Nút để thêm quyền từ trái sang phải */}
+          <Button
             type="primary"
             htmlType="submit"
             className=' bg-blue-600 text-white rounded-md mt-3'
           >
             Add
           </Button>
-           <Button className='bg-gray-500 text-white' onClick={handleAddPermissions}>Thêm quyền</Button>
-           
+
+          <button className='px-3 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</button>
+
         </div>
-        
+
       </Form>
     </>
   );

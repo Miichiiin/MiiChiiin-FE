@@ -3,13 +3,16 @@ import { useGetAdmin_admin_AdminQuery, useRemoveAdmin_admin_AdminMutation } from
 import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
+import { AiOutlineTool } from "react-icons/ai";
+import { BiTrash } from "react-icons/bi";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 
 
 export const ManagerEmployee = () => {
   const { data: emploData } = useGetAdmin_admin_AdminQuery({})
   const navigate = useNavigate()
-  const [removeEployee,{isLoading: isRemoveEmployee}] = useRemoveAdmin_admin_AdminMutation()
+  const [removeEployee, { isLoading: isRemoveEmployee }] = useRemoveAdmin_admin_AdminMutation()
   const dataSource = emploData?.map(({ id, name, id_role, email, password, image, description, gender, date, address, status, phone }: DataType) => ({
     key: id,
     id_role,
@@ -75,17 +78,17 @@ export const ManagerEmployee = () => {
       key: "status",
       render: (_, record) => {
         let statusText = '';
-        
+
         if (record.status === 2) {
-            statusText = 'Xác nhận';
+          statusText = 'Xác nhận';
         } else if (record.status === 1) {
-            statusText = 'Đã ẩn';
+          statusText = 'Đã ẩn';
         } else if (record.status === 0) {
-            statusText = 'Đang chờ';
+          statusText = 'Đang chờ';
         }
 
         return <span>{statusText}</span>;
-    },
+      },
     },
     {
       title: "Ngày sinh",
@@ -109,31 +112,31 @@ export const ManagerEmployee = () => {
       render: (_, item) => (
         <div className="flex">
           {hasAddUserPermission("update user") && (
-            <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={()=>navigate(`/admin/updateemployee/${item.key}`)}>
-              Sửa
+            <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={() => navigate(`/admin/updateemployee/${item.key}`)}>
+              <AiOutlineTool className="text-lg" />
             </button>
           )}
           {hasAddUserPermission("delete user") && (
-             <Popconfirm
-             title="Xóa Khách sạn"
-             description="Bạn có muốn xóa không??"
-             onConfirm={() => {
-              removeEployee(item.key).unwrap().then(() => {
-                 message.success("Xóa thành công");
-               })
-             }}
-             okText="Có"
-             cancelText="Không"
-           >
-             <button 
-              className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
+            <Popconfirm
+              title="Xóa Khách sạn"
+              description="Bạn có muốn xóa không??"
+              onConfirm={() => {
+                removeEployee(item.key).unwrap().then(() => {
+                  message.success("Xóa thành công");
+                })
+              }}
+              okText="Có"
+              cancelText="Không"
             >
-              Xóa
-            </button>
-           </Popconfirm>
-            
+              <button
+                className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
+              >
+                <BiTrash className="text-lg" />
+              </button>
+            </Popconfirm>
+
           )}
-          
+
         </div >
       ),
     },
@@ -152,8 +155,8 @@ export const ManagerEmployee = () => {
 
   // phân quyền
   const dataPermission = localStorage.getItem('userAdmin')
-  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
-  const hasAddUserPermission = (permissions:any) => {
+  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+  const hasAddUserPermission = (permissions: any) => {
     return currentUserPermissions.includes(permissions);
   };
   return (
@@ -206,17 +209,11 @@ export const ManagerEmployee = () => {
           />
         </div>
         {hasAddUserPermission('add user') && (
-          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={()=>navigate(`/admin/addemployee`)}>
-                Thêm Nhân Viên
+          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => navigate(`/admin/addemployee`)}>
+            <IoAddCircleOutline className="text-xl" />
           </button>
-          )}
+        )}
       </div>
-      <Radio.Group
-        onChange={({ target: { value } }) => {
-          setSelectionType(value);
-        }}
-        value={selectionType}
-      ></Radio.Group>
 
       <Divider />
       <Table

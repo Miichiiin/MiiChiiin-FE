@@ -14,7 +14,7 @@ import {
 import type { ColumnsType } from "antd/es/table";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { IoAddCircleOutline } from "react-icons/io5";
 
 export const ManagerRoom = () => {
   const { data: roomData, isLoading, isError } = useGetRoom_AdminsQuery({})
@@ -194,8 +194,8 @@ export const ManagerRoom = () => {
           />
         </div>
         {hasAddUserPermission("add room") && (
-          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => navigate(`/admin/addroom`)}>
-            Thêm phòng
+          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center" onClick={() => navigate(`/admin/addroom`)}>
+            <IoAddCircleOutline  className="text-xl" />
           </button>
         )}
       </div>

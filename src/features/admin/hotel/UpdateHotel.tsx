@@ -83,7 +83,7 @@ const UpdateHotel = () => {
         <div>
 
             <header className="flex justify-between items-center mb-5">
-                <h2 className="text-xl font-semibold ">Sửa khách sạn : <span className='text-2xl font-semibold text-blue-800'>{hotelData?.name}</span></h2>
+                <h2 className="text-lg font-bold text-orange-500 ">Sửa khách sạn : <span className='text-xl font-semibold text-orange-800'>{hotelData?.name}</span></h2>
                 <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/hotelmanagement")}>
                     <ArrowLeftOutlined className="pr-2" /> Quay lại
                 </button>
