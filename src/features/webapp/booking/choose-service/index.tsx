@@ -95,6 +95,8 @@ const ChooseService = () => {
   }
   
   const numberOfRooms = roomNumber.length;
+  console.log("numberOfRooms",numberOfRooms);
+  
 
   const onhanldeSubmit = () => {
     const service = JSON.stringify(selectedServices);
