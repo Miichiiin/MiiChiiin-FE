@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import { BsPeople } from "react-icons/bs";
 import { MdOutlineBed } from "react-icons/md";
-import { DatePicker, message } from 'antd';
+import { DatePicker, message } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
+import HeaderHotelType from "@/features/webapp/HotelType/HeaderHotelType";
 
 const { RangePicker } = DatePicker;
 
 const RoomTypes = () => {
-  const { id:idHotel } = useParams();
+  const { id: idHotel } = useParams();
   console.log("idHotel", idHotel);
-  
-  
-  const {data:hotelData} = useGetHotel_homeByIdQuery(idHotel);
-  console.log("dlks",hotelData);
 
+  const { data: hotelData } = useGetHotel_homeByIdQuery(idHotel);
+  console.log("dlks", hotelData);
 
   const { data } = useGetCategory_homeQuery(idHotel);
   console.log("data", data);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-
-  const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [selectedRange, setSelectedRange] = useState<
+    [Date | null, Date | null]
+  >([null, null]);
 
   const handleRangeChange = (dates: any) => {
     setSelectedRange([dates[0]?.toDate() || null, dates[1]?.toDate() || null]);
@@ -30,11 +30,14 @@ const RoomTypes = () => {
 
   const handleButtonClick = () => {
     if (selectedRange[0] && selectedRange[1]) {
-      console.log('Ngày bắt đầu:', selectedRange[0].toISOString().slice(0, 10));
-      console.log('Ngày kết thúc:', selectedRange[1].toISOString().slice(0, 10));
-      message.success('Chọn ngày thành công');
+      console.log("Ngày bắt đầu:", selectedRange[0].toISOString().slice(0, 10));
+      console.log(
+        "Ngày kết thúc:",
+        selectedRange[1].toISOString().slice(0, 10)
+      );
+      message.success("Chọn ngày thành công");
     } else {
-      message.error('Vui lòng chọn một khoảng ngày.');
+      message.error("Vui lòng chọn một khoảng ngày.");
     }
   };
 
@@ -46,37 +49,45 @@ const RoomTypes = () => {
 
   const onHandSubmit = (index: any) => {
     if (selectedRange[0] && selectedRange[1]) {
-      const updatedSelectedRooms = [{
-        count: 1,
-        name: data[index]?.name,
-        price: data[index]?.price
-      }];
+      const updatedSelectedRooms = [
+        {
+          count: 1,
+          name: data[index]?.name,
+          price: data[index]?.price,
+        },
+      ];
       const encodedGuests = [`adults:1,children:0,infants:0`];
       const encodedSelectedRooms = 1;
-  
-      const hotel = `${idHotel}, ${hotelData?.[0]?.name}`
-     
+
+      const hotel = `${idHotel}, ${hotelData?.[0]?.name}`;
+
       const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
-      
-  
+
       navigate(url);
     } else {
-      message.error('Vui lòng chọn ngày check-in và check-out trước khi đặt phòng.');
+      message.error(
+        "Vui lòng chọn ngày check-in và check-out trước khi đặt phòng."
+      );
     }
   };
 
-
   return (
     <div className="max-w-7xl mx-auto my-5">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <HeaderHotelType />
       <section className="">
         <h1 className="text-2xl flex justify-center items-center font-semibold pb-5 up">
           Các hạng phòng
         </h1>
-        <div className='flex justify-between'>
+        <div className="flex justify-between">
           <div>
             <RangePicker
-              id='dateRange'
-              placeholder={['Ngày Check-In', 'Ngày Check-Out']}
+              id="dateRange"
+              placeholder={["Ngày Check-In", "Ngày Check-Out"]}
               onChange={handleRangeChange}
             />
           </div>
@@ -131,21 +142,21 @@ const RoomTypes = () => {
                   </h1>
                 </div>
 
-              <div className="flex justify-center items-center mt-6">
-                <button
-                  className="border-2 border-blue-500 bg-blue-500 hover:border-blue-700 hover:bg-blue-700 text-white px-4 py-3 rounded mx-2 w-full"
-                  onClick={onHandSubmit} 
-                >
-                  Đặt ngay
-                </button>
-                <button className="border-2 border-blue-500 hover:bg-blue-500 text-blue-700 hover:text-white px-4 py-3 rounded w-full">
-                  <Link
-                    to={`/hotel/${idHotel}/rooms/detail/${roomType.id}?idroom=${roomType.id}`}
+                <div className="flex justify-center items-center mt-6">
+                  <button
+                    className="border-2 border-blue-500 bg-blue-500 hover:border-blue-700 hover:bg-blue-700 text-white px-4 py-3 rounded mx-2 w-full"
+                    onClick={onHandSubmit}
                   >
-                    Xem thêm
-                  </Link>
-                </button>
-              </div>
+                    Đặt ngay
+                  </button>
+                  <button className="border-2 border-blue-500 hover:bg-blue-500 text-blue-700 hover:text-white px-4 py-3 rounded w-full">
+                    <Link
+                      to={`/hotel/${idHotel}/rooms/detail/${roomType.id}?idroom=${roomType.id}`}
+                    >
+                      Xem thêm
+                    </Link>
+                  </button>
+                </div>
               </div>
             </section>
           ))}

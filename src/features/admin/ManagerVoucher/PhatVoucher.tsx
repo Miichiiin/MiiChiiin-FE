@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useGetVoucherQuery } from "@/api/admin/voucher";
 import { Table, Checkbox, Button, Row, Col, DatePicker, message } from "antd";
-import { useAddVoucherMutation } from "@/api/admin/voucher";
-
+// import { useAddVoucherMutation } from "@/api/admin/voucher";
+import { usePhatVoucherMutation } from "@/api/admin/voucher";
+import moment from "moment";
+import "../../../components/Css/index.css";
 const { RangePicker } = DatePicker;
 
 const PhatVoucher = () => {
@@ -14,7 +16,7 @@ const PhatVoucher = () => {
 
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [phatVoucher] = useAddVoucherMutation();
+  const [phatVoucher] = usePhatVoucherMutation();
   const [showInput, setShowInput] = useState(false);
 
   const [isChecked, setIsChecked] = useState({
@@ -35,7 +37,12 @@ const PhatVoucher = () => {
 
   const handleCheckboxChange = (key: any) => {
     setIsChecked((prev: any) => ({
-      ...prev,
+      all: false,
+      area: false,
+      new_customer: false,
+      date: false,
+      quantity_of_booking: false,
+      total_of_amount: false,
       [key]: !prev[key],
     }));
   };
@@ -112,6 +119,15 @@ const PhatVoucher = () => {
     setSelectedUsers(selectedRowKeys.slice(-1));
   };
 
+  function getCurrentDateFormatted() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+
   const handleGenerateVoucher = async () => {
     // if (!selectedVoucher) {
     //   message.error("Vui lòng chọn voucher trước khi phát.");
@@ -124,10 +140,10 @@ const PhatVoucher = () => {
     }
     console.log(dateChoose[0]);
 
-    if (dateChoose[0] === undefined || dateChoose[1] === undefined) {
-      message.error("Vui lòng chọn ngày phát.");
-      return;
-    }
+    // if (dateChoose[0] === undefined || dateChoose[1] === undefined) {
+    //   message.error("Vui lòng chọn ngày phát.");
+    //   return;
+    // }
 
     if (Object.values(isChecked).every((e) => e === false)) {
       message.error("Vui lòng chọn options để phát.");
@@ -146,6 +162,11 @@ const PhatVoucher = () => {
 
     if (isChecked.area && valueArea.length < 1) {
       message.error("Vui lòng nhập input Khu Vực.");
+      return;
+    }
+
+    if (isChecked.date && (!dateChoose[0] || !dateChoose[1])) {
+      message.error("Vui lòng nhập date.");
       return;
     }
 
@@ -168,10 +189,13 @@ const PhatVoucher = () => {
       params["quantity_of_booking"] = bookingCount;
     }
 
-    // const [mutate] = voucherMutation;
-
-    console.log(params);
-
+    if (isChecked.new_customer) {
+      params["start_date"] = getCurrentDateFormatted();
+      params["end_date"] = getCurrentDateFormatted();
+    } else {
+      delete params["start_date"];
+      delete params["end_date"];
+    }
     try {
       phatVoucher(params)
         .unwrap()
@@ -198,7 +222,13 @@ const PhatVoucher = () => {
   const handleChangeArea = (e: any) => {
     setValueArea(e.target.value);
   };
-  console.log(dateChoose);
+
+  function disableDate(current: any) {
+    // Can not select days before today
+    return current && current < moment().startOf("day");
+  }
+
+  console.log(isChecked);
 
   //
   return (
@@ -221,21 +251,12 @@ const PhatVoucher = () => {
             Danh sách User:
           </h2>
           {/* Time */}
-          <div className="">
-            <h3 className="font-semibold mb-3">Chọn thời gian phát:</h3>
-            <RangePicker
-              // value={dateChoose as any}
-              onChange={(date: any, dateString: any) =>
-                setDateChoose(dateString)
-              }
-              style={{ marginBottom: "16px" }}
-            />
-          </div>
 
           {/* Toàn bộ ks */}
           <div className="flex items-center">
             <input
-              type="checkbox"
+              type="radio"
+              name="option_voucher"
               id="agreeCheckbox"
               checked={isChecked.all}
               onChange={() => handleCheckboxChange("all")}
@@ -243,7 +264,7 @@ const PhatVoucher = () => {
             />
             <div
               className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
-                isChecked.all && `bg-slate-400`
+                isChecked.all && `bg-gradient-to-r from-cyan-500 to-blue-500 `
               }`}
             >
               <label htmlFor="newCustomer">Toàn Bộ Các khách hàng</label>
@@ -253,7 +274,8 @@ const PhatVoucher = () => {
           {/* Khách hàng theo thời gian */}
           <div className="flex items-center">
             <input
-              type="checkbox"
+              type="radio"
+              name="option_voucher"
               id="agreeCheckbox"
               checked={isChecked.date}
               onChange={() => handleCheckboxChange("date")}
@@ -261,17 +283,33 @@ const PhatVoucher = () => {
             />
             <div
               className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
-                isChecked.date && `bg-slate-400`
+                isChecked.date && `bg-gradient-to-r from-cyan-500 to-blue-500`
               }`}
             >
               <label htmlFor="newCustomer">Khách Theo Thời Gian</label>
             </div>
           </div>
 
+          {isChecked.date && (
+            <div className="">
+              <h3 className="font-semibold mb-3 ml-5">Chọn thời gian phát:</h3>
+              <RangePicker
+                // value={dateChoose as any}
+                onChange={(date: any, dateString: any) =>
+                  setDateChoose(dateString)
+                }
+                disabledDate={disableDate}
+                className="ml-5"
+                style={{ marginBottom: "16px" }}
+              />
+            </div>
+          )}
+
           {/* Khách hàng mới */}
           <div className="flex items-center">
             <input
-              type="checkbox"
+              type="radio"
+              name="option_voucher"
               id="agreeCheckbox"
               checked={isChecked.new_customer}
               onChange={() => handleCheckboxChange("new_customer")}
@@ -279,7 +317,8 @@ const PhatVoucher = () => {
             />
             <div
               className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
-                isChecked.new_customer && `bg-slate-400`
+                isChecked.new_customer &&
+                ` bg-gradient-to-r from-cyan-500 to-blue-500`
               }`}
             >
               <label htmlFor="newCustomer">Khách Hàng Mới</label>
@@ -290,7 +329,8 @@ const PhatVoucher = () => {
           <div className="flex items-center">
             {/* Checkbox */}
             <input
-              type="checkbox"
+              type="radio"
+              name="option_voucher"
               id="agreeCheckbox"
               checked={isChecked.total_of_amount}
               onChange={() => handleCheckboxChange("total_of_amount")}
@@ -301,25 +341,28 @@ const PhatVoucher = () => {
             <div
               className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
                 showInput ? "border border-white" : ""
-              } ${isChecked.total_of_amount && "bg-slate-400"}`}
+              } ${
+                isChecked.total_of_amount &&
+                "bg-gradient-to-r from-cyan-500 to-blue-500"
+              }`}
               onClick={handleToggleInput}
             >
               <label htmlFor="newCustomer">Khách Hàng Theo Số Tiền</label>
             </div>
           </div>
 
-          {showInput && (
+          {isChecked.total_of_amount && (
             <div className="flex mb-2">
               <input
                 type="number"
                 value={valueByTotalAmount}
                 onChange={(e) => setValueByTotalAmount(e.target.value)}
                 placeholder="Nhập số tiền"
-                className="p-2 border ml-5"
+                className="p-2 border ml-5 rounded-md  outline-none"
               />
               <button
                 onClick={handleSetTotalAmount}
-                className="bg-blue-500 text-white p-2 rounded-md"
+                className="bg-slate-600 text-white p-2 rounded-md ml-2"
               >
                 Nhập
               </button>
@@ -330,39 +373,41 @@ const PhatVoucher = () => {
           <div>
             <div className="flex items-center">
               <input
-                type="checkbox"
+                type="radio"
+                name="option_voucher"
                 id="agreeCheckbox"
                 checked={isChecked.quantity_of_booking}
                 onChange={() => handleCheckboxChange("quantity_of_booking")}
-                className="mr-2 mb-3"
+                className="mr-2 mb-3 border rounded-md"
               />
               <label
                 htmlFor="newCustomer"
                 className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
-                  isChecked.quantity_of_booking && `bg-slate-400`
+                  isChecked.quantity_of_booking &&
+                  `bg-gradient-to-r from-cyan-500 to-blue-500`
                 }`}
                 onClick={handleLabelClick}
               >
                 Khách Hàng Theo Số Lượng Booking
               </label>
             </div>
-            {isInputVisible && (
+            {isChecked.quantity_of_booking && (
               <div className="flex mt-4">
-                <label className="flex-1 text-sm font-semibold mr-2 ml-3">
+                <label className="flex-1 text-sm font-semibold mr-2 ml-5">
                   Số Lượng Booking:
                   <input
                     type="number"
                     id="newCustomer"
                     value={bookingCount}
                     onChange={handleInputChange}
-                    className="block w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300 ml-3"
+                    className="block w-full p-2 border rounded-md focus:outline-none ml-1"
                   />
                 </label>
                 <button
                   onClick={handleSubmit}
-                  className="bg-blue-500  text-white px-4 py-2 rounded-md focus:outline-none hover:bg-blue-700 h-10 mt-5 mb-5 mr-2"
+                  className="bg-gray-500  text-white px-4 py-2 rounded-md focus:outline-none  h-10 mt-5 mb-5 mr-2"
                 >
-                  Submit
+                  Nhập
                 </button>
               </div>
             )}
@@ -372,7 +417,8 @@ const PhatVoucher = () => {
           <div className="flex items-center">
             {/* Checkbox */}
             <input
-              type="checkbox"
+              type="radio"
+              name="option_voucher"
               id="agreeCheckbox"
               checked={isChecked.area}
               onChange={() => handleCheckboxChange("area")}
@@ -382,28 +428,25 @@ const PhatVoucher = () => {
             {/* Div chứa nhãn và select */}
             <div
               className={`flex mt-2 items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 relative ${
-                isChecked.area && `bg-slate-400`
+                isChecked.area && `bg-gradient-to-r from-cyan-500 to-blue-500`
               }`}
             >
-              <label htmlFor="newCustomer" onClick={handleLabelClick1}>
-                Theo Khu Vực
-              </label>
+              <label htmlFor="newCustomer">Theo Khu Vực</label>
 
-              {/* Select box */}
-              <select
-                className={` border mt-5r border-black text-black p-2 rounded-md absolute top-full left-0 ${
-                  showSelect ? "block" : "hidden"
-                } bg-gray-200`}
-                value={valueArea}
-                onChange={(e) => handleChangeArea(e as any)}
-              >
-                {/* Options go here */}
-                <option value="hotel1">Hà Nội</option>
-                <option value="hotel2">Hồ Chí Minh</option>
-                <option value="hotel3">Quảng Ninh</option>
-                <option value="hotel3">Lâm Đồng</option>
-                <option value="hotel3">Đà Nẵng</option>
-              </select>
+              {isChecked.area && (
+                <select
+                  className={` border mt-5 border-black text-black p-2 rounded-md absolute top-full left-0 block bg-gray-200`}
+                  value={valueArea}
+                  onChange={(e) => handleChangeArea(e as any)}
+                >
+                  {/* Options go here */}
+                  <option value="Hà Nội">Hà Nội</option>
+                  <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                  <option value="Quang Ninh">Quảng Ninh</option>
+                  <option value="Lâm Đồng">Lâm Đồng</option>
+                  <option value="Đà Nẵng">Đà Nẵng</option>
+                </select>
+              )}
             </div>
           </div>
 

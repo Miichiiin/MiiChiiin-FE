@@ -24,6 +24,7 @@ import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import { useAddRate_homeMutation } from "@/api/webapp/comment_home";
 import { useGetRating_homeQuery } from "@/api/webapp/rates_home";
 import { useLikeDetailRoomMutation } from "@/api/bookingUser";
+import HeaderHotelType from "@/features/webapp/HotelType/HeaderHotelType";
 
 const { RangePicker } = DatePicker;
 
@@ -40,6 +41,8 @@ const DetailTypeofRoom = () => {
     id: idRoom,
     id_hotel: idHotel,
   });
+  console.log("dataks", data);
+
   const likeStart = data?.[0]?.likes;
   const [like, setLike] = useState();
   useEffect(() => {
@@ -272,6 +275,13 @@ const DetailTypeofRoom = () => {
 
   return (
     <div className="max-w-7xl mx-auto my-5">
+      <HeaderHotelType />
+
+      <br />
+      <br />
+      <br />
+      <br />
+
       <div className="flex justify-between pb-5">
         <h1 className=" uppercase">
           <span className="text-2xl font-bold text-blue-900 italic">
