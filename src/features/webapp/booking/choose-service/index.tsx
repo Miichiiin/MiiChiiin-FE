@@ -6,7 +6,7 @@ import {
   AiOutlineCheckCircle,AiOutlineCheck,
   AiOutlineDown,
   AiOutlineUp,AiOutlineForm,AiOutlineTeam,
-  AiOutlineArrowRight,AiFillCaretDown ,AiFillCaretUp,AiOutlineCalendar,AiOutlineSchedule
+  AiOutlineArrowRight,AiFillCaretDown ,AiFillCaretUp,AiOutlineCalendar,AiOutlineSchedule, AiOutlineLeft
 } from "react-icons/ai";
 import { json, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
@@ -153,8 +153,9 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
         <section className="flex space-x-16 items-center px-2 py-3">
           <Button
             onClick={onhanldeGoBack}
-            className="hover:underline text-blue-500 text-md font-bold flex justify-start pr-32 border-none"
+            className="hover:underline text-blue-500 text-md font-bold  flex justify-start items-center space-x-2 pr-32 border-none"
           >
+              <AiOutlineLeft />
             Chọn Phòng{" "}
           </Button>
           <h1 className="flex items-center">
