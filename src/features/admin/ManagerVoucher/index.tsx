@@ -3,6 +3,9 @@ import { useGetVoucherQuery, useRemoveVoucherMutation } from "@/api/admin/vouche
 import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message, Skeleton, } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
+import { AiOutlineTool } from "react-icons/ai";
+import { BiTrash } from "react-icons/bi";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 
 interface DataType {
@@ -20,20 +23,20 @@ interface DataType {
   quantity: number;
 }
 export const ManagerVouchers = () => {
-  const [remove, {isLoading:isRemoveVoucher}] = useRemoveVoucherMutation()
-  const {data:dataVoucher, isLoading:Loading, isError} = useGetVoucherQuery();
-  const dataSource = dataVoucher?.map(({id,name,image,discount,start_at,expire_at,description,quantity,status}: DataType) => ({
-    key:id,
-    name,image,discount,start_at,expire_at,description,quantity,status
+  const [remove, { isLoading: isRemoveVoucher }] = useRemoveVoucherMutation()
+  const { data: dataVoucher, isLoading: Loading, isError } = useGetVoucherQuery();
+  const dataSource = dataVoucher?.map(({ id, name, image, discount, start_at, expire_at, description, quantity, status }: DataType) => ({
+    key: id,
+    name, image, discount, start_at, expire_at, description, quantity, status
   }))
   const navigate = useNavigate()
 
- // phân quyền
- const dataPermission = localStorage.getItem('userAdmin')
- const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
- const hasAddUserPermission = (permissions:any) => {
-   return currentUserPermissions.includes(permissions);
- };
+  // phân quyền
+  const dataPermission = localStorage.getItem('userAdmin')
+  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+  const hasAddUserPermission = (permissions: any) => {
+    return currentUserPermissions.includes(permissions);
+  };
 
 
   const columns: ColumnsType<DataType> = [
@@ -86,16 +89,16 @@ export const ManagerVouchers = () => {
       render: (_, record) => {
         let statusText = '';
         if (record.status === 2) {
-            statusText = 'Hoạt động';
+          statusText = 'Hoạt động';
         } else if (record.status === 1) {
-            statusText = 'Đã ẩn';
+          statusText = 'Đã ẩn';
         } else if (record.status === 0) {
-            statusText = 'Đang chờ';
+          statusText = 'Đang chờ';
         }
 
         return <span>{statusText}</span>;
-    },
-      
+      },
+
     },
     {
       title: "Thao tác",
@@ -104,31 +107,31 @@ export const ManagerVouchers = () => {
       render: (_, item) => (
         <div className="flex">
           {hasAddUserPermission("update voucher") && (
-            <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={()=>navigate(`/admin/updatevoucher/${item.key}`)}>
-              Sửa
+            <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md text-lg' onClick={() => navigate(`/admin/updatevoucher/${item.key}`)}>
+              <AiOutlineTool />
             </button>
           )}
           {hasAddUserPermission("delete voucher") && (
             <Popconfirm
-            title="Xóa Khách sạn"
-            description="Bạn có muốn xóa không??"
-            onConfirm={() => {
-              remove(item.key).unwrap().then(() => {
-                message.success("Xóa thành công");
-              })
-            }}
-            okText="Có"
-            cancelText="Không"
-          >
-            <button 
-              className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
+              title="Xóa Khách sạn"
+              description="Bạn có muốn xóa không??"
+              onConfirm={() => {
+                remove(item.key).unwrap().then(() => {
+                  message.success("Xóa thành công");
+                })
+              }}
+              okText="Có"
+              cancelText="Không"
             >
-              Xóa
-            </button>
-          </Popconfirm>
-            
+              <button
+                className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md text-lg'
+              >
+                <BiTrash />
+              </button>
+            </Popconfirm>
+
           )}
-          
+
         </div >
       ),
     },
@@ -145,12 +148,12 @@ export const ManagerVouchers = () => {
     .filter((item: DataType) =>
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
-  if (Loading) return <Skeleton active/>;
+  if (Loading) return <Skeleton active />;
   if (isError) return <div>error...</div>;
-  if(isRemoveVoucher) return message.loading({content:'Đang xóa', key:'removeVoucher'});
+  if (isRemoveVoucher) return message.loading({ content: 'Đang xóa', key: 'removeVoucher' });
   return (
     <div>
-      
+
       <div
         style={{
           display: "flex",
@@ -199,14 +202,14 @@ export const ManagerVouchers = () => {
           />
         </div>
         <Button
-            type="primary"
-            style={{ background: "#FFD700", borderColor: "#FFD700", marginLeft: "350px" }}
-          >
-            <Link to={`/admin/phatvoucher`}>Phát Voucher</Link>
-          </Button>
+          type="primary"
+          style={{ background: "#FFD700", borderColor: "#FFD700", marginLeft: "350px" }}
+        >
+          <Link to={`/admin/phatvoucher`}>Phát Voucher</Link>
+        </Button>
         {hasAddUserPermission('add voucher') && (
-            <button className="ml-2 px-2 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={()=>navigate(`/admin/addvoucher`)}>
-            Thêm Voucher
+          <button className=" px-3 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={() => navigate(`/admin/addvoucher`)}>
+            <IoAddCircleOutline  className="text-xl" />
           </button>
         )}
       </div>

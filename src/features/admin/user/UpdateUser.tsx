@@ -88,9 +88,9 @@ const UpdateUserPage = () => {
     <div>
       {isUploading && <Spin className='animate' />}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <div className="text-lg font-bold text-orange-500">Update User</div>
+        <div className="text-lg font-bold text-orange-500">Update User: <span className='text-xl font-semibold text-orange-800'>{userData?.name}</span></div>
 
-        <button className='flex justify-center items-center bg-red-500 text-white px-2 py-1.5 mx-2 rounded-lg hover:bg-red-400' onClick={() => navigate("/admin/usermanagement")}><ArrowLeftOutlined className='mr-2' /> Quay lại</button>
+        <button className='flex justify-center items-center bg-orange-500 text-white px-3 py-2 rounded-md hover:bg-orange-400' onClick={() => navigate("/admin/usermanagement")}><ArrowLeftOutlined className='mr-2' /> Quay lại</button>
       </div>
       <Form
         name="basic"

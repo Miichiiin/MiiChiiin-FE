@@ -2,7 +2,10 @@ import { useGetUsers_adminQuery, useRemoveUser_adminMutation } from '@/api/admin
 import { Table, Divider, Select, Input, Skeleton, Pagination, Popconfirm, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { AiOutlineTool } from 'react-icons/ai';
+import { BiTrash } from 'react-icons/bi';
+import { IoAddCircleOutline } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
 
 
 export const UserManagement = () => {
@@ -111,6 +114,11 @@ export const UserManagement = () => {
       key: "action",
       render: (_, item) => (
         <div className="flex">
+          {hasAddUserPermission("update user") && (
+            <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={() => navigate(`/admin/updateuser/${item?.id}`)}>
+              <AiOutlineTool className="text-lg" />
+            </button>
+          )}
           {hasAddUserPermission("delete user") && (
             <Popconfirm
               title="Xóa Khách sạn"
@@ -126,15 +134,11 @@ export const UserManagement = () => {
               <button
                 className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
               >
-                Xóa
+                <BiTrash className="text-lg" />
               </button>
             </Popconfirm>
           )}
-          {hasAddUserPermission("update user") && (
-            <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={() => navigate(`/admin/updateuser/${item?.id}`)}>
-              Sửa
-            </button>
-          )}
+          
         </div>
       ),
     }
@@ -197,7 +201,7 @@ export const UserManagement = () => {
           />
         </div>
         {hasAddUserPermission("add user") && (
-          <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={()=>navigate('/admin/adduser')}>Thêm khách hàng</button>
+          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={()=>navigate('/admin/adduser')}><IoAddCircleOutline className="text-xl" /></button>
         )}
       </div>
       {/* Phần CSS tùy chỉnh cho bảng */}

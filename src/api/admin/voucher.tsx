@@ -61,6 +61,7 @@ export const {
   useGetVoucherQuery,
   useRemoveVoucherMutation,
   useUpdateVoucherMutation,
+  usePhatVoucherMutation,
 } = voucherApi;
 export const voucherReducer = voucherApi.reducer;
 export default voucherApi;

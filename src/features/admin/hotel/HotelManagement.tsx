@@ -2,6 +2,9 @@ import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/adm
 import { Table, Divider, Radio, Button, Select, Input, Popconfirm, message, Image, Skeleton } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
+import { AiOutlineTool } from 'react-icons/ai';
+import { BiTrash } from 'react-icons/bi';
+import { IoAddCircleOutline } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 
 
@@ -131,7 +134,7 @@ export const HotelManagement = () => {
                     <>
                         <div>
                             {hasAddUserPermission("update hotel") && (
-                                <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={() => navigate(`/admin/updatehotel/${item.key}`)}>Sửa</button>
+                                <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={() => navigate(`/admin/updatehotel/${item.key}`)}><AiOutlineTool className="text-lg" /></button>
                             )}
                             {hasAddUserPermission("delete hotel") && (
                                 <Popconfirm
@@ -145,7 +148,7 @@ export const HotelManagement = () => {
                                     okText="Có"
                                     cancelText="Không"
                                 >
-                                    <button className="mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" >Xóa</button>
+                                    <button className="mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" ><BiTrash className="text-lg" /></button>
                                 </Popconfirm>
                             )}
 
@@ -180,7 +183,7 @@ export const HotelManagement = () => {
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
-                <div className="text-lg font-semibold">Quản lý khách sạn</div>
+                <div className="text-lg font-bold text-orange-500">Quản lý khách sạn</div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
                     <Select
@@ -200,7 +203,7 @@ export const HotelManagement = () => {
                 </div>
                 {
                     hasAddUserPermission("add hotel") && (
-                        <button className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => navigate('/admin/addhotel')}>Thêm khách sạn</button>
+                        <button className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => navigate('/admin/addhotel')}><IoAddCircleOutline className="text-xl" /></button>
                     )
                 }
             </div>
