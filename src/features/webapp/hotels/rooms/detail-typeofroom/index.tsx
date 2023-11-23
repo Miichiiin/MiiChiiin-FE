@@ -185,11 +185,31 @@ const DetailTypeofRoom = () => {
       console.log("hotelnew", hotelData?.[0]?.name);
       const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${numberOfRooms1}`;
 
-      console.log("url", url);
-
-      // localStorage.setItem('sel')
-
-      navigate(url);
+      const jsondata = {
+        id: 2,
+        name: "Phòng gia đình",
+        description: "Est quo consequatur.",
+        Total_comfort: 3,
+        Total_rooms: 7,
+        acreage: 4,
+        created_at: "2023-11-12T16:02:07.000000Z",
+        floor: 4,
+        image: "https://via.placeholder.com/640x480.png/0099bb?text=a",
+        imageUrl: [
+          {
+            image:
+              "https://via.placeholder.com/640x480.png/00aa55?text=sapiente",
+          },
+        ],
+        likes: 68,
+        nameHotel: "Michi Hà Nội",
+        price: 1907705,
+        quantity_of_people: 6,
+        updated_at: "2023-11-18T14:51:54.000000Z",
+        views: 5,
+      };
+      localStorage.setItem("selectedRooms", JSON.stringify(jsondata));
+      navigate(url, { replace: true });
     } else {
       message.error(
         "Vui lòng chọn ngày check-in và check-out trước khi đặt phòng."

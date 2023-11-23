@@ -263,6 +263,10 @@ const BookingInformation = () => {
     });
   }, []);
 
+  const handGoBack = () => {
+    window.history.back()
+  }
+
   
   const priceAfterVoucher = sumprice - (sumprice * (appliedVoucher?.discount || 0) / 100);
 
@@ -273,7 +277,7 @@ const BookingInformation = () => {
         <div className="flex items-center w-[1280px] mx-auto mt-[60px] ">
           <span className="flex items-center mr-[300px] space-x-3 text-blue-500 font-medium">
             <AiOutlineLeft />
-            <a href="" className="">Chọn phòng</a>
+            <button onClick={() => handGoBack()} className="">Chọn phòng</button>
           </span>
           <div className="flex items-center space-x-8">
             <a className="flex items-center space-x-3 " href="">

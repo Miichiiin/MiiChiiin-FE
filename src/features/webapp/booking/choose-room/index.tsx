@@ -24,6 +24,7 @@ import { useGetCategory_homeByIdQuery } from "@/api/webapp/category_home";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
+import { Button } from "antd";
 import moment from "moment";
 import "./swper.css";
 import Slider from "react-slick";
@@ -52,8 +53,6 @@ const ChooseRoom = () => {
         return roomDetails;
       });
   }
-  console.log("numberPeople",numberPeople);
-  
 
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
@@ -65,8 +64,11 @@ const ChooseRoom = () => {
   if (searchSlide && searchSlide.nameHotel) {
     hotel = searchSlide.nameHotel.split(",");
   }
+  console.log("hotel", hotel);
 
   const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
+
+  console.log(hotel_detail);
 
   // Lấy dữ liệu từ localStorage
 
@@ -129,20 +131,23 @@ const ChooseRoom = () => {
     }
   };
 
-  const uniqueSelectedRooms = selectedRooms.reduce((acc: any, room: any) => {
-    // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
-    const existingRoom = acc.find((r: any) => r.id === room.id);
-
-    // Nếu phòng đã tồn tại, tăng số lượng
-    if (existingRoom) {
-      existingRoom.count++;
-    } else {
-      // Nếu không, thêm phòng vào danh sách mới
+  const uniqueSelectedRooms =
+    selectedRooms &&
+    selectedRooms.length > 0 &&
+    selectedRooms.reduce((acc: any, room: any) => {
+      // Kiểm tra xem phòng đã tồn tại trong danh sách chưa
+      // const existingRoom = acc.find((r: any) => r.id === room.id);
       acc.push({ ...room, count: 1 });
-    }
+      // // Nếu phòng đã tồn tại, tăng số lượng
+      // if (existingRoom) {
+      //   existingRoom.count++;
+      // } else {
+      //   // Nếu không, thêm phòng vào danh sách mới
+      //   acc.push({ ...room, count: 1 });
+      // }
 
-    return acc;
-  }, []);
+      return acc;
+    }, []);
   const individuals: any =
     searchSlide.numberPeople && searchSlide.numberPeople.split("&");
 
@@ -173,6 +178,7 @@ const ChooseRoom = () => {
     number_people: totalAdults + totalChildren,
     total_room: searchSlide.numberRoom,
   });
+  console.log("hotels", hotels);
 
   // Lấy dữ liệu từ local storage
   const savedRoomInfoJSON = localStorage.getItem("roomInfo");
@@ -263,6 +269,8 @@ const ChooseRoom = () => {
       sliderRef.current.slickPrev();
     }
   };
+
+  console.log("eeelect", selectedRooms);
 
   return (
     <div>
@@ -503,12 +511,8 @@ const ChooseRoom = () => {
                           </div>
                           <span className="basis-1/3 mb-4 text-gray-500 font-medium border-b-2 pb-7">
                             <p className="text-sm pt-1 flex items-center">
-                              <AiOutlineTeam class="text-lg mr-2" />
-                              {numberPeople
-                                ?.filter((item, index1) => index1 === index)
-                                .map(( {adults, children, infants}, index) => (
-                                  <div key={index}>Người lớn:{adults}, Trẻ em:{children}, Em bé: {infants}</div>
-                                ))}
+                              <AiOutlineTeam class="text-lg mr-2" />2 Người lớn,
+                              2 Trẻ em
                             </p>
                           </span>
                         </li>
