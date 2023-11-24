@@ -263,7 +263,7 @@ const PhatVoucher = () => {
               className="mr-2 mb-3"
             />
             <div
-              className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
+              className={`flex items-center bg-gray-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
                 isChecked.all && `bg-gradient-to-r from-cyan-500 to-blue-500 `
               }`}
             >
@@ -282,7 +282,7 @@ const PhatVoucher = () => {
               className="mr-2 mb-3"
             />
             <div
-              className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
+              className={`flex items-center bg-gray-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
                 isChecked.date && `bg-gradient-to-r from-cyan-500 to-blue-500`
               }`}
             >
@@ -316,7 +316,7 @@ const PhatVoucher = () => {
               className="mr-2 mb-3"
             />
             <div
-              className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
+              className={`flex items-center bg-gray-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
                 isChecked.new_customer &&
                 ` bg-gradient-to-r from-cyan-500 to-blue-500`
               }`}
@@ -339,7 +339,7 @@ const PhatVoucher = () => {
 
             {/* Div chứa nội dung */}
             <div
-              className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
+              className={`flex items-center bg-gray-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
                 showInput ? "border border-white" : ""
               } ${
                 isChecked.total_of_amount &&
@@ -382,7 +382,7 @@ const PhatVoucher = () => {
               />
               <label
                 htmlFor="newCustomer"
-                className={`flex items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
+                className={`flex items-center bg-gray-500 text-white p-4 rounded-md mb-5 w-96 h-10 ${
                   isChecked.quantity_of_booking &&
                   `bg-gradient-to-r from-cyan-500 to-blue-500`
                 }`}
@@ -393,7 +393,7 @@ const PhatVoucher = () => {
             </div>
             {isChecked.quantity_of_booking && (
               <div className="flex mt-4">
-                <label className="flex-1 text-sm font-semibold mr-2 ml-5">
+                <label className="flex-1 text-sm font-semibold mr-2 ml-5 ">
                   Số Lượng Booking:
                   <input
                     type="number"
@@ -427,7 +427,7 @@ const PhatVoucher = () => {
 
             {/* Div chứa nhãn và select */}
             <div
-              className={`flex mt-2 items-center bg-blue-500 text-white p-4 rounded-md mb-5 w-96 h-10 relative ${
+              className={`flex mt-2 items-center bg-gray-500 text-white p-4 rounded-md mb-5 w-96 h-10 relative ${
                 isChecked.area && `bg-gradient-to-r from-cyan-500 to-blue-500`
               }`}
             >
@@ -451,7 +451,7 @@ const PhatVoucher = () => {
           </div>
 
           <Button
-            className="bg-blue-950 mb-5 hover:bg-slate-400 text-white font-bold ml-72 py-2 px-4 rounded h-10"
+            className="bg-blue-700 mb-5 hover:bg-blue-950 text-white font-bold ml-72 py-2 px-4 rounded h-10"
             onClick={handleGenerateVoucher}
           >
             Phát Voucher
