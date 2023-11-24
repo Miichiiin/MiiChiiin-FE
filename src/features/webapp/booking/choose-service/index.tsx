@@ -3,14 +3,22 @@ import { useState } from "react";
 import {
   AiOutlineInfoCircle,
   AiFillCheckCircle,
-  AiOutlineCheckCircle,AiOutlineCheck,
+  AiOutlineCheckCircle,
+  AiOutlineCheck,
   AiOutlineDown,
-  AiOutlineUp,AiOutlineForm,AiOutlineTeam,
-  AiOutlineArrowRight,AiFillCaretDown ,AiFillCaretUp,AiOutlineCalendar,AiOutlineSchedule
+  AiOutlineUp,
+  AiOutlineForm,
+  AiOutlineTeam,
+  AiOutlineArrowRight,
+  AiFillCaretDown,
+  AiFillCaretUp,
+  AiOutlineCalendar,
+  AiOutlineSchedule,
+  AiOutlineLeft,
 } from "react-icons/ai";
 import { json, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
-import { useGetService_hotelIdQuery} from "@/api/webapp/service_hotel";
+import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { Button } from "antd";
 import HeaderHotelType from "../../HotelType/HeaderHotelType";
 
@@ -69,47 +77,49 @@ const ChooseService = () => {
     date = timeArray.map((time) => new Date(time));
   }
 
-
-  let roomDetailsString:any = []
-  if(dataParam && dataParam?.numberPeople){
-    roomDetailsString = JSON.stringify(dataParam?.numberPeople).split("&").map((item:any )=> item.replace(/^"|"$/g, ''))
+  let roomDetailsString: any = [];
+  if (dataParam && dataParam?.numberPeople) {
+    roomDetailsString = JSON.stringify(dataParam?.numberPeople)
+      .split("&")
+      .map((item: any) => item.replace(/^"|"$/g, ""));
   }
   const NumberPeople: { [key: string]: number }[] = [];
 
-  roomDetailsString.forEach((item:any) => {
+  roomDetailsString.forEach((item: any) => {
     const obj: { [key: string]: number } = {};
-    const keyValuePairs: string[] = item.split(',');
-  
-    keyValuePairs.forEach(pair => {
-      const [key, value]: string[] = pair.split(':');
+    const keyValuePairs: string[] = item.split(",");
+
+    keyValuePairs.forEach((pair) => {
+      const [key, value]: string[] = pair.split(":");
       obj[key] = parseInt(value);
     });
-  
+
     NumberPeople.push(obj);
   });
-  
-  
+
   let roomNumber: any[] = [];
   if (dataParam && dataParam.numberRoom) {
     roomNumber = JSON.parse(dataParam.numberRoom);
   }
-  
+
   const numberOfRooms = roomNumber.length;
+  console.log("numberOfRooms", numberOfRooms);
 
   const onhanldeSubmit = () => {
     const service = JSON.stringify(selectedServices);
-    const url = `/booking/${hotel}/${date}/${JSON.stringify(roomNumber)}/${service}/${dataParam.numberPeople}`;
+    const url = `/booking/${hotel}/${date}/${JSON.stringify(
+      roomNumber
+    )}/${service}/${dataParam.numberPeople}`;
     navigate(url);
     // navigate(`/booking`)
   };
-  
 
-
-
-let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.numberPeople.replace(/"/g, '') : undefined;
+  let cleanedNumberPeople =
+    dataParam && dataParam.numberPeople
+      ? dataParam.numberPeople.replace(/"/g, "")
+      : undefined;
 
   const onhanldeGoBack = () => {
-
     const url = `/choose-room/${dataParam?.nameHotel}/${dataParam?.date}/${numberOfRooms}/${cleanedNumberPeople}`;
 
     navigate(url);
@@ -130,7 +140,7 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
   );
   let totalPrice1 = 0;
 
-  roomNumber.map((item: any) => {
+  roomNumber?.map((item: any) => {
     const startDate = new Date(date[0]); // Lấy ngày bắt đầu thuê phòng từ date[0]
     const endDate = new Date(date[1]); // Lấy ngày kết thúc thuê phòng từ date[1]
     const numberOfDays = Math.ceil(
@@ -139,7 +149,6 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
 
     totalPrice1 += item.price * numberOfDays * item.count;
   });
-  
 
   const sumprice = totalPrice1 + serviceTotalPrice;
 
@@ -151,23 +160,24 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
         <section className="flex space-x-16 items-center px-2 py-3">
           <Button
             onClick={onhanldeGoBack}
-            className="hover:underline text-blue-500 text-md font-bold flex justify-start pr-32 border-none"
+            className="hover:underline text-blue-500 text-md font-bold  flex justify-start items-center space-x-2 pr-32 border-none"
           >
+            <AiOutlineLeft />
             Chọn Phòng{" "}
           </Button>
           <h1 className="flex items-center">
             {" "}
-              <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full mr-2">
-                1
-              </span>
-              <span className="text-[#6a6971] text-[14px] font-medium">
-                Chọn phòng
-              </span>
+            <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full mr-2">
+              1
+            </span>
+            <span className="text-[#6a6971] text-[14px] font-medium">
+              Chọn phòng
+            </span>
           </h1>
           <h1 className="flex items-center">
             {" "}
             <a className="flex items-center space-x-3 text-[#e8952f]" href="">
-            <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
+              <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
                 <AiOutlineCheck />
               </span>
               <span className="text-[#e8952f] text-[14px] font-medium">
@@ -178,11 +188,11 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
           <h1 className="flex items-center">
             {" "}
             <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full mr-2">
-                2
-              </span>
-              <span className="text-[#6a6971] text-[14px] font-medium">
-               Thanh toán
-              </span>
+              2
+            </span>
+            <span className="text-[#6a6971] text-[14px] font-medium">
+              Thanh toán
+            </span>
           </h1>
         </section>
         <section className="grid grid-cols-3 gap-4 py-3">
@@ -204,9 +214,7 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                   className="border rounded-lg px-2 py-3 my-2"
                 >
                   <div className="px-2">
-                    <h1 className="font-bold text-lg">
-                      Phòng {roomIndex + 1}
-                    </h1>
+                    <h1 className="font-bold text-lg">Phòng {roomIndex + 1}</h1>
                     <div className="flex justify-between font-medium">
                       <h1 className="">Biệt thự 1 phòng ngủ</h1>
                       <button
@@ -229,17 +237,27 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                   {isServiceOpen[roomIndex] && (
                     <div className="grid grid-cols-3 gap-3 pt-2 ">
                       {serviceData?.map((item: any) => (
-                        <div className="column border rounded-lg hover:shadow-xl" key={item.id}>
-                          <img src={item?.image} className="w-full rounded-t-lg" />
-                          <h1 className="pl-2 pt-2 pb-2 text-base font-medium">{item.name}</h1>
+                        <div
+                          className="column border rounded-lg hover:shadow-xl"
+                          key={item.id}
+                        >
+                          <img
+                            src={item?.image}
+                            className="w-full rounded-t-lg"
+                          />
+                          <h1 className="pl-2 pt-2 pb-2 text-base font-medium">
+                            {item.name}
+                          </h1>
                           <p className="pl-2 pb-2 font-semibold text-black text-lg">
                             {item.price}
                             <span className="text-sm"> đ</span>
                           </p>
                           <div className="flex justify-between items-center px-2 py-3 ">
                             <button className="flex items-center hover:text-yellow-500">
-                              <AiOutlineInfoCircle class="text-blue-500 font-medium"/>
-                              <span className="pl-1 text-xs text-blue-500 font-medium ">Chi tiết</span>
+                              <AiOutlineInfoCircle class="text-blue-500 font-medium" />
+                              <span className="pl-1 text-xs text-blue-500 font-medium ">
+                                Chi tiết
+                              </span>
                             </button>
                             <label className="items-center flex">
                               <input
@@ -281,19 +299,22 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
               <div>
                 <div className="flex items-center justify-between">
                   <h1 className="font-semibold text-lg">{hotel[1]}</h1>
-                  <button onClick={onhanldeGoBack} className="text-sm text-blue-500 font-medium hover:underline">
+                  <button
+                    onClick={onhanldeGoBack}
+                    className="text-sm text-blue-500 font-medium hover:underline"
+                  >
                     Chỉnh sửa
                   </button>
                 </div>
                 <div className="border-b-2 pb-3">
                   <p className="text-sm pt-3 items-center flex font-medium text-gray-500">
-                    <AiOutlineCalendar class="text-lg mr-2"/>
+                    <AiOutlineCalendar class="text-lg mr-2" />
                     {date[0].toISOString().slice(0, 10)}
                     <AiOutlineArrowRight className="inline-block mx-1" />
                     {date[1].toISOString().slice(0, 10)}
                   </p>
                   <p className="text-sm pb-3 font-medium text-gray-500 flex items-center mt-1">
-                    <AiOutlineSchedule class="text-lg mr-2"/>
+                    <AiOutlineSchedule class="text-lg mr-2" />
                     {differenceInDays(
                       parseISO(date[1].toISOString().slice(0, 10)),
                       parseISO(date[0].toISOString().slice(0, 10))
@@ -314,21 +335,33 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                     <div className="flex items-center justify-between pt-4">
                       <h1 className="font-semibold">{roomNumber}</h1>
                       <button className="text-md font-semibold ">
-                        {item?.price.toLocaleString('vi-VN')} đ
+                        {item?.price.toLocaleString("vi-VN")} đ
                       </button>
                     </div>
                     <p className="text-sm pt-3 items-center flex text-gray-500 font-medium">
-                      <AiOutlineForm class="text-lg mr-2"/>
+                      <AiOutlineForm class="text-lg mr-2" />
                       <span className="pr-1">x{item?.count}</span>
                       {item?.name}
                     </p>
-                   <div className="flex text-gray-500 mt-1 border-b-2 pb-3">
-                      <AiOutlineTeam class="text-lg mr-2"/>
-                      <p className="text-sm pb-3 text-gray-500 font-medium">  
-                      {NumberPeople && NumberPeople?.filter((item:any, index1:any) => index1 == index).map(( {adults, children, infants}:any, index:any) => (
-                                  <div key={index}>Người lớn:{adults}, Trẻ em:{children}, Em bé: {infants}</div>
-                                ))}</p>
-                   </div>
+                    <div className="flex text-gray-500 mt-1 border-b-2 pb-3">
+                      <AiOutlineTeam class="text-lg mr-2" />
+                      <p className="text-sm pb-3 text-gray-500 font-medium">
+                        {NumberPeople &&
+                          NumberPeople?.filter(
+                            (item: any, index1: any) => index1 == index
+                          ).map(
+                            (
+                              { adults, children, infants }: any,
+                              index: any
+                            ) => (
+                              <div key={index}>
+                                Người lớn:{adults}, Trẻ em:{children}, Em bé:{" "}
+                                {infants}
+                              </div>
+                            )
+                          )}
+                      </p>
+                    </div>
                     {/* Dịch vụ đã chọn */}
                     {selectedServicesInRoom.length > 0 && (
                       <div className="border-gray-100 bg-gray-100 px-2 rounded">
@@ -369,7 +402,7 @@ let cleanedNumberPeople = dataParam && dataParam.numberPeople ? dataParam.number
                 <div className="flex items-center justify-between pt-3">
                   <h1 className="font-semibold text-xl ">Tổng cộng:</h1>
                   <h1 className="text-lg font-bold text-yellow-500">
-                    {sumprice.toLocaleString('vi-VN')} đ
+                    {sumprice.toLocaleString("vi-VN")} đ
                   </h1>
                 </div>
               </div>

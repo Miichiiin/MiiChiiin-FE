@@ -20,6 +20,7 @@ const AddRoomPage = () => {
   const onFinish = (values: any) => {
     addRoom(values).unwrap().then(() => {
       message.success('Thêm phòng thành công');
+      navigate('/admin/managerroom')
     })
   };
 
@@ -53,9 +54,9 @@ const AddRoomPage = () => {
           <div className="w-1/2 bg-white pr-2">
             <Form.Item label="Trạng Thái" name="status" rules={[{ required: true, message: 'Hãy chọn trạng thái ' }]}>
               <Select placeholder="Chọn trạng thái">
-                <Select.Option value={1}>Đã ẩn</Select.Option>
-                <Select.Option value={0}>Đang chờ</Select.Option>
-                <Select.Option value={2}>Hoạt động</Select.Option>
+                <Select.Option value={0}>Ngừng hoạt động</Select.Option>
+                <Select.Option value={1}>Đang sử dụng</Select.Option>
+                <Select.Option value={2}>Trống</Select.Option>
               </Select>
             </Form.Item>
           </div>

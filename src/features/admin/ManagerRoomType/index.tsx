@@ -14,7 +14,10 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { AiOutlineTool } from "react-icons/ai";
+import { BiTrash } from "react-icons/bi";
+import { IoAddCircleOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 
 export const ManagerRoomType = () => {
@@ -137,8 +140,8 @@ export const ManagerRoomType = () => {
         return (
           <div className="flex items-center">
             {hasAddUserPermission('update category') && (
-              <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={()=>navigate(`/admin/updateroomtype/${record.key}`)}>
-                Sửa
+              <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md text-lg" onClick={()=>navigate(`/admin/updateroomtype/${record.key}`)}>
+                <AiOutlineTool />
               </button>
             )}
             {hasAddUserPermission('delete category') && (
@@ -153,7 +156,9 @@ export const ManagerRoomType = () => {
                 okText="Có"
                 cancelText="Không"
               >
-                <button className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md">Xóa</button>
+                <button className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md text-lg">
+                  <BiTrash />
+                </button>
               </Popconfirm>
             )}
           </div>
@@ -191,7 +196,7 @@ export const ManagerRoomType = () => {
           marginBottom: "16px",
         }}
       >
-        <div className="text-lg font-semibold">Quản Lý Loại Phòng</div>
+        <div className="text-lg font-bold text-orange-600">Quản Lý Loại Phòng</div>
         <div className='flex items-center'>
           <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
           <Select
@@ -231,8 +236,8 @@ export const ManagerRoomType = () => {
           />
         </div>
         {hasAddUserPermission('add category') && (
-          <button className="ml-2 px-2 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={()=>navigate(`/admin/addroomtype`)}>
-            Thêm loại phòng
+          <button className="ml-2 px-3 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={()=>navigate(`/admin/addroomtype`)}>
+            <IoAddCircleOutline  className="text-xl" />
           </button>
         )}
       </div>

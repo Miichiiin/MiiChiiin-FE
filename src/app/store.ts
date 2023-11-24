@@ -52,6 +52,7 @@ import category_BookingApi, { category_BookingReducer } from '@/api/admin/catego
 import category_Api, { category_Reducer } from '@/api/admin/category';
 import authAdminApi, { authAdminReducer } from '@/api/auth/authAdmin';
 import voucher_HotelApi,{voucher_Reducer} from '@/api/webapp/voucher_home';
+import user_AdminApi, {user_AdminReducer} from '@/api/admin/admin_usermanage';
 
 const persistConfig = {
     key: 'root',
@@ -97,8 +98,8 @@ const rootReducer = combineReducers({
     category_booking:category_BookingReducer,
     category_admin1: category_Reducer,
     userAdmin: authAdminReducer,
-    voucher_hotel: voucher_Reducer
-    
+    voucher_hotel: voucher_Reducer,
+    user_admin: user_AdminReducer
 })
 const middleware = [
     room_adminApi.middleware, 
@@ -136,7 +137,8 @@ const middleware = [
     category_BookingApi.middleware,
     category_Api.middleware,
     authAdminApi.middleware,
-    voucher_HotelApi.middleware
+    voucher_HotelApi.middleware,
+    user_AdminApi.middleware
 ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

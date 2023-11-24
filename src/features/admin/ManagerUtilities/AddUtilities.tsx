@@ -18,7 +18,7 @@ const AddUtilities = () => {
     return (
         <div>
             <header className="flex justify-between items-center mb-5 ">
-                <h2 className="text-xl font-semibold">Thêm tiện ích</h2>
+                <h2 className="text-lg font-bold text-orange-500">Thêm tiện ích</h2>
                 <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/managerutilities")}>
                 <ArrowLeftOutlined className="pr-2" /> Quay lại
                 </button>

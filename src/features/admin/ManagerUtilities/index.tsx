@@ -5,14 +5,15 @@ import {
   Radio,
   Input,
   Select,
-  Button,
   Popconfirm,
   message,
-  Image,
   Skeleton,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
+import { AiOutlineTool } from "react-icons/ai";
+import { BiTrash } from "react-icons/bi";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -102,7 +103,7 @@ export const ManagerUtilities = () => {
         <div className="flex">
           {hasAddUserPermission("update comfort") && (
             <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={() => navigate(`/admin/updateUtilities/${record.key}`)}>
-              Sửa
+              <AiOutlineTool className="text-lg" />
             </button>
           )}
           {hasAddUserPermission("delete comfort") && (
@@ -117,7 +118,7 @@ export const ManagerUtilities = () => {
               cancelText="Hủy"
             >
               <button className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'>
-                Xóa
+                <BiTrash className="text-lg" />
               </button>
             </Popconfirm>
           )}
@@ -134,7 +135,7 @@ export const ManagerUtilities = () => {
       <div
         className='flex justify-between items-center mb-4'
       >
-        <div className="text-lg font-semibold">Quản Lý Utilities</div>
+        <div className="text-lg font-bold text-orange-500">Quản Lý tiện ích</div>
         <div className="flex items-center">
           {/*phần tìm kiếm và lọc */}
           <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
@@ -180,8 +181,8 @@ export const ManagerUtilities = () => {
           {/*Nút Thêm */}
         </div>
         {hasAddUserPermission("add comfort") && (
-          <button onClick={() => navigate(`/admin/addUtilities`)} className="ml-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-            Thêm tiện ích
+          <button onClick={() => navigate(`/admin/addUtilities`)} className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+            <IoAddCircleOutline className="text-xl" />
           </button>
         )}
       </div>

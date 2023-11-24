@@ -1,6 +1,6 @@
 import { useGetRoom_AdminsQuery, useRemoveRoom_AdminMutation } from "@/api/admin/room_admin";
 import {
-  Table,
+
   Divider,
   Radio,
   Input,
@@ -12,27 +12,21 @@ import {
   Skeleton,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { IoAddCircleOutline } from "react-icons/io5";
 
 export const ManagerRoom = () => {
-
   const { data: roomData, isLoading, isError } = useGetRoom_AdminsQuery({})
   const navigate = useNavigate();
   const [removeRoom] = useRemoveRoom_AdminMutation();
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(5);
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
 
-   // phân quyền
- const dataPermission = localStorage.getItem('userAdmin')
- const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
- const hasAddUserPermission = (permissions:any) => {
-   return currentUserPermissions.includes(permissions);
- };
+  // phân quyền
+  const dataPermission = localStorage.getItem('userAdmin')
+  const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+  const hasAddUserPermission = (permissions: any) => {
+    return currentUserPermissions.includes(permissions);
+  };
   interface DataType {
     id: number;
     name: string;
@@ -46,7 +40,6 @@ export const ManagerRoom = () => {
       title: "#",
       dataIndex: "id",
       key: "id",
-      //render: (_, __, index) => <span>{index + 1}</span>,
     },
     {
       title: "Tên phòng",
@@ -69,17 +62,17 @@ export const ManagerRoom = () => {
       key: "status",
       render: (_, record) => {
         let statusText = '';
-        
+
         if (record.status === 2) {
-            statusText = 'Hoạt động';
+          statusText = 'Hoạt động';
         } else if (record.status === 1) {
-            statusText = 'Đã ẩn';
+          statusText = 'Đã ẩn';
         } else if (record.status === 0) {
-            statusText = 'Đang chờ';
+          statusText = 'Đang chờ';
         }
 
         return <span>{statusText}</span>;
-    },
+      },
     },
     {
       title: "Hành động",
@@ -87,8 +80,8 @@ export const ManagerRoom = () => {
       render: (_: any, item: any) => {
         return (
           <>
-            
-              <div>
+
+            <div>
               {hasAddUserPermission("delete room") && (
                 <Popconfirm
                   title="Xóa sản phẩm"
@@ -103,59 +96,51 @@ export const ManagerRoom = () => {
                 >
                   <Button danger>Xóa</Button>
                 </Popconfirm>
-                  )}
-                   {hasAddUserPermission("update room") && (
-                    <Link className="mx-2 px-4 py-1 border border-blue-700 rounded" to={`/admin/updateroom/${item.id}`}>Sửa</Link>
-                   )}
-              </div>
-         
+              )}
+              {hasAddUserPermission("update room") && (
+                <Link className="mx-2 px-4 py-1 border border-blue-700 rounded" to={`/admin/updateroom/${item.id}`}>Sửa</Link>
+              )}
+            </div>
+
           </>
         )
       }
     }
   ];
-  const [data, setData] = useState<DataType[]>([]);
-  // useEffect(() => {
-  //   if (roomData) {
-  //     const formattedData: DataType[] = roomData.map((item: any) => ({
-  //       key: item.id,
-  //       name: item.name,
-  //       name_category: item.name_category,
-  //       name_hotel: item.name_hotel,
-  //       status: item.status,
-  //     }));
-  //     setData(formattedData);
-  //   }
-  // }, [roomData]);
-
-  useEffect(() => {
-    if (roomData) {
-      const startIndex = (currentPage - 1) * pageSize;
-      const endIndex = startIndex + pageSize;
-
-      const currentData = roomData.slice(startIndex, endIndex);
-
-      setData(currentData);
-    }
-  }, [roomData, currentPage, pageSize]);
 
   const [searchText, setSearchText] = useState("");
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
-
-  const filteredData = data ? data
+  const filteredData = roomData ? roomData
     .filter((item: DataType) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
     )
     .filter((item: DataType) =>
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
-    if (isLoading) {
-      return <Skeleton active/>;
-    }
-    if (isError) {
-      return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
-    }
+
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 20,
+  });
+
+  const handlePageChange = (page: number) => {
+    setPagination({ ...pagination, current: page });
+  };
+
+  const paginatedData = filteredData.slice(
+    (pagination.current - 1) * pagination.pageSize,
+    pagination.current * pagination.pageSize
+  );
+  useEffect(() => {
+    setPagination({ ...pagination, current: 1 });
+  }, [searchText, selectedStatus]);
+  if (isLoading) {
+    return <Skeleton active />;
+  }
+  if (isError) {
+    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
   return (
     <div>
       <div
@@ -166,9 +151,11 @@ export const ManagerRoom = () => {
           marginBottom: "16px",
         }}
       >
-        <div className="text-lg font-semibold">Quản Lý Phòng</div>
+        <div className="text-lg font-bold text-orange-500">Quản Lý Phòng</div>
         <div className='flex items-center'>
-          <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
+          <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => {
+            setSearchText(value)
+          }} />
           <Select
             showSearch
             style={{ width: 200 }}
@@ -184,17 +171,18 @@ export const ManagerRoom = () => {
                 label: "Tất cả",
               },
               {
+                value: 0,
+                label: "Ngừng hoạt động",
+              },
+              {
                 value: 1,
-                label: "Đã ẩn",
+                label: "Đang sử dụng",
               },
               {
                 value: 2,
-                label: "Hoạt động",
+                label: "Trống",
               },
-              {
-                value: 0,
-                label: "Đang chờ",
-              },
+              
             ]}
             onChange={(value) => {
               if (value === "all") {
@@ -206,8 +194,8 @@ export const ManagerRoom = () => {
           />
         </div>
         {hasAddUserPermission("add room") && (
-          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={()=>navigate(`/admin/addroom`)}>
-            Thêm phòng
+          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center" onClick={() => navigate(`/admin/addroom`)}>
+            <IoAddCircleOutline  className="text-xl" />
           </button>
         )}
       </div>
@@ -217,19 +205,72 @@ export const ManagerRoom = () => {
         }}
         value={selectionType}
       ></Radio.Group>
-
       <Divider />
-      <Table
+      {/* <Table
         columns={columns}
         dataSource={filteredData}
         pagination={false}
-      />
+      /> */}
+      <div className="grid grid-cols-5 gap-3">
+        {paginatedData?.map((item: any, index: any) => (
+          <React.Fragment key={index}>
+            <div
+              className={`px-3 pt-3 pb-5 rounded-md border shadow-lg cursor-pointer hover:shadow-xl transition duration-300 ease-in-out h-[150px] 
+                ${item.status === 1
+                  ? 'bg-orange-600 text-white border border-black'
+                  : item.status === 0
+                    ? 'bg-red-500 text-white cursor-not-allowed '
+                    // : selectedRoom && selectedRoom.id === item.id 
+                    // ? 'bg-blue-700 cursor-pointer border-2 border-blue-700 '
+                    : 'bg-green-700 cursor-pointer'
+                  }
+              `}
+              onClick={() => navigate(`/admin/updateroom/${item.id}`)}
+            >
+              <h2 className="font-bold text-2xl text-center text-white">{item?.name}</h2>
+              <p className='text-md py-2'>Loại phòng: <span className='font-bold'>{item?.name_category}</span></p>
+              <p className='text-md'>Tình trạng: <span className='font-bold'>{item?.status === 2 ? 'Trống ' : item?.status === 1 ? 'Đang sử dụng' : item?.status === 0 ? 'Ngừng hoạt động': ''}</span></p>
+
+              {/* {selectedRoom && selectedRoom.id === item.id && (
+                <div className="flex justify-center items-center mt-3">
+                  {hasAddUserPermission("delete room") && (
+                    <Popconfirm
+                      title="Xóa sản phẩm"
+                      description="Bạn có muốn xóa không??"
+                      onConfirm={() => {
+                        removeRoom(selectedRoom.id).unwrap().then(() => {
+                          message.success("Xóa thành công");
+                          setSelectedRoom(null); // Clear the selected room after deletion
+                        })
+                      }}
+                      okText="Có"
+                      cancelText="Không"
+                    >
+                      <button
+                        className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
+                      >
+                        Xóa
+                      </button>
+                    </Popconfirm>
+                  )}
+                  {hasAddUserPermission("update room") && (
+                    <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={() => navigate(`/admin/updateroom/${selectedRoom.id}`)}>
+                      Sửa
+                    </button>
+                  )}
+                </div>
+              )} */}
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+
+
       <Pagination
-        current={currentPage}
-        total={roomData?.length}
-        pageSize={pageSize}
+        current={pagination.current}
+        pageSize={pagination.pageSize}
+        total={filteredData?.length}
         onChange={handlePageChange}
-        showSizeChanger={false}
         style={{ textAlign: "right", marginTop: "30px" }}
       />
     </div>

@@ -4,20 +4,27 @@ import {
   Select,
   Button,
   message,
+  Popconfirm,
 } from "antd";
 const { Option } = Select;
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useGetCategory_adminQuery } from "@/api/admin/category_admin";
-import { useGetRoom_AdminByIdQuery, useUpdateRoom_AdminMutation } from "@/api/admin/room_admin";
+import { useGetRoom_AdminByIdQuery, useRemoveRoom_AdminMutation, useUpdateRoom_AdminMutation } from "@/api/admin/room_admin";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { FiTool } from "react-icons/fi";
 const UpdateRoomPage = () => {
   const { data: RoomCategories } = useGetCategory_adminQuery()
+
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>()
   const { data, isLoading, isError } = useGetRoom_AdminByIdQuery(id)
+
   const roomData = data?.[0]
 
   const [updateRoom] = useUpdateRoom_AdminMutation();
+  const [removeRoom] = useRemoveRoom_AdminMutation();
+
   const onFinish = (values: any) => {
     console.log("Form values:", values);
     updateRoom({ ...values, id }).unwrap().then(() => {
@@ -35,11 +42,31 @@ const UpdateRoomPage = () => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <div className="text-xl font-semibold">Cập Nhật Phòng: <span className="text-3xl text-blue-800">{data.name}</span></div>
+        <div className="text-lg text-orange-500 font-bold">Cập Nhật Phòng: <span className="text-xl text-orange-800">{roomData?.name}</span></div>
 
-        <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={() => navigate(`/admin/managerroom`)}>
-          <ArrowLeftOutlined className="mr-2" /> Quay lại
-        </button>
+        <div className="flex items-center  space-x-2">
+          <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={() => navigate(`/admin/managerroom`)}>
+            <ArrowLeftOutlined className="mr-2" /> Quay lại
+          </button>
+          <Popconfirm
+            title="Xóa phòng"
+            description="Bạn có muốn xóa không??"
+            onConfirm={() => {
+              removeRoom(id || "")?.unwrap().then(() => {
+                message.success("Xóa thành công");
+                navigate("/admin/managerroom");
+              });
+            }}
+            okText="Có"
+            cancelText="Không"
+          >
+            <button
+              className=' px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md flex items-center '>
+              <FaRegTrashAlt className="mr-2"/> Xoá phòng
+            </button>
+          </Popconfirm>
+        </div>
+
       </div>
 
       <Form
@@ -68,24 +95,27 @@ const UpdateRoomPage = () => {
           <div className="w-1/2 bg-white pr-2">
             <Form.Item label="Trạng Thái" name="status" rules={[{ required: true, message: 'Hãy chọn trạng thái ' }]}>
               <Select placeholder="Chọn trạng thái">
-                <Select.Option value={1}>Đã ẩn</Select.Option>
-                <Select.Option value={0}>Đang chờ</Select.Option>
-                <Select.Option value={2}>Hoạt động</Select.Option>
+                <Select.Option value={0}>Ngừng hoạt động</Select.Option>
+                <Select.Option value={1}>Đang sử dụng</Select.Option>
+                <Select.Option value={2}>Trống</Select.Option>
               </Select>
             </Form.Item>
           </div>
         </div>
 
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="bg-blue-600 text-white rounded-md"
-          >
-            Cập Nhật Phòng
-          </Button>
-        </Form.Item>
+        <div className="flex items-center">
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="bg-blue-600 text-white rounded-md "
+            >
+              <div className="flex items-center">Cập nhật phòng <FiTool className="ml-2" /></div>
+            </Button>
+          </Form.Item>
+        </div>
       </Form>
+
     </div>
   );
 };

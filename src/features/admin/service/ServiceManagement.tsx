@@ -14,6 +14,9 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
+import { AiOutlineTool } from "react-icons/ai";
+import { BiTrash } from "react-icons/bi";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 
@@ -101,7 +104,7 @@ export const ServiceManagement = () => {
 
             <div className="flex items-center">
               {hasAddUserPermission("update service") && (
-                <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={() => navigate(`/admin/updateservice/${item.id}`)}>Sửa</button>
+                <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md" onClick={() => navigate(`/admin/updateservice/${item.id}`)}><AiOutlineTool className="text-lg" /></button>
               )}
               {hasAddUserPermission("delete service") && (
                 <Popconfirm
@@ -115,7 +118,7 @@ export const ServiceManagement = () => {
                   okText="Có"
                   cancelText="Không"
                 >
-                  <button className="mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" >Xóa</button>
+                  <button className="mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" ><BiTrash className="text-lg" /></button>
                 </Popconfirm>
               )}
 
@@ -182,7 +185,7 @@ export const ServiceManagement = () => {
           marginBottom: "16px",
         }}
       >
-        <div className="text-lg font-semibold">Quản Lý Dịch Vụ</div>
+        <div className="text-lg font-bold text-orange-500">Quản Lý Dịch Vụ</div>
         <div className='flex items-center'>
           <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => setSearchText(value)} />
           <Select
@@ -222,8 +225,8 @@ export const ServiceManagement = () => {
           />
         </div>
         {hasAddUserPermission("add service") && (
-          <button className="ml-2 px-2 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={() => navigate(`/admin/addservice`)}>
-            Thêm dịch vụ
+          <button className="ml-2 px-3 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={() => navigate(`/admin/addservice`)}>
+            <IoAddCircleOutline className="text-xl" />
           </button>
         )}
       </div>

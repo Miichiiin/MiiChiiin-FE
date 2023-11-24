@@ -268,7 +268,7 @@ const AddBooking = () => {
       message.success('Thêm thành công');
       setTimeout(() => {
         navigate(`/admin/detailbooking/${bookingId}`);
-      }, 3000);
+      }, 2000);
     });
   };
 
@@ -288,7 +288,7 @@ const AddBooking = () => {
 
     <div className="mx-auto overflow-auto scroll-smooth">
       <header className='flex justify-between items-center mb-3'>
-        <h1 className='text-2xl font-bold pb-5'>Thêm Booking mới </h1>
+        <h1 className='text-xl text-orange-500 font-bold pb-5'>Thêm Booking mới </h1>
         <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
           <ArrowLeftOutlined className="pr-2" /> Quay lại
         </button>
@@ -613,8 +613,8 @@ const AddBooking = () => {
           </div>
         </div>
         <div>
-          <Form.Item label="Tổng thanh toán" name="total_amount" className='ml-16  '>
-            <InputNumber value={totalAmount} disabled className="text-black text-lg font-semibold" />
+          <Form.Item label="Tổng thanh toán" name="total_amount" className='ml-16 ' >
+            <InputNumber value={totalAmount} disabled className="text-black text-lg font-semibold w-[125px] px-4" />
           </Form.Item>
           <Form.Item >
             <div className="flex justify-start items-center space-x-4">
