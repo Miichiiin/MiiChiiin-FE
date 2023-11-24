@@ -202,7 +202,8 @@ export const ManagerRoomType = () => {
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="Search to Select"
+            placeholder="Lọc"
+defaultValue="all"
             optionFilterProp="children"
             filterOption={(input, option) => (option?.label ?? "").includes(input)}
             filterSort={(optionA, optionB) =>

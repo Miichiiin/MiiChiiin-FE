@@ -76,7 +76,7 @@ const IndexPremission = () => {
     {
       title: 'Action',
       key: 'action',
-      render: (text: any, item: any) => (
+      render: (_: any, item: any) => (
         <div className='flex items-center'>
           {
             hasAddUserPermission('add permission') && (

@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { AiFillSignal, AiOutlineCreditCard } from "react-icons/ai";
 import { BiSolidBed, BiHotel } from "react-icons/bi";
-import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { HeaderAdmin } from "./Header";
 import { Link, Outlet } from "react-router-dom";
@@ -13,19 +12,22 @@ import { TbBrandBooking } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
 import { FaHotel } from "react-icons/fa";
 const { Content, Footer, Sider } = Layout;
-type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
+  content?: string,
+  url?: string,
+  children?: string
+) {
   return {
     key,
     icon,
+    content,
     children,
     label,
-  } as MenuItem;
+    url
+  }
 }
 
 export const LayoutAdmin = () => {
@@ -36,7 +38,9 @@ export const LayoutAdmin = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const userAdminLocal = localStorage.getItem('userAdmin')
+  
   let imageLC = ""
+  
   if (userAdminLocal) {
     const data = JSON.parse(userAdminLocal);
     imageLC = data.image;
@@ -52,7 +56,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"statisticshotels"}>Thống kê theo chuỗi</Link>,
           "1",
-          <AiFillSignal />
+          <AiFillSignal />,
+          "Thống kê theo chuỗi",
+          "statisticshotels"
         )
       );
     }
@@ -62,7 +68,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>,
           "2",
-          <BiSolidBed />
+          <BiSolidBed />,
+          "Quản Lý Loại Phòng",
+          "manageroomtype"
         )
       );
     }
@@ -72,7 +80,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"managervouchers"}>Quản lý Vouchers</Link>,
           "3",
-          <AiOutlineCreditCard />
+          <AiOutlineCreditCard />,
+          "Quản lý Vouchers",
+          "managervouchers"
         )
       );
     }
@@ -82,7 +92,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"manageremployee"}>Quản lý Nhân Viên</Link>,
           "4",
-          <UserOutlined />
+          <UserOutlined />,
+          "Quản lý Nhân Viên",
+          "manageremployee"
         )
       );
     }
@@ -92,7 +104,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"managerroom"}>Quản lý Phòng</Link>,
           "5",
-          <BiHotel />
+          <BiHotel />,
+          "Quản lý Phòng",
+          "managerroom"
         )
       );
     }
@@ -102,7 +116,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
           "6",
-          <UserOutlined />
+          <UserOutlined />,
+          "Quản lý tiện ích",
+          "managerUtilities"
         )
       );
     }
@@ -112,7 +128,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"commentmanagement"}>Quản lý comment</Link>,
           "7",
-          <BiCommentDetail />
+          <BiCommentDetail />,
+          "Quản lý comment",
+          "commentmanagement"
         )
       );
     }
@@ -122,7 +140,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"service"}>Quản lý dịch vụ</Link>,
           "8",
-          <MdMedicalServices />
+          <MdMedicalServices />,
+          "Quản lý dịch vụ",
+          "service"
         )
       );
     }
@@ -132,7 +152,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>,
           "9",
-          <TbBrandBooking />
+          <TbBrandBooking />,
+          "Quản lý đặt phòng",
+          "bookingmanagement"
         )
       );
     }
@@ -142,7 +164,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"usermanagement"}>Quản lý khách hàng</Link>,
           "10",
-          <AiOutlineUser />
+          <AiOutlineUser />,
+          "Quản lý khách hàng",
+          "usermanagement"
         )
       );
     }
@@ -152,7 +176,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"hotelmanagement"}>Quản lý khách sạn</Link>,
           "11",
-          <FaHotel />
+          <FaHotel />,
+          "Quản lý khách sạn",
+          "hotelmanagement"
         )
       );
     }
@@ -162,7 +188,9 @@ export const LayoutAdmin = () => {
         getItem(
           <Link to={"indexPermission"}>Quản lý quyền</Link>,
           "12",
-          <FaHotel />
+          <FaHotel />,
+          "Quản lý quyền",
+          "indexPermission"
         )
       );
     }
@@ -177,19 +205,20 @@ export const LayoutAdmin = () => {
     // Tạo mảng Breadcrumb bằng cách duyệt qua từng đoạn đường dẫn
     return pathSnippets.map((path, index) => {
       // tạo url
-      const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+      const url = `${pathSnippets.slice(0, index + 1).join('/')}`;
       // Tìm mục trong menu có đường dẫn trùng với URL đã tạo
-      const menuItem = menuItems.find((item: any) => item.path === url);
-      // Định dạng lại đoạn đường dẫn: nếu là đoạn đầu tiên, viết hoa chữ cái đầu và chuyển phần còn lại thành chữ thường
       const formattedPath =
-        index === 0 ? path.charAt(0).toUpperCase() + path.slice(1).toLowerCase() : path;
+      index === 0 ? path.charAt(0).toUpperCase() + path.slice(1).toLowerCase() : path;
+
+      const menuItem = menuItems.find((item: any) => item.url === formattedPath);   
       return (
         <Breadcrumb.Item key={url}>
-          {menuItem ? <Link to={url}>{formattedPath}</Link> : <span>{formattedPath}</span>}
+          {menuItem ? <span >{menuItem?.content}</span> : <span> {formattedPath}</span>}
         </Breadcrumb.Item>
       );
     });
   };
+
 
   useEffect(() => {
     if (!localStorage.getItem('tokenAdmin'))
@@ -203,7 +232,7 @@ export const LayoutAdmin = () => {
           <div className="my-8 flex justify-center items-center cursor-pointer">
             <img
               src={
-                '../public/icon.png'
+                'https://res.cloudinary.com/chuoi2taps/image/upload/v1700834002/icon_r97yb5.png'
               }
               alt="Logo"
               className="w-[50px]"
@@ -219,7 +248,7 @@ export const LayoutAdmin = () => {
       return (
         <>
           <div className="flex items-center justify-center my-3 cursor-pointer" onClick={() => navigate("/admin")}>
-            <img src={'../public/icon.png'}
+            <img src={'https://res.cloudinary.com/chuoi2taps/image/upload/v1700834002/icon_r97yb5.png'}
               alt="Logo"
               className="w-[50px]" />
             <h1 className="text-center text-lg text-orange-100 italic font-semibold ">
