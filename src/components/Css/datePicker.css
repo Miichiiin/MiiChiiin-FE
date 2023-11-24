@@ -59,7 +59,30 @@
  .box {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
  }
-
+ .dropdown-container {
+    position: relative;
+  }
+  
+  .toggle-button {
+    /* CSS cho nút toggle */
+  }
+  
+  .dropdown-content {
+    position: absolute;
+    top: 0;
+    right: -100%; /* Đặt right thành -100% để ẩn dropdown bên phải */
+    width: 200px; /* Độ rộng của dropdown */
+    background-color: #fff; /* Màu nền của dropdown */
+    padding: 10px;
+    transition: right 0.3s ease-in-out; /* Hiệu ứng chuyển động */
+  }
+  
+  .dropdown-container:hover .dropdown-content {
+    right: 0; /* Khi hover lên dropdown-container, hiển thị dropdown bên phải */
+  }
+  .slick-slide .hay {
+    height: 450px;
+  }
 
 
 
