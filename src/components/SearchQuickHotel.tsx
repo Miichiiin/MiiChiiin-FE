@@ -1,39 +1,61 @@
-import { useState, useEffect, useRef } from 'react';
-import {Form, DatePicker } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from "react";
+import { Form, DatePicker } from "antd";
+import { useNavigate } from "react-router-dom";
 import {
   AiOutlineEnvironment,
   AiOutlineIdcard,
   AiOutlineMinus,
   AiOutlinePlus,
-  AiOutlineUser,AiOutlineCalendar
-} from 'react-icons/ai';
-import { isYesterday } from 'date-fns';
-import { useGetHotel_homesQuery } from '@/api/webapp/hotel_home';
-import '../components/Css/index.css'
+  AiOutlineUser,
+  AiOutlineCalendar,
+} from "react-icons/ai";
+import { isYesterday } from "date-fns";
+import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
+import "../components/Css/index.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const { RangePicker } = DatePicker;
 
-
 export const SearchQuickHotel = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedHotel, setSelectedHotel] = useState('');
+  const [selectedHotel, setSelectedHotel] = useState("");
   const [divClicked, setDivClicked] = useState(false);
   // const [hotelsData, setHotelsData] = useState([]);
-  const {data: hotelsData} = useGetHotel_homesQuery()
-  
+  const { data: hotelsData } = useGetHotel_homesQuery();
+
   // const dispatch = useAppDispatch();
-  const [selectedRange, setSelectedRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [selectedRange, setSelectedRange] = useState<
+    [Date | null, Date | null]
+  >([null, null]);
   const navigate = useNavigate();
 
-  const onHandSubmit = () => {
-    const roomDetailsString = roomDetails1?.map((details) => {
-      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
-    }).join('&');
+  const [isInputEmpty, setIsInputEmpty] = useState(false);
 
-    const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
-    navigate(url);
-  }
+  const onHandSubmit = () => {
+    // Kiểm tra xem selectedHotel đã được chọn hay không
+    if (!selectedHotel) {
+      setIsInputEmpty(true);
+      toast.error("Vui lòng chọn khách sạn.");
+      return; // Dừng hàm nếu trường selectedHotel trống
+    }
+
+    // Kiểm tra xem selectedRange có giá trị hợp lệ không
+    if (!selectedRange || selectedRange.some((date) => date === null)) {
+      toast.error("Vui lòng chọn khoảng thời gian hợp lệ.");
+      return; // Dừng hàm nếu một trong các giá trị của selectedRange là null
+    }
+
+    // Nếu mọi thứ đều hợp lệ, tiến hành chuyển hướng
+    const roomDetailsString = roomDetails1
+      .map((details) => {
+        return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+      })
+      .join("&");
+
+    const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`;
+    navigate(url); // Chắc chắn rằng bạn có hàm navigate được định nghĩa đúng
+  };
 
   type FieldType = {
     nameHotel?: string;
@@ -77,18 +99,6 @@ export const SearchQuickHotel = () => {
     };
   }, [divClicked]);
 
-  // Sử dụng useEffect để gọi API khi component được mount
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:3000/hotel_home") // Thay đổi đường dẫn dựa vào cấu hình của bạn
-  //     .then((response) => {
-  //       setHotelsData(response.data); // Lưu dữ liệu từ API vào state
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching hotels data:", error);
-  //     });
-  // }, []);
-  //chọn ngày đặt
   const handleRangeChange = (dates: any) => {
     const selectedStartDate = dates[0]?.toDate() || null;
     const selectedEndDate = dates[1]?.toDate() || null;
@@ -135,8 +145,6 @@ export const SearchQuickHotel = () => {
     };
   }, [divClicked1]);
   //
-
-
 
   /*Tăng số lượng phòng*/
   interface RoomDetail {
@@ -210,10 +218,13 @@ export const SearchQuickHotel = () => {
           <Form.Item<FieldType>
             name="nameHotel"
             className="flex-grow"
-          // rules={[{ required: true, message: 'Please input your username!' }]}
+            // rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <div ref={refCalen} onClick={handleDivClick}>
-              <div onClick={toggleDropdown} className="relative cursor-pointer group">
+              <div
+                onClick={toggleDropdown}
+                className="relative cursor-pointer group"
+              >
                 <div
                   className="border rounded border-[#e0e0e0] xl:w-[370px] xl:h-[57px] xl:pl-[55px] 
                         lg:w-[200px] lg:h-[55px] xl:text-[16px] lg:text-[11px] lg:pl-[40px] 
@@ -222,8 +233,12 @@ export const SearchQuickHotel = () => {
                   <span className="text-gray-700 absolute top-6 font-medium">
                     {selectedHotel || "Bạn nhập nơi muốn đến..."}
                   </span>
-                  <span className='pt-2 pt-1 text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Khách sạn - Điểm đến</span>
+                  <span className="pt-2 pt-1 text-sm font-medium text-gray-500 group-hover:text-[#e8952f]">
+                    Khách sạn - Điểm đến
+                  </span>
                 </div>
+                <ToastContainer />
+
                 <span className="text-gray-700 absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4 group-hover:text-[#e8952f]">
                   <AiOutlineEnvironment />
                 </span>
@@ -239,7 +254,10 @@ export const SearchQuickHotel = () => {
                         </span>
                         <button
                           className="text-[12px] hover:text-[#f2ba50]"
-                          onClick={() => { handleHotelSelect([hotel.id, hotel.name]) }}>
+                          onClick={() => {
+                            handleHotelSelect([hotel.id, hotel.name]);
+                          }}
+                        >
                           {hotel.name}
                         </button>
                       </div>
@@ -251,7 +269,7 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 group">
-            <AiOutlineCalendar class="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]"/>
+            <AiOutlineCalendar class="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
             <RangePicker
               className="w-[280px] text-[16px] h-[57px] border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               format="DD/MM/YYYY"
@@ -259,36 +277,60 @@ export const SearchQuickHotel = () => {
               onChange={handleRangeChange}
               disabledDate={(current) => {
                 // Vô hiệu hóa các ngày hôm trước
-                return current && current.isBefore(new Date(), 'day');
+                return current && current.isBefore(new Date(), "day");
               }}
-              popupStyle={{ overflow: 'hidden' }}
-              style={{ color: 'red', fontWeight: 'bold', paddingTop:"20px", paddingLeft:"45px"}}
+              popupStyle={{ overflow: "hidden" }}
+              style={{
+                color: "red",
+                fontWeight: "bold",
+                paddingTop: "20px",
+                paddingLeft: "45px",
+              }}
             />
-            <span className='absolute flex top-1 start-11 font-medium text-sm text-gray-500 group-hover:text-[#e8952f] '>Ngày nhận - Ngày trả</span>
+            <span className="absolute flex top-1 start-11 font-medium text-sm text-gray-500 group-hover:text-[#e8952f] ">
+              Ngày nhận - Ngày trả
+            </span>
           </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
-            <button className='w-[310px]' >
-              <div className="group flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all 
-                duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md " 
+            <button className="w-[310px]">
+              <div
+                className="group flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all 
+                duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               >
                 <span className="xl:text-[22px] lg:text-[19px] mr-4 group-hover:text-[#e8952f] text-gray-700">
                   <AiOutlineUser />
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
                   <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 font-bold sm:space-x-2 font-semibold ">
-                    <label htmlFor="" className='cursor-pointer group-hover:text-[#e8952f] ml-[-35px] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Số phòng - Số người</label>
+                    <label
+                      htmlFor=""
+                      className="cursor-pointer group-hover:text-[#e8952f] ml-[-35px] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]"
+                    >
+                      Số phòng - Số người
+                    </label>
                     {/* <label htmlFor="" className='cursor-pointer pl-[20px] group-hover:text-[#e8952f] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Số người </label> */}
                   </div>
                   <div
                     onClick={toggleDropdown1}
                     className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46] w-[320px] cursor-pointer "
                   >
-                    <label htmlFor="" className='cursor-pointer '>{numberOfRooms1} phòng </label>
-                    <label htmlFor="" className=' cursor-pointer text-gray-700 font-semibold'>
-                      {roomDetails1.reduce((total, room) => total + room.adults, 0)}{" "}
-                      người lớn - {" "}
-                      {roomDetails1.reduce((total, room) => total + room.children, 0)}{" "}
+                    <label htmlFor="" className="cursor-pointer ">
+                      {numberOfRooms1} phòng{" "}
+                    </label>
+                    <label
+                      htmlFor=""
+                      className=" cursor-pointer text-gray-700 font-semibold"
+                    >
+                      {roomDetails1.reduce(
+                        (total, room) => total + room.adults,
+                        0
+                      )}{" "}
+                      người lớn -{" "}
+                      {roomDetails1.reduce(
+                        (total, room) => total + room.children,
+                        0
+                      )}{" "}
                       trẻ em
                     </label>
                   </div>
@@ -297,7 +339,9 @@ export const SearchQuickHotel = () => {
                   {isDropdownOpen1 && (
                     <div className="absolute mt-1 lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 hover:block rounded-md">
                       <div className="flex items-center justify-between cursor-pointer text-[15px]">
-                        <span className="font-medium text-gray-700 font-bold">Số phòng</span>
+                        <span className="font-medium text-gray-700 font-bold">
+                          Số phòng
+                        </span>
                         <div className="flex items-center space-x-4">
                           {numberOfRooms1 > 1 && (
                             <button
@@ -309,7 +353,9 @@ export const SearchQuickHotel = () => {
                               <AiOutlineMinus />
                             </button>
                           )}
-                          <a className='text-gray-600 font-medium' href="">{numberOfRooms1}</a>
+                          <a className="text-gray-600 font-medium" href="">
+                            {numberOfRooms1}
+                          </a>
                           <button
                             onClick={() =>
                               handleRoomChange1(numberOfRooms1 + 1)
@@ -322,10 +368,11 @@ export const SearchQuickHotel = () => {
                       </div>
                       <hr className="text-gray-600 mt-3" />
                       <div
-                        className={`max-h-[230px] w-auto  ${shouldShowScroll
-                          ? "overflow-y-scroll overflow-hidden"
-                          : ""
-                          }`}
+                        className={`max-h-[230px] w-auto  ${
+                          shouldShowScroll
+                            ? "overflow-y-scroll overflow-hidden"
+                            : ""
+                        }`}
                       >
                         {roomDetails1?.map((room, index) => (
                           <div key={index} className="mt-3 ">
@@ -355,7 +402,6 @@ export const SearchQuickHotel = () => {
                                   >
                                     <AiOutlinePlus />
                                   </button>
-
                                 </div>
                               </span>
                               <span>
@@ -386,7 +432,6 @@ export const SearchQuickHotel = () => {
                                   >
                                     <AiOutlinePlus />
                                   </button>
-
                                 </div>
                               </span>
                               <span>
@@ -406,7 +451,7 @@ export const SearchQuickHotel = () => {
                                     <AiOutlineMinus />
                                   </button>
                                   <a href="">{room.infants}</a>
-                                  <button 
+                                  <button
                                     onClick={() =>
                                       handleInfantChange1(
                                         index,
@@ -417,7 +462,6 @@ export const SearchQuickHotel = () => {
                                   >
                                     <AiOutlinePlus />
                                   </button>
-
                                 </div>
                               </span>
                             </div>
