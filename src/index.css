@@ -2,7 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 .main-title {
     @apply text-green-500;
 }
 
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.5s ease-in-out;
+}
+.after-3 {
+    @apply cursor-pointer py-1  relative after:absolute
+    after:bottom-2 after:left-0 after:bg-white after:h-0.5 after:w-0 hover:after:w-full after:transition-all
+    after:ease-in-out after:duration-300;
+}
+.after-4 {
+    @apply cursor-pointer py-1  relative after:absolute
+    after:bottom-2 after:left-0 after:bg-[#e8952f] after:h-0.5 after:w-0 hover:after:w-full after:transition-all
+    after:ease-in-out after:duration-300;
+}
