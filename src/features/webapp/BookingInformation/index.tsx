@@ -774,7 +774,7 @@ const BookingInformation = () => {
                         </p>
                         <ul className="list-disc px-3">
                           {selectedServicesInRoom?.map((selectedService) => {
-                            const { id, price, roomIndex } = selectedService;
+                            const { id, roomIndex } = selectedService;
                             const selectedRoom = roomIndex + 1;
                             const selectedServiceData =
                               serviceData &&

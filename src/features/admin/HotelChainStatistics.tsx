@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   LineChart,
   Line,
@@ -15,7 +15,6 @@ import {
 import { useGetHotelChainStatisticsQuery } from "@/api/admin/HotelChainStatistics";
 import { useGetHotelChainStatisticsvQuery } from "@/api/admin/HotelChainStatisticsSv";
 import { useGetHotelChainStatisticRtQuery } from "@/api/admin/HotelChainStatistics_Roomtype";
-import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 
 const HotelChainStatistic = () => {
   // Thêm dữ liệu cho các khách sạn và tháng/năm khác theo nhu cầu của bạn
@@ -27,8 +26,6 @@ const HotelChainStatistic = () => {
     year: selectedYear,
   });
 
-
-  const [filteredData1, setFilteredData1] = useState<any>([]);
 
   const [chartMode, setChartMode] = useState("revenue");
 
