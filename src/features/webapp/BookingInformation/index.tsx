@@ -2,7 +2,12 @@ import {
   AiOutlineLeft,
   AiOutlineCheck,
   AiOutlineArrowRight,
-  AiOutlineHome,AiOutlineCalendar,AiOutlineSchedule,AiOutlineTeam,AiOutlineForm,AiOutlineGift
+  AiOutlineHome,
+  AiOutlineCalendar,
+  AiOutlineSchedule,
+  AiOutlineTeam,
+  AiOutlineForm,
+  AiOutlineGift,
 } from "react-icons/ai";
 import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
@@ -15,7 +20,6 @@ import { useAddBookingUserMutation } from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
 import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
-
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
@@ -55,25 +59,26 @@ const BookingInformation = () => {
     selectedServices = JSON.parse(dataParam.selectedServices);
   }
 
-  let roomDetailsString:any = []
-  if(dataParam && dataParam?.people){
-    roomDetailsString = JSON.stringify(dataParam?.people).split("&").map((item:any )=> item.replace(/^"|"$/g, ''))
+  let roomDetailsString: any = [];
+  if (dataParam && dataParam?.people) {
+    roomDetailsString = JSON.stringify(dataParam?.people)
+      .split("&")
+      .map((item: any) => item.replace(/^"|"$/g, ""));
   }
   const NumberPeople: { [key: string]: number }[] = [];
 
-  roomDetailsString.forEach((item:any) => {
+  roomDetailsString.forEach((item: any) => {
     const obj: { [key: string]: number } = {};
-    const keyValuePairs: string[] = item.split(',');
-  
-    keyValuePairs.forEach(pair => {
-      const [key, value]: string[] = pair.split(':');
+    const keyValuePairs: string[] = item.split(",");
+
+    keyValuePairs.forEach((pair) => {
+      const [key, value]: string[] = pair.split(":");
       obj[key] = parseInt(value);
     });
-  
+
     NumberPeople.push(obj);
   });
-  console.log(" dataParam?.people", dataParam?.people);
-  
+
   //Tính số người
   // Tách chuỗi thành các phần tử riêng biệt
   const individuals: any = dataParam?.people && dataParam.people.split("&");
@@ -127,7 +132,6 @@ const BookingInformation = () => {
 
   const sumprice = totalPrice1 + serviceTotalPrice;
 
-
   const {
     register,
     handleSubmit,
@@ -154,6 +158,21 @@ const BookingInformation = () => {
     };
   });
 
+  const validateEmail = (email: any) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: any) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const validateID = (id: any) => {
+    const idRegex = /^\d{9}$/;
+    return idRegex.test(id);
+  };
+
   const onSubmit = (data: any) => {
     const dataBooking = {
       check_in: date[0].toISOString().slice(0, 10),
@@ -163,7 +182,7 @@ const BookingInformation = () => {
       name: data.firstName + data.lastName,
       message: "...",
       people_quantity: totalChildren + totalAdults,
-      total_amount: priceAfterVoucher,      
+      total_amount: priceAfterVoucher,
       cccd: data.id,
       nationality: data.country,
       phone: data.phone,
@@ -264,27 +283,34 @@ const BookingInformation = () => {
   }, []);
 
   const handGoBack = () => {
-    window.history.back()
-  }
+    window.history.back();
+  };
 
-  
-  const priceAfterVoucher = sumprice - (sumprice * (appliedVoucher?.discount || 0) / 100);
+  const priceAfterVoucher =
+    sumprice - (sumprice * (appliedVoucher?.discount || 0)) / 100;
 
   return (
     <div>
-      <HeaderHotelType /><br /><br /><br />
+      <HeaderHotelType />
+      <br />
+      <br />
+      <br />
       <div className="">
         <div className="flex items-center w-[1280px] mx-auto mt-[60px] ">
           <span className="flex items-center mr-[300px] space-x-3 text-blue-500 font-medium">
             <AiOutlineLeft />
-            <button onClick={() => handGoBack()} className="">Chọn phòng</button>
+            <button onClick={() => handGoBack()} className="">
+              Chọn phòng
+            </button>
           </span>
           <div className="flex items-center space-x-8">
             <a className="flex items-center space-x-3 " href="">
-            <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">
+              <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">
                 1
               </span>
-              <span className="font-medium text-[14px] text-gray-500">Chọn phòng</span>
+              <span className="font-medium text-[14px] text-gray-500">
+                Chọn phòng
+              </span>
             </a>
             <a className="flex items-center space-x-3 text-[#e8952f]" href="">
               <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">
@@ -295,7 +321,7 @@ const BookingInformation = () => {
               </span>
             </a>
             <a className="flex items-center space-x-3 text-[#e8952f]" href="">
-            <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
+              <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
                 <AiOutlineCheck />
               </span>
               <span className="text-[#e8952f] text-[14px] font-medium">
@@ -409,11 +435,15 @@ const BookingInformation = () => {
                       className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
                       type="email"
                       placeholder="Ex: abc@gmail.com"
-                      {...register("email", { required: true })}
-                      name="email"
+                      {...register("email", {
+                        required: true,
+                        validate: validateEmail,
+                      })}
                     />
                     {errors.email && (
-                      <span className="text-red-500">Vui lòng điền email</span>
+                      <span className="text-red-500">
+                        Vui lòng điền email hợp lệ
+                      </span>
                     )}
                   </div>
                   <div>
@@ -426,12 +456,14 @@ const BookingInformation = () => {
                       className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none text-black"
                       type="tel"
                       placeholder="Ex: Anh Duy"
-                      {...register("phone", { required: true })}
-                      name="phone"
+                      {...register("phone", {
+                        required: true,
+                        validate: validatePhone,
+                      })}
                     />
                     {errors.phone && (
                       <span className="text-red-500">
-                        Vui lòng điền số điện thoại
+                        Vui lòng điền số điện thoại hợp lệ
                       </span>
                     )}
                   </div>
@@ -468,11 +500,14 @@ const BookingInformation = () => {
                       className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
                       type="tel"
                       placeholder="Ex: Anh Duy"
-                      {...register("id", { required: true })}
+                      {...register("id", {
+                        required: true,
+                        validate: validateID,
+                      })}
                     />
                     {errors.id && (
                       <span className="text-red-500">
-                        Vui lòng điền căn cước công dân
+                        Vui lòng điền căn cước công dân hợp lệ
                       </span>
                     )}
                   </div>
@@ -666,19 +701,22 @@ const BookingInformation = () => {
               <div className=" mt-4">
                 <div className="flex items-center justify-between ">
                   <h2 className="text-[18px] font-medium">{hotel[1]}</h2>
-                  <a className="text-sm text-blue-500 font-medium hover:underline" href="">
+                  <a
+                    className="text-sm text-blue-500 font-medium hover:underline"
+                    href=""
+                  >
                     Chỉnh sửa
                   </a>
                 </div>
                 <div className="text-[13px] mt-2 border-b-2 pb-2">
                   <p className="text-sm pt-3 items-center flex text-gray-500 font-medium">
-                    <AiOutlineCalendar class="text-lg mr-2"/>
+                    <AiOutlineCalendar class="text-lg mr-2" />
                     {date[0].toISOString().slice(0, 10)}
                     <AiOutlineArrowRight className="inline-block mx-1 " />
                     {date[1].toISOString().slice(0, 10)}
                   </p>
                   <p className="text-sm pb-3 text-gray-500 font-medium flex items-center mt-1">
-                    <AiOutlineSchedule class="text-lg mr-2"/>
+                    <AiOutlineSchedule class="text-lg mr-2" />
                     {differenceInDays(
                       parseISO(date[1].toISOString().slice(0, 10)),
                       parseISO(date[0].toISOString().slice(0, 10))
@@ -699,22 +737,33 @@ const BookingInformation = () => {
                     <div className="flex items-center justify-between pt-5">
                       <h1 className="font-semibold">{roomNumber}</h1>
                       <button className="text-base font-semibold ">
-                        {item?.price.toLocaleString('vi-VN')} đ
+                        {item?.price.toLocaleString("vi-VN")} đ
                       </button>
                     </div>
                     <div className="border-b-2 pb-3">
                       <p className="text-sm pt-3 items-center flex text-gray-500 font-medium">
-                        <AiOutlineForm class="text-lg mr-2"/>
+                        <AiOutlineForm class="text-lg mr-2" />
                         <span className="pr-1">0{item?.count}</span>
                         {item?.name}
                       </p>
                       <span className="flex text-gray-500 mt-1">
-                        <AiOutlineTeam class="text-lg mr-2"/>
+                        <AiOutlineTeam class="text-lg mr-2" />
                         <p className="text-sm pb-3 font-medium ">
-                        {NumberPeople && NumberPeople?.filter((item:any, index1:any) => index1 == index).map(( {adults, children, infants}:any, index:any) => (
-                                  <div key={index}>Người lớn:{adults}, Trẻ em:{children}, Em bé: {infants}</div>
-                                ))}
-                          </p>
+                          {NumberPeople &&
+                            NumberPeople?.filter(
+                              (item: any, index1: any) => index1 == index
+                            ).map(
+                              (
+                                { adults, children, infants }: any,
+                                index: any
+                              ) => (
+                                <div key={index}>
+                                  Người lớn:{adults}, Trẻ em:{children}, Em bé:{" "}
+                                  {infants}
+                                </div>
+                              )
+                            )}
+                        </p>
                       </span>
                     </div>
                     {/* Dịch vụ đã chọn */}
@@ -765,7 +814,7 @@ const BookingInformation = () => {
                           </>
                         ) : (
                           <p className="text-sm pb-3 font-medium text-gray-500 flex items-center">
-                           <AiOutlineGift class="text-lg mr-2"/>
+                            <AiOutlineGift class="text-lg mr-2" />
                             Không có voucher được áp dụng
                           </p>
                         )}
@@ -777,8 +826,11 @@ const BookingInformation = () => {
               <div className=" mt-4 border-t-2 pt-4">
                 <div className="flex items-center justify-between ">
                   <h2 className="text-[17px] font-medium">Số tiền tạm tính:</h2>
-                  <a className="text-[18px] font-semibold text-[#e8952f]" href="">
-                    {sumprice.toLocaleString('vi-VN')} đ
+                  <a
+                    className="text-[18px] font-semibold text-[#e8952f]"
+                    href=""
+                  >
+                    {sumprice.toLocaleString("vi-VN")} đ
                   </a>
                 </div>
                 <div className="flex items-center justify-between mt-4">
@@ -787,16 +839,17 @@ const BookingInformation = () => {
                     Số tiền được giảm :
                   </h2>
                   <a className="text-[15px] font-medium text-red-600" href="">
-                    - { ((sumprice * appliedVoucher?.discount || 0) / 100).toLocaleString('vi-VN')}
+                    -
+                    {(
+                      (sumprice * appliedVoucher?.discount || 0) / 100
+                    ).toLocaleString("vi-VN")}
+                    đ
                   </a>
                 </div>
                 <div className="flex items-center justify-between mt-4">
-                  <h2 className="text-[18px] font-medium">
-                    {" "}
-                    Tổng cộng:
-                  </h2>
+                  <h2 className="text-[18px] font-medium"> Tổng cộng:</h2>
                   <a className="text-[18px] font-medium text-[#e8952f]" href="">
-                  {priceAfterVoucher.toLocaleString('vi-VN')} đ
+                    {priceAfterVoucher.toLocaleString("vi-VN")} đ
                   </a>
                 </div>
               </div>

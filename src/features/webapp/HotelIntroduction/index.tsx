@@ -13,25 +13,23 @@ import { TextTruncate } from "../../../components/TextTruncate";
 import HeaderHotel from "./HeaderHotel";
 import { Link, useParams } from "react-router-dom";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
-import { useGetVoucherQuery } from "@/api/admin/voucher";
-import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
+import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { useUseGetRating_hotel_homeQueryQuery } from "@/api/webapp/rate_hotel_home";
 import { SearchQuickHotel } from "@/components/SearchQuickHotel";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import { useViewDetailRoomMutation } from "@/api/bookingUser";
+import {  useGetVoucher_hotelQuery } from "@/api/webapp/voucher_home";
+import { number } from "yup";
 
 const HotelIntroduction = () => {
-  const { data: voucher } = useGetVoucherQuery();
-  const { data: service } = useGetService_hotelQuery();
   const { id: idHotel } = useParams<{ id: string }>();
+  const { data: voucher } = useGetVoucher_hotelQuery();
+  console.log("voucher",voucher);
+  const { data: service } = useGetService_hotelIdQuery(idHotel);
   const { data } = useGetCategory_homeQuery(idHotel);
-  console.log("datahai",data);
-  
   const {data: hotelData} = useGetHotel_homeByIdQuery(idHotel);
-  console.log("hotelData",hotelData);
-  
   const { data: dataRate } = useUseGetRating_hotel_homeQueryQuery(idHotel);
-  console.log("data", dataRate);
+
 
   let settings = {
     dots: false,
@@ -147,13 +145,13 @@ const HotelIntroduction = () => {
 
           <div className="mt-10 w-[1280px] mx-auto relative">
             <button
-              onClick={handlePrev}
+              onClick={handleNext}
               className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[130px] start-[-15px] transform transition-tranform hover:scale-125 duration-300 "
             >
               <AiOutlineLeft />
             </button>
             <button
-              onClick={handleNext}
+              onClick={handlePrev}
               className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute transform transition-tranform hover:scale-125 duration-300  top-[130px] end-0  "
             >
               <AiOutlineRight />
@@ -340,7 +338,7 @@ const HotelIntroduction = () => {
           <div className="mt-10">
             <Slider
               {...settings}
-              ref={sliderRef}
+              // ref={sliderRef}
               className="w-[1280px] mx-auto"
             >
               {voucher?.map((item: any) => {

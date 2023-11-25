@@ -47,7 +47,7 @@ const voucherApi = createApi({
     }),
     phatVoucher: builder.mutation({
       query: (product) => ({
-        url: `/voucher/wallet/add_voucher`,
+        url: `/wallet/add_voucher`,
         method: "POST",
         body: product,
       }),
@@ -61,6 +61,7 @@ export const {
   useGetVoucherQuery,
   useRemoveVoucherMutation,
   useUpdateVoucherMutation,
+  usePhatVoucherMutation,
 } = voucherApi;
 export const voucherReducer = voucherApi.reducer;
 export default voucherApi;

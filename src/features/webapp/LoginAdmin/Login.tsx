@@ -28,6 +28,7 @@ const LoginAdmin = () => {
       localStorage.setItem("userAdmin", JSON.stringify(loginData.admin)); 
       setTimeout(() => {
         navigate(`/admin`);
+        location.reload();
       }, 2000);
     }
     else if (isLoginError)
@@ -48,10 +49,10 @@ const LoginAdmin = () => {
         />
       </div>
       <div className="flex w-[33%]">
-          <div className="px-10">
-            <div className="flex mt-[70px] mb-10 justify-center">
-              <img className="w-[30%] h-[30%] object-cover" src="https://storage.googleapis.com/vin3sprodauth0.vin3s.vn/vinpearl_login_logo-01.png" alt="" />
-              <img className="w-[30%] h-[30%] object-cover" src="https://storage.googleapis.com/vin3sprodauth0.vin3s.vn/vinpearl_login_logo-02.png" alt="" />
+          <div className="px-10 w-[100%]">
+            <div className="flex mt-[70px] justify-center mb-[-50px]">
+              <a href="/" className="h-[150px] flex justify-center"><img className="w-[50%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png " alt="" /></a>
+              {/* <img className="w-[30%] h-[30%] object-cover" src="https://storage.googleapis.com/vin3sprodauth0.vin3s.vn/vinpearl_login_logo-02.png" alt="" /> */}
             </div>
            <div className="flex">
               <h1 className=" font-bold mb-3 text-[17px] w-[50%] border-b-[3px] border-[#e8952f] pb-2 text-center">
@@ -117,9 +118,9 @@ const LoginAdmin = () => {
                   </button>
                 </div> */}
               </div>
-              <div className="text-center">
+              {/* <div className="text-center">
                 <span className="text-[14px] ">Bạn có tài khoản chưa? <a href="" className="text-blue-600 font-medium">Đăng kí ngay</a></span>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>

@@ -120,7 +120,7 @@ const HeaderHotel = () => {
             alt=""
           />
           <div
-            className={`w-full h-[130px] z-20 text-white p-4 transition duration-300 ease-in-out ${
+            className={`w-full h-[105px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
                 ? "fixed top-0 left-0 duration-800 animate-slide-down bg-[#151b40] pl-[120px]"
                 : "duration-500 "
@@ -135,7 +135,7 @@ const HeaderHotel = () => {
               
               <div className="">
                 <div
-                  className="flex items-center mx-auto mt-6 justify-between  
+                  className="flex items-center mx-auto mt-[-20px] justify-between  
                                 lg:ml-10
                             "
                 >
@@ -163,14 +163,14 @@ const HeaderHotel = () => {
                       <a href="">Ẩm thực</a>
                     </li>
                     <li className="h-[40px] after-4 font-medium">
-                      <a href="/new">Ưu đãi</a>
+                      <a href="/promotion">Ưu đãi</a>
                     </li>
                     <li>
-                      <img className="w-[230px] ml-[-40px]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
+                      <img className="w-[80px] pb-10" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" />
                     </li>
                   </ul>
                   <div
-                      className="flex items-center justify-end space-x-2  text-white 
+                      className="flex items-center justify-end space-x-2 pt-7 text-white 
                               lg:text-[15px] "
                     >
                       {loggedIn ? (
@@ -184,6 +184,14 @@ const HeaderHotel = () => {
                                   {isDropdownOpen && (
                                   <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-30px] bg-white border border-gray-300 shadow-lg">
                                     <ul className="leading-9 text-black">
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
+                                        <AiOutlineUser class="mr-2 "/>
+                                      <a href="/profileUser"> Tài khoản</a>
+                                      </li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
+                                        <AiOutlineIdcard class="mr-2 "/>
+                                        <a href="/profileUser">Voucher</a>
+                                      </li>
                                       <li className="hover:bg-[#f2ba50] hover:text-white px-12 justify-center pr-14">
                                         <button
                                           onClick={handleLogout}
@@ -195,14 +203,6 @@ const HeaderHotel = () => {
                                           Logout
                                         </span>
                                       </button>
-                                      </li>
-                                      <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
-                                        <AiOutlineUser class="mr-2 "/>
-                                      <a href="/profileUser"> Tài khoản</a>
-                                      </li>
-                                      <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
-                                        <AiOutlineIdcard class="mr-2 "/>
-                                        <a href="/profileUser">Voucher</a>
                                       </li>
                                     </ul>
                                   </div>
