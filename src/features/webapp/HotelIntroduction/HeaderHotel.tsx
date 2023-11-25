@@ -184,6 +184,14 @@ const HeaderHotel = () => {
                                   {isDropdownOpen && (
                                   <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-30px] bg-white border border-gray-300 shadow-lg">
                                     <ul className="leading-9 text-black">
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
+                                        <AiOutlineUser class="mr-2 "/>
+                                      <a href="/profileUser"> Tài khoản</a>
+                                      </li>
+                                      <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
+                                        <AiOutlineIdcard class="mr-2 "/>
+                                        <a href="/profileUser">Voucher</a>
+                                      </li>
                                       <li className="hover:bg-[#f2ba50] hover:text-white px-12 justify-center pr-14">
                                         <button
                                           onClick={handleLogout}
@@ -195,14 +203,6 @@ const HeaderHotel = () => {
                                           Logout
                                         </span>
                                       </button>
-                                      </li>
-                                      <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
-                                        <AiOutlineUser class="mr-2 "/>
-                                      <a href="/profileUser"> Tài khoản</a>
-                                      </li>
-                                      <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
-                                        <AiOutlineIdcard class="mr-2 "/>
-                                        <a href="/profileUser">Voucher</a>
                                       </li>
                                     </ul>
                                   </div>

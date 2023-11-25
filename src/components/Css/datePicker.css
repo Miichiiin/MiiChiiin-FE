@@ -83,7 +83,9 @@
   .slick-slide .hay {
     height: 450px;
   }
-
+  html, body {
+    scroll-behavior: smooth;
+  }
 
 
 
