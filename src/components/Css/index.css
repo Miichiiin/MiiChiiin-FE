@@ -6,6 +6,9 @@
       transform: translateY(0);
     }
   }
+  html, body {
+    scroll-behavior: smooth;
+  }
   .translate-x-full {
     transform: translateX(-100%);
     opacity: 0;
@@ -59,6 +62,7 @@
  .box {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
  }
+
 
 
 
