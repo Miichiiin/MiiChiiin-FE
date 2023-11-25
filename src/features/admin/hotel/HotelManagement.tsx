@@ -1,11 +1,11 @@
 import { useGetHotel_adminsQuery, useRemoveHotel_adminMutation } from '@/api/admin/hotel_admin';
-import { Table, Divider, Radio, Button, Select, Input, Popconfirm, message, Image, Skeleton } from 'antd';
+import { Table, Divider, Radio, Select, Input, Popconfirm, message, Image, Skeleton } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { AiOutlineTool } from 'react-icons/ai';
 import { BiTrash } from 'react-icons/bi';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 export const HotelManagement = () => {
