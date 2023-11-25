@@ -112,3 +112,6 @@ figure.snip0016:hover figcaption::before {
   -webkit-transition-delay: 0s;
   transition-delay: 0s;
 }
+html, body {
+  scroll-behavior: smooth;
+}

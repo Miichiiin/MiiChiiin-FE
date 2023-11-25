@@ -47,7 +47,7 @@ const voucherApi = createApi({
     }),
     phatVoucher: builder.mutation({
       query: (product) => ({
-        url: `/voucher/wallet/add_voucher`,
+        url: `/wallet/add_voucher`,
         method: "POST",
         body: product,
       }),

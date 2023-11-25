@@ -168,7 +168,7 @@ const BookingInformation = () => {
     return phoneRegex.test(phone);
   };
 
-  const validateID = (id:any) => {
+  const validateID = (id: any) => {
     const idRegex = /^\d{9}$/;
     return idRegex.test(id);
   };
@@ -839,10 +839,11 @@ const BookingInformation = () => {
                     Số tiền được giảm :
                   </h2>
                   <a className="text-[15px] font-medium text-red-600" href="">
-                    -{" "}
+                    -
                     {(
                       (sumprice * appliedVoucher?.discount || 0) / 100
                     ).toLocaleString("vi-VN")}
+                    đ
                   </a>
                 </div>
                 <div className="flex items-center justify-between mt-4">

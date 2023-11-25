@@ -1,47 +1,55 @@
 import { useEffect, useRef, useState } from "react";
-import { AiOutlineRight, AiOutlineMenu, AiOutlineDown } from "react-icons/ai";
+import { AiOutlineRight, AiOutlineMenu, AiOutlineLogout,AiOutlineUser,AiOutlineIdcard } from "react-icons/ai";
 import "../../../components/Css/index.css";
 import Cart from "@/components/cart";
 import { Link } from "react-router-dom";
+import { TextTruncate } from "@/components/TextTruncate";
 
 const HeaderHotelType = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
- 
   /*cố định menu*/
+  const [isFixed, setIsFixed] = useState(false);
+  const handleScroll = () => {
+    setIsFixed(window.scrollY > 800);
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  /*Menu điều hướng*/
+  /*click ngoài = out*/
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    setIsScrollLocked(!isMenuOpen);
   };
   const closeMenu = () => {
     setIsMenuOpen(false);
     setIsScrollLocked(false); // Đặt giá trị trạng thái cuộn trang
-
   };
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        closeMenu();
-      }
 
-      if (isDropdownOpen && !target?.closest(".dropdown-button")) {
+  useEffect(() => {
+    const handleClickOutside = (event:MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
 
-    window.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, []);
+  /*menu điều hướng*/
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -49,7 +57,6 @@ const HeaderHotelType = () => {
         closeMenu();
       }
     };
-
     window.addEventListener("mousedown", handleClickOutside);
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
@@ -77,7 +84,7 @@ const HeaderHotelType = () => {
     localStorage.removeItem("selectedVoucherDetails");
   };
 
-  const [loggedIn, setLoggedIn] = useState<any | null>(() => {
+  const [loggedIn, setLoggedIn] = useState<any | null>(() => {    
     const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
   });
@@ -116,50 +123,58 @@ const HeaderHotelType = () => {
                 </Link>
 
                 <div className="flex items-center justify-end space-x-2 mt-6 text-gray-800 lg:text-[15px]">
-                {loggedIn ? (
-                  <>
-                    <div className="text-white pt-1">
-                      <button  onClick={toggleDropdown}>
-                          <img className="w-7 h-7 rounded-full " src={loggedIn?.image} alt="" />
-                      </button> 
-                      {isDropdownOpen && (
-                          <div className="flex-col flex absolute bg-white text-black absolute mt-1 end-5 bg-white border border-gray-300 shadow-lg transform transition-tranform durtion-500">
-                            <ul className="leading-9 text-black text-center font-medium">
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-7">
-                                Tài khoản 
-                              </li>
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-5">
-                                Voucher
-                              </li>
-                              <li className="hover:bg-[#f2ba50] hover:text-white px-10">
-                                <button
-                                  onClick={handleLogout}
-                                  className=""
-                                >
-                                {" "}
-                                Logout
-                              </button>
-                              </li>
-                            </ul>
-                          </div>
-                          )}
-                    </div>
-                    
-                  </>
-                ) : (
-                  <>
-                  {}
-                    <Link
-                      to="/login"
-                      className="hover:underline font-medium"
-                    >
-                      Đăng nhập 
-                    </Link>
-                    <AiOutlineRight />
-                  </>
-                )}
-                  <AiOutlineRight />
-                  <span className="pl-2 pr-1 text-[14px]">/</span>
+                  {loggedIn ? (
+                      <>
+                        <div className="text-white pt-1" ref={dropdownRef}>
+                          <button className="relative" onClick={toggleDropdown}>
+                              <div className="flex items-center space-x-3">
+                                <img className="w-8 h-8 rounded-full " src={loggedIn?.image} alt="" />
+                                <span className="text-black"><TextTruncate text={loggedIn?.name} maxLength={3} /> </span>
+                              </div>
+                              {isDropdownOpen && (
+                              <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-30px] bg-white border border-gray-300 shadow-lg">
+                                <ul className="leading-9 text-black">
+                                  <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
+                                    <AiOutlineUser class="mr-2 "/>
+                                  <a href="/profileUser"> Tài khoản</a>
+                                  </li>
+                                  <li className="hover:bg-[#f2ba50] hover:text-white px-5 flex items-center justify-center">
+                                    <AiOutlineIdcard class="mr-2 "/>
+                                    <a href="/profileUser">Voucher</a>
+                                  </li>
+                                  <li className="hover:bg-[#f2ba50] hover:text-white px-12 justify-center pr-14">
+                                    <button
+                                      onClick={handleLogout}
+                                      className=""
+                                    >
+                                    {" "}
+                                    <span className="flex items-center">
+                                      <AiOutlineLogout class="mr-2 "/>
+                                      Logout
+                                    </span>
+                                  </button>
+                                  </li>
+                                </ul>
+                              </div>
+                              )}
+                          </button> 
+                        </div>
+                        
+                      </>
+                    ) : (
+                    <>
+                    {}
+                      <Link
+                        to="/login"
+                        className="hover:underline"
+                        style={{ textShadow: "1px 2px 3px #000" }}
+                      >
+                        Đăng nhập 
+                      </Link>
+                      <AiOutlineRight />
+                    </>
+                  )}
+                  <span>/</span>
                   <Cart />
                 </div>
               </div>
