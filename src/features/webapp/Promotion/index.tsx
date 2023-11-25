@@ -39,7 +39,7 @@ const Promotion = () => {
             <img
               src="https://statics.vinpearl.com/styles/752x468/public/2023_08/season-of-smile-banner_1693304230.jpg.webp?itok=hc6PvhB7"
               alt="Image"
-              className=" rounded-md w-[850px] object-cover transition-transform transform scale-100 hover:scale-105"
+              className=" rounded-md w-[850px] object-cover transition-transform transform scale-100 hover:scale-105 duration-300"
             />
             <div className="w-[700px] text-left text-white absolute inset-0 top-[250px] start-7">
               <p className="text-[25px] font-bold">
@@ -64,8 +64,8 @@ const Promotion = () => {
           {/* Các voucher nhỏ */}
           <div>
             <div className=" overflow-hidden">
-              <img
-                className="mb-6 w-[450px] h-[240px] rounded-md object-cover transition-transform transform scale-100 hover:scale-105"
+              <img 
+                className="mb-6 w-[450px] h-[240px] rounded-md object-cover transition-transform transform scale-100 hover:scale-105 duration-300"
                 src="https://statics.vinpearl.com/styles/365x240/public/2023_06/spa-retreat-package-banner_1685706136.jpg.webp?itok=QetmDjCj"
                 alt=""
               />
@@ -77,7 +77,7 @@ const Promotion = () => {
             </div>
             <div className="overflow-hidden">
               <img
-                className="mb-6 w-[450px] h-[240px] rounded-md object-cover transition-transform transform scale-100 hover:scale-105"
+                className="mb-6 w-[450px] h-[240px] rounded-md object-cover transition-transform transform scale-100 hover:scale-105 duration-300"
                 src="https://statics.vinpearl.com/styles/358x223/public/2022_07/cau-rong-da-nang_1657938152.jpg.webp?itok=5nKAbeZd"
                 alt=""
               />
@@ -94,69 +94,37 @@ const Promotion = () => {
           className="text-[23px] font-medium pb-2 border-b-2 border-[#f2ba50] "
           href=""
         >
-          Ưu Đãi Theo Điểm Đến:
+          Ưu Đãi 
         </a>
-        <div className="space-x-4 md:grid-clos-2 mt-10">
-          <a
-            className="border-2 border-black py-3 px-9 rounded-md font-medium "
-            href=""
-          >
-            Phú Quốc
-          </a>
-          <a
-            className="border-2 border-black py-3 px-9 rounded-md font-medium "
-            href=""
-          >
-            Nha Trang
-          </a>
-          <a
-            className="border-2 border-black py-3 px-9 rounded-md font-medium "
-            href=""
-          >
-            Nam Hội An
-          </a>
-          <a
-            className="border-2 border-black py-3 px-9 rounded-md font-medium "
-            href=""
-          >
-            Đà Nẵng
-          </a>
-          <a
-            className="border-2 border-black py-3 px-9 rounded-md font-medium "
-            href=""
-          >
-            Hạ Long
-          </a>
-        </div>
+
       </div>
 
       {/* Danh sách voucher */}
       <div className="w-[1280px] mx-auto mt-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 mb-8 ">
           {data.slice(0, visibleVoucherCount).map((hotel:any) => (
             <div
               key={hotel.id}
-              className="bg-white rounded-md shadow-md transform transition-transform"
+              className="bg-white rounded-md shadow-md transform transition-transform hover:shadow-xl "
             >
               <img
                 src={hotel.image}
                 alt="Image"
-                className="w-[450px] h-[280px] rounded-tl-md rounded-tr-md rounded-bl-md rounded-br-md object-cover transform scale-100 hover:scale-105 transition-transform"
+                className="w-[450px] h-[280px] rounded-tl-md rounded-tr-md rounded-bl-md rounded-br-md object-cover transform scale-100 duration-300  transition-transform"
               />
-              <span className="flex items-center space-x-2 text-[#e94e4e] font-bold mt-5 ml-5">
-                <FaMapMarkerAlt />
-                <span>{hotel.name_hotel}</span>
+              <span className="flex items-center  space-x-2 text-[#e94e4e] font-bold mt-5 ml-5">
+                <span className="">{hotel.name_hotel}</span>
               </span>
               <h2 className="mt-2 font-bold ml-5">{hotel.name}</h2>
               <span className="flex items-center space-x-1 text-[#82888f] ml-5">
                   <span>{hotel.description}</span>
               </span>
-              <div className="flex items-center space-x-4 mb-2 mt-2">
-                <span className="flex items-center space-x-1 text-[#82888f] ml-5">
+              <span className="flex items-center space-x-1 ml-5 mt-3 font-medium ">
                   <span>Hạn áp dụng:</span>
                 </span>
-                <span className="flex items-center space-x-1 text-[#82888f]">
-                  <AiOutlineCalendar />
+              <div className="flex items-center space-x-4 mb-2 mt-1 ml-4">
+                <span className="flex items-center space-x-1 text-[#82888f] font-medium">
+                  <AiOutlineCalendar class="text-xl mr-2"/>
                   <span>{hotel.start_at}-{hotel.expire_at}</span>
                 </span>
               </div>
@@ -169,7 +137,7 @@ const Promotion = () => {
           <div className="flex justify-center mt-4">
             <button
               onClick={handleShowMore}
-              className="bg-[#e8952f] text-white px-4 py-2 rounded-full"
+              className="bg-[#e8952f] text-white px-4 py-2 rounded-full transform transition-transform hover:scale-105 duration-300"
             >
               Xem thêm voucher
             </button>
