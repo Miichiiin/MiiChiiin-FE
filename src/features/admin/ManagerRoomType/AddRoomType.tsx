@@ -4,6 +4,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { useAddCategory_adminMutation } from '@/api/admin/category_admin';
 import { useState } from 'react';
+import { useGetComfortQuery } from '@/api/admin/comfort_admin';
 
 
 
@@ -12,8 +13,12 @@ const AddRoomType = () => {
   const [addCategory_admin] = useAddCategory_adminMutation()
   const navigate = useNavigate()
   const [isUploading, setIsUploading] = useState(false)
-
+  const {data:comforts} = useGetComfortQuery({})
+  
+  
   const onFinish = (values: any) => {
+    const comfort = values.comfort
+    
     const body = new FormData()
     body.append('name', values.name)
     body.append('image', selectedFile as File)
@@ -24,6 +29,9 @@ const AddRoomType = () => {
     body.append('floor', values.floor)
     body.append('acreage', values.acreage)
     body.append('short_description', values.short_description)
+    comfort.forEach((item:any, index:any) => {
+      body.append(`comfort[${index}]`, item);
+    })
     setIsUploading(true);
     message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
     addCategory_admin(body)
@@ -37,7 +45,6 @@ const AddRoomType = () => {
       }).finally(() => {
         setIsUploading(false);
       })
-
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target
@@ -132,6 +139,26 @@ const AddRoomType = () => {
         >
           <InputNumber className='w-full'/>
         </Form.Item>
+
+          <Form.Item
+          label="Tiện ích"
+          name="comfort"
+          rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
+          
+        >
+          
+          <Select placeholder="Chọn tiện tích" mode='multiple'>
+          {comforts?.map((item:any) => (
+            <Select.Option key={item.id} value={item.id}>
+              {item.name}
+            </Select.Option>
+            ))}
+          </Select>
+          
+        </Form.Item>
+        
+        
+
         
         <Form.Item
           name="image"
