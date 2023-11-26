@@ -91,13 +91,6 @@ const AddRoomType = () => {
               <Input.TextArea />
             </Form.Item>
             <Form.Item
-              label="Mô tả ngắn"
-              name="short_description"
-              rules={[{ required: true, message: 'Vui lòng nhập mô tả ngắn!' }]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-            <Form.Item
               label="Trạng thái"
               name="status"
               rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
