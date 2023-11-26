@@ -1024,7 +1024,7 @@ const BookingInformation = () => {
                 <p className="mb-2">
                   <span className="">Tổng số tiền:</span>{" "}
                   <span className="text-orange-400 font-semibold">
-                    {order && order?.total_amount}
+                    {order && order?.total_amount?.toLocaleString("vi-VN")}đ
                   </span>
                 </p>
                 {/* Thêm thông tin khác của đơn hàng nếu cần */}
