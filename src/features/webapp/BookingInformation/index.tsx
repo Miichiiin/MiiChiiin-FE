@@ -175,6 +175,8 @@ const BookingInformation = () => {
 
   const onSubmit = (data: any) => {
     const total = caculatePrice();
+    const cleanedString = total.replace(/\./g, "");
+    const total1 = parseFloat(cleanedString);
     if (!total) return;
     const dataBooking = {
       check_in: date[0].toISOString().slice(0, 10),
@@ -184,7 +186,7 @@ const BookingInformation = () => {
       name: data.firstName + data.lastName,
       message: "...",
       people_quantity: totalChildren + totalAdults,
-      total_amount: total,
+      total_amount: total1,
       cccd: data.id,
       nationality: data.country,
       phone: data.phone,
@@ -318,7 +320,7 @@ const BookingInformation = () => {
     if (!typeVoucher) {
       priceAfterVoucher = sumprice;
     }
-    return `${priceAfterVoucher.toLocaleString("vi-VN")}đ`;
+    return `${priceAfterVoucher.toLocaleString("vi-VN")}` + "đ";
   };
 
   return (
