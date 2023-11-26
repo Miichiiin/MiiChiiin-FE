@@ -182,7 +182,8 @@ export const BookingManagement = () => {
                         <Select
                             showSearch
                             className='w-[200px]'
-                            placeholder="Lọc trạng thái"
+                            placeholder="Lọc"
+defaultValue="all"
                             optionFilterProp="children"
                             filterOption={(input, option) => (option?.label ?? "").includes(input)}
                             filterSort={(optionA, optionB) =>

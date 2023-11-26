@@ -1,12 +1,12 @@
 
 import { useGetAdmin_admin_AdminQuery, useRemoveAdmin_admin_AdminMutation } from "@/api/admin/admin_admin_admin";
-import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message } from "antd";
+import { Table, Divider, Input, Select, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { AiOutlineTool } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { IoAddCircleOutline } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export const ManagerEmployee = () => {
@@ -143,7 +143,6 @@ export const ManagerEmployee = () => {
   ];
 
   const [searchText, setSearchText] = useState("");
-  const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
   const filteredData = dataSource ? dataSource
     .filter((item: DataType) =>
@@ -159,6 +158,9 @@ export const ManagerEmployee = () => {
   const hasAddUserPermission = (permissions: any) => {
     return currentUserPermissions.includes(permissions);
   };
+  if (isRemoveEmployee) {
+    message.loading({ content: 'Đang xóa nhân viên...', key: 'updatable' });
+  }
   return (
     <div>
       <div
@@ -175,7 +177,8 @@ export const ManagerEmployee = () => {
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="Search to Select"
+            placeholder="Lọc"
+            defaultValue="all"
             optionFilterProp="children"
             filterOption={(input, option) => (option?.label ?? "").includes(input)}
             filterSort={(optionA, optionB) =>

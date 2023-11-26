@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 export const UserManagement = () => {
   const { data: dataUser, isLoading, isError } = useGetUsers_adminQuery([])
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(5);
+  const [pageSize] = useState<number>(5);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -138,13 +138,13 @@ export const UserManagement = () => {
               </button>
             </Popconfirm>
           )}
-          
+
         </div>
       ),
     }
   ];
   const [searchText, setSearchText] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState<number | undefined>(undefined);
+  const [selectedStatus, setSelectedStatus] = useState<number | undefined | string>(undefined);
   const filteredData = data ? data
     .filter((item: DataType) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
@@ -167,11 +167,12 @@ export const UserManagement = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div className="text-lg font-bold text-orange-500">Quản lý khách hàng</div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} onSearch={(value) => setSearchText(value)} allowClear/>
+          <Input.Search placeholder="Tìm kiếm" style={{ marginRight: '8px' }} onSearch={(value) => setSearchText(value)} allowClear />
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="Search to Select"
+            placeholder="Lọc"
+            defaultValue="all"
             optionFilterProp="children"
             filterOption={(input, option) => (option?.label ?? '').includes(input)}
             filterSort={(optionA, optionB) =>
@@ -201,7 +202,7 @@ export const UserManagement = () => {
           />
         </div>
         {hasAddUserPermission("add user") && (
-          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={()=>navigate('/admin/adduser')}><IoAddCircleOutline className="text-xl" /></button>
+          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => navigate('/admin/adduser')}><IoAddCircleOutline className="text-xl" /></button>
         )}
       </div>
       {/* Phần CSS tùy chỉnh cho bảng */}

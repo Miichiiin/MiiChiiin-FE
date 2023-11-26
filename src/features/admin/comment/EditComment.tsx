@@ -1,7 +1,7 @@
 
 
 import { useGetRatingByIdQuery, useUpdateRatingMutation } from '@/api/admin/rates_admin';
-import { Button, DatePicker, Form, Input, Select } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ export const EditComment = () => {
        updateComment({...values, id: id}).unwrap().then(() => navigate('/admin/commentmanagement'))
     };
 
-    const onFinishFailed = (errorInfo: any) => {
+    const onFinishFailed = () => {
 
     };
 
