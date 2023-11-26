@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Input, DatePicker, Select, Button, Form, Radio, message, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useGetAdmin_AdminByIdQuery, useUpdateAdmin_AdminMutation } from '@/api/admin/admin_admin';
-import { useGetRolesQuery } from '@/api/admin/role_admin';
+import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
-import { useGetAdmin_admin_AdminByIdQuery, useGetAdmin_admin_AdminQuery, useUpdateAdmin_admin_AdminMutation } from '@/api/admin/admin_admin_admin';
+import { useGetAdmin_admin_AdminByIdQuery, useUpdateAdmin_admin_AdminMutation } from '@/api/admin/admin_admin_admin';
 import { useGetRoles1Query } from '@/api/admin/role1_admin';
 import { format } from 'date-fns';
 

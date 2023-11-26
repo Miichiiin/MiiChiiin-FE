@@ -26,7 +26,6 @@ export const AddHotel = () => {
         selectedFiles.forEach((file, index) => {
             body.append(`images[${index}]`, file);
         });
-        console.log(selectedFiles);
 
         setIsUploading(true);
 

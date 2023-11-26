@@ -3,7 +3,6 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Select, Skeleton, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const { Option } = Select;
 
 const UpdateUtilitiesPage = () => {
   const navigate = useNavigate()

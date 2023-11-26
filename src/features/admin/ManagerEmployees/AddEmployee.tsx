@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Input, DatePicker, Select, Button, Form, Radio, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAddAdmin_admin_AdminMutation, useGetAdmin_admin_AdminQuery } from '@/api/admin/admin_admin_admin';
 import { useGetRoles1Query } from '@/api/admin/role1_admin';
 import { format } from 'date-fns';
@@ -24,7 +24,7 @@ const AddEmployeePage = () => {
     name: name,
   }));
   // check trùng email
-  const checkEmailDuplicate = async (rule: any, value: string) => {
+  const checkEmailDuplicate = async (_: any, value: string) => {
     const emailExists = dataAdmin.some((item: any) => item.email === value);
     if (emailExists) {
       return Promise.reject('Email đã tồn tại. Vui lòng sử dụng email khác.');

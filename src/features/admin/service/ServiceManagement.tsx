@@ -24,7 +24,7 @@ export const ServiceManagement = () => {
   const { data: visibleItems, isLoading, isError } = useGetService_adminQuery();
   const [removeService] = useRemoveService_adminMutation();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(5);
+  const [pageSize] = useState<number>(8);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -191,7 +191,8 @@ export const ServiceManagement = () => {
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="Search to Select"
+            placeholder="Lọc"
+defaultValue="all"
             optionFilterProp="children"
             filterOption={(input, option) => (option?.label ?? "").includes(input)}
             filterSort={(optionA, optionB) =>

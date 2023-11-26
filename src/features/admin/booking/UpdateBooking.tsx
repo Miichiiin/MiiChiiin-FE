@@ -279,7 +279,7 @@ const UpdateBooking = () => {
     calculateTotalAmount(updatedSelectedRoomsData);
     setIsUpdateRoom(true);
   };
-  const handleCancelRemoveRoom = (e: React.MouseEvent<HTMLElement>) => {
+  const handleCancelRemoveRoom = () => {
     message.error('Click on No');
   };
 

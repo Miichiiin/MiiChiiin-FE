@@ -194,7 +194,7 @@ const AddBooking = () => {
     calculateTotalAmount(updatedSelectedRoomsData);
   };
 
-  const handleCancelRemoveRoom = (e: React.MouseEvent<HTMLElement>) => {
+  const handleCancelRemoveRoom = () => {
     message.error('Click on No');
   };
   const handleCheckInDateChange = (selectedDate: dayjs.Dayjs | null) => {
@@ -272,7 +272,7 @@ const AddBooking = () => {
     });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = () => {
     message.error('Thêm thất bại');
   };
 
