@@ -26,8 +26,10 @@ const BookingInformation = () => {
   const { data: serviceData } = useGetService_hotelQuery();
   const [addBookingUser] = useAddBookingUserMutation();
   const [userData, setUserData] = useState<any | null>(null);
-
+  const [idVoucher, setIdvoucher] =useState<any>()
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  console.log("idVoucher",idVoucher);
+  
 
   useEffect(() => {
     const userPromise = localStorage.getItem("user");
@@ -169,7 +171,7 @@ const BookingInformation = () => {
   };
 
   const validateID = (id: any) => {
-    const idRegex = /^\d{9}$/;
+    const idRegex = /^\d{12}$/;
     return idRegex.test(id);
   };
 
@@ -185,6 +187,7 @@ const BookingInformation = () => {
       email: data.email,
       name: data.firstName + data.lastName,
       message: "...",
+      id_voucher: '',
       people_quantity: totalChildren + totalAdults,
       total_amount: total1,
       cccd: data.id,
@@ -259,7 +262,10 @@ const BookingInformation = () => {
     setSelectedVoucher(voucher);
   };
 
-  const handleUseVoucher = () => {
+  
+
+  const handleUseVoucher = (id:any) => {
+    setIdvoucher(id)
     // Kiểm tra nếu có voucher được chọn
     if (selectedVoucher !== null && selectedVoucher !== undefined) {
       // Lưu trạng thái đã sử dụng voucher vào local storage hoặc thực hiện các hành động khác
@@ -534,10 +540,10 @@ const BookingInformation = () => {
                       className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
                       type="tel"
                       placeholder="Ex: Anh Duy"
-                      // {...register("id", {
-                      //   required: true,
-                      //   validate: validateID,
-                      // })}
+                      {...register("id", {
+                        required: true,
+                        validate: validateID,
+                      })}
                     />
                     {errors.id && (
                       <span className="text-red-500">
@@ -634,13 +640,14 @@ const BookingInformation = () => {
                               <div className="flex items-center">
                                 <img
                                   className="w-10 h-10 rounded-full mr-2"
-                                  src={voucher.image}
+                                  src={voucher?.image}
                                   alt={`Hình ảnh Voucher ${index + 1}`}
                                 />
                                 <div>
-                                  <p className="font-bold">{voucher.name}</p>
-                                  <p>Hạn sử dụng: {voucher.expiryDate}</p>
-                                  <p>Giảm giá: {voucher.discount}%</p>
+                                  <p className="font-bold">{voucher?.name}</p>
+                                  <p>Hạn sử dụng: {voucher?.expiryDate}</p>
+                                  <p>Giảm giá: {voucher?.discount}%</p>
+
                                 </div>
                               </div>
                             </li>
@@ -651,7 +658,7 @@ const BookingInformation = () => {
                       {/* Nút sử dụng voucher */}
                       <button
                         className="font-medium bg-blue-500 px-6 py-2 text-white rounded-md ml-auto flex"
-                        onClick={handleUseVoucher}
+                        onClick={() => handleUseVoucher(voucher?.id)}
                       >
                         Sử dụng
                       </button>
