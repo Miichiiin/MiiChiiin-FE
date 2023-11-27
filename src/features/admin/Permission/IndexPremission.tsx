@@ -40,6 +40,8 @@ const IndexPremission = () => {
   const hasAddUserPermission = (permissions: any) => {
     return currentUserPermissions.includes(permissions);
   };
+const dataLogin = localStorage.getItem("userAdmin");
+console.log("dataLogin",dataLogin);
 
   interface DataType {
     key: number;

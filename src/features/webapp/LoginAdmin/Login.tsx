@@ -41,17 +41,21 @@ const LoginAdmin = () => {
  
   return (
     <div className="flex ">
-      <div className="w-[67%]">
+      <div className="w-[67%] relative">
         <img 
-          src="https://storage.googleapis.com/vin3sprodauth0.vin3s.vn/vinpearl_login_screen.jpg" 
+          src="https://res.cloudinary.com/dzqywzres/image/upload/v1701050900/b6ihzn2wajkkgwdbbznz.jpg" 
           alt="" 
           className="object-cover"
         />
+        <div className="absolute top-[20%] end-[45%] text-white  w-[45%]">
+          <h2 className="text-3xl mb-2 font-medium">Trải nghiệm cuộc sông đăng cấp cùng Miichi</h2>
+          <p className="text-xl">Hưởng ngay ưu đãi và tích lũy giao dịch sau khi đăng ký thành viên</p>
+        </div>
       </div>
       <div className="flex w-[33%]">
           <div className="px-10 w-[100%]">
             <div className="flex mt-[70px] justify-center mb-[-50px]">
-              <a href="/" className="h-[150px] flex justify-center"><img className="w-[50%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png " alt="" /></a>
+              <a href="/" className="h-[150px] flex justify-center"><img className="w-[100%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" /></a>
               {/* <img className="w-[30%] h-[30%] object-cover" src="https://storage.googleapis.com/vin3sprodauth0.vin3s.vn/vinpearl_login_logo-02.png" alt="" /> */}
             </div>
            <div className="flex">
