@@ -48,7 +48,6 @@ const BookingInformation = () => {
   }
 
   const { data: serviceData } = useGetService_hotelIdQuery(hotel[0]);
-  console.log("serviceData11",serviceData);
 
   let date: Date[] = [];
   if (dataParam && dataParam.date) {
