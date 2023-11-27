@@ -27,7 +27,7 @@ export const UserManagement = () => {
       setData(currentData);
     }
   }, [dataUser, currentPage, pageSize]);
-  const [removeUser] = useRemoveUser_adminMutation()
+  const [removeUser, { isLoading: isRemoving }] = useRemoveUser_adminMutation()
   interface DataType {
     key: number,
     id: string | number,
@@ -162,6 +162,9 @@ export const UserManagement = () => {
 
   if (isLoading) return <Skeleton active />;
   if (isError) return <div>Something went wrong</div>;
+  if (isRemoving) {
+    message.loading({ content: 'Đang xóa', key: 'removeUser', duration: 1.5 })
+  }
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>

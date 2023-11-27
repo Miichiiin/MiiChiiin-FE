@@ -1,5 +1,5 @@
 
-import { Form, Input, InputNumber, Button, message, Spin, Select } from 'antd';
+import { Form, Input, Button, message, Spin, Select } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { useAddCategory_adminMutation } from '@/api/admin/category_admin';
@@ -21,7 +21,12 @@ const AddRoomType = () => {
 
     const body = new FormData()
     body.append('name', values.name)
-    body.append('image', selectedFile as File)
+    if (selectedFile) {
+      body.append('image', selectedFile as File);
+    }
+    else{
+      message.error("Vui lòng chọn ảnh!")
+    }
     body.append('description', values.description)
     body.append('quantity_of_people', values.quantity_of_people)
     body.append('price', values.price)
@@ -33,7 +38,7 @@ const AddRoomType = () => {
       body.append(`comfort[${index}]`, item);
     })
     setIsUploading(true);
-    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
     addCategory_admin(body)
       .unwrap()
       .then(() => {
@@ -78,18 +83,16 @@ const AddRoomType = () => {
             <Form.Item
               label="Tên loại phòng"
               name="name"
-              rules={[{ required: true, message: 'Vui lòng nhập tên loại phòng!' }]}
+              rules={
+                [
+                  { required: true, message: 'Vui lòng nhập tên loại phòng!' },
+                  { whitespace: true, message: 'Không được để khoảng trắng!' },
+                  { max: 50, message: 'Vui lòng nhập tên nhỏ hơn 50 ký tự!' }
+                ]}
             >
               <Input />
             </Form.Item>
 
-            <Form.Item
-              label="Mô tả"
-              name="description"
-              rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
-            >
-              <Input.TextArea />
-            </Form.Item>
             <Form.Item
               label="Trạng thái"
               name="status"
@@ -100,37 +103,6 @@ const AddRoomType = () => {
                 <Select.Option value={1}>Đang bảo trì</Select.Option>
                 <Select.Option value={0}>Đang chờ</Select.Option>
               </Select>
-            </Form.Item>
-          </div>
-
-          <div className='w-1/2'>
-            <Form.Item
-              label="Số tầng"
-              name="floor"
-              rules={[{ required: true, message: 'Vui lòng nhập số tầng!' }]}
-            >
-              <InputNumber className='w-full' />
-            </Form.Item>
-            <Form.Item
-              label="Số người"
-              name="quantity_of_people"
-              rules={[{ required: true, message: 'Vui lòng nhập số người!' }]}
-            >
-              <InputNumber className='w-full' />
-            </Form.Item>
-            <Form.Item
-              label="Giá"
-              name="price"
-              rules={[{ required: true, message: 'Vui lòng nhập giá phòng!' }]}
-            >
-              <InputNumber className='w-full' />
-            </Form.Item>
-            <Form.Item
-              label="Diện tích"
-              name="acreage"
-              rules={[{ required: true, message: 'Vui lòng nhập diện tích!' }]}
-            >
-              <InputNumber className='w-full' />
             </Form.Item>
 
             <Form.Item
@@ -149,9 +121,55 @@ const AddRoomType = () => {
               </Select>
 
             </Form.Item>
-
-
-
+            <Form.Item
+              label="Mô tả"
+              name="description"
+              rules={[{ required: true, message: 'Vui lòng nhập mô tả!' },
+              { whitespace: true, message: 'Không được để khoảng trắng!' }]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+          </div>
+          <div className='w-1/2'>
+            <Form.Item
+              label="Số tầng"
+              name="floor"
+              rules={[
+                { required: true, message: 'Vui lòng nhập số tầng!' },
+                { whitespace: true, message: 'Không được để khoảng trắng!' },
+                { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },
+              ]}
+            >
+              <Input className='w-full' />
+            </Form.Item>
+            <Form.Item
+              label="Số người"
+              name="quantity_of_people"
+              rules={[{ required: true, message: 'Vui lòng nhập số người!' },
+              { whitespace: true, message: 'Không được để khoảng trắng!' },
+              { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },]}
+            >
+              <Input className='w-full' />
+            </Form.Item>
+            <Form.Item
+              label="Giá"
+              name="price"
+              rules={[{ required: true, message: 'Vui lòng nhập giá phòng!' },
+              { whitespace: true, message: 'Không được để khoảng trắng!' },
+              { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },]}
+            >
+              <Input className='w-full' />
+            </Form.Item>
+            <Form.Item
+              label="Diện tích"
+              name="acreage"
+              rules={[{ required: true, message: 'Vui lòng nhập diện tích!' },
+              { whitespace: true, message: 'Không được để khoảng trắng!' },
+              { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },
+            ]}
+            >
+              <Input className='w-full' />
+            </Form.Item>
 
             <Form.Item
               name="image"

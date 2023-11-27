@@ -130,6 +130,7 @@ const Permission = () => {
         />
         <br />
         <div className='flex space-x-[850px] items-center'>
+          <Button type='primary' className=' bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</Button>
           <Button
             type="primary"
             htmlType="submit"
@@ -137,7 +138,7 @@ const Permission = () => {
           >
             Update
           </Button>
-          <button className='px-3 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</button>
+
 
         </div>
 

@@ -14,7 +14,7 @@ import { useState } from "react";
 import { AiOutlineTool } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { IoAddCircleOutline } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -30,7 +30,7 @@ export const ManagerUtilities = () => {
   const [searchText, setSearchText] = useState("");
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const { data: Ultilities, isLoading, isError } = useGetComfortQuery({});
-  const [removeUtility] = useRemoveComfortMutation();
+  const [removeUtility, { isLoading: isRemoving }] = useRemoveComfortMutation();
   const navigate = useNavigate();
   interface DataType {
     key: number;
@@ -130,6 +130,9 @@ export const ManagerUtilities = () => {
 
   if (isLoading) return <Skeleton active />;
   if (isError) return <div>Đã xảy ra lỗi khi tải dữ liệu</div>;
+  if (isRemoving) {
+    message.loading({ content: 'Đang xóa ...', key: 'updatable', duration: 0.5 });
+  }
   return (
     <div>
       <div
@@ -143,7 +146,7 @@ export const ManagerUtilities = () => {
             showSearch
             style={{ width: 200 }}
             placeholder="Lọc"
-defaultValue="all"
+            defaultValue="all"
             optionFilterProp="children"
             filterOption={(input, option) =>
               (option?.label ?? "").includes(input)

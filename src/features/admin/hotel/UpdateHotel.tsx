@@ -9,7 +9,7 @@ const UpdateHotel = () => {
     const [updateHotel, { isLoading }] = useUpdateHotel_adminMutation()
     const [selectedFiles, setSelectedFiles] = useState<File[]>();
     const [isImageChanged, setIsImageChanged] = useState(false);
-
+    const [isUploading, setIsUploading] = useState(false)
     const { id } = useParams<{ id: string }>()
     const { data } = useGetHotel_adminByIdQuery(id)
     const hotelData = data?.[0]
@@ -69,6 +69,8 @@ const UpdateHotel = () => {
         else {
             body.append('image', hotelData?.image)
         }
+        setIsUploading(true);
+        message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
 
 
         updateHotel(body).unwrap().then(() => {
@@ -81,7 +83,7 @@ const UpdateHotel = () => {
 
     return (
         <div>
-
+            {isUploading && <Spin className='animate' />}
             <header className="flex justify-between items-center mb-5">
                 <h2 className="text-lg font-bold text-orange-500 ">Sửa khách sạn : <span className='text-xl font-semibold text-orange-800'>{hotelData?.name}</span></h2>
                 <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/hotelmanagement")}>

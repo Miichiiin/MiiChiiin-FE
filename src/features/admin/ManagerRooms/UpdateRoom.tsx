@@ -23,7 +23,7 @@ const UpdateRoomPage = () => {
   const roomData = data?.[0]
 
   const [updateRoom] = useUpdateRoom_AdminMutation();
-  const [removeRoom] = useRemoveRoom_AdminMutation();
+  const [removeRoom, {isLoading: isRemoving}] = useRemoveRoom_AdminMutation();
 
   const onFinish = (values: any) => {
     console.log("Form values:", values);
@@ -37,6 +37,9 @@ const UpdateRoomPage = () => {
   }
   if (isError) {
     return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
+  if (isRemoving) {
+    message.loading({ content: 'Đang xóa ...', key: 'updatable', duration: 0.5 });
   }
 
   return (

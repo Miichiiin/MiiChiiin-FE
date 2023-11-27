@@ -159,7 +159,7 @@ export const ManagerEmployee = () => {
     return currentUserPermissions.includes(permissions);
   };
   if (isRemoveEmployee) {
-    message.loading({ content: 'Đang xóa nhân viên...', key: 'updatable' });
+    message.loading({ content: 'Đang xóa nhân viên...', key: 'updatable', duration: 0.5 });
   }
   return (
     <div>
