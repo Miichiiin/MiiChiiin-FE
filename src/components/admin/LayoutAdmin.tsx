@@ -26,35 +26,36 @@ function getItem(
     content,
     children,
     label,
-    url
-  }
+    url,
+  };
 }
 
 export const LayoutAdmin = () => {
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const userAdminLocal = localStorage.getItem('userAdmin')
-  
-  let imageLC = ""
-  
+  const userAdminLocal = localStorage.getItem("userAdmin");
+
+  let imageLC = "";
+
   if (userAdminLocal) {
     const data = JSON.parse(userAdminLocal);
     imageLC = data.image;
   }
 
   // Lấy quyền hạn của người dùng hiện tại (lấy ví dụ từ người dùng đầu tiên trong danh sách)
-  const currentUserPermissions = (userAdminLocal && JSON.parse(userAdminLocal).permissions) || [];
+  const currentUserPermissions =
+    (userAdminLocal && JSON.parse(userAdminLocal).permissions) || [];
   const getMenuItems = () => {
     const menuItems = [];
 
-    if (currentUserPermissions.includes('get statisticshotels')) {
+    if (currentUserPermissions.includes("add statictical chain")) {
       menuItems.push(
         getItem(
-          <Link to={"statisticshotels"}>Thống kê theo chuỗi</Link>,
+          <Link to={"HotelChainStatistics"}>Thống kê theo chuỗi</Link>,
           "1",
           <AiFillSignal />,
           "Thống kê theo chuỗi",
@@ -62,8 +63,19 @@ export const LayoutAdmin = () => {
         )
       );
     }
+    if (currentUserPermissions.includes("get statictical hotel")) {
+      menuItems.push(
+        getItem(
+          <Link to={"statisticshotels"}>Thống kê khách sạn</Link>,
+          "1",
+          <AiFillSignal />,
+          "Thống kê khách sạn",
+          "statisticshotels"
+        )
+      );
+    }
 
-    if (currentUserPermissions.includes('get category')) {
+    if (currentUserPermissions.includes("get category")) {
       menuItems.push(
         getItem(
           <Link to={"manageroomtype"}>Quản Lý Loại Phòng</Link>,
@@ -75,7 +87,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get voucher')) {
+    if (currentUserPermissions.includes("get voucher")) {
       menuItems.push(
         getItem(
           <Link to={"managervouchers"}>Quản lý Vouchers</Link>,
@@ -87,7 +99,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get admin')) {
+    if (currentUserPermissions.includes("get admin")) {
       menuItems.push(
         getItem(
           <Link to={"manageremployee"}>Quản lý Nhân Viên</Link>,
@@ -99,7 +111,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get room')) {
+    if (currentUserPermissions.includes("get room")) {
       menuItems.push(
         getItem(
           <Link to={"managerroom"}>Quản lý Phòng</Link>,
@@ -111,7 +123,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get comfort')) {
+    if (currentUserPermissions.includes("get comfort")) {
       menuItems.push(
         getItem(
           <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
@@ -123,7 +135,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get rate')) {
+    if (currentUserPermissions.includes("get rate")) {
       menuItems.push(
         getItem(
           <Link to={"commentmanagement"}>Quản lý comment</Link>,
@@ -135,7 +147,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get service')) {
+    if (currentUserPermissions.includes("get service")) {
       menuItems.push(
         getItem(
           <Link to={"service"}>Quản lý dịch vụ</Link>,
@@ -147,7 +159,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get booking')) {
+    if (currentUserPermissions.includes("get booking")) {
       menuItems.push(
         getItem(
           <Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>,
@@ -159,7 +171,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get user')) {
+    if (currentUserPermissions.includes("get user")) {
       menuItems.push(
         getItem(
           <Link to={"usermanagement"}>Quản lý khách hàng</Link>,
@@ -171,7 +183,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get hotel')) {
+    if (currentUserPermissions.includes("get hotel")) {
       menuItems.push(
         getItem(
           <Link to={"hotelmanagement"}>Quản lý khách sạn</Link>,
@@ -183,7 +195,7 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes('get permission')) {
+    if (currentUserPermissions.includes("get permission")) {
       menuItems.push(
         getItem(
           <Link to={"indexPermission"}>Quản lý quyền</Link>,
@@ -200,30 +212,36 @@ export const LayoutAdmin = () => {
 
   const getCurrentBreadcrumb = () => {
     // Tách đoạn đường dẫn thành các phần từ, loại bỏ các phần tử rỗng (có thể xuất hiện do các dấu '/' liên tiếp)
-    const pathSnippets = location.pathname.split('/').filter((i) => i);
+    const pathSnippets = location.pathname.split("/").filter((i) => i);
     const menuItems = getMenuItems();
     // Tạo mảng Breadcrumb bằng cách duyệt qua từng đoạn đường dẫn
     return pathSnippets.map((path, index) => {
       // tạo url
-      const url = `${pathSnippets.slice(0, index + 1).join('/')}`;
+      const url = `${pathSnippets.slice(0, index + 1).join("/")}`;
       // Tìm mục trong menu có đường dẫn trùng với URL đã tạo
       const formattedPath =
-      index === 0 ? path.charAt(0).toUpperCase() + path.slice(1).toLowerCase() : path;
+        index === 0
+          ? path.charAt(0).toUpperCase() + path.slice(1).toLowerCase()
+          : path;
 
-      const menuItem = menuItems.find((item: any) => item.url === formattedPath);   
+      const menuItem = menuItems.find(
+        (item: any) => item.url === formattedPath
+      );
       return (
         <Breadcrumb.Item key={url}>
-          {menuItem ? <span >{menuItem?.content}</span> : <span> {formattedPath}</span>}
+          {menuItem ? (
+            <span>{menuItem?.content}</span>
+          ) : (
+            <span> {formattedPath}</span>
+          )}
         </Breadcrumb.Item>
       );
     });
   };
 
-
   useEffect(() => {
-    if (!localStorage.getItem('tokenAdmin'))
-      navigate('/error/401')
-  }, [])
+    if (!localStorage.getItem("tokenAdmin")) navigate("/error/401");
+  }, []);
 
   const getLogoContent = () => {
     if (collapsed) {
@@ -232,7 +250,7 @@ export const LayoutAdmin = () => {
           <div className="my-8 flex justify-center items-center cursor-pointer">
             <img
               src={
-                'https://res.cloudinary.com/chuoi2taps/image/upload/v1700834002/icon_r97yb5.png'
+                "https://res.cloudinary.com/chuoi2taps/image/upload/v1700834002/icon_r97yb5.png"
               }
               alt="Logo"
               className="w-[50px]"
@@ -247,10 +265,17 @@ export const LayoutAdmin = () => {
     } else {
       return (
         <>
-          <div className="flex items-center justify-center my-3 cursor-pointer" onClick={() => navigate("/admin")}>
-            <img src={'https://res.cloudinary.com/chuoi2taps/image/upload/v1700834002/icon_r97yb5.png'}
+          <div
+            className="flex items-center justify-center my-3 cursor-pointer"
+            onClick={() => navigate("/admin")}
+          >
+            <img
+              src={
+                "https://res.cloudinary.com/chuoi2taps/image/upload/v1700834002/icon_r97yb5.png"
+              }
               alt="Logo"
-              className="w-[50px]" />
+              className="w-[50px]"
+            />
             <h1 className="text-center text-lg text-orange-100 italic font-semibold ">
               The Michii
             </h1>
@@ -271,7 +296,6 @@ export const LayoutAdmin = () => {
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
-
       >
         {getLogoContent()}
         <hr />

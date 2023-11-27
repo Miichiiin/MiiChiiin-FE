@@ -64,6 +64,7 @@ import Error403 from "./err/Error403";
 import Error401 from "./err/Error401";
 import PhatVoucher from "./features/admin/ManagerVoucher/PhatVoucher";
 
+
 // chặn link
 const dataPermission = localStorage.getItem('userAdmin')
 const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
@@ -180,10 +181,14 @@ export const router = createBrowserRouter([
         path: "/admin/*",
         element:<LayoutAdmin />,
         children: [
-            {
-                index: true,
-                element: <HotelChainStatistics />,
-            },
+          {
+            index: true,
+            element: hasAddUserPermission("add statictical chain") ? (
+                <HotelChainStatistic />
+            ) : (
+                < HotelChainStatistics/>
+            ),
+        },
             {
                 path: "commentmanagement",
                 element: hasAddUserPermission("get rate") ? (      
@@ -396,8 +401,8 @@ export const router = createBrowserRouter([
                   ), 
             },
             {
-                path: "statisticshotels", // chưa có quyền get
-                element: hasAddUserPermission("get admin") ? (
+                path: "statisticshotels", 
+                element: hasAddUserPermission("get statictical hotel") ? (
                     <HotelChainStatistics />
                   ) : (
                     <Error403/>
@@ -482,8 +487,12 @@ export const router = createBrowserRouter([
                   ),     
             },
             {
-                path:"HotelChainStatistics",
-                element:<HotelChainStatistic/>
+              path: "HotelChainStatistics",
+              element: hasAddUserPermission("add statictical chain") ? (      
+                  <HotelChainStatistic />
+                ) : (
+                  <Error403/>
+                ),  
             },
             
 
