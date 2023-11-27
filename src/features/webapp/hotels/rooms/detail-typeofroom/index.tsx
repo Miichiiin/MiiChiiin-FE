@@ -22,7 +22,6 @@ import { useAddRate_homeMutation } from "@/api/webapp/comment_home";
 import { useGetRating_homeQuery } from "@/api/webapp/rates_home";
 import { useLikeDetailRoomMutation } from "@/api/bookingUser";
 import Slider, { Settings } from 'react-slick';
-import moment from "moment";
 import HeaderHotelType from "@/features/webapp/HotelType/HeaderHotelType";
 
 const { RangePicker } = DatePicker;
@@ -141,44 +140,44 @@ const DetailTypeofRoom = () => {
     setSelectedRange([dates[0]?.toDate() || null, dates[1]?.toDate() || null]);
   };
 
-  const handleButtonClick = () => {
-    if (selectedRange[0] && selectedRange[1]) {
-      console.log("Ngày bắt đầu:", selectedRange[0].toISOString().slice(0, 10));
-      console.log(
-        "Ngày kết thúc:",
-        selectedRange[1].toISOString().slice(0, 10)
-      );
-      message.success("Chọn ngày thành công");
-    } else {
-      message.error("Vui lòng chọn một khoảng ngày.");
-    }
-  };
+  // const handleButtonClick = () => {
+  //   if (selectedRange[0] && selectedRange[1]) {
+  //     console.log("Ngày bắt đầu:", selectedRange[0].toISOString().slice(0, 10));
+  //     console.log(
+  //       "Ngày kết thúc:",
+  //       selectedRange[1].toISOString().slice(0, 10)
+  //     );
+  //     message.success("Chọn ngày thành công");
+  //   } else {
+  //     message.error("Vui lòng chọn một khoảng ngày.");
+  //   }
+  // };
 
-  const saveRoomInfoToLocalStorage = (
-    name: any,
-    price: any,
-    hotel_id: any,
-    id: any
-  ) => {
-    const roomInfo = { hotel_id, id, name, price };
-    localStorage.setItem("roomInfo", JSON.stringify(roomInfo));
-  };
+  // const saveRoomInfoToLocalStorage = (
+  //   name: any,
+  //   price: any,
+  //   hotel_id: any,
+  //   id: any
+  // ) => {
+  //   const roomInfo = { hotel_id, id, name, price };
+  //   localStorage.setItem("roomInfo", JSON.stringify(roomInfo));
+  // };
 
-  interface Room {
-    count: number;
-    name: string;
-    price: number;
-  }
+  // interface Room {
+  //   count: number;
+  //   name: string;
+  //   price: number;
+  // }
 
   const onHandSubmit = () => {
     if (selectedRange[0] && selectedRange[1]) {
-      const updatedSelectedRooms = [
-        {
-          count: 1,
-          name: data?.name,
-          price: data?.price,
-        },
-      ];
+      // const updatedSelectedRooms = [
+      //   {
+      //     count: 1,
+      //     name: data?.name,
+      //     price: data?.price,
+      //   },
+      // ];
       const numberOfRooms1 = [`adults:1,children:0,infants:0`];
       const encodedSelectedRooms = 1;
 
@@ -272,10 +271,10 @@ const DetailTypeofRoom = () => {
     });
   };
 // chặn ngày quá khứ
-function disableDate(current: any) {
-  // Can not select days before today
-  return current && current < moment().startOf("day");
-}
+// function disableDate(current: any) {
+//   // Can not select days before today
+//   return current && current < moment().startOf("day");
+// }
 // form đặt ngày
  /*Hàm Dropdow*/
  const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
@@ -381,7 +380,7 @@ const closeOpen = () =>{
 useEffect(() => {
   const handleClickOutside = (event:MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setIsDropdownOpen(false);
+      // setIsDropdownOpen(false);
       setIsScrollLocked(false)
     }
   };
@@ -611,7 +610,7 @@ useEffect(() => {
             </div>
               <div className="" ref={dropdownRef}>
                 {isDropdownOpen && (
-                  <div className={`absolute top-0 bg-gray-200 z-40 w-[34.5%] h-full transform transition-transform 
+                  <div className={`fixed top-0 bg-gray-200 z-40 w-[34.5%] h-full transform transition-transform 
                       ${isDropdownOpen ? 'translate-x-0' : 'translate-x-full'} duration-700 ease-in`}
                   >
                     <div className="bg-gray-800 text-white h-[250px] pt-[180px] px-14">
@@ -632,6 +631,7 @@ useEffect(() => {
                           format="DD/MM/YYYY"
                           separator=""
                           onChange={handleRangeChange}
+                          onClick={(e) => e.stopPropagation()}
                           disabledDate={(current) => {
                             return current && current.isBefore(new Date(), 'day');
                           }}
@@ -811,7 +811,6 @@ useEffect(() => {
           </div>
           </div>
         </div>
-        
         {/* Cửa sổ popup */}
         <Modal
           isOpen={showModal}

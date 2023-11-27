@@ -19,11 +19,10 @@ const Index = () => {
         slidesToShow: 3,
         slidesToScroll: 1,
     };
-    const { data: booking } = useGetHotel_homesQuery();
-    console.log("data",booking);
-    
+    const { data: booking } = useGetHotel_homesQuery();    
     const { data: voucher } = useGetVoucherQuery();
-
+    console.log("data",voucher);
+    
     const sliderRef = React.useRef<Slider>(null);
 
     const handleNext = () => {
@@ -38,7 +37,26 @@ const Index = () => {
         }
     };
 
+    let settings1 = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+    };
+    const sliderRef1 = React.useRef<Slider>(null);
 
+    const handleNext1 = () => {
+        if (sliderRef1.current) {
+            sliderRef1.current.slickNext();
+        }
+    };
+
+    const handlePrev1 = () => {
+        if (sliderRef1.current) {
+            sliderRef1.current.slickPrev();
+        }
+    };
     return (
         <div>
             <Header />
@@ -72,8 +90,8 @@ const Index = () => {
                 </div>
 
                 <div className="relative">
-                    <button onClick={handlePrev} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[110px] start-[-15px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft /></button>
-                    <button onClick={handleNext} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[110px] end-0  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight /></button>
+                    <button onClick={handleNext} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[110px] start-[-15px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft /></button>
+                    <button onClick={handlePrev} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[110px] end-0  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight /></button>
                     <Slider {...settings} ref={sliderRef} className="w-[1280px] mx-auto">
                         {booking?.map((item: any) => {
                             return <>
@@ -143,7 +161,10 @@ const Index = () => {
                         </Link> <AiOutlineArrowRight /></span>
                     </div>
                     <div className="sm:grid xl:grid-cols-3 flex lg:grid-cols-2 sm:justify-center ">
-                        <div  className="w-[1280px] mx-auto">
+                        <div  className="w-[1280px] mx-auto relative">
+                        <button onClick={handleNext1} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[40%] start-[-15px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft /></button>
+                        <button onClick={handlePrev1} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[40%] end-0  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight /></button>
+                        <Slider {...settings1} ref={sliderRef1} className="w-[1280px] mx-auto">
                             {voucher?.map((item: any) => {
                                 return <>
                                     <div className="w-[400px] ">
@@ -156,10 +177,12 @@ const Index = () => {
                                             />
                                             
                                         </div>
-                                        <a className="hover:text-[#f2ba50]" href="/promotion" key={item?.id}>{item?.name}</a>
+                                        <a className="hover:text-[#f2ba50] text-xl" href="/promotion" key={item?.id}>{item?.name}</a>
+                                        <p><TextTruncate text={item.description} maxLength={152} /></p>
                                     </div>
                                 </>
                             })}
+                            </Slider>
                         </div>
                     </div>
                 </div>

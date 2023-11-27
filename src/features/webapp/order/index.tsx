@@ -40,7 +40,7 @@ const BookingSuccess = () => {
           />
         </div>
         <h2 className="text-center text-xl font-semibold mb-5">
-          Đặt phòng thành công
+          Đặt phòng thành công 
         </h2>
         <h2 className=" mb-4 text-center">
           Chúng tôi xin gửi lời cảm ơn chân thành đến quý khách vì đã lựa chọn
@@ -94,8 +94,8 @@ const BookingSuccess = () => {
           </div>
         </div>
         <div className="flex space-x-8 justify-center mt-5">
-            <Button className="flex space-x-2 items-center bg-orange-400"><AiOutlineHome/><Link to={"/homepage"}>Quay lại trang chủ</Link></Button>
-            <Button className="flex space-x-2 items-center bg-blue-500"><BsCartCheck/><Link to={"/profileUser/myorder"}>Lịch sử đặt hàng</Link></Button>
+            <Button className="flex space-x-2 items-center bg-orange-400 text-white"><AiOutlineHome/><Link to={"/homepage"}>Quay lại trang chủ</Link></Button>
+            <Button className="flex space-x-2 items-center bg-blue-500 text-white"><BsCartCheck/><Link to={"/profileUser/myorder"}>Lịch sử đặt hàng</Link></Button>
         </div>
       </div>
     </div>
