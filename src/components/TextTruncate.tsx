@@ -9,7 +9,7 @@ export const TextTruncate = ({ text, maxLength }:TextTruncateProps) => {
   const [truncatedText, setTruncatedText] = useState<string>(text);
 
   useEffect(() => {
-    if (text.length > maxLength) {
+    if (text?.length > maxLength) {
       setTruncatedText(text.slice(0, maxLength) + '...');
     } else {
       setTruncatedText(text);
