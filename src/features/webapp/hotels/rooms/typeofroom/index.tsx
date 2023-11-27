@@ -1,8 +1,8 @@
 import  { useEffect, useRef, useState } from "react";
 import { BsPeople ,BsArrowsFullscreen,BsBricks,BsClipboardCheck,BsEye,BsHeart} from "react-icons/bs";
 import { AiOutlineCalendar ,AiOutlineUser,AiOutlineClose,AiOutlineMinus,AiOutlinePlus} from "react-icons/ai";
-import { DatePicker } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { DatePicker, message } from "antd";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import HeaderHotelType from "@/features/webapp/HotelType/HeaderHotelType";
@@ -13,57 +13,40 @@ const RoomTypes = () => {
   const { id: idHotel } = useParams();
   const { data: hotelData } = useGetHotel_homeByIdQuery(idHotel);  
   const { data } = useGetCategory_homeQuery(idHotel);    
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [selectedRange, setSelectedRange] = useState<
     [Date | null, Date | null]
   >([null, null]);
+  const [roomDetails1, setRoomDetails1] = useState<RoomDetail[]>([
+    { adults: 1, children: 0, infants: 0 },
+  ]);
+  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
 
   const handleRangeChange = (dates: any) => {
     setSelectedRange([dates[0]?.toDate() || null, dates[1]?.toDate() || null]);
   };
 
-  // const handleButtonClick = () => {
-  //   if (selectedRange[0] && selectedRange[1]) {
-  //     console.log("Ngày bắt đầu:", selectedRange[0].toISOString().slice(0, 10));
-  //     console.log(
-  //       "Ngày kết thúc:",
-  //       selectedRange[1].toISOString().slice(0, 10)
-  //     );
-  //     message.success("Chọn ngày thành công");
-  //   } else {
-  //     message.error("Vui lòng chọn một khoảng ngày.");
-  //   }
-  // };
 
-  // interface Room {
-  //   count: number;
-  //   name: string;
-  //   price: number;
-  // }
+  const onHandSubmit = () => {
+    if (selectedRange[0] && selectedRange[1]) {
 
-  // const onHandSubmit = (index: any) => {
-  //   if (selectedRange[0] && selectedRange[1]) {
-  //     const updatedSelectedRooms = [
-  //       {
-  //         count: 1,
-  //         name: data[index]?.name,
-  //         price: data[index]?.price,
-  //       },
-  //     ];
-  //     const encodedGuests = [`adults:1,children:0,infants:0`];
-  //     const encodedSelectedRooms = 1;
+      const encodedGuests =  roomDetails1?.map((details) => {
+        return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+      })
+      .join("&");
+      const encodedSelectedRooms = numberOfRooms1;
 
-  //     const hotel = `${idHotel}, ${hotelData?.[0]?.name}`;
+      const hotel = `${idHotel}, ${hotelData?.[0]?.name}`;
 
-  //     const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
-  //     navigate(url);
-  //   } else {
-  //     message.error(
-  //       "Vui lòng chọn ngày check-in và check-out trước khi đặt phòng."
-  //     );
-  //   }
-  // };
+      const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${encodedGuests}`;
+      navigate(url);
+    } else {
+      message.error(
+        "Vui lòng chọn ngày check-in và check-out trước khi đặt phòng."
+      );
+    }
+  };
 // form đặt ngày
  /*Hàm Dropdow*/
  const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
@@ -103,10 +86,7 @@ useEffect(() => {
     infants: number;
   }
 
-  const [roomDetails1, setRoomDetails1] = useState<RoomDetail[]>([
-    { adults: 1, children: 0, infants: 0 },
-  ]);
-  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
+  
 
   const handleRoomChange1 = (value: number) => {
     if (value >= 1) {
@@ -343,8 +323,8 @@ useEffect(() => {
                             <AiOutlineUser />
                           </span>
                           <div onClick={handleDivClick1} className="lg:w-[170px]">
-                            <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 font-bold sm:space-x-2 font-semibold ">
-                              <label htmlFor="" className='cursor-pointer group-hover:text-[#e8952f] ml-[-35px] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Số phòng - Số người</label>
+                            <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 sm:space-x-2 font-semibold ">
+                              <label htmlFor="" className='cursor-pointer group-hover:text-[#e8952f] ml-[-35px] text-sm font-medium text-gray-500'>Số phòng - Số người</label>
                             </div>
                             <div
                               onClick={toggleDropdown1}
@@ -363,7 +343,7 @@ useEffect(() => {
                             {isDropdownOpen1 && (
                               <div className="absolute mt-1 lg:w-[400px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 hover:block rounded-md">
                                   <div className="flex items-center justify-between cursor-pointer text-[15px]">
-                                  <span className="font-medium text-gray-700 font-bold">Số phòng</span>
+                                  <span className="font-medium text-gray-700">Số phòng</span>
                                   <div className="flex items-center space-x-4">
                                     {numberOfRooms1 > 1 && (
                                       <button
@@ -498,7 +478,7 @@ useEffect(() => {
                           </div>
                         </div>
                       </button>
-                      <button className="bg-[#e8952f] w-[400px] ml-2 mt-4 py-3 rounded text-white font-medium  hover:shadow-xl">Tìm kiếm</button>
+                      <button onClick={() => onHandSubmit()} className="bg-[#e8952f] w-[400px] ml-2 mt-4 py-3 rounded text-white font-medium  hover:shadow-xl">Tìm kiếm</button>
                     </div>
                   </div>
                  )}

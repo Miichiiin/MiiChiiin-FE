@@ -151,7 +151,7 @@ const DetailTypeofRoom = () => {
   //     console.log(
   //       "Ngày kết thúc:",
   //       selectedRange[1].toISOString().slice(0, 10)
-  //     );
+  //     );ưef
   //     message.success("Chọn ngày thành công");
   //   } else {
   //     message.error("Vui lòng chọn một khoảng ngày.");
