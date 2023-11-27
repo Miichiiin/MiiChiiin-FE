@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  AiOutlineSearch,
   AiOutlineRight,
   AiOutlineMenu,
   AiOutlineDown,AiOutlineUser,AiOutlineLogout,AiOutlineIdcard
@@ -8,25 +7,25 @@ import {
 import "../../../components/Css/index.css";
 import Cart from "@/components/cart";
 import {
-  useGetHotel_homeByIdQuery,
-  useGetHotel_homesQuery,
+  useGetHotel_homeByIdQuery
 } from "@/api/webapp/hotel_home";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams ,useNavigate} from "react-router-dom";
 import { TextTruncate } from "@/components/TextTruncate";
 const HeaderHotel = () => {
   const { id } = useParams<{ id: string }>();
   const { data: hotelData } = useGetHotel_homeByIdQuery(id);
+  const navigate = useNavigate()
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
+  // const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const toggleDropdown1 = () => {
-    setIsDropdownOpen1(!isDropdownOpen1);
-  };
+  // const toggleDropdown1 = () => {
+  //   setIsDropdownOpen1(!isDropdownOpen1);
+  // };
   /*cố định menu*/
   const [isFixed, setIsFixed] = useState(false);
   const handleScroll = () => {
@@ -42,9 +41,9 @@ const HeaderHotel = () => {
   /*click ngoài = out*/
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // const toggleMenu = () => {
+  //   setIsMenuOpen(!isMenuOpen);
+  // };
   const closeMenu = () => {
     setIsMenuOpen(false);
     setIsScrollLocked(false); // Đặt giá trị trạng thái cuộn trang
@@ -68,9 +67,9 @@ const HeaderHotel = () => {
     setIsMenuOpen(!isMenuOpen);
     setIsScrollLocked(!isMenuOpen); // Đặt giá trị trạng thái cuộn trang
   };
-  const closeMenuu = () => {
-    setIsMenuOpen(false);
-  };
+  // const closeMenuu = () => {
+  //   setIsMenuOpen(false);
+  // };
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -107,6 +106,7 @@ const HeaderHotel = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       setLoggedIn(null);
+      navigate("/")
     }
   };
   //
