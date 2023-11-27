@@ -174,6 +174,10 @@ const BookingInformation = () => {
   };
 
   const onSubmit = (data: any) => {
+    const total = caculatePrice();
+    const cleanedString = total.replace(/\./g, "");
+    const total1 = parseFloat(cleanedString);
+    if (!total) return;
     const dataBooking = {
       check_in: date[0].toISOString().slice(0, 10),
       check_out: date[1].toISOString().slice(0, 10),
@@ -182,7 +186,7 @@ const BookingInformation = () => {
       name: data.firstName + data.lastName,
       message: "...",
       people_quantity: totalChildren + totalAdults,
-      total_amount: priceAfterVoucher,
+      total_amount: total1,
       cccd: data.id,
       nationality: data.country,
       phone: data.phone,
@@ -209,6 +213,8 @@ const BookingInformation = () => {
   const { data: myvoucher } = useGetVoucher_hotelIdQuery({
     id: user_id || undefined,
   });
+
+  console.log(myvoucher);
 
   /* Khóa cuộn trang */
   useEffect(() => {
@@ -274,6 +280,7 @@ const BookingInformation = () => {
   };
 
   const [appliedVoucher, setAppliedVoucher] = useState<any | null>(null);
+  const [typeVoucher, setTypeVoucher] = useState<string | null>(null);
 
   useEffect(() => {
     const storedVoucherData = localStorage.getItem("selectedVoucherDetails");
@@ -286,8 +293,35 @@ const BookingInformation = () => {
     window.history.back();
   };
 
-  const priceAfterVoucher =
-    sumprice - (sumprice * (appliedVoucher?.discount || 0)) / 100;
+  const caculatePoint = (sum: number, coin: number) => {
+    let t: number = 0;
+    if (coin > sum) {
+      console.log("lon hon");
+
+      t = sum / 2;
+    } else {
+      t = coin;
+    }
+    return t;
+  };
+
+  // typeVoucher === "coin" "cash"
+
+  const caculatePrice = () => {
+    let priceAfterVoucher = 0;
+    if (typeVoucher === "cash") {
+      priceAfterVoucher =
+        sumprice - (sumprice * (appliedVoucher?.discount || 0)) / 100;
+    }
+    if (typeVoucher === "coin") {
+      priceAfterVoucher =
+        sumprice - (caculatePoint(sumprice, myvoucher?.coin) || 0);
+    }
+    if (!typeVoucher) {
+      priceAfterVoucher = sumprice;
+    }
+    return `${priceAfterVoucher.toLocaleString("vi-VN")}` + "đ";
+  };
 
   return (
     <div>
@@ -500,10 +534,10 @@ const BookingInformation = () => {
                       className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
                       type="tel"
                       placeholder="Ex: Anh Duy"
-                      {...register("id", {
-                        required: true,
-                        validate: validateID,
-                      })}
+                      // {...register("id", {
+                      //   required: true,
+                      //   validate: validateID,
+                      // })}
                     />
                     {errors.id && (
                       <span className="text-red-500">
@@ -530,6 +564,9 @@ const BookingInformation = () => {
                 <div className="border border-b-[#f9f9f9] bg-[#f5f6fa] px-5 py-5 flex items-center justify-between">
                   <span className="font-medium text-[18px]">
                     MiiChii Ưu Đãi
+                  </span>
+                  <span className="font-medium text-[18px]">
+                    Số coin: {myvoucher?.coin}
                   </span>
                 </div>
 
@@ -622,13 +659,15 @@ const BookingInformation = () => {
                   </div>
                 )}
 
-                {/* COIN */}
+                {/* COIN && VOUCHER*/}
                 <div className="flex">
                   <div className="flex items-center ml-5 mt-2">
                     <input
                       type="checkbox"
                       id="useCoin"
                       name="useCoin"
+                      checked={typeVoucher === "coin" ? true : false}
+                      onChange={() => setTypeVoucher("coin")}
                       className="mr-2"
                     />
                     <label
@@ -644,6 +683,8 @@ const BookingInformation = () => {
                       type="checkbox"
                       id="useCoin"
                       name="useCoin"
+                      onChange={() => setTypeVoucher("cash")}
+                      checked={typeVoucher === "cash" ? true : false}
                       className="mr-2"
                     />
                     <div
@@ -656,6 +697,17 @@ const BookingInformation = () => {
                     </div>
                   </div>
                 </div>
+                {typeVoucher == "coin" && (
+                  <div
+                    style={{
+                      color: "red",
+                      marginLeft: "30px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Số coin không được vượt quá 50% giá trị đơn hàng
+                  </div>
+                )}
               </div>
               {/* end */}
 
@@ -798,27 +850,38 @@ const BookingInformation = () => {
                         </ul>
                       </div>
                     )}
+                    {/* Ap voucher */}
                     <div>
                       <div className="border-gray-100  px-2 rounded mt-5">
                         <p className="text-[17px] pb-3 font-semibold">
                           Voucher được áp dụng:
                         </p>
                       </div>
-                      <div className="border-gray-100 px-2 rounded mt-3">
-                        {appliedVoucher ? (
-                          <>
-                            <p>
-                              {appliedVoucher.name} - Giảm giá:{" "}
-                              {appliedVoucher.discount}%
+                      {typeVoucher === "cash" && (
+                        <div className="border-gray-100 px-2 rounded mt-3">
+                          {appliedVoucher ? (
+                            <>
+                              <p>
+                                {appliedVoucher.name} - Giảm giá:{" "}
+                                {appliedVoucher.discount}%
+                              </p>
+                            </>
+                          ) : (
+                            <p className="text-sm pb-3 font-medium text-gray-500 flex items-center">
+                              <AiOutlineGift class="text-lg mr-2" />
+                              Không có voucher được áp dụng
                             </p>
-                          </>
-                        ) : (
-                          <p className="text-sm pb-3 font-medium text-gray-500 flex items-center">
-                            <AiOutlineGift class="text-lg mr-2" />
-                            Không có voucher được áp dụng
+                          )}
+                        </div>
+                      )}
+
+                      {typeVoucher === "coin" && (
+                        <div className="border-gray-100 px-2 rounded mt-3">
+                          <p>
+                            Coin áp dụng - Giảm giá: {myvoucher?.coin || 0} coin
                           </p>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -840,16 +903,19 @@ const BookingInformation = () => {
                   </h2>
                   <a className="text-[15px] font-medium text-red-600" href="">
                     -
-                    {(
-                      (sumprice * appliedVoucher?.discount || 0) / 100
-                    ).toLocaleString("vi-VN")}
-                    đ
+                    {typeVoucher === "cash" &&
+                      (
+                        (sumprice * appliedVoucher?.discount || 0) / 100
+                      ).toLocaleString("vi-VN")}
+                    {(typeVoucher === "coin" &&
+                      caculatePoint(sumprice, myvoucher?.coin)) ||
+                      0}
                   </a>
                 </div>
                 <div className="flex items-center justify-between mt-4">
                   <h2 className="text-[18px] font-medium"> Tổng cộng:</h2>
                   <a className="text-[18px] font-medium text-[#e8952f]" href="">
-                    {priceAfterVoucher.toLocaleString("vi-VN")} đ
+                    {caculatePrice()}
                   </a>
                 </div>
               </div>
@@ -958,7 +1024,7 @@ const BookingInformation = () => {
                 <p className="mb-2">
                   <span className="">Tổng số tiền:</span>{" "}
                   <span className="text-orange-400 font-semibold">
-                    {order && order?.total_amount}
+                    {order && order?.total_amount?.toLocaleString("vi-VN")}đ
                   </span>
                 </p>
                 {/* Thêm thông tin khác của đơn hàng nếu cần */}
