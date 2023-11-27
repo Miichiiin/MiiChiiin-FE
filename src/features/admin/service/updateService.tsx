@@ -32,7 +32,7 @@ export const UpdateService = () => {
     }
     setIsUploading(true);
 
-    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
 
     updateServiceAdmin(body).unwrap()
       .then(() => {

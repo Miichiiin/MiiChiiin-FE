@@ -1,7 +1,7 @@
 import { useAddService_adminMutation } from '@/api/admin/service_admin';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
-import { Button, Form, Input, InputNumber, Select, Spin, message } from 'antd';
+import { Button, Form, Input, Select, Spin, message } from 'antd';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ export const AddService = () => {
     body.append('status', values.status)
     setIsUploading(true);
 
-    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
     addServiceAdmin(body).unwrap().then(() => {
       navigate("/admin/service")
       message.success({ content: 'Thêm dịch vụ thành công', key: 'uploading' })
@@ -64,16 +64,22 @@ export const AddService = () => {
         <Form.Item
           label="Tên dịch vụ"
           name="name"
-          rules={[{ required: true, message: 'Hãy nhập tên dịch vụ!' }]}
+          rules={[
+            { required: true, message: 'Hãy nhập tên dịch vụ!' },
+            { whitespace: true, message: 'Không được để khoảng trắng' }
+          ]}
         >
           <Input allowClear />
         </Form.Item>
         <Form.Item
           label="Giá"
           name="price"
-          rules={[{ required: true, message: 'Hãy nhập giá dịch vụ!' }]}
+          rules={[{ required: true, message: 'Hãy nhập giá dịch vụ!' },
+          { whitespace: true, message: 'Không được để khoảng trắng' },
+          { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },
+          ]}
         >
-          <InputNumber className='w-full' />
+          <Input className='w-full' />
         </Form.Item>
         <Form.Item
           name="image"
@@ -84,9 +90,11 @@ export const AddService = () => {
         <Form.Item
           label="Số lượng"
           name="quantity"
-          rules={[{ required: true, message: 'Hãy nhập số lượng dịch vụ!' }]}
+          rules={[{ required: true, message: 'Hãy nhập số lượng dịch vụ!' },
+          { whitespace: true, message: 'Không được để khoảng trắng' },
+          { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },]}
         >
-          <InputNumber className='w-full' />
+          <Input className='w-full' />
         </Form.Item>
         <Form.Item
           label="Trạng thái"
@@ -99,7 +107,13 @@ export const AddService = () => {
             <Select.Option value={2}>Hoạt động</Select.Option>
           </Select>
         </Form.Item>
-        <Form.Item label="Mô tả" name="description">
+        <Form.Item label="Mô tả" name="description"
+        rules={[{
+          required: true,
+          message: 'Hãy nhập mô tả dịch vụ!'
+        },
+        { whitespace: true, message: 'Không được để khoảng trắng' 
+        }]}>
           <Input.TextArea placeholder="Nội dung" allowClear />
         </Form.Item>
         <Form.Item>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Input, DatePicker, Select, Button, Form, Radio, message, Image } from 'antd';
+import { Input, DatePicker, Select, Button, Form, Radio, message, Image, Spin } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -30,7 +30,7 @@ const UpdateEmployeePage = () => {
   const [selectedFile, setSelectedFile] = useState<File>();
   const [isImageChanged, setIsImageChanged] = useState(false);
   const { data: dataRole } = useGetRoles1Query({});
-  
+  const [isUploading, setIsUploading] = useState(false)
   const data = dataRole?.map(({ id, name }: DataType) => ({
     key: id,
     name: name,
@@ -73,11 +73,14 @@ const UpdateEmployeePage = () => {
     } else {
       body.append('image', empolyeeData?.image);
     }
+    setIsUploading(true);
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
     updateEmployee(body).unwrap().then(() => {
       navigate("/admin/manageremployee");
       message.success("Update thành công !")
+    }).catch(() => {
+      message.error("Update thất bại !")
     })
-    console.log('Form values:', values);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +92,7 @@ const UpdateEmployeePage = () => {
 
   return (
     <div>
-
+      {isUploading && <Spin className='animate' />}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div className="text-lg font-bold text-orange-500">Cập Nhật Nhân Viên: <span className='font-semibold text-orange-900'>{empolyeeData?.name}</span></div>
         <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={() => navigate(`/admin/manageremployee`)}>
@@ -132,7 +135,7 @@ const UpdateEmployeePage = () => {
         </div>
         <div className="w-1/2 p-4">
           <Form.Item label="Địa Chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ nhân viên !' }]}>
-            <Input.TextArea />
+            <Input />
           </Form.Item>
 
           <Form.Item label="Số Điện Thoại" name="phone"

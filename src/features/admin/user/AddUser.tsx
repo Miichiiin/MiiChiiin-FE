@@ -28,7 +28,7 @@ export const AddUser = () => {
         body.append('nationality', values.nationality)
         body.append('image', selectedFile as File)
         setIsUploading(true);
-        message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
+        message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
         addUser(body).unwrap().then(() => {
             navigate("/admin/usermanagement")
             message.success({ content: 'Thêm khách hàng thành công', key: 'uploading' })

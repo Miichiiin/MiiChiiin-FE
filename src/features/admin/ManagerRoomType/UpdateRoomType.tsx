@@ -1,7 +1,7 @@
 import { useGetCategory_adminByIdQuery, useUpdateCategory_adminMutation } from "@/api/admin/category_admin";
 import { useGetComfortQuery } from "@/api/admin/comfort_admin";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Button, Form, Image, Input, InputNumber, Select, Skeleton, Spin, message } from "antd";
+import { Button, Form, Image, Input, Select, Skeleton, Spin, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const UpdateRoomType = () => {
         short_description: data.categoryRoom.short_description,
         comfort: data.comfort.map((item: any) => item.id)
       })
-      const comfortIds = data?.comfort?.map((item: any) => item[0]?.id); 
+      const comfortIds = data?.comfort?.map((item: any) => item[0]?.id);
       // Cập nhật giá trị của form
       form.setFieldsValue({
         comfort: comfortIds,
@@ -61,8 +61,9 @@ const UpdateRoomType = () => {
     } else {
       body.append('image', data?.categoryRoom?.image);
     }
+    
     setIsUploading(true);
-    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
     updateCate(body)
       .unwrap()
       .then(() => {
@@ -119,59 +120,28 @@ const UpdateRoomType = () => {
             <Form.Item
               label="Tên loại phòng"
               name="name"
-              rules={[{ required: true, message: 'Vui lòng nhập tên loại phòng!' }]}
+              rules={
+                [
+                  { required: true, message: 'Vui lòng nhập tên loại phòng!' },
+                  { whitespace: true, message: 'Vui lòng nhập tên loại phòng!' },
+                  { max: 50, message: 'Vui lòng nhập tên nhỏ hơn 50 ký tự!' }
+                ]}
             >
               <Input />
             </Form.Item>
-            <Form.Item
-              label="Mô tả"
-              name="description"
-              rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
-            >
-              <Input.TextArea />
-            </Form.Item>
+
             <Form.Item
               label="Trạng thái"
               name="status"
               rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
             >
-              <Select placeholder="Chọn trạng thái">
+              <Select placeholder="Chọn trạng thái" >
                 <Select.Option value={2}>Đang hoạt động</Select.Option>
                 <Select.Option value={1}>Đang bảo trì</Select.Option>
                 <Select.Option value={0}>Đang chờ</Select.Option>
               </Select>
             </Form.Item>
-          </div>
 
-          <div className='w-1/2'>
-            <Form.Item
-              label="Số tầng"
-              name="floor"
-              rules={[{ required: true, message: 'Vui lòng nhập số tầng!' }]}
-            >
-              <InputNumber className='w-full' />
-            </Form.Item>
-            <Form.Item
-              label="Số người"
-              name="quantity_of_people"
-              rules={[{ required: true, message: 'Vui lòng nhập số người!' }]}
-            >
-              <InputNumber className='w-full' />
-            </Form.Item>
-            <Form.Item
-              label="Giá"
-              name="price"
-              rules={[{ required: true, message: 'Vui lòng nhập giá phòng!' }]}
-            >
-              <InputNumber className='w-full' />
-            </Form.Item>
-            <Form.Item
-              label="Diện tích"
-              name="acreage"
-              rules={[{ required: true, message: 'Vui lòng nhập diện tích!' }]}
-            >
-              <InputNumber className='w-full' />
-            </Form.Item>
             <Form.Item
               label="Tiện ích"
               name="comfort"
@@ -188,6 +158,55 @@ const UpdateRoomType = () => {
               </Select>
 
             </Form.Item>
+            <Form.Item
+              label="Mô tả"
+              name="description"
+              rules={[{ required: true, message: 'Vui lòng nhập mô tả!' },
+              { whitespace: true, message: 'Không được để khoảng trắng!' }]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+          </div>
+
+          <div className='w-1/2'>
+            <Form.Item
+              label="Số tầng"
+              name="floor"
+              rules={[
+                { required: true, message: 'Vui lòng nhập số tầng!' },
+
+                { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },
+              ]}
+            >
+              <Input className='w-full' />
+            </Form.Item>
+            <Form.Item
+              label="Số người"
+              name="quantity_of_people"
+              rules={[{ required: true, message: 'Vui lòng nhập số người!' },
+              { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },]}
+            >
+              <Input className='w-full' />
+            </Form.Item>
+            <Form.Item
+              label="Giá"
+              name="price"
+              rules={[{ required: true, message: 'Vui lòng nhập giá phòng!' },
+              { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },]}
+            >
+              <Input className='w-full' />
+            </Form.Item>
+            <Form.Item
+              label="Diện tích"
+              name="acreage"
+              rules={[{ required: true, message: 'Vui lòng nhập diện tích!' },
+              { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },
+              ]}
+            >
+              <Input className='w-full' />
+            </Form.Item>
+
+
             <Form.Item
               name="image"
               label="Upload"

@@ -66,7 +66,7 @@ interface RoomData {
 const AddBooking = () => {
   const { data: categories, isLoading, isError } = useGetCategory_BookingQuery() // Lấy danh sách loại phòng
   const { data: services } = useGetService_adminQuery() // Lấy danh sách dịch vụ
-  const [addBooking] = useAddBooking_adminMutation(); // Thêm booking
+  const [addBooking, {isSuccess}] = useAddBooking_adminMutation(); // Thêm booking
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const [cartData, setCartData] = useState<FieldType['cart']>([]);
@@ -252,7 +252,6 @@ const AddBooking = () => {
       id_cate: roomData.id_cate, // ID phòng đã chọn
       services: roomData.services, // Các dịch vụ đã chọn cho phòng
     }));
-
     // Cập nhật giá trị cart trong values
     const formattedValues = {
       ...values,
@@ -260,15 +259,12 @@ const AddBooking = () => {
       check_out: values.check_out?.format('YYYY-MM-DD HH:mm:ss'),
       cart: cart,
       promotion: 1,
-      message: "Add booking nhé"
+      message: "Add booking nhé",
+      id_voucher: null
     };
     addBooking(formattedValues).unwrap().then((response) => {
       const bookingId = response.error_message.id;
-
-      message.success('Thêm thành công');
-      setTimeout(() => {
         navigate(`/admin/detailbooking/${bookingId}`);
-      }, 2000);
     });
   };
 
@@ -282,6 +278,11 @@ const AddBooking = () => {
 
   if (isError) {
     return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
+  }
+  if (isSuccess) {
+    console.log(isSuccess);
+    
+    message.success('Thêm booking thành công');
   }
 
   return (
@@ -323,7 +324,7 @@ const AddBooking = () => {
                   value={form.getFieldValue('check_in')}
                   placeholder="Chọn ngày và giờ"
                   onChange={handleCheckInDateChange}
-                  format="YYYY-MM-DD HH:mm"
+                  format="YYYY-MM-DD "
                   className='w-[250px]'
                   disabledDate={(currentDate) => {
                     // Disable dates before the current date
@@ -346,7 +347,7 @@ const AddBooking = () => {
                   value={form.getFieldValue('check_in')}
                   placeholder="Chọn ngày và giờ"
                   onChange={handleCheckOutDateChange}
-                  format="YYYY-MM-DD HH:mm"
+                  format="YYYY-MM-DD"
                   className='w-[250px]'
                   disabledDate={(currentDate) => {
                     // Disable dates before the current date

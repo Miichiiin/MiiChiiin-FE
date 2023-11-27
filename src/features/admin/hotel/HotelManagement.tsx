@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 export const HotelManagement = () => {
     const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
     const { data: HotelData, isLoading, isError } = useGetHotel_adminsQuery({});
-    const [removeHotel] = useRemoveHotel_adminMutation({})
+    const [removeHotel, {isLoading:isRemoving}] = useRemoveHotel_adminMutation({})
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState("");
 
@@ -180,6 +180,9 @@ export const HotelManagement = () => {
     };
     if (isLoading) return <Skeleton active />
     if (isError) return <div>Error</div>
+    if (isRemoving) {
+        message.loading({ content: 'Loading...', key: 'updatable', duration: 1 })
+    }
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>

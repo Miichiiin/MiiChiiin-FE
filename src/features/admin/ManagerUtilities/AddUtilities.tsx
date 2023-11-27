@@ -20,7 +20,7 @@ const AddUtilities = () => {
             <header className="flex justify-between items-center mb-5 ">
                 <h2 className="text-lg font-bold text-orange-500">Thêm tiện ích</h2>
                 <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/managerutilities")}>
-                <ArrowLeftOutlined className="pr-2" /> Quay lại
+                    <ArrowLeftOutlined className="pr-2" /> Quay lại
                 </button>
             </header>
             <Form
@@ -47,7 +47,7 @@ const AddUtilities = () => {
                         name="status"
                         rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
                     >
-                        <Select placeholder="Chọn trạng thái" 
+                        <Select placeholder="Chọn trạng thái"
                         >
                             <Select.Option value={0}>Đang chờ</Select.Option>
                             <Select.Option value={1}>Đã ẩn</Select.Option>

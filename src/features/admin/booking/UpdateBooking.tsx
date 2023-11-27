@@ -446,7 +446,7 @@ const UpdateBooking = () => {
                 <DatePicker
                   value={form.getFieldValue('check_in')}
                   onChange={handleCheckInDateChange}
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="YYYY-MM-DD"
                   placeholder="Chọn ngày và giờ"
                   className='w-[250px]'
                   // disabledDate={(current) => {
@@ -471,7 +471,7 @@ const UpdateBooking = () => {
                 <DatePicker
                   value={form.getFieldValue('check_out')}
                   onChange={handleCheckOutDateChange}
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="YYYY-MM-DD"
                   placeholder="Chọn ngày và giờ"
                   className='w-[250px]'
                   // disabledDate={(current) => {
@@ -513,10 +513,6 @@ const UpdateBooking = () => {
                 rules={[
                   { required: true, message: 'Hãy nhập số vào !' },
                   { whitespace: true, message: 'Không được để trống!' },
-                  {
-                    pattern: /^0[0-9]*$/,
-                    message: 'Hãy nhập số đúng định dạng ',
-                  },
                 ]}
 
                 labelCol={{ span: 24 }}
