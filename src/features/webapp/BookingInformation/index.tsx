@@ -656,12 +656,12 @@ const BookingInformation = () => {
                       </ul>
 
                       {/* Nút sử dụng voucher */}
-                      <button
+                      {/* <button
                         className="font-medium bg-blue-500 px-6 py-2 text-white rounded-md ml-auto flex"
                         onClick={() => handleUseVoucher(voucher?.id)}
                       >
                         Sử dụng
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 )}
