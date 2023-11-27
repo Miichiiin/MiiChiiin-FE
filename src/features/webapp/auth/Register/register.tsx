@@ -1,3 +1,4 @@
+import { useSignupMutation } from '@/api/auth/register';
 import { useState } from 'react';
 import { BsGoogle } from 'react-icons/bs'
 import { Link } from 'react-router-dom';
@@ -10,6 +11,8 @@ const Register = () => {
     const [passwordError, setPasswordError] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    const [Signup] = useSignupMutation() 
 
     const handleEmailChange = (e: any) => {
         const newEmail = e.target.value;
@@ -53,6 +56,29 @@ const Register = () => {
             setUsernameError('');
         }
     };
+    const handleRegistration = async (e: React.FormEvent) => {
+        e.preventDefault();
+        // Kiểm tra nếu có lỗi, không thực hiện đăng ký
+        if (emailError || passwordError || confirmPasswordError || usernameError) {
+            console.log('Form contains errors. Cannot register.');
+            return;
+        }
+        try {
+          // Gọi API đăng ký tài khoản ở đây
+          const response = await Signup({
+            variables: {
+              email,
+              password,
+              username,
+            },
+          });
+      
+          console.log('Đăng ký thành công:', response);
+          // Bạn có thể muốn chuyển hướng người dùng đến một trang khác sau khi đăng ký thành công
+        } catch (error) {
+          console.error('Đăng ký thất bại:',);
+        }
+      };
 
     const isFormValid = emailError === '' && passwordError === '' && confirmPasswordError === '' && usernameError === '';
 
@@ -61,8 +87,8 @@ const Register = () => {
             <div className="" >
                 <div className="flex justify-center items-center ">
                     <div className="w-[768px] px-5 mt-[135px] bg-blue-300 opacity-90 shadow-lg rounded-lg pb-3">
-                        <h1 className="text-center uppercase pt-10 pb-5 text-3xl font-bold italic ">Register</h1>
-                        <form>
+                        <h1 className="text-center uppercase pt-10 pb-5 text-3xl font-bold italic ">Đăng ký tài khoản</h1>
+                        <form onSubmit={handleRegistration}>
                             <div className="">
                                 <input type="text" id="email" name="email" placeholder="Email address" value={email}
                                     onChange={handleEmailChange}

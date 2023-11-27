@@ -2,7 +2,7 @@ import { useGetCategory_adminByIdQuery, useUpdateCategory_adminMutation } from "
 import { useGetComfortQuery } from "@/api/admin/comfort_admin";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Button, Form, Image, Input, InputNumber, Select, Skeleton, Spin, message } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 
@@ -11,6 +11,31 @@ const UpdateRoomType = () => {
   const navigate = useNavigate()
   const { id } = useParams()
   const { data, isLoading, isError } = useGetCategory_adminByIdQuery(id)
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        id: data.categoryRoom.id,
+        name: data.categoryRoom.name,
+        description: data.categoryRoom.description,
+        quantity_of_people: data.categoryRoom.quantity_of_people,
+        price: data.categoryRoom.price,
+        status: data.categoryRoom.status,
+        floor: data.categoryRoom.floor,
+        acreage: data.categoryRoom.acreage,
+        short_description: data.categoryRoom.short_description,
+        comfort: data.comfort.map((item: any) => item.id)
+      })
+      const comfortIds = data?.comfort?.map((item: any) => item[0]?.id); 
+      // Cập nhật giá trị của form
+      form.setFieldsValue({
+        comfort: comfortIds,
+      });
+    }
+
+  })
+
   const [updateCate] = useUpdateCategory_adminMutation()
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isUploading, setIsUploading] = useState(false)
@@ -28,14 +53,13 @@ const UpdateRoomType = () => {
     body.append('status', values.status)
     body.append('floor', values.floor)
     body.append('acreage', values.acreage)
-    body.append('short_description', values.short_description)
     comfort.forEach((item: any, index: any) => {
       body.append(`comfort[${index}]`, item);
     })
     if (isImageChanged) {
       body.append('image', selectedFile as File);
     } else {
-      body.append('image', data?.image);
+      body.append('image', data?.categoryRoom?.image);
     }
     setIsUploading(true);
     message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
@@ -74,7 +98,7 @@ const UpdateRoomType = () => {
     <div>
       {isUploading && <Spin className='animate' />}
       <header className="flex justify-between items-center mb-5">
-        <h2 className="text-lg font-bold text-orange-500">Cập nhật dịch vụ: <span className='text-orange-900 font-semibold'>{data?.name}</span></h2>
+        <h2 className="text-lg font-bold text-orange-500">Cập nhật loại phòng: <span className='text-orange-900 font-semibold'>{data.categoryRoom.name}</span></h2>
         <button className="px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center" onClick={() => navigate("/admin/manageroomtype")}>
           <ArrowLeftOutlined className='pr-2' /> Quay lại
         </button>
@@ -82,12 +106,13 @@ const UpdateRoomType = () => {
 
       <Form
         name="basic"
-        initialValues={data}
+        initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         labelCol={{ span: 6 }}
         layout="vertical"
+        form={form}
       >
         <div className="flex justify-between space-x-4">
           <div className="w-1/2">
@@ -102,13 +127,6 @@ const UpdateRoomType = () => {
               label="Mô tả"
               name="description"
               rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-            <Form.Item
-              label="Mô tả ngắn"
-              name="short_description"
-              rules={[{ required: true, message: 'Vui lòng nhập mô tả ngắn!' }]}
             >
               <Input.TextArea />
             </Form.Item>
@@ -175,7 +193,7 @@ const UpdateRoomType = () => {
               label="Upload"
             >
               <input type='file' onChange={handleChange} className="my-2" />
-              <Image src={data?.image} width={100} height={100} alt="Current Image" />
+              <Image src={data?.categoryRoom?.image} width={100} height={100} alt="Current Image" />
             </Form.Item>
           </div>
         </div>

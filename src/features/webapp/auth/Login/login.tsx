@@ -1,5 +1,5 @@
 import { BsGoogle } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate ,Outlet} from "react-router-dom";
 import "./login.css";
 import { message } from "antd";
 import { useSigninMutation } from "@/api/auth/auth";
@@ -49,26 +49,28 @@ const handleLogin = async (user: any) => {
       <div className="">
         <div className="flex ">
           <div className="flex">
-            <div className="w-[67%]">
-              <img 
-                src="https://storage.googleapis.com/vin3sprodauth0.vin3s.vn/vinpearl_login_screen.jpg" 
-                alt="" 
-                className="object-cover"
-              />
+          <div className="w-[67%] relative">
+            <img 
+              src="https://res.cloudinary.com/dzqywzres/image/upload/v1701050900/b6ihzn2wajkkgwdbbznz.jpg" 
+              alt="" 
+              className="object-cover"
+            />
+            <div className="absolute top-[20%] end-[45%] text-white  w-[45%]">
+              <h2 className="text-3xl mb-2 font-medium">Trải nghiệm cuộc sông đăng cấp cùng Miichi</h2>
+              <p className="text-xl">Hưởng ngay ưu đãi và tích lũy giao dịch sau khi đăng ký thành viên</p>
             </div>
-           
+          </div>
             <div className="flex w-[33%]">
               <div className="px-10">
                 <div className="flex mt-[70px] justify-center mb-[-50px]">
-                  <a href="/" className="h-[150px] flex justify-center"><img className="w-[50%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png " alt="" /></a>
-                  {/* <img className="w-[30%] h-[30%] object-cover" src="https://storage.googleapis.com/vin3sprodauth0.vin3s.vn/vinpearl_login_logo-02.png" alt="" /> */}
+                  <a href="/" className="h-[150px] flex justify-center"><img className="w-[100%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" /></a>
                 </div>
                 <div className="flex">
                     <h1 className=" font-bold mb-3 text-[17px] w-[50%] border-b-[3px] border-[#e8952f] pb-2 text-center">
                       Đăng nhập/Login
                     </h1>
                     <h1 className=" font-bold mb-3 text-[17px] text-center w-[50%]">
-                     Đăng kí/Register
+                     <Link to={"/register"}>Đăng kí/Register</Link>
                     </h1>
                 </div>
                 <form onSubmit={handleSubmit(handleLogin)} className="">

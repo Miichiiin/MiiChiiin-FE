@@ -275,6 +275,19 @@ const HotelIntroduction = () => {
             </div>
           </div>
         </div>
+        <div className="w-[1280px] mx-auto mt-10 relative">
+          <img
+            src="https://vinpearl.com/themes/porto/images/microsite_hotel_v2/img_become.jpg"
+            alt=""
+          />
+          <div className="leading-10  absolute text-white top-[100px] start-[200px]">
+            <p className="text-[30px]">Đăng ký thành viên Miichi</p>
+            <p>
+              Mức giá ưu đãi, tích lũy để hưởng đêm nghỉ miễn phí và hơn thế
+              nữa.
+            </p>
+          </div>
+        </div>
         <div>
           <div className="w-[1560px] mx-auto pb-10 relative">
             <div className="flex items-center justify-between w-[1280px] mx-auto mt-[80px] mb-10">
@@ -284,12 +297,12 @@ const HotelIntroduction = () => {
                 <AiOutlineArrowRight />
               </span>
             </div>
-            <div className="">
+            <div className="w-[1280px] mx-auto ">
               <Slider {...settings1} ref={sliderRef1} className="space-x-4">
                 {service?.map((item: any, index: any) => (
                   <div key={index} className="relative">
                     <img
-                      className="h-[400px] w-[380px] rounded-md"
+                      className="h-[300px] w-[400px] rounded-md"
                       src={item?.image}
                       alt=""
                     />
@@ -308,26 +321,14 @@ const HotelIntroduction = () => {
             </div>
             <button
               onClick={handleNext1}
-              className="bg-white absolute top-[280px] end-[410px] w-8 hover:bg-gray-500 hover:text-white h-12 text-[22px] pl-1"
+              className="top-[50%] end-[12%] bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute transform transition-tranform hover:scale-125 duration-300 "
             >
               <AiOutlineRight />
             </button>
           </div>
         </div>
-        <div className="w-[1280px] mx-auto mt-10 relative">
-          <img
-            src="https://vinpearl.com/themes/porto/images/microsite_hotel_v2/img_become.jpg"
-            alt=""
-          />
-          <div className="leading-10  absolute text-white top-[100px] start-[200px]">
-            <p className="text-[30px]">Đăng ký thành viên Pearl</p>
-            <p>
-              Mức giá ưu đãi, tích lũy để hưởng đêm nghỉ miễn phí và hơn thế
-              nữa.
-            </p>
-          </div>
-        </div>
-        <div className="mb-[100px]">
+        
+        {/* <div className="mb-[100px]">
           <div className="flex items-center justify-between w-[1280px] mx-auto mt-[80px]">
             <h1 className="text-[30px]">Ưu Đãi</h1>
             <span className="flex items-center space-x-2 text-[#f2ba50]">
@@ -372,7 +373,7 @@ const HotelIntroduction = () => {
               })}
             </Slider>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
