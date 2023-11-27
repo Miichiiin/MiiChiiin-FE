@@ -7,7 +7,7 @@ import {
 import video from "../video/vdeo.mp4";
 import "../components/Css/index.css";
 import Cart from "./cart";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
 import SearchOrder from "./SearchOrder";
 import { TextTruncate } from "../components/TextTruncate"
@@ -16,7 +16,7 @@ const Header = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: hotels } = useGetHotel_homesQuery();
-
+  const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -54,9 +54,9 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
     setIsScrollLocked(!isMenuOpen); // Đặt giá trị trạng thái cuộn trang
   };
-  const closeMenuu = () => {
-    setIsMenuOpen(false);
-  };
+  // const closeMenuu = () => {
+  //   setIsMenuOpen(false);
+  // };
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -108,6 +108,7 @@ const Header = () => {
     if (confirm) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      navigate("/")
       setLoggedIn(null);
     }
   };

@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { AiOutlineRight, AiOutlineMenu, AiOutlineLogout,AiOutlineUser,AiOutlineIdcard } from "react-icons/ai";
 import "../../../components/Css/index.css";
 import Cart from "@/components/cart";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { TextTruncate } from "@/components/TextTruncate";
 
 const HeaderHotelType = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate()
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -95,6 +96,7 @@ const HeaderHotelType = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       setLoggedIn(null);
+      navigate("/")
     }
   };
 
