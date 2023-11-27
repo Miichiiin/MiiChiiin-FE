@@ -15,7 +15,7 @@ import {
 import { useGetHotelChainStatisticsQuery } from "@/api/admin/HotelChainStatistics";
 import { useGetHotelChainStatisticsvQuery } from "@/api/admin/HotelChainStatisticsSv";
 import { useGetHotelChainStatisticRtQuery } from "@/api/admin/HotelChainStatistics_Roomtype";
-import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
+import { useGetCategory_hotelQuery } from "@/api/webapp/category_hotel";
 
 const HotelChainStatistic = () => {
   // Thêm dữ liệu cho các khách sạn và tháng/năm khác theo nhu cầu của bạn
@@ -27,6 +27,9 @@ const HotelChainStatistic = () => {
     year: selectedYear,
   });
 
+  const dataLogin = localStorage.getItem("userAdmin");
+  console.log("dataLogin",dataLogin);
+  
 
   const [filteredData1, setFilteredData1] = useState<any>([]);
 
@@ -83,7 +86,6 @@ const HotelChainStatistic = () => {
     setIsDropdownVisiblesv(!isDropdownVisiblesv);
   };
 
-
   const handleMonthChangesv = (event: any) => {
     const selectedMonth = parseInt(event.target.value);
     setSelectedMonthsv(selectedMonth);
@@ -97,14 +99,15 @@ const HotelChainStatistic = () => {
   // Biểu đồ của RoomType
   const [selectedMonthRt, setSelectedMonthRt] = useState(11);
   const [selectedYearRt, setSelectedYearRt] = useState(2023);
-  const [selectedRoomType, setSelectedRoomType] = useState<any>(2);
+  const [selectedRoomType, setSelectedRoomType] = useState<number>(2);
+  const [selectedRoomId, setSelectedRoomId] = useState('');
   const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery({
     month: selectedMonthRt,
     year: selectedYearRt,
-    roomType: selectedRoomType,
+    roomType: selectedRoomId,
   });
 
-
+  const { data: cateRooms } = useGetCategory_hotelQuery({});
 
   let statisticalChainRoomtype: any;
 
@@ -117,8 +120,8 @@ const HotelChainStatistic = () => {
 
   if (HotelChainStatisticRt) {
     statisticalRoom = HotelChainStatisticRt.rating_comment_booking.flatMap(
-      (hotel:any) =>
-        hotel.roomAverages.map((roomAverage:any) => ({
+      (hotel: any) =>
+        hotel.roomAverages.map((roomAverage: any) => ({
           hotelName: hotel.hotelName, // Lấy tên khách sạn từ mức độ cao hơn
           roomType: roomAverage.roomType,
           bookingCount: roomAverage.bookingCount,
@@ -127,10 +130,6 @@ const HotelChainStatistic = () => {
     );
   } else {
   }
-
-
-
- 
 
   const handleMonthChangeRt = (event: any) => {
     const selectedMonth = event.target.value;
@@ -142,18 +141,14 @@ const HotelChainStatistic = () => {
     setSelectedYearRt(selectedYear);
   };
 
-  const handleRoomTypeChange = (event: any) => {
-    const selectedRoomType = event.target.value;
-    setSelectedRoomType(selectedRoomType);
+  const handleRoomTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedRoom = cateRooms?.find((room: any) => room.name === event.target.value);
+    if (selectedRoom) {
+      setSelectedRoomId(selectedRoom.id);
+    } else {
+      setSelectedRoomId('');
+    }
   };
-
-  const roomTypesFromAPI = Array.isArray(HotelChainStatisticRt)
-    ? HotelChainStatisticRt.flatMap(
-        (hotel) =>
-          hotel.roomAverages?.map((roomAverage: any) => roomAverage.roomType) ||
-          []
-      )
-    : [];
 
   return (
     <div>
@@ -438,10 +433,10 @@ const HotelChainStatistic = () => {
                   onChange={handleRoomTypeChange}
                   value={selectedRoomType}
                 >
-                  {roomTypesFromAPI.length > 0 ? (
-                    roomTypesFromAPI.map((roomAverage: any) => (
-                      <option key={roomAverage} value={roomAverage}>
-                        {roomAverage}
+                  {cateRooms?.length > 0 ? (
+                    cateRooms?.map((room: any) => (
+                      <option key={room?.id} value={room?.name}>
+                        {room?.name}
                       </option>
                     ))
                   ) : (
