@@ -39,7 +39,6 @@ const DetailTypeofRoom = () => {
     id: idRoom,
     id_hotel: idHotel,
   });
-  console.log("data",data);
   
   const likeStart = data?.[0]?.likes;
   const [like, setLike] = useState();
@@ -51,7 +50,6 @@ const DetailTypeofRoom = () => {
   const [roomRating, setRoomRating] = useState(0); // đánh giá
 
   const { data: hotelData } = useGetHotel_homeByIdQuery(idHotel);
-  console.log("dataDetail", data);
 
   const navigate = useNavigate();
   const [addRate] = useAddRate_homeMutation();
@@ -62,6 +60,13 @@ const DetailTypeofRoom = () => {
   const dataComment = dataRate?.filter(
     (comment: any) => comment.id_category === parseInt(String(idRoom))
   );
+
+  const [roomDetails1, setRoomDetails1] = useState<RoomDetail[]>([
+    { adults: 1, children: 0, infants: 0 },
+  ]);
+  
+  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
+  
 
   // Check xem có token chưa
   const [commentText, setCommentText] = useState("");
@@ -134,7 +139,7 @@ const DetailTypeofRoom = () => {
   //
   const [selectedRange, setSelectedRange] = useState<
     [Date | null, Date | null]
-  >([null, null]);
+  >([null, null]); 
 
   const handleRangeChange = (dates: any) => {
     setSelectedRange([dates[0]?.toDate() || null, dates[1]?.toDate() || null]);
@@ -171,45 +176,16 @@ const DetailTypeofRoom = () => {
 
   const onHandSubmit = () => {
     if (selectedRange[0] && selectedRange[1]) {
-      // const updatedSelectedRooms = [
-      //   {
-      //     count: 1,
-      //     name: data?.name,
-      //     price: data?.price,
-      //   },
-      // ];
-      const numberOfRooms1 = [`adults:1,children:0,infants:0`];
-      const encodedSelectedRooms = 1;
+      const roomDetailsString = roomDetails1
+      .map((details) => {
+        return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+      })
+      .join("&");
+      const encodedSelectedRooms = numberOfRooms1;
 
       const hotel = `${idHotel}, ${hotelData?.[0]?.name}`;
 
-      console.log("hotelnew", hotelData?.[0]?.name);
-      const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${numberOfRooms1}`;
-
-      const jsondata = {
-        id: 2,
-        name: "Phòng gia đình",
-        description: "Est quo consequatur.",
-        Total_comfort: 3,
-        Total_rooms: 7,
-        acreage: 4,
-        created_at: "2023-11-12T16:02:07.000000Z",
-        floor: 4,
-        image: "https://via.placeholder.com/640x480.png/0099bb?text=a",
-        imageUrl: [
-          {
-            image:
-              "https://via.placeholder.com/640x480.png/00aa55?text=sapiente",
-          },
-        ],
-        likes: 68,
-        nameHotel: "Michi Hà Nội",
-        price: 1907705,
-        quantity_of_people: 6,
-        updated_at: "2023-11-18T14:51:54.000000Z",
-        views: 5,
-      };
-      localStorage.setItem("selectedRooms", JSON.stringify(jsondata));
+      const url = `/choose-room/${hotel}/${selectedRange}/${encodedSelectedRooms}/${roomDetailsString}`;
       navigate(url, { replace: true });
     } else {
       message.error(
@@ -266,7 +242,6 @@ const DetailTypeofRoom = () => {
 
   const Like = (id: any) => {
     addLike(id).then((res: any) => {
-      console.log("res", res.data.likes);
       setLike(res.data.likes);
     });
   };
@@ -314,10 +289,7 @@ useEffect(() => {
     infants: number;
   }
 
-  const [roomDetails1, setRoomDetails1] = useState<RoomDetail[]>([
-    { adults: 1, children: 0, infants: 0 },
-  ]);
-  const [numberOfRooms1, setNumberOfRooms1] = useState(1);
+
 
   const handleRoomChange1 = (value: number) => {
     if (value >= 1) {
@@ -648,8 +620,8 @@ useEffect(() => {
                             <AiOutlineUser />
                           </span>
                           <div onClick={handleDivClick1} className="lg:w-[170px]">
-                            <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 font-bold sm:space-x-2 font-semibold ">
-                              <label htmlFor="" className='cursor-pointer group-hover:text-[#e8952f] ml-[-35px] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Số phòng - Số người</label>
+                            <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 sm:space-x-2 font-semibold ">
+                              <label htmlFor="" className='cursor-pointer group-hover:text-[#e8952f] ml-[-35px] text-sm font-medium text-gray-500'>Số phòng - Số người</label>
                             </div>
                             <div
                               onClick={toggleDropdown1}
@@ -668,7 +640,7 @@ useEffect(() => {
                             {isDropdownOpen1 && (
                               <div className="absolute mt-1 lg:w-[400px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 hover:block rounded-md">
                                   <div className="flex items-center justify-between cursor-pointer text-[15px]">
-                                  <span className="font-medium text-gray-700 font-bold">Số phòng</span>
+                                  <span className="font-medium text-gray-700">Số phòng</span>
                                   <div className="flex items-center space-x-4">
                                     {numberOfRooms1 > 1 && (
                                       <button
@@ -803,7 +775,7 @@ useEffect(() => {
                           </div>
                         </div>
                       </button>
-                      <button className="bg-[#e8952f] w-[400px] ml-2 mt-4 py-3 rounded text-white font-medium  hover:shadow-xl">Tìm kiếm</button>
+                      <button onClick={() => onHandSubmit()} className="bg-[#e8952f] w-[400px] ml-2 mt-4 py-3 rounded text-white font-medium  hover:shadow-xl">Tìm kiếm</button>
                     </div>
                   </div>
                  )}
