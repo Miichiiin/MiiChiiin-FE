@@ -169,7 +169,7 @@ const BookingInformation = () => {
   };
 
   const validateID = (id: any) => {
-    const idRegex = /^\d{9}$/;
+    const idRegex = /^\d{12}$/;
     return idRegex.test(id);
   };
 
@@ -534,10 +534,10 @@ const BookingInformation = () => {
                       className="border mt-2 w-[360px] h-[45px] rounded-md px-3 text-[12px] outline-none"
                       type="tel"
                       placeholder="Ex: Anh Duy"
-                      // {...register("id", {
-                      //   required: true,
-                      //   validate: validateID,
-                      // })}
+                      {...register("id", {
+                        required: true,
+                        validate: validateID,
+                      })}
                     />
                     {errors.id && (
                       <span className="text-red-500">
