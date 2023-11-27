@@ -40,6 +40,7 @@ const ChooseService = () => {
   const toggleServiceSelection = (
     serviceId: any,
     price: any,
+    name: any,
     roomIndex: any
   ) => {
     const serviceIndex = selectedServices.findIndex(
@@ -55,7 +56,7 @@ const ChooseService = () => {
     } else {
       setSelectedServices((prevSelectedServices) => [
         ...prevSelectedServices,
-        { id: serviceId, price, roomIndex },
+        { id: serviceId, price, roomIndex, name },
       ]);
     }
   };
@@ -267,6 +268,7 @@ const ChooseService = () => {
                                   toggleServiceSelection(
                                     item.id,
                                     item.price,
+                                    item.name,
                                     roomIndex
                                   )
                                 }
