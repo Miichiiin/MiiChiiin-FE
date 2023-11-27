@@ -53,6 +53,7 @@ import category_Api, { category_Reducer } from '@/api/admin/category';
 import authAdminApi, { authAdminReducer } from '@/api/auth/authAdmin';
 import voucher_HotelApi,{voucher_Reducer} from '@/api/webapp/voucher_home';
 import user_AdminApi, {user_AdminReducer} from '@/api/admin/admin_usermanage';
+import category_HotelApi,{ category_HotelReducer } from '@/api/webapp/category_hotel';
 import registerApi, { registerReducer } from '@/api/auth/register';
 
 const persistConfig = {
@@ -101,6 +102,7 @@ const rootReducer = combineReducers({
     userAdmin: authAdminReducer,
     voucher_hotel: voucher_Reducer,
     user_admin: user_AdminReducer,
+    category_hotel:category_HotelReducer,
     register:registerReducer
 })
 const middleware = [
@@ -141,6 +143,7 @@ const middleware = [
     authAdminApi.middleware,
     voucher_HotelApi.middleware,
     user_AdminApi.middleware,
+    category_HotelApi.middleware,
     registerApi.middleware
 ]
 
