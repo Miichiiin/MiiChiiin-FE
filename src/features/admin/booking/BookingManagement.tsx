@@ -1,5 +1,5 @@
 import { useGetBooking_adminQuery, useRemoveBooking_adminMutation } from '@/api/admin/booking_admin';
-import { Table, Divider, Radio, Select, Input, Space, Skeleton } from 'antd';
+import { Table, Divider, Radio, Select, Input, Space, Skeleton, message } from 'antd';
 const { Search } = Input;
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
@@ -16,7 +16,7 @@ import { BiDetail, BiTrash } from "react-icons/bi";
 
 export const BookingManagement = () => {
     const { data: dataBooking, isLoading, isError } = useGetBooking_adminQuery({})
-    const [removeBooking] = useRemoveBooking_adminMutation()
+    const [removeBooking, {isLoading:isRemoving, isSuccess:Success}] = useRemoveBooking_adminMutation()
     const [searchText, setSearchText] = useState("");
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
@@ -138,7 +138,7 @@ export const BookingManagement = () => {
             render: (_, record) => (
                 <div>
                     <button className='px-3 py-2 hover:bg-emerald-600 bg-emerald-500 text-white rounded-md mr-2 text-lg' onClick={() => navigate(`/admin/detailbooking/${record.key}`)}>
-                    <BiDetail /></button>
+                        <BiDetail /></button>
                     {hasAddUserPermission("delete booking") && (
                         <button className='px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 hover:text-white text-lg' onClick={() => removeBooking(record.key)}><BiTrash /></button>
                     )}
@@ -170,6 +170,12 @@ export const BookingManagement = () => {
     if (isError) {
         return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
     }
+    if(isRemoving){
+        message.loading({content:'Đang xóa', key:'removeBooking'})
+    }
+    if(Success){
+        message.success({content:'Xóa thành công', key:'removeBooking'})
+    }
     return (
         <div>
             <div className='flex justify-between items-center mb-4'>
@@ -183,7 +189,7 @@ export const BookingManagement = () => {
                             showSearch
                             className='w-[200px]'
                             placeholder="Lọc"
-defaultValue="all"
+                            defaultValue="all"
                             optionFilterProp="children"
                             filterOption={(input, option) => (option?.label ?? "").includes(input)}
                             filterSort={(optionA, optionB) =>
@@ -227,7 +233,7 @@ defaultValue="all"
 
                 </div>
                 {hasAddUserPermission("add booking") && (
-                    <button className="px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center" onClick={() => navigate('/admin/addbooking')}>
+                    <button className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center" onClick={() => navigate('/admin/addbooking')}>
                         <IoAddCircleOutline className="text-xl" /></button>
                 )}
             </div>

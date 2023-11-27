@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Input, DatePicker, InputNumber, Select, Button, Image, Form, message } from 'antd';
-import {  ArrowLeftOutlined } from '@ant-design/icons';
-import {  useNavigate, useParams } from 'react-router-dom';
+import { Input, DatePicker, Select, Button, Image, Form, message, Spin } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetVoucherByIdQuery, useUpdateVoucherMutation } from '@/api/admin/voucher';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
@@ -17,12 +17,11 @@ const UpdateVoucherPage = () => {
   const [form] = Form.useForm();
   const [selectedFile, setSelectedFile] = useState<File>();
   const [isImageChanged, setIsImageChanged] = useState(false);
-
+  const [isUploading, setIsUploading] = useState(false)
   useEffect(() => {
     form.setFieldsValue({
       name: voucherData?.name,
       slug: voucherData?.slug,
-      // image:voucherData?.image,
       quantity: voucherData?.quantity,
       discount: voucherData?.discount,
       start_at: dayjs(voucherData?.start_at).tz('Asia/Ho_Chi_Minh'),
@@ -46,23 +45,25 @@ const UpdateVoucherPage = () => {
     }
     body.append('name', values.name)
     body.append('slug', values.slug)
-    body.append('image', values.image)
     body.append('quantity', values.quantity)
     body.append('discount', values.discount)
     body.append('start_at', values.start_at)
     body.append('expire_at', values.expire_at)
     body.append('status', values.status)
     body.append('meta', values.meta)
-    body.append('description', values.description)
+    body.append('description', values.meta)
     if (isImageChanged) {
       body.append('image', selectedFile as File);
     } else {
       body.append('image', voucherData?.image);
     }
+    setIsUploading(true);
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
     updateVoucher(body).unwrap().then(() => {
       navigate("/admin/managervouchers")
       message.success('Update khách hàng thành công!');
-
+    }).catch(() => {
+      message.error('Update khách hàng thất bại!');
     })
   };
 
@@ -92,7 +93,7 @@ const UpdateVoucherPage = () => {
   }
   return (
     <div>
-
+      {isUploading && <Spin className='animate' />}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div className="text-lg font-bold text-orange-500">Update Voucher: <span className=" text-orange-900 font-semibold">{voucherData?.slug}</span></div>
 
@@ -115,36 +116,41 @@ const UpdateVoucherPage = () => {
             <Form.Item<FieldType>
               label="Mã Voucher "
               name="slug"
-              rules={[{ required: true, message: 'Please enter voucher code' }]}>
+              rules={[{ required: true, message: 'Vui lòng nhập mã voucher' },
+              { whitespace: true, message: 'Không được để khoảng trắng!' },
+              ]}>
               <Input />
             </Form.Item>
             <Form.Item<FieldType>
               label="Tên Voucher "
               name="name"
-              rules={[{ required: true, message: 'Please enter voucher name' }]}>
+              rules={[{ required: true, message: 'Vui lòng nhập tên của bạn!' },
+              { whitespace: true, message: 'Không được để khoảng trắng!' },]}>
               <Input />
             </Form.Item>
-
-            <Form.Item<FieldType>
-              label="Mô tả dài"
-              name="description">
-              <Input.TextArea rows={2} />
+            <Form.Item label="Giảm giá" name="discount"
+              rules={[{ required: true, message: 'Vui lòng nhập loại!' },
+              { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },]}>
+              <Input className='w-full' />
             </Form.Item>
             <Form.Item<FieldType>
-              label="Mô tả ngắn"
-              name="meta">
-              <Input.TextArea rows={2} />
-            </Form.Item>
-            <Form.Item<FieldType>
-              label="Status"
+              label="Trạng thái"
               name="status"
-              rules={[{ required: true, message: 'Please select status' }]}>
+              rules={[{ required: true, message: 'Vui lòng nhập trạng thái' }]}>
               <Select placeholder="Chọn trạng thái">
                 <Option value={1}>Ẩn</Option>
                 <Option value={0}>Đang chờ</Option>
                 <Option value={2}>Hoạt động</Option>
               </Select>
             </Form.Item>
+            <Form.Item<FieldType>
+              label="Mô tả dài"
+              name="meta"
+              rules={[{ required: true, message: 'Vui lòng nhập mô tả dài!' },
+              { whitespace: true, message: 'Không được để khoảng trắng!' },]}>
+              <Input.TextArea rows={2} />
+            </Form.Item>
+
           </div>
           <div className="w-1/2 p-4">
 
@@ -161,15 +167,14 @@ const UpdateVoucherPage = () => {
               <DatePicker className='w-full' />
             </Form.Item>
             <Form.Item<FieldType>
-              label="Quantity"
+              label="Số lượng"
               name="quantity"
-              rules={[{ required: true, message: 'Please enter quantity' }]}>
-              <InputNumber className='w-full' />
+              rules={[{ required: true, message: 'Vui lòng nhập số lượng' },
+              { pattern: /^[0-9]+$/, message: 'Chỉ được nhập số!' },]}>
+              <Input className='w-full' />
             </Form.Item>
 
-            <Form.Item label="Discount Value" name="discount" rules={[{ required: true, message: 'Please enter discount value' }]}>
-              <InputNumber className='w-full' />
-            </Form.Item>
+
             <Form.Item
               name="image"
               label="Upload"

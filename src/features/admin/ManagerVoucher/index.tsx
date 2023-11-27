@@ -23,7 +23,7 @@ interface DataType {
   quantity: number;
 }
 export const ManagerVouchers = () => {
-  const [remove, { isLoading: isRemoveVoucher }] = useRemoveVoucherMutation()
+  const [remove, {isLoading:isRemoving}] = useRemoveVoucherMutation()
   const { data: dataVoucher, isLoading: Loading, isError } = useGetVoucherQuery();
   const dataSource = dataVoucher?.map(({ id, name, image, discount, start_at, expire_at, description, quantity, status }: DataType) => ({
     key: id,
@@ -149,8 +149,10 @@ export const ManagerVouchers = () => {
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
   if (Loading) return <Skeleton active />;
-  if (isError) return <div>error...</div>;
-  if (isRemoveVoucher) return message.loading({ content: 'Đang xóa', key: 'removeVoucher' });
+  if (isError) return <div>Đã có lỗi xảy ra</div>;
+  if (isRemoving) {
+    message.loading({ content: 'Đang xóa ...', key: 'updatable', duration: 0.5 });
+  }
   return (
     <div>
 
@@ -169,7 +171,7 @@ export const ManagerVouchers = () => {
             showSearch
             style={{ width: 200 }}
             placeholder="Lọc"
-defaultValue="all"
+            defaultValue="all"
             optionFilterProp="children"
             filterOption={(input, option) => (option?.label ?? "").includes(input)}
             filterSort={(optionA, optionB) =>

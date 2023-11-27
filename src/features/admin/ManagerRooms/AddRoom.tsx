@@ -37,11 +37,14 @@ const AddRoomPage = () => {
       <Form name="addRoom" onFinish={onFinish} layout="vertical" labelCol={{ span: 8 }}>
         <div className="flex">
           <div className="w-1/2 bg-white pr-2">
-            <Form.Item label="Tên Phòng" name="name" rules={[{ required: true, message: 'Nhập tên phòng' }]}>
+            <Form.Item label="Tên Phòng" name="name" rules={[{ required: true, message: 'Nhập tên phòng' },{whitespace:true, message: 'Không được để khoảng trắng'}]}>
               <Input />
             </Form.Item>
 
-            <Form.Item label="Loại Phòng" name="id_cate" rules={[{ required: true, message: 'Hãy chọn loại phòng ' }]}>
+            <Form.Item label="Loại Phòng" name="id_cate" rules={[
+              { required: true, message: 'Hãy chọn loại phòng ' },
+              { whitespace: true, message: "Không được nhập khoảng trắng"}
+              ]}>
               <Select>
                 {RoomCategories?.map((item: any) => (
                   <Option key={item.id} value={item.id}>{item.name}</Option>

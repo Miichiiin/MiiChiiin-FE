@@ -26,8 +26,8 @@ export const AddHotel = () => {
         selectedFiles.forEach((file, index) => {
             body.append(`images[${index}]`, file);
         });
-
         setIsUploading(true);
+        message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
 
         addHotel(body).unwrap().then(() => {
             message.success({ content: 'Thêm khách sạn thành công', key: 'uploading' });
