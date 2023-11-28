@@ -8,8 +8,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 export const EditComment = () => {
 
     const [form] = Form.useForm();
-    const {id} = useParams<{ id: string }>();
-    const {data: commentData} = useGetRatingByIdQuery(id||"");
+    const { id } = useParams<{ id: string }>();
+    const { data: commentData } = useGetRatingByIdQuery(id || "");
 
     const [updateComment] = useUpdateRatingMutation();
     const navigate = useNavigate()
@@ -28,9 +28,9 @@ export const EditComment = () => {
             status: commentData?.status
         })
     }, [commentData])
-    
+
     const onFinish = (values: FieldType) => {
-       updateComment({...values, id: id}).unwrap().then(() => navigate('/admin/commentmanagement'))
+        updateComment({ ...values, id: id }).unwrap().then(() => navigate('/admin/commentmanagement'))
     };
 
     const onFinishFailed = () => {

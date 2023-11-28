@@ -10,7 +10,6 @@ import 'dayjs/locale/vi';
 
 import { AiOutlineDown, AiOutlineTool, AiOutlineUp } from 'react-icons/ai';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { BiExport } from 'react-icons/bi';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -105,13 +104,10 @@ const DetailBooking = () => {
 
       </section>
       <div className='flex justify-end mb-5'>
-        <button className='px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
+        <button className='mx-2 px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
           <ArrowLeftOutlined className="pr-2" />Quay lại
         </button>
-        <button className='px-3 py-2 hover:bg-green-600 bg-green-500 text-white rounded-md mx-2 text-lg'>
-          <BiExport />
-        </button>
-        <button className='px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md text-xl items-center' onClick={() => navigate(`/admin/updatebooking/${booking?.id}`)}><AiOutlineTool /></button>
+        <button className='px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md text-xl items-center' ><a href={`/admin/updatebooking/${booking?.id}`}><AiOutlineTool /></a></button>
       </div>
     </div>
   );

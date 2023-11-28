@@ -1,5 +1,5 @@
 import { useGetUsers_adminQuery, useRemoveUser_adminMutation } from '@/api/admin/admin_usermanage';
-import { Table, Divider, Select, Input, Skeleton, Pagination, Popconfirm, message } from 'antd';
+import { Table, Divider, Select, Input, Skeleton, Pagination, Popconfirm, message, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { AiOutlineTool } from 'react-icons/ai';
@@ -96,18 +96,8 @@ export const UserManagement = () => {
       dataIndex: "gender",
       key: "gender",
       render: (_, record) => {
-        let genderText = '';
-
-        if (record.gender === 2) {
-          genderText = 'Khác';
-        } else if (record.gender === 1) {
-          genderText = 'Nữ';
-        } else if (record.gender === 0) {
-          genderText = 'Nam';
-        }
-
-        return <span>{genderText}</span>;
-      },
+        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
+       }
     },
     {
       title: "Action",
@@ -132,7 +122,7 @@ export const UserManagement = () => {
               cancelText="Không"
             >
               <button
-                className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
+                className='hidden mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
               >
                 <BiTrash className="text-lg" />
               </button>

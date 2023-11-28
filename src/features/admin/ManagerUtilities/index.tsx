@@ -8,6 +8,7 @@ import {
   Popconfirm,
   message,
   Skeleton,
+  Switch,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
@@ -78,18 +79,8 @@ export const ManagerUtilities = () => {
       dataIndex: "status",
       key: "status",
       render: (_, record) => {
-        let statusText = '';
-
-        if (record.status === 2) {
-          statusText = 'Hoạt động';
-        } else if (record.status === 1) {
-          statusText = 'Đã ẩn';
-        } else if (record.status === 0) {
-          statusText = 'Đang chờ';
-        }
-
-        return <span>{statusText}</span>;
-      }
+        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
+       }
     },
     {
       title: "Icon",
@@ -117,7 +108,7 @@ export const ManagerUtilities = () => {
               okText="Xóa"
               cancelText="Hủy"
             >
-              <button className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'>
+              <button className='hidden mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'>
                 <BiTrash className="text-lg" />
               </button>
             </Popconfirm>

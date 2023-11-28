@@ -148,7 +148,7 @@ export const HotelManagement = () => {
                                     okText="Có"
                                     cancelText="Không"
                                 >
-                                    <button className="mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" ><BiTrash className="text-lg" /></button>
+                                    <button className="hidden mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" ><BiTrash className="text-lg" /></button>
                                 </Popconfirm>
                             )}
 

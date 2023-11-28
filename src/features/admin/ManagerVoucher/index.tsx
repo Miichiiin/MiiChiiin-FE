@@ -1,6 +1,6 @@
 
 import { useGetVoucherQuery, useRemoveVoucherMutation } from "@/api/admin/voucher";
-import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message, Skeleton, } from "antd";
+import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message, Skeleton, Switch, } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 import { AiOutlineTool } from "react-icons/ai";
@@ -41,7 +41,7 @@ export const ManagerVouchers = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "#Stt",
+      title: "#",
       dataIndex: "key",
       key: "key",
       // render: (_, record, index) => <span>{index + 1}</span>,
@@ -56,11 +56,6 @@ export const ManagerVouchers = () => {
       dataIndex: "image",
       key: "image",
       render: (image) => <img src={image} alt="Hình ảnh" width="70" />,
-    },
-    {
-      title: "Mô tả dài",
-      dataIndex: "description",
-      key: "description",
     },
     {
       title: "Giá trị giảm",
@@ -87,17 +82,8 @@ export const ManagerVouchers = () => {
       dataIndex: "status",
       key: "status",
       render: (_, record) => {
-        let statusText = '';
-        if (record.status === 2) {
-          statusText = 'Hoạt động';
-        } else if (record.status === 1) {
-          statusText = 'Đã ẩn';
-        } else if (record.status === 0) {
-          statusText = 'Đang chờ';
-        }
-
-        return <span>{statusText}</span>;
-      },
+        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
+       }
 
     },
     {
@@ -124,7 +110,7 @@ export const ManagerVouchers = () => {
               cancelText="Không"
             >
               <button
-                className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md text-lg'
+                className='hidden mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md text-lg'
               >
                 <BiTrash />
               </button>
