@@ -29,6 +29,7 @@ const DetailBooking = () => {
   const checkOut = dayjs(booking?.check_out);
   const numberOfNights = checkOut.diff(checkIn, 'day');
 
+
   if (isLoading) {
     return <Skeleton active />;
   }
@@ -55,7 +56,10 @@ const DetailBooking = () => {
               <p className='font-semibold'>Tổng số người: <span className='text-lg font-medium text-blue-900'>{booking?.people_quantity}</span></p>
               <p className='font-semibold'>Số phòng: <span className='text-lg font-medium text-blue-900'>{booking?.total_room}</span></p>
               <p className='font-semibold'>Số đêm: <span className='text-lg font-medium text-blue-900'>{numberOfNights}</span></p>
-              <p className='font-semibold'>Tổng tiền: <span className='text-lg font-medium text-blue-900'>{booking?.total_amount}</span></p>
+              <p className='font-semibold'>Tổng tiền: <span className='text-lg font-medium text-blue-900'>{new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                          }).format(booking?.total_amount)}</span></p>
               <p className='font-semibold'>Trạng thái: <span className='text-lg font-medium text-blue-900'>
                 {booking?.status === 2 ? 'Đã check in' : booking?.status === 3 ? 'Đã thanh toán' : booking?.status === 4 ? 'Đã check out' : booking?.status === 1 ? 'Đã huỷ' : booking?.status === 0 ? 'Đang chờ' : ''}
               </span></p>
@@ -75,14 +79,14 @@ const DetailBooking = () => {
                     <div className=''>
 
                       <>
-                        <span className='font-bold text-md pr-2 italic text-lg' >Phòng số {index + 1}:</span>
-                        <span className='text-blue-800 font-semibold'>{item.category_name}</span>
-                        <span className=' text-blue-500 px-2'> <span className='text-gray-800'>Phòng</span> {item.name}</span>
+                        <span className='font-bold text-md pr-1 italic text-lg' >{index + 1}:</span>
+                        <span className='text-lg text-blue-500 px-2 '> <span className='text-gray-800 font-semibold'>Phòng</span> <span className='font-bold'>{item.name}</span></span>
+                        Thuộc<span className='text-blue-800 font-semibold'> {item.category_name}</span>
                       </>
 
                     </div>
                     <button onClick={() => toggleServicesVisibility(index)} type='button'>
-                      {isServicesVisible[index] ? <span className='flex items-center'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center'>Hiện dịch vụ <AiOutlineDown /></span>}
+                      {isServicesVisible[index] ? <span className='flex items-center text-orange-800'>Ẩn dịch vụ <AiOutlineUp /></span> : <span className='flex items-center text-orange-800'>Hiện dịch vụ <AiOutlineDown /></span>}
                     </button>
                   </div>
                   {isServicesVisible[index] && (
@@ -90,7 +94,11 @@ const DetailBooking = () => {
                       {item.services.map((service: any, serviceIndex: any) => (
                         <li key={serviceIndex} className='pt-1'>
                           <span className='text-md font-bold px-2 italic'>Dịch vụ {serviceIndex + 1}: </span> <span className='text-blue-800 font-semibold'>{service?.name}</span> x<span className='text-red-500 font-semibold'>{service.quantity_service}</span>
-                          <span className='text-md font-bold pl-2 italic'>Giá : </span> <span className='text-blue-800 font-semibold'>{service?.price * service.quantity_service}</span>
+                          <span className='text-md font-bold pl-2 italic'>Giá : </span> <span className='text-blue-800 font-semibold'>
+                            {new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                          }).format(service?.price * service.quantity_service)}</span>
                         </li>
                       ))}
                     </ul>
