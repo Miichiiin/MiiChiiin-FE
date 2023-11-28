@@ -24,7 +24,6 @@ import { useGetCategory_homeByIdQuery } from "@/api/webapp/category_home";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
-import { Button } from "antd";
 import moment from "moment";
 import "./swper.css";
 import Slider from "react-slick";
@@ -54,6 +53,7 @@ const ChooseRoom = () => {
       });
   }
 
+
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
     const timeArray = searchSlide.date.split(",");
@@ -64,7 +64,6 @@ const ChooseRoom = () => {
   if (searchSlide && searchSlide.nameHotel) {
     hotel = searchSlide.nameHotel.split(",");
   }
-  console.log("hotel", hotel);
 
   const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
 
@@ -358,7 +357,7 @@ const ChooseRoom = () => {
                   <h1 className="text-lg font-bold">
                     Chọn phòng:{" "}
                     <span>
-                      {selectedRooms.length}/{searchSlide.numberRoom}
+                      {selectedRooms?.length}/{searchSlide?.numberRoom}
                     </span>
                   </h1>
                 </div>
@@ -381,12 +380,12 @@ const ChooseRoom = () => {
                         {hotel?.name}
                         <p className="text-[18px] mt-1 ml-2">
                           (
-                          {hotel.Total_rooms < 4 ? (
+                          {hotel?.Total_rooms < 4 ? (
                             <span style={{ color: "red" }}>
-                              Còn {hotel.Total_rooms}
+                              Còn {hotel?.Total_rooms}
                             </span>
                           ) : (
-                            <span>Còn {hotel.Total_rooms}</span>
+                            <span>Còn {hotel?.Total_rooms}</span>
                           )}
                           )
                         </p>
@@ -492,15 +491,16 @@ const ChooseRoom = () => {
                   <h1 className="font-semibold text-lg pt-4">
                     Danh sách phòng đã chọn:
                   </h1>
-                  {roomsToDisplay.length > 0 ? (
+                  {roomsToDisplay?.length > 0 ? (
                     <ul>
-                      {roomsToDisplay.map((room: any, index: any) => (
+                      {roomsToDisplay?.map((room: any, index: any) => (
                         <li key={index} className="flex flex-col">
                           <div className="flex items-center justify-between">
                             <span className="text-base  mt-2 flex items-center text-gray-500 font-medium">
                               <AiOutlineForm class="text-lg mr-2" />
-                              {room.name} - {room.price.toLocaleString("vi-VN")}{" "}
-                              đ {room.count > 1 ? `x${room.count}` : ""}
+                              {room?.name} -{" "}
+                              {room.price.toLocaleString("vi-VN")} đ{" "}
+                              {room?.count > 1 ? `x${room?.count}` : ""}
                             </span>
                             <button
                               onClick={() => handleRemoveRoom(room)}
@@ -511,8 +511,23 @@ const ChooseRoom = () => {
                           </div>
                           <span className="basis-1/3 mb-4 text-gray-500 font-medium border-b-2 pb-7">
                             <p className="text-sm pt-1 flex items-center">
-                              <AiOutlineTeam class="text-lg mr-2" />2 Người lớn,
-                              2 Trẻ em
+                              <AiOutlineTeam class="text-lg mr-2" />
+                              <p className="text-sm pb-3 text-gray-500 font-medium">
+                                {numberPeople &&
+                                  numberPeople?.filter(
+                                    (item: any, index1: any) => index1 == index
+                                  ).map(
+                                    (
+                                      { adults, children, infants }: any,
+                                      index: any
+                                    ) => (
+                                      <div key={index}>
+                                        Người lớn:{adults}, Trẻ em:{children},
+                                        Em bé: {infants}
+                                      </div>
+                                    )
+                                  )}
+                              </p>
                             </p>
                           </span>
                         </li>
