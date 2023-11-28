@@ -614,8 +614,8 @@ const AddBooking = () => {
           </div>
         </div>
         <div>
-          <Form.Item label="Tổng thanh toán" name="total_amount" className='ml-16 ' >
-            <InputNumber value={totalAmount} disabled className="text-black text-lg font-semibold w-[125px] px-4" />
+          <Form.Item label="Tổng thanh toán" name="total_amount" className=' ' >
+            <InputNumber value={totalAmount} disabled className="text-black text-lg font-semibold w-[130px] px-3" />
           </Form.Item>
           <Form.Item >
             <div className="flex justify-start items-center space-x-4">

@@ -22,7 +22,7 @@ export const BookingManagement = () => {
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
     const navigate = useNavigate()
 
-    const data = dataBooking?.map(({ id, check_in, check_out, email, name, people_quantity, total_amount, status, cccd, nationality, id_user, phone, promotion, cart }: DataType) => ({
+    const data = dataBooking?.map(({ slug, id, check_in, check_out, email, name, people_quantity, total_amount, status, cccd, nationality, id_user, phone, promotion, cart }: DataType) => ({
         key: id,
         check_in,
         check_out,
@@ -36,9 +36,11 @@ export const BookingManagement = () => {
         id_user,
         phone,
         promotion,
-        cart
+        cart,
+        slug
     }))
     interface DataType {
+        slug: string;
         key: number;
         id: number | string;
         check_in: Date;
@@ -62,6 +64,11 @@ export const BookingManagement = () => {
     }
 
     const columns: ColumnsType<DataType> = [
+        {
+            title: 'Mã đặt phòng',
+            dataIndex: 'slug',
+            key: 'slug',
+        },
         {
             title: 'Tên khách hàng',
             dataIndex: 'name',
@@ -112,7 +119,7 @@ export const BookingManagement = () => {
             key: 'check_in',
             render: (_, record) => {
                 const formattedDate = dayjs(record.check_in)
-                    .format('DD/MM/YYYY HH:mm:ss'); // Remove .utc() and .local()
+                    .format('DD/MM/YYYY'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
             },
         },
@@ -122,15 +129,9 @@ export const BookingManagement = () => {
             key: 'check_out',
             render: (_, record) => {
                 const formattedDate = dayjs(record.check_out)
-                    .format('DD/MM/YYYY HH:mm:ss'); // Remove .utc() and .local()
+                    .format('DD/MM/YYYY'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
             },
-        },
-
-        {
-            title: 'Số người',
-            dataIndex: 'people_quantity',
-            key: 'people_quantity',
         },
         {
             title: "Hành động",
@@ -140,7 +141,7 @@ export const BookingManagement = () => {
                     <button className='px-3 py-2 hover:bg-emerald-600 bg-emerald-500 text-white rounded-md mr-2 text-lg' onClick={() => navigate(`/admin/detailbooking/${record.key}`)}>
                         <BiDetail /></button>
                     {hasAddUserPermission("delete booking") && (
-                        <button className='px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 hover:text-white text-lg' onClick={() => removeBooking(record.key)}><BiTrash /></button>
+                        <button className='hidden px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 hover:text-white text-lg' onClick={() => removeBooking(record.key)}><BiTrash /></button>
                     )}
                 </div>
 

@@ -427,393 +427,391 @@ const UpdateBooking = () => {
         autoComplete="off"
         form={form}
       >
-        <div className=''>
-          <div className="grid grid-cols-2 gap-8 ">
-            <div className='grid grid-cols-2 h-screen'>
-              <Form.Item
-                label="Check in"
-                name="check_in"
-                labelCol={{ span: 24 }}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Hãy chọn ngày check in!',
-                  },
+        <div className="grid grid-cols-2 gap-8 ">
+          <div className='grid grid-cols-2 h-screen'>
+            <Form.Item
+              label="Check in"
+              name="check_in"
+              labelCol={{ span: 24 }}
+              rules={[
+                {
+                  required: true,
+                  message: 'Hãy chọn ngày check in!',
+                },
 
-                ]}
+              ]}
 
-              >
-                <DatePicker
-                  value={form.getFieldValue('check_in')}
-                  onChange={handleCheckInDateChange}
-                  format="YYYY-MM-DD"
-                  placeholder="Chọn ngày và giờ"
-                  className='w-[250px]'
-                  // disabledDate={(current) => {
-                  //   // Vô hiệu hóa các ngày hôm trước
-                  //   return current && current.isBefore(new Date(), 'day');
-                  // }}
-                  disabled
+            >
+              <DatePicker
+                value={form.getFieldValue('check_in')}
+                onChange={handleCheckInDateChange}
+                format="YYYY-MM-DD "
+                placeholder="Chọn ngày và giờ"
+                className='w-[250px]'
+                // disabledDate={(current) => {
+                //   // Vô hiệu hóa các ngày hôm trước
+                //   return current && current.isBefore(new Date(), 'day');
+                // }}
+                disabled
 
-                />
-              </Form.Item>
-              <Form.Item
-                label="Check out"
-                name="check_out"
-                labelCol={{ span: 24 }}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Hãy chọn ngày check out!',
-                  },
-                ]}
-              >
-                <DatePicker
-                  value={form.getFieldValue('check_out')}
-                  onChange={handleCheckOutDateChange}
-                  format="YYYY-MM-DD"
-                  placeholder="Chọn ngày và giờ"
-                  className='w-[250px]'
-                  // disabledDate={(current) => {
-                  //   // Vô hiệu hóa các ngày hôm trước
-                  //   return current && current.isBefore(new Date(), 'day');
-                  // }}
-                  disabled
-                />
-              </Form.Item>
-              <Form.Item
-                label="Tên người dùng"
-                name="name"
-                rules={[
-                  { required: true, message: 'Hãy nhập tên người dùng!' },
-                  { whitespace: true, message: 'Không được để trống!' },
-                ]}
-                labelCol={{ span: 24 }}
-              >
-                <Input allowClear className='w-[250px]' />
-              </Form.Item>
-              <Form.Item
-                label="Căn cước công dân"
-                name="cccd"
-                rules={[
-                  { required: true, message: 'Hãy nhập !' },
-                  { whitespace: true, message: 'Không được để trống!' },
-                  {
-                    pattern: /^[0-9]*$/,
-                    message: 'Căn cước không có chữ',
-                  },
-                ]}
-                labelCol={{ span: 24 }}
-              >
-                <Input allowClear className='w-[250px]' />
-              </Form.Item>
-              <Form.Item
-                label="Số điện thoại"
-                name="phone"
-                rules={[
-                  { required: true, message: 'Hãy nhập số vào !' },
-                  { whitespace: true, message: 'Không được để trống!' },
-                ]}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Check out"
+              name="check_out"
+              labelCol={{ span: 24 }}
+              rules={[
+                {
+                  required: true,
+                  message: 'Hãy chọn ngày check out!',
+                },
+              ]}
+            >
+              <DatePicker
+                value={form.getFieldValue('check_out')}
+                onChange={handleCheckOutDateChange}
+                format="YYYY-MM-DD"
+                placeholder="Chọn ngày và giờ"
+                className='w-[250px]'
+                // disabledDate={(current) => {
+                //   // Vô hiệu hóa các ngày hôm trước
+                //   return current && current.isBefore(new Date(), 'day');
+                // }}
+                disabled
+              />
+            </Form.Item>
+            <Form.Item
+              label="Tên người dùng"
+              name="name"
+              rules={[
+                { required: true, message: 'Hãy nhập tên người dùng!' },
+                { whitespace: true, message: 'Không được để trống!' },
+              ]}
+              labelCol={{ span: 24 }}
+            >
+              <Input allowClear className='w-[250px]' />
+            </Form.Item>
+            <Form.Item
+              label="Căn cước công dân"
+              name="cccd"
+              rules={[
+                { required: true, message: 'Hãy nhập !' },
+                { whitespace: true, message: 'Không được để trống!' },
+                {
+                  pattern: /^[0-9]*$/,
+                  message: 'Căn cước không có chữ',
+                },
+              ]}
+              labelCol={{ span: 24 }}
+            >
+              <Input allowClear className='w-[250px]' />
+            </Form.Item>
+            <Form.Item
+              label="Số điện thoại"
+              name="phone"
+              rules={[
+                { required: true, message: 'Hãy nhập số vào !' },
+                { whitespace: true, message: 'Không được để trống!' },
+              ]}
 
-                labelCol={{ span: 24 }}
-              >
-                <Input allowClear className='w-[250px]' />
-              </Form.Item>
-              <Form.Item
-                label="Email"
-                name="email"
-                rules={[
-                  { required: true, message: 'Hãy nhập !' },
-                  { whitespace: true, message: 'Không được để trống!' },
+              labelCol={{ span: 24 }}
+            >
+              <Input allowClear className='w-[250px]' />
+            </Form.Item>
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: 'Hãy nhập !' },
+                { whitespace: true, message: 'Không được để trống!' },
 
-                ]}
+              ]}
 
-                labelCol={{ span: 24 }}
-              >
-                <Input allowClear className='w-[250px]' />
-              </Form.Item>
-              <Form.Item
-                label="Số lượng người"
-                name="people_quantity"
-                labelCol={{ span: 24 }}
-                rules={[
-                  { required: true, message: 'Hãy nhập!' },
-                  {
-                    pattern: /^[1-9][0-9]*$/,
-                    message: 'Phải nhập số nguyên dương',
-                  },
+              labelCol={{ span: 24 }}
+            >
+              <Input allowClear className='w-[250px]' />
+            </Form.Item>
+            <Form.Item
+              label="Số lượng người"
+              name="people_quantity"
+              labelCol={{ span: 24 }}
+              rules={[
+                { required: true, message: 'Hãy nhập!' },
+                {
+                  pattern: /^[1-9][0-9]*$/,
+                  message: 'Phải nhập số nguyên dương',
+                },
 
-                ]}
-              >
-                <InputNumber className='w-[250px]' />
-              </Form.Item>
-              <Form.Item
-                label="Quốc tịch"
-                name="nationality"
-                rules={[
-                  { required: true, message: 'Hãy nhập !' },
-                  { whitespace: true, message: 'Không được để trống!' },
-                ]}
+              ]}
+            >
+              <InputNumber className='w-[250px]' />
+            </Form.Item>
+            <Form.Item
+              label="Quốc tịch"
+              name="nationality"
+              rules={[
+                { required: true, message: 'Hãy nhập !' },
+                { whitespace: true, message: 'Không được để trống!' },
+              ]}
 
-                labelCol={{ span: 24 }}
-              >
-                <Input allowClear className='w-[250px]' />
-              </Form.Item>
-              <Form.Item
-                label="Số lượng phòng"
-                name="total_room"
-                rules={[
-                  { required: true, message: 'Hãy nhập!' },
-                  {
-                    pattern: /^[1-9][0-9]*$/,
-                    message: 'Phải nhập số nguyên dương',
-                  },]}
-                labelCol={{ span: 24 }}
-              >
-                <InputNumber className='w-[250px]'
-                  onChange={(value: any) => {
-                    handleEnterPress(value);
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                label="Trạng thái"
-                name="status"
-                labelCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
-              >
-                <Select style={{ width: "250px" }} placeholder="Hay chọn trạng thái">
-                  <Select.Option value={0}>Đang chờ</Select.Option>
-                  <Select.Option value={1}>Đã huỷ</Select.Option>
-                  <Select.Option value={2} >Đã check in</Select.Option>
-                  <Select.Option value={3}>Đã thanh toán</Select.Option>
-                  <Select.Option value={4}>Đã hoàn thành</Select.Option>
-                </Select>
-              </Form.Item>
-            </div>
-            <div className='choose-room w-full '>
-              <div className='p-3 rounded-md ' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
-                <div className='text-md col-span-2'><h1>Phòng {roomCount} / {maxRoomQuantity}</h1></div>
-                <div className="grid grid-cols-2 gap-2">
-                  {categories?.map((category: Category, index: number) => (
-                    <React.Fragment key={index}>
-                      {(!isRoomsHidden && !isServicesHidden || (isRoomsHidden && selectedRoomIndex === category?.id)) && (
-                        <div
-                          className={`px-3 py-2 rounded-md cursor-pointer border h-full
+              labelCol={{ span: 24 }}
+            >
+              <Input allowClear className='w-[250px]' />
+            </Form.Item>
+            <Form.Item
+              label="Số lượng phòng"
+              name="total_room"
+              rules={[
+                { required: true, message: 'Hãy nhập!' },
+                {
+                  pattern: /^[1-9][0-9]*$/,
+                  message: 'Phải nhập số nguyên dương',
+                },]}
+              labelCol={{ span: 24 }}
+            >
+              <InputNumber className='w-[250px]'
+                onChange={(value: any) => {
+                  handleEnterPress(value);
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Trạng thái"
+              name="status"
+              labelCol={{ span: 24 }}
+              rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
+            >
+              <Select style={{ width: "250px" }} placeholder="Hay chọn trạng thái">
+                <Select.Option value={0}>Đang chờ</Select.Option>
+                <Select.Option value={1}>Đã huỷ</Select.Option>
+                <Select.Option value={2} >Đã check in</Select.Option>
+                <Select.Option value={3}>Đã thanh toán</Select.Option>
+                <Select.Option value={4}>Đã hoàn thành</Select.Option>
+              </Select>
+            </Form.Item>
+          </div>
+          <div className='choose-room w-full '>
+            <div className='p-3 rounded-md ' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
+              <div className='text-md col-span-2'><h1>Phòng {roomCount} / {maxRoomQuantity}</h1></div>
+              <div className="grid grid-cols-2 gap-2">
+                {categories?.map((category: Category, index: number) => (
+                  <React.Fragment key={index}>
+                    {(!isRoomsHidden && !isServicesHidden || (isRoomsHidden && selectedRoomIndex === category?.id)) && (
+                      <div
+                        className={`px-3 py-2 rounded-md cursor-pointer border h-full
                           ${selectedRoomIndex === category?.id
-                              ? 'bg-blue-500 text-white border border-black'
-                              : category.total_rooms_available < 1
-                                ? 'hidden'
-                                : availableRoomCounts[category?.id] === 0
-                                  ? 'bg-red-500 text-white cursor-not-allowed'
-                                  : 'bg-[#15803d] '
+                            ? 'bg-blue-500 text-white border border-black'
+                            : category.total_rooms_available < 1
+                              ? 'hidden'
+                              : availableRoomCounts[category?.id] === 0
+                                ? 'bg-red-500 text-white cursor-not-allowed'
+                                : 'bg-[#15803d] '
 
-                            }`}
-                          onClick={() => {
-                            if (category.total_rooms_available >= 1) {
-                              handleRoomClick(category?.id);
-                            }
-                          }}
-                        >
-                          <h2 className="font-bold text-xl">{category?.name}</h2>
-                          <p className='text-md'>Còn: <span className='font-bold'>{availableRoomCounts[category?.id]}</span> phòng</p>
-                          <p className='text-md'>Sức chứa: <span className='font-bold'>{category?.quantity_of_people}</span> người</p>
-                          <p className='text-md'>Giá: <span className='font-bold'>{category?.price}</span> <span>vnđ</span></p>
+                          }`}
+                        onClick={() => {
+                          if (category.total_rooms_available >= 1) {
+                            handleRoomClick(category?.id);
+                          }
+                        }}
+                      >
+                        <h2 className="font-bold text-xl">{category?.name}</h2>
+                        <p className='text-md'>Còn: <span className='font-bold'>{availableRoomCounts[category?.id]}</span> phòng</p>
+                        <p className='text-md'>Sức chứa: <span className='font-bold'>{category?.quantity_of_people}</span> người</p>
+                        <p className='text-md'>Giá: <span className='font-bold'>{category?.price}</span> <span>vnđ</span></p>
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+              <div className="">
+                {isServicesHidden && selectedRoomIndex !== null && (
+                  <Form.Item name={['room', selectedRoomIndex, 'services']} className=''>
+                    {services?.map((service: Service,) => (
+                      <div key={service.id} className="my-3 flex items-center text-md w-[600px]">
+                        <Checkbox
+                          className=""
+                          value={service.id}
+                          checked={selectedServices.includes(service.id)}
+                          onChange={() => handleCheckboxChange(service)}
+                        />
+
+                        <div className='ml-1'>
+                          <span className='text-xl font-semibold text-blue-900 pl-2'>{service.name}</span>
+                          <span className='font-semibold px-5 text-md'>Giá : {service?.price} vnđ</span>
+                          {selectedServices.includes(service.id) && (
+                            <div className='ml-2'>
+                              <Button
+                                onClick={() => {
+                                  if (selectedServicesQuantity[service.id] && selectedServicesQuantity[service.id] > 1) {
+                                    setSelectedServicesQuantity((prev) => ({
+                                      ...prev,
+                                      [service.id]: prev[service.id] - 1,
+                                    }));
+                                  }
+                                }}
+                              >
+                                -
+                              </Button>
+                              <span className='mx-2'>{selectedServicesQuantity[service.id]}</span>
+                              <Button
+                                onClick={() => {
+                                  setSelectedServicesQuantity((prev) => ({
+                                    ...prev,
+                                    [service.id]: (prev[service.id] || 0) + 1,
+                                  }));
+                                }}
+                              >
+                                +
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </Form.Item>
+
+                )}
+                <div className='flex justify-center items-center'><Button className='border border-blue-500 rounded px-4 mt-2 w-full ' onClick={handleContinueClick}>Tiếp tục</Button></div>
+              </div>
+            </div>
+            {/*Các loại phòng đã chon*/}
+            <div className='p-3 rounded-md mt-3 ' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
+              <div className='text-md col-span-2'><h1>Các loại phòng đã chọn</h1></div>
+              <div className="grid grid-cols-2 gap-2">
+                {cartData?.map((roomData, index) => {
+                  const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
+                  return (
+                    <React.Fragment key={index}>
+                      {((!hiddenSelectingServices || selectedRoomIndex === index) && (!hiddenSelectingRooms || selectedRoomIndex === index)) && (
+                        <div
+                          className={`px-3 py-2 rounded-md border h-full`}>
+                          <h2 className="font-bold text-xl text-blue-800"> Phòng số {index + 1}</h2>
+
+                          <div className="flex justify-between items-center">
+                            <h2 >
+                              <span className='pr-2'>Loại phòng:</span><span className='font-semibold italic text-blue-800'>{selectedCategory?.name}</span></h2>
+                            <Popconfirm
+                              title="Xoá phòng ?"
+                              description="Bạn có chắc muốn xoá phòng này không ?"
+                              onConfirm={() => handleRemoveRoom(index)}
+                              onCancel={() => handleCancelRemoveRoom}
+                              okText={<span className='text-blue-900 font-semibold hover:text-white'>Yes</span>}
+                              cancelText="No"
+                            >
+                              <div className='flex justify-end'>
+                                <Button className="bg-red-300 flex justify-center items-center" type='primary' danger shape='circle'><BsTrash3 /></Button>
+                              </div>
+                            </Popconfirm>
+                          </div>
+                          <p className=''>Tên phòng : <span className='font-semibold text-blue-800'>{getRoomName(roomData?.id_room)} </span></p>
+
+                          <p className="text-md ">Dịch vụ đã chọn: </p>
+                          <ul>
+                            {roomData?.services?.map((serviceId, serviceIndex) => (
+                              <li key={serviceIndex}>
+                                Dịch vụ {serviceIndex + 1} : <span className='font-semibold text-blue-800 italic'> {getServiceName(serviceId.id_service)}</span> x <span className='text-red-500 font-semibold'>{serviceId.quantity}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <div className='flex justify-between item-center pt-4'>
+                            <Button onClick={() => handleSelectRooms(index)}>Chọn phòng</Button>
+                            <Button onClick={() => handleSelectServices(index)}>Chọn lại dịch vụ</Button>
+                          </div>
                         </div>
                       )}
                     </React.Fragment>
-                  ))}
-                </div>
-                <div className="">
-                  {isServicesHidden && selectedRoomIndex !== null && (
-                    <Form.Item name={['room', selectedRoomIndex, 'services']} className=''>
-                      {services?.map((service: Service,) => (
-                        <div key={service.id} className="my-3 flex items-center text-md w-[600px]">
-                          <Checkbox
-                            className=""
-                            value={service.id}
-                            checked={selectedServices.includes(service.id)}
-                            onChange={() => handleCheckboxChange(service)}
-                          />
-
-                          <div className='ml-1'>
-                            <span className='text-xl font-semibold text-blue-900 pl-2'>{service.name}</span>
-                            <span className='font-semibold px-5 text-md'>Giá : {service?.price} vnđ</span>
-                            {selectedServices.includes(service.id) && (
-                              <div className='ml-2'>
-                                <Button
-                                  onClick={() => {
-                                    if (selectedServicesQuantity[service.id] && selectedServicesQuantity[service.id] > 1) {
-                                      setSelectedServicesQuantity((prev) => ({
-                                        ...prev,
-                                        [service.id]: prev[service.id] - 1,
-                                      }));
-                                    }
-                                  }}
-                                >
-                                  -
-                                </Button>
-                                <span className='mx-2'>{selectedServicesQuantity[service.id]}</span>
-                                <Button
-                                  onClick={() => {
-                                    setSelectedServicesQuantity((prev) => ({
-                                      ...prev,
-                                      [service.id]: (prev[service.id] || 0) + 1,
-                                    }));
-                                  }}
-                                >
-                                  +
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </Form.Item>
-
-                  )}
-                  <div className='flex justify-center items-center'><Button className='border border-blue-500 rounded px-4 mt-2 w-full ' onClick={handleContinueClick}>Tiếp tục</Button></div>
-                </div>
+                  );
+                })}
               </div>
-              {/*Các loại phòng đã chon*/}
-              <div className='p-3 rounded-md mt-3 ' style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
-                <div className='text-md col-span-2'><h1>Các loại phòng đã chọn</h1></div>
-                <div className="grid grid-cols-2 gap-2">
-                  {cartData?.map((roomData, index) => {
-                    const selectedCategory = categories?.find((category: any) => category?.id === roomData?.id_cate);
-                    return (
-                      <React.Fragment key={index}>
-                        {((!hiddenSelectingServices || selectedRoomIndex === index) && (!hiddenSelectingRooms || selectedRoomIndex === index)) && (
-                          <div
-                            className={`px-3 py-2 rounded-md border h-full`}>
-                            <h2 className="font-bold text-xl text-blue-800"> Phòng số {index + 1}</h2>
+              <div className="">
+                {isSelectingServices && selectedRoomIndex !== null && (
+                  <Form.Item name={['cart', selectedRoomIndex, 'services']} className=''>
+                    {services?.map((service: Service,) => (
+                      <div key={service.id} className="my-3 flex items-center text-md w-[600px]">
+                        <Checkbox
+                          className=""
+                          value={service.id}
+                          checked={selectedServices.includes(service.id)}
+                          onChange={() => handleCheckboxChange(service)}
+                        />
 
-                            <div className="flex justify-between items-center">
-                              <h2 >
-                                <span className='pr-2'>Loại phòng:</span><span className='font-semibold italic text-blue-800'>{selectedCategory?.name}</span></h2>
-                              <Popconfirm
-                                title="Xoá phòng ?"
-                                description="Bạn có chắc muốn xoá phòng này không ?"
-                                onConfirm={() => handleRemoveRoom(index)}
-                                onCancel={() => handleCancelRemoveRoom}
-                                okText={<span className='text-blue-900 font-semibold hover:text-white'>Yes</span>}
-                                cancelText="No"
-                              >
-                                <div className='flex justify-end'>
-                                  <Button className="bg-red-300 flex justify-center items-center" type='primary' danger shape='circle'><BsTrash3 /></Button>
-                                </div>
-                              </Popconfirm>
-                            </div>
-                            <p className=''>Tên phòng : <span className='font-semibold text-blue-800'>{getRoomName(roomData?.id_room)} </span></p>
-
-                            <p className="text-md ">Dịch vụ đã chọn: </p>
-                            <ul>
-                              {roomData?.services?.map((serviceId, serviceIndex) => (
-                                <li key={serviceIndex}>
-                                  Dịch vụ {serviceIndex + 1} : <span className='font-semibold text-blue-800 italic'> {getServiceName(serviceId.id_service)}</span> x <span className='text-red-500 font-semibold'>{serviceId.quantity}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            <div className='flex justify-between item-center pt-4'>
-                              <Button onClick={() => handleSelectRooms(index)}>Chọn phòng</Button>
-                              <Button onClick={() => handleSelectServices(index)}>Chọn lại dịch vụ</Button>
-                            </div>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-                <div className="">
-                  {isSelectingServices && selectedRoomIndex !== null && (
-                    <Form.Item name={['cart', selectedRoomIndex, 'services']} className=''>
-                      {services?.map((service: Service,) => (
-                        <div key={service.id} className="my-3 flex items-center text-md w-[600px]">
-                          <Checkbox
-                            className=""
-                            value={service.id}
-                            checked={selectedServices.includes(service.id)}
-                            onChange={() => handleCheckboxChange(service)}
-                          />
-
-                          <div className='ml-1'>
-                            <span className='text-xl font-semibold text-blue-900 pl-2'>{service.name}</span>
-                            <span className='font-semibold px-5 text-md'>Giá : {service?.price} vnđ</span>
-                            {selectedServices.includes(service.id) && (
-                              <div className='ml-2'>
-                                <Button
-                                  onClick={() => {
-                                    if (selectedServicesQuantity[service.id] && selectedServicesQuantity[service.id] > 1) {
-                                      setSelectedServicesQuantity((prev) => ({
-                                        ...prev,
-                                        [service.id]: prev[service.id] - 1,
-                                      }));
-                                    }
-                                  }}
-                                >
-                                  -
-                                </Button>
-                                <span className='mx-2'>{selectedServicesQuantity[service.id] || 1}</span>
-                                <Button
-                                  onClick={() => {
+                        <div className='ml-1'>
+                          <span className='text-xl font-semibold text-blue-900 pl-2'>{service.name}</span>
+                          <span className='font-semibold px-5 text-md'>Giá : {service?.price} vnđ</span>
+                          {selectedServices.includes(service.id) && (
+                            <div className='ml-2'>
+                              <Button
+                                onClick={() => {
+                                  if (selectedServicesQuantity[service.id] && selectedServicesQuantity[service.id] > 1) {
                                     setSelectedServicesQuantity((prev) => ({
                                       ...prev,
-                                      [service.id]: (prev[service.id] || 0) + 1,
+                                      [service.id]: prev[service.id] - 1,
                                     }));
-                                  }}
-                                >
-                                  +
-                                </Button>
-                              </div>
-                            )}
-                          </div>
+                                  }
+                                }}
+                              >
+                                -
+                              </Button>
+                              <span className='mx-2'>{selectedServicesQuantity[service.id] || 1}</span>
+                              <Button
+                                onClick={() => {
+                                  setSelectedServicesQuantity((prev) => ({
+                                    ...prev,
+                                    [service.id]: (prev[service.id] || 0) + 1,
+                                  }));
+                                }}
+                              >
+                                +
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    <div className='ml-[210px] items-center'>
+                      <Button className='border border-blue-500 rounded px-4 mt-2  ' onClick={handleUpdateCart}>
+                        Cập nhật cart
+                      </Button>
+                    </div>
+                  </Form.Item>
+                )}
+                {isSelectingRooms && selectedRoomIndex !== null && (
+                  <Form.Item name={['cart', selectedRoomIndex, 'id_room']} className=''>
+                    <Radio.Group
+                      optionType="button"
+                      buttonStyle="solid"
+                      onChange={(e) => {
+                        const selectedRoomId = e.target.value;
+                        setSelectedRoom(selectedRoomId);
+                      }}
+                    >
+                      {listRoomSelected?.map((room: any) => (
+                        <div key={room.id} className="my-3 flex items-center text-md w-[600px]">
+                          <Radio
+                            value={room.id}
+                            checked={selectedRoom === room.id}
+                            className='mr-2'
+                          >
+                            Phòng {room.name}
+                          </Radio>
                         </div>
                       ))}
-                      <div className='ml-[210px] items-center'>
-                        <Button className='border border-blue-500 rounded px-4 mt-2  ' onClick={handleUpdateCart}>
-                          Cập nhật cart
-                        </Button>
-                      </div>
-                    </Form.Item>
-                  )}
-                  {isSelectingRooms && selectedRoomIndex !== null && (
-                    <Form.Item name={['cart', selectedRoomIndex, 'id_room']} className=''>
-                      <Radio.Group
-                        optionType="button"
-                        buttonStyle="solid"
-                        onChange={(e) => {
-                          const selectedRoomId = e.target.value;
-                          setSelectedRoom(selectedRoomId);
-                        }}
-                      >
-                        {listRoomSelected?.map((room: any) => (
-                          <div key={room.id} className="my-3 flex items-center text-md w-[600px]">
-                            <Radio
-                              value={room.id}
-                              checked={selectedRoom === room.id}
-                              className='mr-2'
-                            >
-                              Phòng {room.name}
-                            </Radio>
-                          </div>
-                        ))}
-                      </Radio.Group>
-                      <div className='ml-[210px] items-center'>
-                        <Button className='border border-blue-500 rounded px-4 mt-2' onClick={handleUpdateRoom}>
-                          Cập nhật phòng
-                        </Button>
-                      </div>
-                    </Form.Item>
-                  )}
+                    </Radio.Group>
+                    <div className='ml-[210px] items-center'>
+                      <Button className='border border-blue-500 rounded px-4 mt-2' onClick={handleUpdateRoom}>
+                        Cập nhật phòng
+                      </Button>
+                    </div>
+                  </Form.Item>
+                )}
 
-                </div>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <Form.Item label="Tổng thanh toán" name="total_amount" className='ml-16  '>
-            <InputNumber value={totalAmount} disabled className="text-black text-lg font-semibold" />
+          <Form.Item label="Tổng thanh toán" name="total_amount" className=' '>
+            <InputNumber value={totalAmount} disabled className="text-black text-lg font-semibold w-[130px] px-3" />
           </Form.Item>
           <Form.Item >
             <div className="flex justify-start items-center space-x-4">
@@ -821,7 +819,8 @@ const UpdateBooking = () => {
                 Cập nhật booking
               </Button>
             </div>
-          </Form.Item></div>
+          </Form.Item>
+        </div>
       </Form>
     </div>
   );

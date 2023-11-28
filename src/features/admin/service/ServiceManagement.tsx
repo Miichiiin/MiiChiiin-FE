@@ -11,6 +11,7 @@ import {
   Pagination,
   message,
   Skeleton,
+  Switch,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
@@ -22,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ServiceManagement = () => {
   const { data: visibleItems, isLoading, isError } = useGetService_adminQuery();
-  const [removeService, {isLoading:isRemoving}] = useRemoveService_adminMutation();
+  const [removeService, { isLoading: isRemoving }] = useRemoveService_adminMutation();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize] = useState<number>(8);
   const handlePageChange = (page: number) => {
@@ -77,17 +78,8 @@ export const ServiceManagement = () => {
       dataIndex: "status",
       key: "status",
       render: (_, record) => {
-        let statusText = '';
-        if (record.status === 2) {
-          statusText = 'Hoạt động';
-        } else if (record.status === 1) {
-          statusText = 'Đã ẩn';
-        } else if (record.status === 0) {
-          statusText = 'Đang chờ';
-        }
-
-        return <span>{statusText}</span>;
-      },
+        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
+       }
     },
     {
       title: "Mô tả",
@@ -118,7 +110,7 @@ export const ServiceManagement = () => {
                   okText="Có"
                   cancelText="Không"
                 >
-                  <button className="mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" ><BiTrash className="text-lg" /></button>
+                  <button className="hidden mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md" ><BiTrash className="text-lg" /></button>
                 </Popconfirm>
               )}
 
@@ -194,7 +186,7 @@ export const ServiceManagement = () => {
             showSearch
             style={{ width: 200 }}
             placeholder="Lọc"
-defaultValue="all"
+            defaultValue="all"
             optionFilterProp="children"
             filterOption={(input, option) => (option?.label ?? "").includes(input)}
             filterSort={(optionA, optionB) =>
