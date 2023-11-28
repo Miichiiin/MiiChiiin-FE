@@ -138,7 +138,7 @@ const Index = () => {
                     </Slider>
                 </div>
             </div>
-            <div className="mt-10 relative bg-[#585c5b]" style={{ textShadow: '1px 2px 3px #000' }}>
+            <div className="mt-20 mb-20 relative bg-[#585c5b]" style={{ textShadow: '1px 2px 3px #000' }}>
                 <div className="w-[740px] mx-auto absolute inset-0 top-[300px] items-center">
                     <p className="text-[#f2ba50] font-bold text-[35px] text-center pb-1" style={{ textShadow: '1px 3px 4px #000' }}>
                         Miichi Club
@@ -156,11 +156,54 @@ const Index = () => {
             <div className="bg-[#fbf8f2] w-full py-10 ">
                 <div className="xl:w-[1280px] xl:mx-auto mt-10 lg:">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-[30px] mb-7">Ưu đãi khuyến mãi</h2>
-                        <span className="flex items-center space-x-6 text-[#f2ba50]"><Link to={`/promotion`} > Xem thêm
-                        </Link> <AiOutlineArrowRight /></span>
+                        {/* <h2 className="text-[30px] mb-14">Khám phá cùng Miichi</h2> */}
+                        {/* <span className="flex items-center space-x-6 text-[#f2ba50]"><Link to={`/promotion`} > Xem thêm
+                        </Link> <AiOutlineArrowRight /></span> */}
                     </div>
-                    <div className="sm:grid xl:grid-cols-3 flex lg:grid-cols-2 sm:justify-center ">
+                    <div className="grid grid-cols-3 gap-2">
+                        <div>
+                           <div className="mb-20">
+                                <h2 className="text-2xl font-medium mb-2">
+                                    Khám phá
+                                </h2>
+                                <p>
+                                Hãy sẵn sàng để ngỡ ngàng trước một Việt Nam mà bạn chưa bao giờ thấy, 
+                                nơi hội tụ tinh hoa văn hóa kỳ thú của năm châu bốn biển
+                                </p>
+                           </div>
+                            <div className="relative ">
+                                <img className="object-cover h-[74%]" src="https://statics.vinpearl.com/Family%20Fun_1672982530.jpg" alt="" />
+                                <span className="absolute bottom-3 start-5 text-white">
+                                    <h2 className="font-medium text-2xl">Gia đình</h2>
+                                    <p>Nghĩ dưỡng bên biển</p>
+                                </span>
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <img className="object-cover h-full" src="https://statics.vinpearl.com/ban-be_1690371126.jpg" alt="" />
+                            <span className="absolute bottom-3 start-5 text-white">
+                                <h2 className="font-medium text-2xl">Nhóm bạn</h2>
+                                <p>Nghĩ dưỡng & vui chơi</p>
+                            </span>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <div className="relative">
+                                <img className="object-cover" src="https://statics.vinpearl.com/golfer_1690370771.jpg" alt="" />
+                                <span className="absolute bottom-3 start-5 text-white">
+                                    <h2 className="font-medium text-2xl">Golfer</h2>
+                                    <p>Nghĩ dưỡng & vui chơi</p>
+                                </span>
+                            </div>
+                            <div className="relative">
+                                <img className="object-cover" src="https://statics.vinpearl.com/middle-aged_1690370783.jpg" alt="" />
+                                <span className="absolute bottom-3 start-5 text-white">
+                                    <h2 className="font-medium text-2xl">Hội đòng niên</h2>
+                                    <p>Nghĩ dưỡng </p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="sm:grid xl:grid-cols-3 flex lg:grid-cols-2 sm:justify-center ">
                         <div  className="w-[1280px] mx-auto relative">
                         <button onClick={handleNext1} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[40%] start-[-15px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft /></button>
                         <button onClick={handlePrev1} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[40%] end-0  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight /></button>
@@ -184,7 +227,7 @@ const Index = () => {
                             })}
                             </Slider>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

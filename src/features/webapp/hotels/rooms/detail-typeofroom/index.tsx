@@ -75,13 +75,6 @@ const DetailTypeofRoom = () => {
   // Danh sách từ không thích hợp
   const inappropriateWords = [
     "mẹ",
-    "rác rưởi",
-    "súc vật",
-    "ngu",
-    "cứt",
-    "buồi",
-    "cặc",
-    "dái",
     "óc chó",
   ];
 
@@ -449,7 +442,7 @@ useEffect(() => {
                   src="https://booking-static.vinpearl.com/room_types/d76f7196be2e4dc48052b4216cf5d3b6_3630-024.jpg"
                   alt=""
                   className=" rounded cursor-pointer w-full h-[55%] object-cover hay"
-                  onClick={toggleModal}
+                  // onClick={toggleModal}
                 />
               </div>
             </Slider>
@@ -919,7 +912,7 @@ useEffect(() => {
                 {!isLoggedIn && (
                   <div className="w-full md:w-full flex items-start px-3 mb-2">
                     <textarea
-                      className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 placeholder-gray-700 focus:outline-none focus-bg-white"
+                      className="bg-gray-300 cursor-not-allowed rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 placeholder-gray-700 focus:outline-none focus-bg-white"
                       name="body"
                       placeholder="Đăng nhập để bình luận"
                       disabled
