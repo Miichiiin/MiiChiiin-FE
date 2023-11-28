@@ -1,6 +1,6 @@
 
-import { useGetRatingQuery, useRemoveRatingMutation } from '@/api/admin/rates_admin';
-import { Table, Divider, Radio, Button, Select, Input, Skeleton } from 'antd';
+import { useGetRatingQuery } from '@/api/admin/rates_admin';
+import { Table, Divider, Radio, Select, Input, Skeleton, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
@@ -8,12 +8,10 @@ import 'dayjs/plugin/utc';
 import 'dayjs/plugin/timezone';
 dayjs.locale('vi');
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 
 export const CommentManagement = () => {
     const { data: commentData, isLoading, isError } = useGetRatingQuery({});
-    const [removeComment] = useRemoveRatingMutation();
     const [searchText, setSearchText] = useState("");
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
@@ -39,12 +37,6 @@ export const CommentManagement = () => {
         .filter((item: DataType) =>
             selectedStatus === undefined ? true : item.status === selectedStatus
         ) : [];
-    // phân quyền
-    const dataPermission = localStorage.getItem('userAdmin')
-    const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
-    const hasAddUserPermission = (permissions:any) => {
-    return currentUserPermissions.includes(permissions);
-    };
     interface DataType {
         key: number;
         id: string | number;
@@ -52,7 +44,7 @@ export const CommentManagement = () => {
         id_category: string;
         content: string;
         rating: string;
-        status: string;
+        status: string | number;
         deleted_at: string;
         created_at: string;
         updated_at: string;
@@ -69,15 +61,6 @@ export const CommentManagement = () => {
             title: 'Tên người dùng',
             dataIndex: 'user_name',
             key: 'user_name',
-            // render: (text: any, item: any) => {
-            //     return (
-            //         <>
-            //             {hasAddUserPermission("update rate") && (
-            //                 <Link to={`/admin/editcomment/${item.key}`}>{text}</Link>
-            //             )}
-            //         </>
-            //     )
-            // }
         },
         {
             title: 'Tên loại phòng',
@@ -109,18 +92,8 @@ export const CommentManagement = () => {
             dataIndex: 'status',
             key: 'status',
             render: (_, record) => {
-                let statusText = '';
-                
-                if (record.status === "2") {
-                    statusText = 'Xác nhận';
-                } else if (record.status === "1") {
-                    statusText = 'Đã ẩn';
-                } else if (record.status === "0") {
-                    statusText = 'Đang chờ';
-                }
-    
-                return <span>{statusText}</span>;
-            },
+                return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
+            }
         },
     ];
 
@@ -141,7 +114,7 @@ export const CommentManagement = () => {
                         showSearch
                         style={{ width: 200 }}
                         placeholder="Lọc"
-defaultValue="all"
+                        defaultValue="all"
                         optionFilterProp="children"
                         filterOption={(input, option) => (option?.label ?? "").includes(input)}
                         filterSort={(optionA, optionB) =>

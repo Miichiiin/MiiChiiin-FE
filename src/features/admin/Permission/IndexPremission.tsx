@@ -89,7 +89,7 @@ console.log("dataLogin",dataLogin);
           }
           {
             hasAddUserPermission('delete permission') && (
-              <button className='ml-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md flex justify-center items-center'
+              <button className='hidden ml-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md justify-center items-center'
                 onClick={() => handleDelete(item.key)}
               ><BiTrash className="text-[22px]" />
               </button>

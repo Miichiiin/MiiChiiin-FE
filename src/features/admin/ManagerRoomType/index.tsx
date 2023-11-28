@@ -10,6 +10,7 @@ import {
   Popconfirm,
   message,
   Skeleton,
+  Switch,
 
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -22,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ManagerRoomType = () => {
   const { data: categoryData, isLoading, isError } = useGetCategory_adminQuery();
-  const [removeCategory_admin, {isLoading:isRemoving}] = useRemoveCategory_adminMutation();
+  const [removeCategory_admin, { isLoading: isRemoving }] = useRemoveCategory_adminMutation();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
@@ -34,6 +35,8 @@ export const ManagerRoomType = () => {
   const hasAddUserPermission = (permissions: any) => {
     return currentUserPermissions.includes(permissions);
   };
+
+ 
 
   const dataSource = categoryData?.map(({ id, name, price, image, description, capacity, convenient, quantity_of_people, acreage, floor, status, likes, views,
     created_at, updated_at
@@ -111,18 +114,8 @@ export const ManagerRoomType = () => {
       dataIndex: "status",
       key: "status",
       render: (_, record) => {
-        let statusText = '';
-        
-        if (record.status === 2) {
-            statusText = 'Hoạt động';
-        } else if (record.status === 1) {
-            statusText = 'Đang bảo trì';
-        } else if (record.status === 0) {
-            statusText = 'Đang chờ';
-        }
-      
-        return <span>{statusText}</span>;
-      }
+        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
+       }
     },
     {
       title: "Lượt thích",
@@ -140,7 +133,7 @@ export const ManagerRoomType = () => {
         return (
           <div className="flex items-center">
             {hasAddUserPermission('update category') && (
-              <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md text-lg" onClick={()=>navigate(`/admin/updateroomtype/${record.key}`)}>
+              <button className="mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md text-lg" onClick={() => navigate(`/admin/updateroomtype/${record.key}`)}>
                 <AiOutlineTool />
               </button>
             )}
@@ -156,7 +149,7 @@ export const ManagerRoomType = () => {
                 okText="Có"
                 cancelText="Không"
               >
-                <button className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md text-lg">
+                <button className="hidden bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md text-lg">
                   <BiTrash />
                 </button>
               </Popconfirm>
@@ -180,7 +173,7 @@ export const ManagerRoomType = () => {
       selectedStatus === undefined ? true : item.status === selectedStatus
     ) : [];
   if (isLoading) {
-    return <Skeleton active/>;
+    return <Skeleton active />;
   }
   if (isError) {
     return <div>Error</div>;
@@ -206,7 +199,7 @@ export const ManagerRoomType = () => {
             showSearch
             style={{ width: 200 }}
             placeholder="Lọc"
-defaultValue="all"
+            defaultValue="all"
             optionFilterProp="children"
             filterOption={(input, option) => (option?.label ?? "").includes(input)}
             filterSort={(optionA, optionB) =>
@@ -240,8 +233,8 @@ defaultValue="all"
           />
         </div>
         {hasAddUserPermission('add category') && (
-          <button className="ml-2 px-3 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={()=>navigate(`/admin/addroomtype`)}>
-            <IoAddCircleOutline  className="text-xl" />
+          <button className="ml-2 px-3 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={() => navigate(`/admin/addroomtype`)}>
+            <IoAddCircleOutline className="text-xl" />
           </button>
         )}
       </div>
