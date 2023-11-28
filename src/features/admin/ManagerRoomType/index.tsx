@@ -108,6 +108,7 @@ export const ManagerRoomType = () => {
       title: "Giá",
       dataIndex: "price",
       key: "price",
+      render: (price) => <span>{price.toLocaleString()} VNĐ</span>,
     },
     {
       title: "Trạng thái",

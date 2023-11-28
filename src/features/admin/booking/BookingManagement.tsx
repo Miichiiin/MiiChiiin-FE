@@ -85,11 +85,6 @@ export const BookingManagement = () => {
             key: 'phone',
         },
         {
-            title: 'Tổng tiền',
-            dataIndex: 'total_amount',
-            key: 'total_amount',
-        },
-        {
             title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
