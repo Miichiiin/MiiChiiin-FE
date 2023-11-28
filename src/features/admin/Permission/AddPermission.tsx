@@ -111,6 +111,7 @@ const AddPermission = () => {
             className='mt-1 bg-gray-500'
           /> */}
           {/* Nút để thêm quyền từ trái sang phải */}
+          <Button type='primary' className=' bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</Button>
           <Button
             type="primary"
             htmlType="submit"
@@ -119,7 +120,7 @@ const AddPermission = () => {
             Add
           </Button>
 
-          <button className='px-3 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</button>
+
 
         </div>
 

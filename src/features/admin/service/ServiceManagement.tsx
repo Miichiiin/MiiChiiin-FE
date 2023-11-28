@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ServiceManagement = () => {
   const { data: visibleItems, isLoading, isError } = useGetService_adminQuery();
-  const [removeService] = useRemoveService_adminMutation();
+  const [removeService, {isLoading:isRemoving}] = useRemoveService_adminMutation();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize] = useState<number>(8);
   const handlePageChange = (page: number) => {
@@ -174,7 +174,9 @@ export const ServiceManagement = () => {
   if (isError) {
     return <div>Error</div>;
   }
-
+  if (isRemoving) {
+    message.loading({ content: 'Đang xóa ...', key: 'updatable', duration: 1 });
+  }
   return (
     <div>
       <div

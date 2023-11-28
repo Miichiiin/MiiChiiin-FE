@@ -72,7 +72,7 @@ const UpdateUserPage = () => {
       body.append('image', userData?.image);
     }
     setIsUploading(true);
-    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 6 });
+    message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
 
     updateUser(body).unwrap().then(() => {
       navigate("/admin/usermanagement")

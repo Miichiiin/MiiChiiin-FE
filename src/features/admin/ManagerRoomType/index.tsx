@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ManagerRoomType = () => {
   const { data: categoryData, isLoading, isError } = useGetCategory_adminQuery();
-  const [removeCategory_admin] = useRemoveCategory_adminMutation();
+  const [removeCategory_admin, {isLoading:isRemoving}] = useRemoveCategory_adminMutation();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
@@ -184,6 +184,9 @@ export const ManagerRoomType = () => {
   }
   if (isError) {
     return <div>Error</div>;
+  }
+  if (isRemoving) {
+    message.loading({ content: 'Đang xóa ...', key: 'updatable', duration: 0.5 });
   }
 
   return (

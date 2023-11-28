@@ -13,7 +13,7 @@ import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
 import { Link, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
-import { useGetService_hotelQuery } from "@/api/webapp/service_hotel";
+import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";
 import localStorage from "redux-persist/es/storage";
 import { useAddBookingUserMutation } from "@/api/bookingUser";
@@ -23,14 +23,16 @@ import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
-  const { data: serviceData } = useGetService_hotelQuery();
+ 
+
+  
   const [addBookingUser] = useAddBookingUserMutation();
   const [userData, setUserData] = useState<any | null>(null);
   const [idVoucher, setIdvoucher] =useState<any>()
   const [modalIsOpen, setModalIsOpen] = useState(false);
   console.log("idVoucher",idVoucher);
-  
-
+   
+   
   useEffect(() => {
     const userPromise = localStorage.getItem("user");
     userPromise.then((user: any) => {
@@ -44,6 +46,8 @@ const BookingInformation = () => {
   if (dataParam && dataParam.hotel) {
     hotel = dataParam.hotel.split(",");
   }
+
+  const { data: serviceData } = useGetService_hotelIdQuery(hotel[0]);
 
   let date: Date[] = [];
   if (dataParam && dataParam.date) {
@@ -61,6 +65,7 @@ const BookingInformation = () => {
     selectedServices = JSON.parse(dataParam.selectedServices);
   }
 
+  
   let roomDetailsString: any = [];
   if (dataParam && dataParam?.people) {
     roomDetailsString = JSON.stringify(dataParam?.people)
@@ -174,6 +179,7 @@ const BookingInformation = () => {
     const idRegex = /^\d{12}$/;
     return idRegex.test(id);
   };
+  
 
   const onSubmit = (data: any) => {
     const total = caculatePrice();
@@ -791,6 +797,8 @@ const BookingInformation = () => {
                   (service) => service.roomIndex === index
                 );
 
+                console.log("selectedServicesInRoom",selectedServicesInRoom);
+                
                 return (
                   <div key={index}>
                     <div className="flex items-center justify-between pt-5">
@@ -833,11 +841,12 @@ const BookingInformation = () => {
                         </p>
                         <ul className="list-disc px-3">
                           {selectedServicesInRoom?.map((selectedService) => {
-                            const { id, price, roomIndex } = selectedService;
+                            const { id, roomIndex, name } = selectedService;
                             const selectedRoom = roomIndex + 1;
                             const selectedServiceData =
                               serviceData &&
                               serviceData?.find((item: any) => item?.id === id);
+                              
                             if (selectedServiceData) {
                               return (
                                 <li className="text-sm pb-2" key={id}>
