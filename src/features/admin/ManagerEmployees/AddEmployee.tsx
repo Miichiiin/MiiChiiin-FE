@@ -26,7 +26,7 @@ const AddEmployeePage = () => {
   }));
   // check trùng email
   const checkEmailDuplicate = async (_: any, value: string) => {
-    const emailExists = dataAdmin.some((item: any) => item.email === value);
+    const emailExists = dataAdmin?.some((item: any) => item.email === value);
     if (emailExists) {
       return Promise.reject('Email đã tồn tại. Vui lòng sử dụng email khác.');
     }
