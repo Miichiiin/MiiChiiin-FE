@@ -1,7 +1,7 @@
 import { useGetPermissions1Query } from '@/api/admin/permisstion1_admin';
 import { useAddRole1Mutation } from '@/api/admin/role1_admin';
 // import { CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Transfer, message } from 'antd';
+import { Button, Form, Input, Skeleton, Transfer, message } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { TransferDirection } from 'antd/es/transfer';
 import { useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ const AddPermission = () => {
   const [form] = useForm();
   const navigate = useNavigate();
   const [addRole] = useAddRole1Mutation();
-  const { data: perData } = useGetPermissions1Query({});
+  const { data: perData, isLoading, isError } = useGetPermissions1Query({});
 
   // Lưu danh sách các quyền đã chọn
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
@@ -66,6 +66,8 @@ const AddPermission = () => {
   const handleSearch = (dir: TransferDirection, value: string) => {
     console.log('search:', dir, value);
   };
+  if (isLoading) return <Skeleton active/>;
+  if (isError) return <div>Đã xảy ra lỗi khi tải dữ liệu</div>;
   return (
     <>
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>

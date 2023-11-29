@@ -1,6 +1,6 @@
 
 import { useGetRatingQuery } from '@/api/admin/rates_admin';
-import { Table, Divider, Radio, Select, Input, Skeleton, Switch } from 'antd';
+import { Table, Divider, Radio, Select, Input, Skeleton } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
@@ -87,14 +87,14 @@ export const CommentManagement = () => {
                 return <span>{formattedDate}</span>;
             },
         },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'status',
-            key: 'status',
-            render: (_, record) => {
-                return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
-            }
-        },
+        // {
+        //     title: 'Trạng thái',
+        //     dataIndex: 'status',
+        //     key: 'status',
+        //     render: (_, record) => {
+        //         return <Switch className="bg-gray-500" checkedChildren="" unCheckedChildren="" defaultChecked={record.status === 2} />
+        //     }
+        // },
     ];
 
     if (isLoading) {

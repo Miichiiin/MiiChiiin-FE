@@ -162,10 +162,10 @@ export const LayoutAdmin = () => {
     if (currentUserPermissions.includes("get booking")) {
       menuItems.push(
         getItem(
-          <Link to={"bookingmanagement"}>Quản lý đặt phòng</Link>,
+          <Link to={"bookingmanagement"}>Quản lý đơn hàng</Link>,
           "9",
           <TbBrandBooking />,
-          "Quản lý đặt phòng",
+          "Quản lý đơn hàng",
           "bookingmanagement"
         )
       );

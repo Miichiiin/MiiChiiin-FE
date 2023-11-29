@@ -1,5 +1,5 @@
 
-import { useGetService_adminQuery, useRemoveService_adminMutation } from "@/api/admin/service_admin";
+import { useChangeStatusService_adminMutation, useGetService_adminQuery, useRemoveService_adminMutation } from "@/api/admin/service_admin";
 import {
   Table,
   Divider,
@@ -24,6 +24,21 @@ import { useNavigate } from "react-router-dom";
 export const ServiceManagement = () => {
   const { data: visibleItems, isLoading, isError } = useGetService_adminQuery();
   const [removeService, { isLoading: isRemoving }] = useRemoveService_adminMutation();
+  const [changeStatus] = useChangeStatusService_adminMutation()
+  const handleStatusChange = (record: any) => {
+    const status = record.status
+    if(status === 2){
+      changeStatus({ id: record.id, status: 2 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/service");
+      })
+    } else if(status === 1){
+      changeStatus({ id: record.id, status: 1 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/service");
+      })
+    }
+  };
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize] = useState<number>(8);
   const handlePageChange = (page: number) => {
@@ -48,7 +63,7 @@ export const ServiceManagement = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "Stt",
+      title: "#",
       dataIndex: "id",
       key: "id", // Đổi từ 'id' thành 'key'
     },
@@ -61,6 +76,7 @@ export const ServiceManagement = () => {
       title: "Giá dịch vụ",
       dataIndex: "price",
       key: "price",
+      render: (price: any) => <span>{price.toLocaleString("vi-VN")} Đ</span>,
     },
     {
       title: "Hình ảnh",
@@ -69,25 +85,27 @@ export const ServiceManagement = () => {
       render: (text: any) => <Image src={text} width={100} height={100} />,
     },
     {
-      title: "Số lượng",
-      dataIndex: "quantity",
-      key: "quantity",
-    },
-    {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (_, record) => {
-        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
-       }
+      render: (_,record) => {
+        return <Switch
+          className="bg-gray-500"
+          checkedChildren=""
+          unCheckedChildren=""
+          defaultChecked={record.status === 2}
+          onChange={() => handleStatusChange(record)}
+        />
+      }
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
+      render: (text) => <span>{text.length > 10 ? `${text.slice(0, 20)}...` : text}</span>
     },
     {
-      title: "Thao tác",
+      title: "Action",
       dataIndex: "action",
       key: "action",
       render: (_, item: any) => {

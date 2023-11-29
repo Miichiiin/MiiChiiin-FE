@@ -155,16 +155,26 @@ const UpdateVoucherPage = () => {
           <div className="w-1/2 p-4">
 
             <Form.Item<FieldType>
-              label="Start Date"
+              label="Ngày bắt đầu"
               name="start_at"
-              rules={[{ required: true, message: 'Please select start date' }]}>
-              <DatePicker className='w-full' />
+              rules={[{ required: true, message: 'Hãy chọn ngày bắt đầu' }]}>
+              <DatePicker
+                className='w-full'
+                disabledDate={(currentDate) => {
+                  // Disable dates before the current date
+                  return currentDate.isBefore(dayjs(), 'day');
+                }} />
             </Form.Item>
             <Form.Item<FieldType>
-              label="End Date"
+              label="Ngày kết thúc"
               name="expire_at"
-              rules={[{ required: true, message: 'Please select end date' }]}>
-              <DatePicker className='w-full' />
+              rules={[{ required: true, message: 'Hãy chọn ngày kết thúc' }]}>
+              <DatePicker
+                className='w-full'
+                disabledDate={(currentDate) => {
+                  // Disable dates before the current date
+                  return currentDate.isBefore(dayjs(), 'day');
+                }} />
             </Form.Item>
             <Form.Item<FieldType>
               label="Số lượng"

@@ -2,7 +2,7 @@
 import { useGetRole1ByIdQuery, useUpdateRole1Mutation } from '@/api/admin/role1_admin';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 // import { CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Transfer, message } from 'antd';
+import { Button, Form, Input, Skeleton, Transfer, message } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { TransferDirection } from 'antd/es/transfer';
 import { useEffect, useState } from 'react';
@@ -26,7 +26,7 @@ const Permission = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [updateRole] = useUpdateRole1Mutation();
-  const { data: dataRole } = useGetRole1ByIdQuery(id);
+  const { data: dataRole, isLoading, isError } = useGetRole1ByIdQuery(id);
 
   // Lưu danh sách các quyền đã chọn
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
@@ -92,6 +92,8 @@ const Permission = () => {
   const handleSearch = (dir: TransferDirection, value: string) => {
     console.log('search:', dir, value);
   };
+  if (isLoading) return <Skeleton active/>;
+  if (isError) return <div>Đã xảy ra lỗi khi tải dữ liệu</div>;
 
   return (
     <>
