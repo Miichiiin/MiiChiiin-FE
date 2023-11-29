@@ -1,5 +1,5 @@
 import { useGetRoles1Query, useRemoveRole1Mutation } from '@/api/admin/role1_admin';
-import { Table, Input, Divider, message } from 'antd';
+import { Table, Input, Divider, message, Skeleton } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useState } from 'react';
 import { BiTrash } from 'react-icons/bi';
@@ -10,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 const IndexPremission = () => {
-  const { data: dataRole } = useGetRoles1Query({});
+  const { data: dataRole, isLoading } = useGetRoles1Query({});
   const navigate = useNavigate()
-  const [removeRole, {isLoading, isSuccess}] = useRemoveRole1Mutation()
+  const [removeRole, {isLoading:isRemoving, isSuccess}] = useRemoveRole1Mutation()
   const dataSource = dataRole ? dataRole.map(({ id, name, level, created_at, updated_at, guard_name }: DataType) => ({
     key: id,
     name: name,
@@ -105,11 +105,14 @@ console.log("dataLogin",dataLogin);
     .filter((item: any) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
     ) : [];
-  if(isLoading){
+  if(isRemoving){
     message.loading({content: 'Loading...', key: 'updatable', duration: 1})
   }
   if(isSuccess) {
     message.success({content: 'Xóa thành công', key: 'updatable', duration: 1})
+  }
+  if(isLoading){
+    return <Skeleton active />
   }
   return (
     <div>

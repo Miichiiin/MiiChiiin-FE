@@ -44,11 +44,19 @@ const category_AdminApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ['Category_admin']
+        }),
+        statusCategory_admin: builder.mutation({
+            query: (body) => ({
+                url: `/category/status`,
+                method: "POST",
+                body: body
+            }),
+            invalidatesTags: ['Category_admin']
         })
     })
 })
 export const { 
- useAddCategory_adminMutation, useGetCategory_adminByIdQuery, useGetCategory_adminQuery, useRemoveCategory_adminMutation, useUpdateCategory_adminMutation
+ useAddCategory_adminMutation, useGetCategory_adminByIdQuery, useGetCategory_adminQuery, useRemoveCategory_adminMutation, useUpdateCategory_adminMutation, useStatusCategory_adminMutation
  } = category_AdminApi;
 export const category_AdminReducer = category_AdminApi.reducer;
 export default category_AdminApi;

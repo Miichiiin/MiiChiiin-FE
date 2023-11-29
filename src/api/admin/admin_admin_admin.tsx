@@ -45,11 +45,19 @@ const admin_admin_AdminApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ['Admin_admin1']
+        }),
+        changeStatusAdmin_admin_Admin: builder.mutation({
+            query: (body) => ({
+                url: `/admin/admin/status`,
+                method: "POST",
+                body: body
+            }),
+            invalidatesTags: ['Admin_admin1']
         })
     })
 })
 export const { 
-  useAddAdmin_admin_AdminMutation, useGetAdmin_admin_AdminByIdQuery, useGetAdmin_admin_AdminQuery, useRemoveAdmin_admin_AdminMutation, useUpdateAdmin_admin_AdminMutation
+  useAddAdmin_admin_AdminMutation, useGetAdmin_admin_AdminByIdQuery, useGetAdmin_admin_AdminQuery, useRemoveAdmin_admin_AdminMutation, useUpdateAdmin_admin_AdminMutation, useChangeStatusAdmin_admin_AdminMutation
  } = admin_admin_AdminApi;
 export const Admin_admin_AdminReducer = admin_admin_AdminApi.reducer;
 export default admin_admin_AdminApi;

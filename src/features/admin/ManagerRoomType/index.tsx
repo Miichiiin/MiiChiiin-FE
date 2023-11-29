@@ -1,5 +1,5 @@
 
-import { useGetCategory_adminQuery, useRemoveCategory_adminMutation } from "@/api/admin/category_admin";
+import { useGetCategory_adminQuery, useRemoveCategory_adminMutation, useStatusCategory_adminMutation } from "@/api/admin/category_admin";
 import {
   Table,
   Divider,
@@ -24,6 +24,21 @@ import { useNavigate } from "react-router-dom";
 export const ManagerRoomType = () => {
   const { data: categoryData, isLoading, isError } = useGetCategory_adminQuery();
   const [removeCategory_admin, { isLoading: isRemoving }] = useRemoveCategory_adminMutation();
+  const [changeStatus] = useStatusCategory_adminMutation();
+  const handleStatusChange = (record: any) => {
+    const status = record.status
+    if(status === 2){
+      changeStatus({ id: record.key, status: 2 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/manageroomtype");
+      })
+    } else if(status === 1){
+      changeStatus({ id: record.key, status: 1 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/manageroomtype");
+      })
+    }
+  };
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
@@ -36,7 +51,7 @@ export const ManagerRoomType = () => {
     return currentUserPermissions.includes(permissions);
   };
 
- 
+
 
   const dataSource = categoryData?.map(({ id, name, price, image, description, capacity, convenient, quantity_of_people, acreage, floor, status, likes, views,
     created_at, updated_at
@@ -108,15 +123,21 @@ export const ManagerRoomType = () => {
       title: "Giá",
       dataIndex: "price",
       key: "price",
-      render: (price) => <span>{price.toLocaleString()} VNĐ</span>,
+      render: (price) => <span>{price.toLocaleString("vi-VN")} VNĐ</span>,
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (_, record) => {
-        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
-       }
+      render: (_,record) => {
+        return <Switch
+          className="bg-gray-500"
+          checkedChildren=""
+          unCheckedChildren=""
+          defaultChecked={record.status === 2}
+          onChange={() => handleStatusChange(record)}
+        />
+      }
     },
     {
       title: "Lượt thích",
@@ -212,12 +233,8 @@ export const ManagerRoomType = () => {
                 label: "Tất cả",
               },
               {
-                value: 0,
-                label: "Đang chờ",
-              },
-              {
                 value: 1,
-                label: "Đang bảo trì",
+                label: "Ẩn",
               },
               {
                 value: 2,

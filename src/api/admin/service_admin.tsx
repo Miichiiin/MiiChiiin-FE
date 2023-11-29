@@ -45,11 +45,19 @@ const service_AdminApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ['Service_admin']
+        }),
+        changeStatusService_admin: builder.mutation({
+            query: (body) => ({
+                url: `/service/status`,
+                method: "POST",
+                body: body
+            }),
+            invalidatesTags: ['Service_admin']
         })
     })
 })
 export const {
-    useAddService_adminMutation, useGetService_adminIdQuery, useGetService_adminQuery, useRemoveService_adminMutation, useUpdateService_adminMutation
+    useAddService_adminMutation, useGetService_adminIdQuery, useGetService_adminQuery, useRemoveService_adminMutation, useUpdateService_adminMutation, useChangeStatusService_adminMutation
 } = service_AdminApi;
 export const service_AdminReducer = service_AdminApi.reducer;
 export default service_AdminApi;

@@ -1,4 +1,4 @@
-import { useGetUsers_adminQuery, useRemoveUser_adminMutation } from '@/api/admin/admin_usermanage';
+import { useChangeStatusUser_adminMutation, useGetUsers_adminQuery, useRemoveUser_adminMutation } from '@/api/admin/admin_usermanage';
 import { Table, Divider, Select, Input, Skeleton, Pagination, Popconfirm, message, Switch } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,21 @@ export const UserManagement = () => {
   const [pageSize] = useState<number>(5);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+  const [changeStatus] = useChangeStatusUser_adminMutation()
+  const handleStatusChange = (record: any) => {
+    const status = record.status
+    if(status === 2){
+      changeStatus({ id: record.id, status: 2 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/usermanagement");
+      })
+    } else if(status === 1){
+      changeStatus({ id: record.id, status: 1 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/usermanagement");
+      })
+    }
   };
   const [data, setData] = useState<DataType[]>([]);
   const navigate = useNavigate()
@@ -80,24 +95,33 @@ export const UserManagement = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (_, record) => {
-        let statusText = '';
-        if (record.status === 1) {
-          statusText = 'Hoạt đông';
-        } else if (record.status === 0) {
-          statusText = 'Đang chờ';
-        }
-
-        return <span>{statusText}</span>;
-      },
+      render: (_,record) => {
+        return <Switch
+          className="bg-gray-500"
+          checkedChildren=""
+          unCheckedChildren=""
+          defaultChecked={record.status === 2}
+          onChange={() => handleStatusChange(record)}
+        />
+      }
+      
     },
     {
       title: "Giới tính",
       dataIndex: "gender",
       key: "gender",
       render: (_, record) => {
-        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
-       }
+        let statusText = '';
+        if (record.gender === 1) {
+          statusText = 'Nữ';
+        } else if (record.gender === 0) {
+          statusText = 'Nam';
+        }else if (record.gender === 2) {
+          statusText = 'Gay';
+        }
+
+        return <span>{statusText}</span>;
+      },
     },
     {
       title: "Action",
@@ -149,12 +173,15 @@ export const UserManagement = () => {
   const hasAddUserPermission = (permissions: any) => {
     return currentUserPermissions.includes(permissions);
   };
-
-  if (isLoading) return <Skeleton active />;
   if (isError) return <div>Something went wrong</div>;
   if (isRemoving) {
     message.loading({ content: 'Đang xóa', key: 'removeUser', duration: 1.5 })
   }
+  useEffect(() => {
+    if(isLoading){
+      <Skeleton active />
+    }
+  })
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>

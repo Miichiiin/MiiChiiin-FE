@@ -53,6 +53,14 @@ const voucherApi = createApi({
       }),
       invalidatesTags: ["Voucher"],
     }),
+    changeStatusVoucher: builder.mutation({
+      query: (body) => ({
+        url: `/admin/voucher/status`,
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["Voucher"],
+    }),
   }),
 });
 export const {
@@ -62,6 +70,7 @@ export const {
   useRemoveVoucherMutation,
   useUpdateVoucherMutation,
   usePhatVoucherMutation,
+  useChangeStatusVoucherMutation,
 } = voucherApi;
 export const voucherReducer = voucherApi.reducer;
 export default voucherApi;

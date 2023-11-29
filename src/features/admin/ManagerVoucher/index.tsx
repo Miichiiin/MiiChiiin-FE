@@ -1,5 +1,5 @@
 
-import { useGetVoucherQuery, useRemoveVoucherMutation } from "@/api/admin/voucher";
+import { useChangeStatusVoucherMutation, useGetVoucherQuery, useRemoveVoucherMutation } from "@/api/admin/voucher";
 import { Table, Divider, Radio, Input, Select, Button, Popconfirm, message, Skeleton, Switch, } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
@@ -21,16 +21,31 @@ interface DataType {
   meta: string;
   description: string;
   quantity: number;
+  
 }
 export const ManagerVouchers = () => {
   const [remove, {isLoading:isRemoving}] = useRemoveVoucherMutation()
   const { data: dataVoucher, isLoading: Loading, isError } = useGetVoucherQuery();
-  const dataSource = dataVoucher?.map(({ id, name, image, discount, start_at, expire_at, description, quantity, status }: DataType) => ({
+  const dataSource = dataVoucher?.map(({ id, name, image, discount, start_at, expire_at, description, quantity, status, slug }: DataType) => ({
     key: id,
-    name, image, discount, start_at, expire_at, description, quantity, status
+    name, image, discount, start_at, expire_at, description, quantity, status, slug
   }))
   const navigate = useNavigate()
-
+  const [changeStatus] = useChangeStatusVoucherMutation();
+  const handleStatusChange = (record: any) => {
+    const status = record.status
+    if(status === 2){
+      changeStatus({ id: record.key, status: 2 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/managervouchers");
+      })
+    } else if(status === 1){
+      changeStatus({ id: record.key, status: 1 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/managervouchers");
+      })
+    }
+  };
   // phân quyền
   const dataPermission = localStorage.getItem('userAdmin')
   const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
@@ -47,9 +62,9 @@ export const ManagerVouchers = () => {
       // render: (_, record, index) => <span>{index + 1}</span>,
     },
     {
-      title: "Tên Voucher",
-      dataIndex: "name",
-      key: "name",
+      title: "Mã Voucher",
+      dataIndex: "slug",
+      key: "slug",
     },
     {
       title: "Hình ảnh",
@@ -61,6 +76,7 @@ export const ManagerVouchers = () => {
       title: "Giá trị giảm",
       dataIndex: "discount",
       key: "discount",
+      render: (discount) => <span>{discount} %</span>,
     },
     {
       title: "Ngày bắt đầu",
@@ -81,13 +97,19 @@ export const ManagerVouchers = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (_, record) => {
-        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
-       }
+      render: (_,record) => {
+        return <Switch
+          className="bg-gray-500"
+          checkedChildren=""
+          unCheckedChildren=""
+          defaultChecked={record.status === 2}
+          onChange={() => handleStatusChange(record)}
+        />
+      }
 
     },
     {
-      title: "Thao tác",
+      title: "Action",
       dataIndex: "action",
       key: "action",
       render: (_, item) => (

@@ -1,4 +1,4 @@
-import { useGetComfortQuery, useRemoveComfortMutation } from "@/api/admin/comfort_admin";
+import { useChangeStatusComfortMutation, useGetComfortQuery, useRemoveComfortMutation } from "@/api/admin/comfort_admin";
 import {
   Table,
   Divider,
@@ -31,6 +31,22 @@ export const ManagerUtilities = () => {
   const [searchText, setSearchText] = useState("");
   const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
   const { data: Ultilities, isLoading, isError } = useGetComfortQuery({});
+  const [changeStatus] = useChangeStatusComfortMutation();
+  const handleStatusChange = (record: any) => {
+    const status = record.status
+    if(status === 2){
+      changeStatus({ id: record.key, status: 2 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/managerUtilities");
+      })
+    } else if(status === 1){
+      changeStatus({ id: record.key, status: 1 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/managerUtilities");
+      })
+    }
+  };
+
   const [removeUtility, { isLoading: isRemoving }] = useRemoveComfortMutation();
   const navigate = useNavigate();
   interface DataType {
@@ -78,9 +94,15 @@ export const ManagerUtilities = () => {
       title: "Trang thái",
       dataIndex: "status",
       key: "status",
-      render: (_, record) => {
-        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
-       }
+      render: (_,record) => {
+        return <Switch
+          className="bg-gray-500"
+          checkedChildren=""
+          unCheckedChildren=""
+          defaultChecked={record.status === 2}
+          onChange={() => handleStatusChange(record)}
+        />
+      }
     },
     {
       title: "Icon",

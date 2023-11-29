@@ -4,7 +4,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAddVoucherMutation } from '@/api/admin/voucher';
 import { format } from 'date-fns';
-
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 
@@ -84,7 +84,7 @@ const AddVoucherPage = () => {
               <Input />
             </Form.Item>
             <Form.Item
-              label="Giám giá"
+              label="Giảm giá"
               name="discount"
               rules={[{ required: true, message: 'Vui lòng nhập loại!' },
               { whitespace: true, message: 'Không được để khoảng trắng!' },
@@ -111,16 +111,26 @@ const AddVoucherPage = () => {
 
           <div className="w-1/2 p-4">
             <Form.Item
-              label="Start Date"
+              label="Ngày bắt đầu"
               name="start_at"
               rules={[{ required: true, message: 'Vui lòng nhập ngày bắt đầu!' }]}>
-              <DatePicker className='w-full' />
+              <DatePicker
+                className='w-full'
+                disabledDate={(currentDate) => {
+                  // Disable dates before the current date
+                  return currentDate.isBefore(dayjs(), 'day');
+                }} />
             </Form.Item>
             <Form.Item
-              label="End Date"
+              label="Ngày kết thúc"
               name="expire_at"
               rules={[{ required: true, message: 'Vui lòng nhập ngày kết thúc!' }]}>
-              <DatePicker className='w-full' />
+              <DatePicker
+                className='w-full'
+                disabledDate={(currentDate) => {
+                  // Disable dates before the current date
+                  return currentDate.isBefore(dayjs(), 'day');
+                }} />
             </Form.Item>
             <Form.Item
               label="Số lượng"

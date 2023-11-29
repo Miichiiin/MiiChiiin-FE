@@ -45,11 +45,19 @@ const comfortApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ['Comfort']
+        }),
+        changeStatusComfort: builder.mutation({
+            query: (body) => ({
+                url: `/comfort/status`,
+                method: "POST",
+                body:body
+            }),
+            invalidatesTags: ['Comfort']
         })
     })
 })
 export const { 
-    useAddComfortMutation, useGetComfortByIdQuery, useGetComfortQuery, useRemoveComfortMutation, useUpdateComfortMutation
+    useAddComfortMutation, useGetComfortByIdQuery, useGetComfortQuery, useRemoveComfortMutation, useUpdateComfortMutation, useChangeStatusComfortMutation
  } = comfortApi;
 export const comfortReducer = comfortApi.reducer;
 export default comfortApi;

@@ -467,10 +467,10 @@ const AddBooking = () => {
                 labelCol={{ span: 24 }}
                 rules={[{ required: true, message: 'Hãy chọn trạng thái!' }]}
               >
-                <Select style={{ width: "250px" }} placeholder="Hay chọn trạng thái">
+                <Select style={{ width: "250px" }} placeholder="Hãy chọn trạng thái">
                   <Select.Option value={0}>Đang chờ</Select.Option>
                   <Select.Option value={1}>Đã huỷ</Select.Option>
-                  <Select.Option value={2} >Đã check in</Select.Option>
+                  <Select.Option value={2}>Đã check in</Select.Option>
                   <Select.Option value={3}>Đã thanh toán</Select.Option>
                   <Select.Option value={4}>Đã hoàn thành</Select.Option>
                 </Select>

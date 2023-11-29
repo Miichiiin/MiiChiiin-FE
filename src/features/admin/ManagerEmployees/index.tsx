@@ -1,5 +1,5 @@
 
-import { useGetAdmin_admin_AdminQuery, useRemoveAdmin_admin_AdminMutation } from "@/api/admin/admin_admin_admin";
+import { useChangeStatusAdmin_admin_AdminMutation, useGetAdmin_admin_AdminQuery, useRemoveAdmin_admin_AdminMutation } from "@/api/admin/admin_admin_admin";
 import { Table, Divider, Input, Select, Popconfirm, message, Skeleton, Switch } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
@@ -11,8 +11,23 @@ import { useNavigate } from "react-router-dom";
 
 export const ManagerEmployee = () => {
   const { data: emploData, isLoading, isError } = useGetAdmin_admin_AdminQuery({})
+  const [changeStatus] = useChangeStatusAdmin_admin_AdminMutation()
   const navigate = useNavigate()
   const [removeEployee, { isLoading: isRemoveEmployee }] = useRemoveAdmin_admin_AdminMutation()
+  const handleStatusChange = (record: any) => {
+    const status = record.status
+    if(status === 2){
+      changeStatus({ id: record.key, status: 2 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/manageremployee");
+      })
+    } else if(status === 1){
+      changeStatus({ id: record.key, status: 1 }).unwrap().then(() => {
+        message.success("Cập nhật trạng thái thành công");
+        navigate("/admin/manageremployee");
+      })
+    }
+  };
   const dataSource = emploData?.map(({ id, name, id_role, email, password, image, description, gender, date, address, status, phone }: DataType) => ({
     key: id,
     id_role,
@@ -71,8 +86,14 @@ export const ManagerEmployee = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (_, record) => {
-        return <Switch className="bg-gray-500" checkedChildren="Hoạt động" unCheckedChildren="Đang chờ" defaultChecked={record.status === 2} />
+      render: (_,record) => {
+        return <Switch
+          className="bg-gray-500"
+          checkedChildren=""
+          unCheckedChildren=""
+          defaultChecked={record.status === 2}
+          onChange={() => handleStatusChange(record)}
+        />
       }
     },
     {
@@ -91,7 +112,7 @@ export const ManagerEmployee = () => {
       key: "phone",
     },
     {
-      title: "Thao tác",
+      title: "Action",
       dataIndex: "action",
       key: "action",
       render: (_, item) => (
