@@ -209,7 +209,7 @@ const ChooseService = () => {
             {/*Chọn dịch vụ mua thêm*/}
             <div className="choice-column">
               {/*Thông tin dịch vụ*/}
-              {[...Array(numberOfRooms)].map((_, roomIndex) => (
+              {[...Array(numberOfRooms)]?.map((_, roomIndex) => (
                 <section
                   key={roomIndex}
                   className="border rounded-lg px-2 py-3 my-2"
@@ -240,17 +240,17 @@ const ChooseService = () => {
                       {serviceData?.map((item: any) => (
                         <div
                           className="column border rounded-lg hover:shadow-xl"
-                          key={item.id}
+                          key={item?.id}
                         >
                           <img
                             src={item?.image}
                             className="w-full rounded-t-lg"
                           />
                           <h1 className="pl-2 pt-2 pb-2 text-base font-medium">
-                            {item.name}
+                            {item?.name}
                           </h1>
                           <p className="pl-2 pb-2 font-semibold text-black text-lg">
-                            {item.price}
+                            {item?.price.toLocaleString("vi-VN")}
                             <span className="text-sm"> đ</span>
                           </p>
                           <div className="flex justify-between items-center px-2 py-3 ">
@@ -371,7 +371,7 @@ const ChooseService = () => {
                           Dịch vụ mua thêm
                         </p>
                         <ul className="list-disc px-3">
-                          {selectedServicesInRoom.map((selectedService) => {
+                          {selectedServicesInRoom?.map((selectedService) => {
                             const { id, price, roomIndex } = selectedService;
                             const selectedRoom = roomIndex + 1;
                             const selectedServiceData = serviceData.find(
@@ -386,7 +386,7 @@ const ChooseService = () => {
                                       Phòng {selectedRoom}:{" "}
                                       {selectedServiceData.name}
                                     </p>
-                                    <p>{selectedServiceData.price} đ</p>
+                                    <p>{selectedServiceData.price.toLocaleString("vi-VN")}đ</p>
                                   </div>
                                 </li>
                               );

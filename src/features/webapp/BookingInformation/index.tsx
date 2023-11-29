@@ -23,16 +23,13 @@ import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
- 
 
-  
   const [addBookingUser] = useAddBookingUserMutation();
   const [userData, setUserData] = useState<any | null>(null);
-  const [idVoucher, setIdvoucher] =useState<any>()
+  const [idVoucher, setIdvoucher] = useState<any>();
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  console.log("idVoucher",idVoucher);
-   
-   
+  console.log("idVoucher", idVoucher);
+
   useEffect(() => {
     const userPromise = localStorage.getItem("user");
     userPromise.then((user: any) => {
@@ -65,7 +62,6 @@ const BookingInformation = () => {
     selectedServices = JSON.parse(dataParam.selectedServices);
   }
 
-  
   let roomDetailsString: any = [];
   if (dataParam && dataParam?.people) {
     roomDetailsString = JSON.stringify(dataParam?.people)
@@ -179,7 +175,6 @@ const BookingInformation = () => {
     const idRegex = /^\d{12}$/;
     return idRegex.test(id);
   };
-  
 
   const onSubmit = (data: any) => {
     const total = caculatePrice();
@@ -193,7 +188,7 @@ const BookingInformation = () => {
       email: data.email,
       name: data.firstName + data.lastName,
       message: "...",
-      id_voucher: '',
+      id_voucher: "",
       people_quantity: totalChildren + totalAdults,
       total_amount: total1,
       cccd: data.id,
@@ -268,10 +263,8 @@ const BookingInformation = () => {
     setSelectedVoucher(voucher);
   };
 
-  
-
-  const handleUseVoucher = (id:any) => {
-    setIdvoucher(id)
+  const handleUseVoucher = (id: any) => {
+    setIdvoucher(id);
     // Kiểm tra nếu có voucher được chọn
     if (selectedVoucher !== null && selectedVoucher !== undefined) {
       // Lưu trạng thái đã sử dụng voucher vào local storage hoặc thực hiện các hành động khác
@@ -332,7 +325,7 @@ const BookingInformation = () => {
     if (!typeVoucher) {
       priceAfterVoucher = sumprice;
     }
-    return `${priceAfterVoucher.toLocaleString("vi-VN")}` + "đ";
+    return `${priceAfterVoucher.toLocaleString("vi-VN")}` + " đ";
   };
 
   return (
@@ -653,7 +646,6 @@ const BookingInformation = () => {
                                   <p className="font-bold">{voucher?.name}</p>
                                   <p>Hạn sử dụng: {voucher?.expiryDate}</p>
                                   <p>Giảm giá: {voucher?.discount}%</p>
-
                                 </div>
                               </div>
                             </li>
@@ -662,12 +654,12 @@ const BookingInformation = () => {
                       </ul>
 
                       {/* Nút sử dụng voucher */}
-                      <button
+                      {/* <button
                         className="font-medium bg-blue-500 px-6 py-2 text-white rounded-md ml-auto flex"
                         onClick={() => handleUseVoucher(voucher?.id)}
                       >
                         Sử dụng
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 )}
@@ -797,8 +789,8 @@ const BookingInformation = () => {
                   (service) => service.roomIndex === index
                 );
 
-                console.log("selectedServicesInRoom",selectedServicesInRoom);
-                
+                console.log("selectedServicesInRoom", selectedServicesInRoom);
+
                 return (
                   <div key={index}>
                     <div className="flex items-center justify-between pt-5">
@@ -846,7 +838,7 @@ const BookingInformation = () => {
                             const selectedServiceData =
                               serviceData &&
                               serviceData?.find((item: any) => item?.id === id);
-                              
+
                             if (selectedServiceData) {
                               return (
                                 <li className="text-sm pb-2" key={id}>
@@ -856,7 +848,12 @@ const BookingInformation = () => {
                                       Phòng {selectedRoom}:{" "}
                                       {selectedServiceData?.name}
                                     </p>
-                                    <p>{selectedServiceData?.price} vnđ</p>
+                                    <p>
+                                      {selectedServiceData?.price.toLocaleString(
+                                        "vi-VN"
+                                      )}{" "}
+                                      vnđ
+                                    </p>
                                   </div>
                                 </li>
                               );
@@ -923,9 +920,9 @@ const BookingInformation = () => {
                       (
                         (sumprice * appliedVoucher?.discount || 0) / 100
                       ).toLocaleString("vi-VN")}
-                    {(typeVoucher === "coin" &&
-                      caculatePoint(sumprice, myvoucher?.coin)) ||
-                      0}
+                    {typeVoucher === "coin" &&
+                      caculatePoint(sumprice, myvoucher?.coin)}
+                    <span> đ</span>
                   </a>
                 </div>
                 <div className="flex items-center justify-between mt-4">

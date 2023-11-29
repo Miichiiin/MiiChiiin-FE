@@ -108,6 +108,8 @@ const Header = () => {
     if (confirm) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.removeItem("selectedRooms");
+      localStorage.removeItem("cart");
       navigate("/")
       setLoggedIn(null);
     }

@@ -550,7 +550,7 @@ if (userAdminLocal !== null) {
               className="text-2xl font-semibold text-orange-600 mb-4 cursor-pointer"
               onClick={handleh3Click}
             >
-              Thống kê số loại phòng
+              Thống kê lượt đặt phòng và đánh giá
             </h1>
             <div
               className={`relative ${
