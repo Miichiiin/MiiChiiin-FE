@@ -128,7 +128,7 @@ const PhatVoucher = () => {
     return `${year}-${month}-${day}`;
   }
 
-  const handleGenerateVoucher = async () => {
+  const handleGenerateVouchers = async () => {
     // if (!selectedVoucher) {
     //   message.error("Vui lòng chọn voucher trước khi phát.");
     //   return;
@@ -440,11 +440,11 @@ const PhatVoucher = () => {
                   onChange={(e) => handleChangeArea(e as any)}
                 >
                   {/* Options go here */}
+                  <option value="Đà Nẵng">Đà Nẵng</option>
                   <option value="Hà Nội">Hà Nội</option>
                   <option value="Hồ Chí Minh">Hồ Chí Minh</option>
                   <option value="Quang Ninh">Quảng Ninh</option>
                   <option value="Lâm Đồng">Lâm Đồng</option>
-                  <option value="Đà Nẵng">Đà Nẵng</option>
                 </select>
               )}
             </div>
@@ -452,7 +452,7 @@ const PhatVoucher = () => {
 
           <Button
             className="bg-blue-700 mb-5 hover:bg-blue-950 text-white font-bold ml-72 py-2 px-4 rounded h-10"
-            onClick={handleGenerateVoucher}
+            onClick={handleGenerateVouchers}
           >
             Phát Voucher
           </Button>
