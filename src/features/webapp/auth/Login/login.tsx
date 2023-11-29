@@ -1,5 +1,5 @@
 import { BsGoogle } from "react-icons/bs";
-import { Link, useNavigate ,Outlet} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 import { message } from "antd";
 import { useSigninMutation } from "@/api/auth/auth";

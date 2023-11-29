@@ -1,4 +1,4 @@
-import { AiOutlineArrowRight, AiOutlineRight, AiOutlineLeft ,AiFillEye,AiFillLike,AiOutlineComment,AiFillStar,AiOutlineShrink,AiOutlineTeam,AiOutlineSlackSquare,AiOutlineInsertRowLeft} from "react-icons/ai";
+import { AiOutlineArrowRight, AiOutlineRight, AiOutlineLeft ,AiOutlineComment,AiFillStar,AiOutlineSlackSquare,AiOutlineInsertRowLeft} from "react-icons/ai";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -34,27 +34,6 @@ const Index = () => {
     const handlePrev = () => {
         if (sliderRef.current) {
             sliderRef.current.slickPrev();
-        }
-    };
-
-    let settings1 = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-    };
-    const sliderRef1 = React.useRef<Slider>(null);
-
-    const handleNext1 = () => {
-        if (sliderRef1.current) {
-            sliderRef1.current.slickNext();
-        }
-    };
-
-    const handlePrev1 = () => {
-        if (sliderRef1.current) {
-            sliderRef1.current.slickPrev();
         }
     };
     return (
@@ -203,31 +182,6 @@ const Index = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <div className="sm:grid xl:grid-cols-3 flex lg:grid-cols-2 sm:justify-center ">
-                        <div  className="w-[1280px] mx-auto relative">
-                        <button onClick={handleNext1} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[40%] start-[-15px] transition-transform transform scale-100 hover:scale-125"><AiOutlineLeft /></button>
-                        <button onClick={handlePrev1} className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute  top-[40%] end-0  transition-transform transform scale-100 hover:scale-125" ><AiOutlineRight /></button>
-                        <Slider {...settings1} ref={sliderRef1} className="w-[1280px] mx-auto">
-                            {voucher?.map((item: any) => {
-                                return <>
-                                    <div className="w-[400px] ">
-                                        <div className="relative overflow-hidden mb-4">
-                                            
-                                            <img className=" h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                                                src={item.image} width="400px" height="300px"
-
-                                                alt=""
-                                            />
-                                            
-                                        </div>
-                                        <a className="hover:text-[#f2ba50] text-xl" href="/promotion" key={item?.id}>{item?.name}</a>
-                                        <p><TextTruncate text={item.description} maxLength={152} /></p>
-                                    </div>
-                                </>
-                            })}
-                            </Slider>
-                        </div>
-                    </div> */}
                 </div>
             </div>
         </div>
