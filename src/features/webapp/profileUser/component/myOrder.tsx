@@ -1,4 +1,7 @@
-import { useGetBokingUserQuery, useGetBookingDetailUserQuery } from "@/api/bookingUser";
+import {
+  useGetBokingUserQuery,
+  useGetBookingDetailUserQuery,
+} from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
@@ -22,14 +25,16 @@ const MyOrder = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-
   }, []);
 
-  const handleBookingDetail = (id_booking:any) => {
-    setIdBooking(id_booking)
-  }
-  
-  const { data: bookingDetail } = useGetBookingDetailUserQuery({id_user: user?.id, id_booking: idBoking});
+  const handleBookingDetail = (id_booking: any) => {
+    setIdBooking(id_booking);
+  };
+
+  const { data: bookingDetail } = useGetBookingDetailUserQuery({
+    id_user: user?.id,
+    id_booking: idBoking,
+  });
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -39,7 +44,26 @@ const MyOrder = () => {
   const handleCloseModal = () => {
     setModalIsOpen(false);
   };
-
+  // Trạng thái
+  const getStatusText = (status: any) => {
+    switch (status) {
+      case 0:
+        return { text: "Đang Chờ", colorClass: "text-yellow-500" };
+      case 1:
+        return { text: "Đã Hủy", colorClass: "text-red-500" };
+      case 2:
+        return { text: "Đã check in", colorClass: "text-green-500" };
+      case 3:
+        return { text: "Đang thanh toán", colorClass: "text-blue-500" };
+      case 4:
+        return { text: "Đã hoàn thành", colorClass: "text-gray-500" };
+      default:
+        return {
+          text: "Trạng thái không xác định",
+          colorClass: "text-gray-500",
+        };
+    }
+  };
   return (
     <div className="container mx-auto py-8">
       <div className="bg-white rounded-lg shadow-lg p-8">
@@ -72,6 +96,7 @@ const MyOrder = () => {
           <div>
             {booking ? (
               booking?.map((item: any, index: number) => {
+                const statusInfo = getStatusText(item?.status);
                 return (
                   <div
                     key={index}
@@ -95,7 +120,15 @@ const MyOrder = () => {
                         <span>
                           Giá tiền:{" "}
                           <span className="text-red-500">
-                            {item?.total_amount}
+                            {item?.total_amount.toLocaleString("vi-VN")} đ
+                          </span>
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 font-medium">
+                        <span>
+                          Trạng thái:{" "}
+                          <span className={statusInfo.colorClass}>
+                            {statusInfo.text}
                           </span>
                         </span>
                       </div>
@@ -228,55 +261,65 @@ const MyOrder = () => {
                                   Danh sách phòng và dịch vụ đã đặt
                                 </h1>
                                 <ul>
-                                  {bookingDetail?.rooms?.map((item: any, index: any) => {
-                                    return (
-                                      <li key={index} className="ml-3 my-2">
-                                        <div className="border flex justify-between px-2 py-3">
-                                          <div className="">
-                                            {item && (
-                                              <>
-                                                <div className="border grid grid-cols-4 px-3 py-3 space-x-2 rounded-md mt-2">
-                                                  <img
-                                                    src={item?.category_image}
-                                                    alt=""
-                                                    width={"80px"}
-                                                    height={"80px"}
-                                                    className="col-span-1"
-                                                  />
-                                                  <span className="font-bold text-md col-span-3">
-                                                    Phòng:{" "}
-                                                    <span className="text-blue-800 font-semibold">
-                                                      {item?.name} -{" "}
-                                                      {item?.category_name}
+                                  {bookingDetail?.rooms?.map(
+                                    (item: any, index: any) => {
+                                      return (
+                                        <li key={index} className="ml-3 my-2">
+                                          <div className="border flex justify-between px-2 py-3">
+                                            <div className="">
+                                              {item && (
+                                                <>
+                                                  <div className="border grid grid-cols-4 px-3 py-3 space-x-2 rounded-md mt-2">
+                                                    <img
+                                                      src={item?.category_image}
+                                                      alt=""
+                                                      width={"80px"}
+                                                      height={"80px"}
+                                                      className="col-span-1"
+                                                    />
+                                                    <span className="font-bold text-md col-span-3">
+                                                      Phòng:{" "}
+                                                      <span className="text-blue-800 font-semibold">
+                                                        {item?.name} -{" "}
+                                                        {item?.category_name}
+                                                      </span>
+                                                      <span>
+                                                        <div className="flex space-x-2">
+                                                          <h4> Dịch vụ: </h4>
+                                                          <ul className="">
+                                                            {item?.services.map(
+                                                              (
+                                                                service: any,
+                                                                index: any
+                                                              ) => {
+                                                                return (
+                                                                  <>
+                                                                    <li
+                                                                      key={
+                                                                        index
+                                                                      }
+                                                                    >
+                                                                      {
+                                                                        service.name
+                                                                      }
+                                                                    </li>
+                                                                  </>
+                                                                );
+                                                              }
+                                                            )}
+                                                          </ul>
+                                                        </div>
+                                                      </span>
                                                     </span>
-                                                    <span>
-                                                   <div className="flex space-x-2">
-                                                   <h4> Dịch vụ:{" "}</h4>
-                                                      <ul className="">
-                                                        {item?.services.map(
-                                                          (
-                                                            service: any,
-                                                            index: any
-                                                          ) => {
-                                                            return (
-                                                              <>
-                                                                <li key={index}>{service.name}</li>
-                                                              </>
-                                                            );
-                                                          }
-                                                        )}
-                                                      </ul>
-                                                   </div>
-                                                    </span>
-                                                  </span>
-                                                </div>
-                                              </>
-                                            )}
+                                                  </div>
+                                                </>
+                                              )}
+                                            </div>
                                           </div>
-                                        </div>
-                                      </li>
-                                    );
-                                  })}
+                                        </li>
+                                      );
+                                    }
+                                  )}
                                 </ul>
                               </div>
                             </section>

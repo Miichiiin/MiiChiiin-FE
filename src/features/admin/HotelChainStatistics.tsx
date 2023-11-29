@@ -28,8 +28,7 @@ const HotelChainStatistic = () => {
   });
 
   const dataLogin = localStorage.getItem("userAdmin");
-  console.log("dataLogin",dataLogin);
-  
+  console.log("dataLogin", dataLogin);
 
   const [filteredData1, setFilteredData1] = useState<any>([]);
 
@@ -99,8 +98,8 @@ const HotelChainStatistic = () => {
   // Biểu đồ của RoomType
   const [selectedMonthRt, setSelectedMonthRt] = useState(11);
   const [selectedYearRt, setSelectedYearRt] = useState(2023);
-  const [selectedRoomType, setSelectedRoomType] = useState<number>(2);
-  const [selectedRoomId, setSelectedRoomId] = useState('');
+  const [selectedRoomType, setSelectedRoomType] = useState<number>();
+  const [selectedRoomId, setSelectedRoomId] = useState("");
   const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery({
     month: selectedMonthRt,
     year: selectedYearRt,
@@ -141,12 +140,16 @@ const HotelChainStatistic = () => {
     setSelectedYearRt(selectedYear);
   };
 
-  const handleRoomTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedRoom = cateRooms?.find((room: any) => room.name === event.target.value);
+  const handleRoomTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedRoom = cateRooms?.find(
+      (room: any) => room.name === event.target.value
+    );
     if (selectedRoom) {
       setSelectedRoomId(selectedRoom.id);
     } else {
-      setSelectedRoomId('');
+      setSelectedRoomId("");
     }
   };
 
@@ -161,7 +164,7 @@ const HotelChainStatistic = () => {
           } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleRevenueChartModeChange}
         >
-          Revenue Distribution
+          Thống kê Doanh Thu
         </button>
 
         <button
@@ -172,7 +175,7 @@ const HotelChainStatistic = () => {
           } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleServiceChartModeChange}
         >
-          Service statistics
+          Thống Kê Dịch Vụ
         </button>
 
         <button
@@ -183,7 +186,7 @@ const HotelChainStatistic = () => {
           } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleRoomTypeChartModeChange}
         >
-          RoomType Statistics
+          Thống Kê Loại Phòng
         </button>
       </div>
       {/* Biểu đồ 1 */}
@@ -278,12 +281,7 @@ const HotelChainStatistic = () => {
                   yAxisId="right"
                   stroke="#82ca9d"
                 />
-                <Line
-                  type="monotone"
-                  dataKey="cancelroom"
-                  yAxisId="left"
-                  stroke="#82ca9d"
-                />
+                
               </LineChart>
             </ResponsiveContainer>
           </div>
