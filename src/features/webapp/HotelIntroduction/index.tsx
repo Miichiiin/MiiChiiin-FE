@@ -2,15 +2,16 @@ import {
   AiOutlineArrowRight,
   AiFillWechat,
   AiOutlineRight,
-  AiOutlineLeft,AiFillStar,AiOutlineShrink,AiFillLike,AiFillEye,AiOutlineTeam,AiOutlineInsertRowLeft,AiOutlineSlackSquare
+  AiOutlineLeft,AiOutlineShrink,AiFillLike,AiFillEye,AiOutlineTeam,AiOutlineInsertRowLeft,AiOutlineSlackSquare
 } from "react-icons/ai";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import '../../../components/Css/hover.css'
 import { TextTruncate } from "../../../components/TextTruncate";
 import HeaderHotel from "./HeaderHotel";
+import Footer from "@/components/Footer";
 import { Link, useParams } from "react-router-dom";
 import { useGetCategory_homeQuery } from "@/api/webapp/category_home";
 import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
@@ -19,18 +20,32 @@ import { SearchQuickHotel } from "@/components/SearchQuickHotel";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import { useViewDetailRoomMutation } from "@/api/bookingUser";
 import {  useGetVoucher_hotelQuery } from "@/api/webapp/voucher_home";
-import { number } from "yup";
+import FadeLoader from "react-spinners/HashLoader";
+import { CSSProperties } from 'react';
 
 const HotelIntroduction = () => {
   const { id: idHotel } = useParams<{ id: string }>();
-  const { data: voucher } = useGetVoucher_hotelQuery();
-  console.log("voucher",voucher);
+  // const { data: voucher } = useGetVoucher_hotelQuery();
   const { data: service } = useGetService_hotelIdQuery(idHotel);
   const { data } = useGetCategory_homeQuery(idHotel);
   const {data: hotelData} = useGetHotel_homeByIdQuery(idHotel);
   const { data: dataRate } = useUseGetRating_hotel_homeQueryQuery(idHotel);
 
+  const [loading,setLoading] = useState(false);
+  useEffect(() =>{
+    setLoading(true)
+    setTimeout(() =>{
+      setLoading(false)
+    },3000)
+  },[]);
 
+  const override: CSSProperties = {
+    display: "flex",
+    margin: "20% 50%",
+    top:""
+    // justifyContent:"center",
+    
+  };
   let settings = {
     dots: false,
     infinite: true,
@@ -86,9 +101,23 @@ const HotelIntroduction = () => {
 
   return (
     <div>
-      <HeaderHotel />
-      <SearchQuickHotel />
-      <div>
+    {
+      loading ? 
+      <div className="relative">
+        <FadeLoader 
+          color="#d7ba37"
+          loading={loading}
+          cssOverride={override}
+          // size={40}
+          // aria-label="Loading Spinner"
+          // data-testid="loader"
+          className="animate-pulse absolute z-10"
+        />
+      </div>
+      :
+      <div className="mx-auto overflow-y-auto">
+        <HeaderHotel />
+        <SearchQuickHotel />
         <div className="bg-[#fbf8f2] w-full mt-3 px-5 py-10">
           <div className="mt-10 w-[940px] text-[14px] text-center mx-auto">
             <h1 className="text-[30px] font-medium mb-3">{hotelData?.[0]?.name}</h1>
@@ -146,13 +175,13 @@ const HotelIntroduction = () => {
           <div className="mt-10 w-[1280px] mx-auto relative">
             <button
               onClick={handleNext}
-              className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[130px] start-[-15px] transform transition-tranform hover:scale-125 duration-300 "
+              className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 top-[27%] start-[-15px] transform transition-tranform hover:scale-125 duration-300 "
             >
               <AiOutlineLeft />
             </button>
             <button
               onClick={handlePrev}
-              className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute transform transition-tranform hover:scale-125 duration-300  top-[130px] end-0  "
+              className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute transform transition-tranform hover:scale-125 duration-300  top-[27%] end-0  "
             >
               <AiOutlineRight />
             </button>
@@ -327,54 +356,58 @@ const HotelIntroduction = () => {
             </button>
           </div>
         </div>
-        
-        {/* <div className="mb-[100px]">
-          <div className="flex items-center justify-between w-[1280px] mx-auto mt-[80px]">
-            <h1 className="text-[30px]">Ưu Đãi</h1>
-            <span className="flex items-center space-x-2 text-[#f2ba50]">
-              <a href="/promotion">Xem tất cả </a>
-              <AiOutlineArrowRight />
-            </span>
-          </div>
-          <div className="mt-10">
-            <Slider
-              {...settings}
-              // ref={sliderRef}
-              className="w-[1280px] mx-auto"
-            >
-              {voucher?.map((item: any) => {
-                return (
-                  <>
-                    <div className="w-[400px] ">
-                      <div className="relative overflow-hidden mb-4">
-                        <Link to={`/promotion`}>
-                          <img
-                            className=" h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
-                            src={item.image}
-                            width="400px"
-                            height="300px"
-                            alt=""
-                          />
-                        </Link>
-                      </div>
-                      <a
-                        className="hover:text-[#f2ba50] font-bold"
-                        href="/promotion"
-                        key={item?.id}
-                      >
-                        {item?.name}
-                      </a>
-                      <span className="flex items-center space-x-1 text-[#82888f] ">
-                        <span>{item?.description}</span>
-                      </span>
+      
+      {/* <div className="mb-[100px]">
+        <div className="flex items-center justify-between w-[1280px] mx-auto mt-[80px]">
+          <h1 className="text-[30px]">Ưu Đãi</h1>
+          <span className="flex items-center space-x-2 text-[#f2ba50]">
+            <a href="/promotion">Xem tất cả </a>
+            <AiOutlineArrowRight />
+          </span>
+        </div>
+        <div className="mt-10">
+          <Slider
+            {...settings}
+            // ref={sliderRef}
+            className="w-[1280px] mx-auto"
+          >
+            {voucher?.map((item: any) => {
+              return (
+                <>
+                  <div className="w-[400px] ">
+                    <div className="relative overflow-hidden mb-4">
+                      <Link to={`/promotion`}>
+                        <img
+                          className=" h-auto object-cover transition-transform transform scale-100 hover:scale-105 rounded-md"
+                          src={item.image}
+                          width="400px"
+                          height="300px"
+                          alt=""
+                        />
+                      </Link>
                     </div>
-                  </>
-                );
-              })}
-            </Slider>
-          </div>
-        </div> */}
-      </div>
+                    <a
+                      className="hover:text-[#f2ba50] font-bold"
+                      href="/promotion"
+                      key={item?.id}
+                    >
+                      {item?.name}
+                    </a>
+                    <span className="flex items-center space-x-1 text-[#82888f] ">
+                      <span>{item?.description}</span>
+                    </span>
+                  </div>
+                </>
+              );
+            })}
+          </Slider>
+        </div>
+      </div> */}
+      {/* <Footer/> */}
+    </div>
+    
+    }
+    
     </div>
   );
 };
