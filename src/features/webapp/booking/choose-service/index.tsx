@@ -172,7 +172,7 @@ const ChooseService = () => {
   })
   return (
     <div>
-      {
+      {/* {
         loading ?
         <div className="relative">
             <FadeLoader 
@@ -185,7 +185,7 @@ const ChooseService = () => {
             className="animate-pulse absolute z-10"
             />
         </div>
-          : 
+          :  */}
         <div>
           <div className="max-w-7xl mx-auto ">
           <HeaderHotelType />
@@ -457,7 +457,7 @@ const ChooseService = () => {
           </div>
           <Footer/>
         </div>
-      }
+      {/* } */}
     </div>
   );
 };

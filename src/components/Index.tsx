@@ -14,7 +14,7 @@ import { SearchQuickHotel } from "./SearchQuickHotel";
 import FadeLoader from "react-spinners/HashLoader";
 import Footer from "./Footer";
 const Index = () => {
- 
+
     let settings = {
         dots: false,
         infinite: true,
@@ -54,6 +54,7 @@ const Index = () => {
             sliderRef.current.slickPrev();
         }
     };
+   
     return (
         <div>
             { loading ?

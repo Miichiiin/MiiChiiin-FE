@@ -11,7 +11,7 @@ import {
 } from "react-icons/ai";
 import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";
@@ -25,9 +25,8 @@ import FadeLoader from "react-spinners/HashLoader";
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
- 
 
-  
+  const navigate = useNavigate()
   const [addBookingUser] = useAddBookingUserMutation();
   const [userData, setUserData] = useState<any | null>(null);
   const [idVoucher, setIdvoucher] =useState<any>()
@@ -227,8 +226,13 @@ const BookingInformation = () => {
       .then((res) => {
         if (res) {
           // const {detail} = res
+          console.log("res",res);
+          
           setOrder(res);
-          setModalIsOpen(true);
+          // setModalIsOpen(true);
+          console.log("res?.original?.data",res?.original?.data);
+          window.open(res?.original?.data)
+          
         }
       });
   };
@@ -359,8 +363,8 @@ const BookingInformation = () => {
   })
   return (
     <div>
-      {
-        loading ?
+      {/* {
+        !loading ?
         <div className="relative">
             <FadeLoader 
             color="#d7ba37"
@@ -372,7 +376,7 @@ const BookingInformation = () => {
             className="animate-pulse absolute z-10"
             />
         </div>
-          : 
+          :  */}
         <div>
           <div>
             <HeaderHotelType />
@@ -1122,7 +1126,7 @@ const BookingInformation = () => {
           </div>
           <Footer/>
         </div>
-      }
+      {/* // } */}
     </div>
   );
 };
