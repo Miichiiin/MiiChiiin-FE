@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { AiFillWechat, AiOutlineCalendar } from "react-icons/ai";
 import { useGetVoucherQuery } from "@/api/admin/voucher";
@@ -17,6 +17,10 @@ const Promotion = () => {
   if (!data) {
     return null; // Hoặc bạn có thể trả về một thông báo lỗi khác nếu cần
   }
+   //srollto
+   useEffect(() =>{
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  })
 
   return (
     <div>

@@ -26,7 +26,12 @@ export const LayoutProfile = () => {
     }
     console.log("storedUser", storedUser);
   }, []);
+   //srollto
+   useEffect(() =>{
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  })
 
+  
   return (
    <div className='bg-gray-100'>
        <HeaderHotelType/>
