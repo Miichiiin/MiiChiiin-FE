@@ -21,94 +21,22 @@ import { useGetStatisticalRoomtypeQuery } from "@/api/admin/statistical_RoomType
 const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f0e", "#99CCFF"];
 
 const HotelChainStatistics = () => {
-
-
-  const dataHotel = [
-    {
-      hotelName: "Hotel A",
-      totalBookings: 120,
-      totalRevenue: 25000,
-      kpi: 0.85,
-      // Thêm các thuộc tính khác theo nhu cầu
-    },
-    {
-      hotelName: "Hotel B",
-      totalBookings: 90,
-      totalRevenue: 18000,
-      kpi: 0.75,
-      // Thêm các thuộc tính khác theo nhu cầu
-    },
-    {
-      hotelName: "Hotel C",
-      totalBookings: 150,
-      totalRevenue: 32000,
-      kpi: 0.95,
-      // Thêm các thuộc tính khác theo nhu cầu
-    },
-    // Thêm dữ liệu cho các khách sạn khác
-  ];
-
-  const columns = [
-    {
-      title: "Tên khách sạn",
-      dataIndex: "hotelName",
-      key: "hotelName",
-    },
-    {
-      title: "Tổng booking",
-      dataIndex: "totalBookings",
-      key: "totalBookings",
-    },
-    {
-      title: "Tổng tiền",
-      dataIndex: "totalRevenue",
-      key: "totalRevenue",
-    },
-    {
-      title: "KPI đang làm được",
-      dataIndex: "kpi",
-      key: "kpi",
-      render: (kpi: any) => (
-        <Progress
-          percent={Number((kpi * 100).toFixed(2))}
-          status="active"
-          format={() => `${(kpi * 100).toFixed(2)}%`}
-          strokeColor="#52c41a" // Màu xanh lá cây
-        />
-      ),
-    },
-  ];
-
-  const [onlineVisitors, setOnlineVisitors] = useState(0);
-  const [revenueGrowth, setRevenueGrowth] = useState(0);
-  const [todaysRevenue, setTodaysRevenue] = useState(0);
-
-  useEffect(() => {
-    // Simulate data for online visitors, revenue growth, and today's revenue
-    const timer = setInterval(() => {
-      setOnlineVisitors(Math.floor(Math.random() * 1000));
-      setRevenueGrowth(Math.random() * 10);
-      setTodaysRevenue(Math.floor(Math.random() * 100000));
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const userAdminLocal = localStorage.getItem('userAdmin');
+  const userAdminLocal = localStorage.getItem("userAdmin");
 
   let dataLogin;
-if (userAdminLocal !== null) {
-
-  if (userAdminLocal[0] === '{' && userAdminLocal[userAdminLocal.length - 1] === '}') {
-    // Dữ liệu trong localStorage có dấu ngoặc nhọn ở đầu và cuối, có thể là đối tượng JSON.
-    dataLogin = JSON.parse(userAdminLocal);
-  } else {
-    // Dữ liệu trong localStorage không phải là đối tượng JSON, sử dụng nó trực tiếp.
-    dataLogin = userAdminLocal;
+  if (userAdminLocal !== null) {
+    if (
+      userAdminLocal[0] === "{" &&
+      userAdminLocal[userAdminLocal.length - 1] === "}"
+    ) {
+      // Dữ liệu trong localStorage có dấu ngoặc nhọn ở đầu và cuối, có thể là đối tượng JSON.
+      dataLogin = JSON.parse(userAdminLocal);
+    } else {
+      // Dữ liệu trong localStorage không phải là đối tượng JSON, sử dụng nó trực tiếp.
+      dataLogin = userAdminLocal;
+    }
   }
 
-}
-  
   // Biểu đồ 1
 
   const [selectedYear, setSelectedYear] = useState(2023);
@@ -122,9 +50,7 @@ if (userAdminLocal !== null) {
   if (statisticalData1) {
     statisticalData = statisticalData1.booking_data_by_month;
   } else {
-    
   }
-
 
   const [filteredData1, setFilteredData1] = useState<any>([]);
 
@@ -137,14 +63,12 @@ if (userAdminLocal !== null) {
     ? statisticalData.filter((item: any) => item.Year == selectedYear)
     : [];
 
-
   // Nếu trùng năm thì không hiện
   const uniqueYears = [
     ...new Set(
       statisticalData && statisticalData.map((item: any) => item.Year)
     ),
   ];
-
 
   useEffect(() => {
     // Gọi lại API khi selectedYear thay đổi
@@ -179,7 +103,7 @@ if (userAdminLocal !== null) {
     setChartMode("roomtype");
   };
   // Biểu đồ 2
-  
+
   const [selectedMonthSv, setSelectedMonthSv] = useState(11);
   const [selectedYearSv, setSelectedYearSv] = useState(2023);
   const [filteredData2, setFilteredData2] = useState<any>([]); // State để lưu trữ dữ liệu từ API
@@ -195,18 +119,17 @@ if (userAdminLocal !== null) {
       const filteredData = statisticalServiceData.filter((item) => {
         return item.month === selectedMonthSv && item.year === selectedYearSv;
       });
-  
+
       setFilteredData2(filteredData);
     }
   }, [statisticalServiceData, selectedMonthSv, selectedYearSv]);
 
-  const handleMonthChangeSv = (event:any) => {
+  const handleMonthChangeSv = (event: any) => {
     const selectedMonth = event.target.value;
     setSelectedMonthSv(selectedMonth);
-  
   };
 
-  const handleYearChangeSv = (event:any) => {
+  const handleYearChangeSv = (event: any) => {
     const selectedYear = event.target.value;
     setSelectedYearSv(selectedYear);
   };
@@ -240,10 +163,8 @@ if (userAdminLocal !== null) {
   if (statisticalroomtype1) {
     statisticalroomtype = statisticalroomtype1.rating_comment_booking;
   } else {
-    
   }
 
-  
   const statisticalRoom =
     statisticalroomtype &&
     statisticalroomtype.map((item: any) => ({
@@ -251,7 +172,6 @@ if (userAdminLocal !== null) {
       bookingCount: item.bookingCount,
       rating: item.rating,
     }));
-
 
   useEffect(() => {
     if (statisticalroomtype && Array.isArray(statisticalroomtype)) {
@@ -269,61 +189,6 @@ if (userAdminLocal !== null) {
   };
   return (
     <div>
-      <Row gutter={16} className="mb-5">
-        <Col span={7} className="border border-green-600 m-3.5">
-          <Card
-            title={
-              <div className="text-black p-2 border-2 border-green-600 flex items-center justify-center">
-                <span>Visitors Online</span>
-              </div>
-            }
-            bordered={false}
-          >
-            <Statistic
-              valueStyle={{ color: "#3f8600" }}
-              prefix={<UserOutlined />}
-              value={onlineVisitors}
-              className="flex items-center justify-center"
-            />
-          </Card>
-        </Col>
-        <Col span={7} className="border border-red-700 m-3.5">
-          <Card
-            title={
-              <div className="text-black p-2 border-2 border-red-700 flex items-center justify-center">
-                <span>Revenue Growth</span>
-              </div>
-            }
-            bordered={false}
-          >
-            <Statistic
-              valueStyle={{ color: "#cf1322" }}
-              prefix={<RiseOutlined />}
-              value={revenueGrowth}
-              precision={2}
-              className="flex items-center justify-center"
-            />
-          </Card>
-        </Col>
-        <Col span={7} className="border border-yellow-500 m-3.5">
-          <Card
-            title={
-              <div className="text-black p-2 border-2 border-yellow-500 flex items-center justify-center">
-                <span>Today's Revenue</span>
-              </div>
-            }
-            bordered={false}
-          >
-            <Statistic
-              valueStyle={{ color: "#FFD700" }}
-              prefix={<DollarOutlined />}
-              value={todaysRevenue}
-              className="flex items-center justify-center"
-            />
-          </Card>
-        </Col>
-      </Row>
-
       <div className="flex items-center mb-4">
         <button
           className={`mr-2 py-2 px-4 rounded ${
@@ -333,7 +198,7 @@ if (userAdminLocal !== null) {
           } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleRevenueChartModeChange}
         >
-          Revenue Distribution
+          Thống Kê Doanh Thu
         </button>
 
         <button
@@ -344,7 +209,7 @@ if (userAdminLocal !== null) {
           } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleServiceChartModeChange}
         >
-          Service statistics
+          Thống Kê Dịch Vụ
         </button>
 
         <button
@@ -355,7 +220,7 @@ if (userAdminLocal !== null) {
           } hover:bg-orange-600 hover:text-white transition duration-300 ease-in-out`}
           onClick={handleRoomTypeChartModeChange}
         >
-          RoomType Statistics
+          Thống Kê Loại Phòng
         </button>
       </div>
       {/* Bieu do 1 */}
@@ -376,10 +241,12 @@ if (userAdminLocal !== null) {
               bordered={false}
             >
               <div
-                className={`relative ${isDropdownVisible ? "block" : "hidden"}`}
+                className={`relative ${
+                  isDropdownVisible ? "block" : "hidden"
+                } mb-2`}
               >
                 <label>
-                  <span className="bg-blue-200 p-2">Chọn năm:</span>
+                  <span className="bg-blue-200 p-2 ">Chọn năm:</span>
                 </label>
                 <select
                   className="border rounded p-2"
@@ -395,6 +262,7 @@ if (userAdminLocal !== null) {
                     );
                   })}
                 </select>
+                <h2 className="mt-2">Dữ liệu cho năm {selectedYear}:</h2>
               </div>
 
               <ResponsiveContainer width={1200} height={400}>
@@ -403,7 +271,7 @@ if (userAdminLocal !== null) {
                   <YAxis
                     yAxisId="left"
                     label={{
-                      value: "bookings",
+                      value: "Số bookings",
                       angle: -90,
                       position: "insideLeft",
                     }}
@@ -412,20 +280,12 @@ if (userAdminLocal !== null) {
                     yAxisId="right"
                     orientation="right"
                     label={{
-                      value: "revenue",
+                      value: "Tổng tiền",
                       angle: -90,
                       position: "insideRight",
                     }}
                   />
-                  <YAxis
-                    yAxisId="cancelroom"
-                    orientation="right"
-                    label={{
-                      value: "Cancel Room",
-                      angle: -90,
-                      position: "insideRight",
-                    }}
-                  />
+
                   <CartesianGrid stroke="#f5f5f5" />
                   <Tooltip />
                   <Legend />
@@ -434,27 +294,15 @@ if (userAdminLocal !== null) {
                     dataKey="bookings"
                     yAxisId="left"
                     stroke={colors[0]}
-                    name="Bookings"
+                    name="Số Bookings"
                   />
-                  <Line
-                    type="monotone"
-                    dataKey="cancelroom"
-                    yAxisId="left"
-                    name="Cancel Room"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="cancelroom"
-                    fill="#8884d8"
-                    stroke="#8884d8"
-                    yAxisId="left"
-                  />
+
                   <Line
                     type="monotone"
                     dataKey="revenue"
                     yAxisId="right"
                     stroke={colors[1]}
-                    name="Revenue"
+                    name="Tổng tiền"
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -464,83 +312,83 @@ if (userAdminLocal !== null) {
       </Row>
       {/* bieu do 2 */}
       {chartMode === "service" && (
-  <div>
-    <h1
-      className="text-2xl font-semibold text-orange-600 mb-4 cursor-pointer"
-      onClick={handleh1Click}
-    >
-      Thống kê số lượng dịch vụ của khách sạn
-    </h1>
-    <div
-      className={`relative ${isDropdownVisibleSv ? "block" : "hidden"}`}
-    >
-      <div className="flex space-x-4">
-        <div className="bg-blue-200">
-          <label>Chọn tháng: </label>
-          <select
-            className="border rounded p-2"
-            onChange={handleMonthChangeSv}
-            value={selectedMonthSv}
+        <div>
+          <h1
+            className="text-2xl font-semibold text-orange-600 mb-4 cursor-pointer"
+            onClick={handleh1Click}
           >
-            {Array.from({ length: 12 }, (_, index) => {
-              const monthNumber = index + 1;
-              return (
-                <option key={monthNumber} value={monthNumber}>
-                  {monthNumber}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <div className="bg-green-200">
-          <label>Chọn năm: </label>
-          <select
-            className="border rounded p-2"
-            onChange={handleYearChangeSv}
-            value={selectedYearSv}
+            Thống kê số lượng dịch vụ của khách sạn
+          </h1>
+          <div
+            className={`relative ${isDropdownVisibleSv ? "block" : "hidden"}`}
           >
-            {Array.from({ length: 4 }, (_, i) => {
-              const yearNumber = 2020 + i;
-              return (
-                <option key={yearNumber} value={yearNumber}>
-                  {yearNumber}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      </div>
-    </div>
+            <div className="flex space-x-4">
+              <div className="bg-blue-200">
+                <label>Chọn tháng: </label>
+                <select
+                  className="border rounded p-2"
+                  onChange={handleMonthChangeSv}
+                  value={selectedMonthSv}
+                >
+                  {Array.from({ length: 12 }, (_, index) => {
+                    const monthNumber = index + 1;
+                    return (
+                      <option key={monthNumber} value={monthNumber}>
+                        {monthNumber}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="bg-green-200">
+                <label>Chọn năm: </label>
+                <select
+                  className="border rounded p-2"
+                  onChange={handleYearChangeSv}
+                  value={selectedYearSv}
+                >
+                  {Array.from({ length: 4 }, (_, i) => {
+                    const yearNumber = 2020 + i;
+                    return (
+                      <option key={yearNumber} value={yearNumber}>
+                        {yearNumber}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+          </div>
 
-    {statisticalServiceData && statisticalServiceData.length > 0 ? ( // Thêm kiểm tra 'statisticalServiceData' không phải là undefined
-      <div>
-        <h2>
-          Dữ liệu cho tháng {selectedMonthSv} năm {selectedYearSv}:
-        </h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={statisticalServiceData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="serviceName" />
-            <YAxis
-              label={{
-                value: "Service",
-                angle: -90,
-                position: "insideLeft",
-              }}
-            />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" name="Số lượng" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    ) : (
-      <div>
-        <p>Không có dữ liệu cho tháng và năm đã chọn.</p>
-      </div>
-    )}
-  </div>
-)}
+          {statisticalServiceData && statisticalServiceData.length > 0 ? ( // Thêm kiểm tra 'statisticalServiceData' không phải là undefined
+            <div>
+              <h2 className="mb-2 mt-2">
+                Dữ liệu cho tháng {selectedMonthSv} năm {selectedYearSv}:
+              </h2>
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={statisticalServiceData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="serviceName" />
+                  <YAxis
+                    label={{
+                      value: "Dịch vụ",
+                      angle: -90,
+                      position: "insideLeft",
+                    }}
+                  />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="count" name="Số lượng dịch vụ" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div>
+              <p>Không có dữ liệu cho tháng và năm đã chọn.</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Biểu đồ 3 */}
       <div>
@@ -607,7 +455,7 @@ if (userAdminLocal !== null) {
                     <XAxis dataKey="roomType" />
                     <YAxis
                       label={{
-                        value: "rating & bookingCount",
+                        value: "Bookings & Đánh giá",
                         angle: -90,
                         position: "insideLeft",
                       }}
@@ -617,9 +465,9 @@ if (userAdminLocal !== null) {
                     <Bar
                       dataKey="bookingCount"
                       fill="steelblue"
-                      name="bookingCount"
+                      name="Số lượng bookings"
                     />
-                    <Bar dataKey="rating" fill="orange" name="rating" />
+                    <Bar dataKey="rating" fill="orange" name="Đánh giá" />
                   </BarChart>
                 </ResponsiveContainer>
               )
