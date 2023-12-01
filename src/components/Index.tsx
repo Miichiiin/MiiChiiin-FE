@@ -22,8 +22,9 @@ const Index = () => {
         slidesToShow: 3,
         slidesToScroll: 1,
     };
-    const { data: booking } = useGetHotel_homesQuery();  
-        // loading trang
+    const { data: booking } = useGetHotel_homesQuery();
+    // const dataCkeck = booking?.[0]?.image;
+  // loading trang
   const [loading,setLoading] = useState(false);
   useEffect(() =>{
     setLoading(true)

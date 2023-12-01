@@ -1,6 +1,7 @@
 import { useGetBokingUserQuery, useGetBookingDetailUserQuery } from "@/api/bookingUser";
 import { CSSProperties, useEffect, useState } from "react";
-import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineShoppingCart ,AiOutlineCalendar,AiOutlineInsertRowLeft} from "react-icons/ai";
+import { BsCalculatorFill ,BsPeople} from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import dayjs from "dayjs";
@@ -17,19 +18,16 @@ const MyOrder = () => {
     address: "",
   });
   const [idBoking, setIdBooking] = useState<any>("");
-  const { data: booking } = useGetBokingUserQuery(user?.id);
+  const { data: booking } = useGetBokingUserQuery(user?.id);    
   //loading trang
   const [loading,setLoading] = useState(false);
   useEffect(() =>{
       setLoading(true)
       setTimeout(() =>{
-      // if (booking && booking.length > 0) {
-      //     setLoading(false);
-      // }else {
-      //   setLoading(false);
-      // }
-      setLoading(false)
-      },1000)
+        if (booking && booking.length > 0) {
+            setLoading(false);
+        }
+      })
   },[booking]);  
   const override: CSSProperties = {
       display: "flex",
@@ -165,7 +163,7 @@ const MyOrder = () => {
                                 backgroundColor: "rgba(0, 0, 0, 0.1)",
                               },
                               content: {
-                                width: "1100px",
+                                width: "1000px",
                                 maxHeight: "auto",
                                 overflowY: "auto",
                                 margin: "auto",
@@ -177,146 +175,152 @@ const MyOrder = () => {
                             }}
                           >
                             <div className="w-[100%] mx-auto">
-                              <section className="grid grid-cols-2 gap-8">
-                                <div key={bookingDetail?.id} className="">
-                                  <h1 className="font-semibold text-lg mb-2">
-                                    Thông tin Đặt phòng
+                              <section className="grid grid-cols-2 h-[350px]">
+                                <div key={bookingDetail?.id} className="border">
+                                  <h1 className="font-semibold text-lg mb-2 bg-gray-400 py-2 px-3">
+                                    Thông tin khách hàng
                                   </h1>
-                                  <div className="flex flex-col border rounded-lg px-2 mb-4 py-3 leading-[25px] ">
-                                    <div className="grid grid-cols-2 gap-4">
+                                  <div className="flex flex-col rounded-lg px-2 mb-4 py-3 leading-[25px] ">
+                                    <div className="grid grid-cols- gap-4">
                                       <p className="font-semibold">
                                         Tên khách hàng:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
+                                        <span className="text-base font-medium text-blue-800">
                                           {bookingDetail?.name}
                                         </span>
                                       </p>
                                       <p className="font-semibold">
                                         Căn cước công dân:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
+                                        <span className="text-base font-medium text-blue-800">
                                           {bookingDetail?.cccd}
                                         </span>
                                       </p>
                                       <p className="font-semibold">
                                         Số điện thoại:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
+                                        <span className="text-base font-medium text-blue-800">
                                           {bookingDetail?.phone}
                                         </span>
                                       </p>
                                       <p className="font-semibold">
                                         Email:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
+                                        <span className="text-base font-medium text-blue-800">
                                           {bookingDetail?.email}
                                         </span>
                                       </p>
                                       <p className="font-semibold">
-                                        Check in:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
-                                          {dayjs(bookingDetail?.check_in).format(
-                                            "YYYY-MM-DD "
-                                          )}
-                                        </span>
-                                      </p>
-                                      <p className="font-semibold">
-                                        Check out:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
-                                          {dayjs(bookingDetail?.check_out).format(
-                                            "YYYY-MM-DD"
-                                          )}
-                                        </span>
-                                      </p>
-                                      <p className="font-semibold">
                                         Quốc tịch:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
+                                        <span className="text-base font-medium text-blue-800">
                                           {bookingDetail?.nationality}
-                                        </span>
-                                      </p>
-                                      <p className="font-semibold">
-                                        Tổng số người:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
-                                          {bookingDetail?.people_quantity}
-                                        </span>
-                                      </p>
-                                      <p className="font-semibold">
-                                        Số phòng:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
-                                          {bookingDetail?.total_room}
-                                        </span>
-                                      </p>
-                                      {/* <p className="font-semibold">
-                                        Số đêm:{" "}
-                                        {differenceInDays(
-                                          parseISO(
-                                            item.check_out.toISOString().slice(0, 10)
-                                          ),
-                                          parseISO(
-                                            item.check_in.toISOString().slice(0, 10)
-                                          )
-                                        )}{" "}
-                                      </p> */}
-                                      <p className="font-semibold">
-                                        Tổng tiền:{" "}
-                                        <span className="text-lg font-medium text-blue-900">
-                                          {bookingDetail?.total_amount}
                                         </span>
                                       </p>
                                     </div>
                                   </div>
                                 </div>
-                                <div className="">
-                                  <h1 className="text-lg font-semibold mb-2 ml-4">
-                                    Danh sách phòng và dịch vụ đã đặt
-                                  </h1>
-                                  <ul>
-                                    {bookingDetail?.rooms?.map((item: any, index: any) => {
-                                      return (
-                                        <li key={index} className="ml-3 my-2">
-                                          <div className="border flex justify-between px-2 py-3">
-                                            <div className="">
-                                              {item && (
-                                                <>
-                                                  <div className="border grid grid-cols-4 px-3 py-3 space-x-2 rounded-md mt-2">
-                                                    <img
-                                                      src={item?.category_image}
-                                                      alt=""
-                                                      width={"80px"}
-                                                      height={"80px"}
-                                                      className="col-span-1"
-                                                    />
-                                                    <span className="font-bold text-md col-span-3">
-                                                      Phòng:{" "}
-                                                      <span className="text-blue-800 font-semibold">
-                                                        {item?.name} -{" "}
-                                                        {item?.category_name}
+                                <div className="border">
+                                  <h2 className="font-medium text-lg mb-2 bg-gray-400 py-2 px-3">Thông tin đặt phòng</h2>
+                                  <div className="px-2">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center">
+                                          <AiOutlineCalendar className="text-xl text-gray-500"/>
+                                          <span className="flex items-center ml-2">
+                                            <p className="font-semibold">
+                                            {" "}
+                                              <span className="text-base font-medium text-blue-800">
+                                                {dayjs(bookingDetail?.check_in).format(
+                                                  "YYYY-MM-DD "
+                                                )}
+                                              </span>
+                                            </p>
+                                            <span className="px-2">-</span>
+                                            <p className="font-semibold">
+                                              {" "}
+                                              <span className="text-base font-medium text-blue-800">
+                                                {dayjs(bookingDetail?.check_out).format(
+                                                  "YYYY-MM-DD"
+                                                )}
+                                              </span>
+                                            </p>
+                                          
+                                          </span>
+                                        </div>
+                                      </div>
+                                     <div className="flex items-center gap-10 mb-4">
+                                      <p className="font-semibold mr-4 flex items-center">
+                                          <BsCalculatorFill className="text-gray-500 mr-2"/>{" "}
+                                          <span className="text-base font-medium text-blue-800">
+                                            {bookingDetail?.total_amount}đ
+                                          </span>
+                                        </p>
+                                      <p className="font-semibold flex items-center">
+                                          <BsPeople className="mr-2 text-lg text-gray-500"/>{" "}
+                                              <span className="text-base font-medium text-blue-800">
+                                                {bookingDetail?.people_quantity} người
+                                              </span>
+                                            </p>
+                                        <p className="font-semibold mr-4 text-left flex items-center">
+                                         <AiOutlineInsertRowLeft className="mr-2 text-lg text-gray-500"/>{" "}
+                                          <span className="text-base font-medium text-blue-800">
+                                            {bookingDetail?.total_room} phòng
+                                          </span>
+                                        </p>
+                                     </div>
+                                  </div>
+                               
+                                    <h2 className="text-lg font-medium mb-2 ml-4">
+                                      Danh sách phòng và dịch vụ đã đặt
+                                    </h2>
+                                  <div className="overflow-y-auto h-[190px]">
+                                    <ul className="">
+                                      {bookingDetail?.rooms?.map((item: any, index: any) => {
+                                        return (
+                                          <li key={index} className="ml-3 ">
+                                            <div className=" flex justify-between px-2 ">
+                                              <div className="">
+                                                {item && (
+                                                  <>
+                                                    <div className="border grid grid-cols-4 px-3 py-3 space-x-2 rounded-md mt-2">
+                                                      <img
+                                                        src={item?.category_image}
+                                                        alt=""
+                                                        width={"80px"}
+                                                        height={"80px"}
+                                                        className="col-span-1"
+                                                      />
+                                                      <span className="font-bold text-md col-span-3">
+                                                        Phòng:{" "}
+                                                        <span className="text-blue-800 font-semibold">
+                                                          {item?.name} -{" "}
+                                                          {item?.category_name}
+                                                        </span>
+                                                        <span>
+                                                      <div className="flex space-x-2">
+                                                      <h4> Dịch vụ:{" "}</h4>
+                                                          <ul className="">
+                                                            {item?.services.map(
+                                                              (
+                                                                service: any,
+                                                                index: any
+                                                              ) => {
+                                                                return (
+                                                                  <>
+                                                                    <li key={index}>{service.name}</li>
+                                                                  </>
+                                                                );
+                                                              }
+                                                            )}
+                                                          </ul>
+                                                      </div>
+                                                        </span>
                                                       </span>
-                                                      <span>
-                                                    <div className="flex space-x-2">
-                                                    <h4> Dịch vụ:{" "}</h4>
-                                                        <ul className="">
-                                                          {item?.services.map(
-                                                            (
-                                                              service: any,
-                                                              index: any
-                                                            ) => {
-                                                              return (
-                                                                <>
-                                                                  <li key={index}>{service.name}</li>
-                                                                </>
-                                                              );
-                                                            }
-                                                          )}
-                                                        </ul>
                                                     </div>
-                                                      </span>
-                                                    </span>
-                                                  </div>
-                                                </>
-                                              )}
+                                                  </>
+                                                )}
+                                              </div>
                                             </div>
-                                          </div>
-                                        </li>
-                                      );
-                                    })}
-                                  </ul>
+                                          </li>
+                                        );
+                                      })}
+                                    </ul>
+                                 </div>
                                 </div>
                               </section>
                             </div>
