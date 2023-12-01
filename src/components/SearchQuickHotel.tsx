@@ -269,7 +269,7 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 group">
-            <AiOutlineCalendar class="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
+            <AiOutlineCalendar className="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
             <RangePicker
               className="w-[280px] text-[16px] h-[57px] border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               format="DD/MM/YYYY"

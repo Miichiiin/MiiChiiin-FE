@@ -19,7 +19,7 @@ const Register = () => {
         setEmail(newEmail);
         // Kiểm tra email hợp lệ
         if (!newEmail.includes('@')) {
-            setEmailError('Invalid email format');
+            setEmailError('Vui lòng nhập đúng định dạng email!');
         } else {
             setEmailError('');
         }
@@ -30,7 +30,7 @@ const Register = () => {
         setPassword(newPassword);
         // Kiểm tra password có ít nhất 6 ký tự
         if (newPassword.length < 6) {
-            setPasswordError('Password must be at least 6 characters');
+            setPasswordError('Password cần chứa ít nhất 6 ký tự!');
         } else {
             setPasswordError('');
         }
@@ -40,7 +40,7 @@ const Register = () => {
         setConfirmPassword(newConfirmPassword);
         // Kiểm tra trùng khớp với password
         if (newConfirmPassword !== password) {
-            setConfirmPasswordError('Passwords do not match');
+            setConfirmPasswordError('Comfirm password phải trùng với password!');
         } else {
             setConfirmPasswordError('');
         }

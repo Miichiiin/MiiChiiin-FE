@@ -17,24 +17,20 @@ const myWallet = () => {
 
   const user_id = dataUserLogin ? dataUserLogin.id : null;
 
-  console.log("userId", user_id);
-
   const { data: myvoucher } = useGetVoucher_hotelIdQuery({
     id: user_id,
   });  
+  const dataCheck = myvoucher?.vouchers;
    //loading trang
    const [loading,setLoading] = useState(false);
    useEffect(() =>{
        setLoading(true)
        setTimeout(() =>{
-      //  if (myvoucher && myvoucher.length > 0) {
-      //      setLoading(false);
-      //  }else {
-      //    setLoading(true);
-      //  }
-      setLoading(false)
-       },1000)
-   },[myvoucher]);  
+       if (dataCheck && dataCheck.length > 0) {
+           setLoading(false);
+       }
+       })
+   },[dataCheck]);  
    const override: CSSProperties = {
        display: "flex",
        position:"fixed",

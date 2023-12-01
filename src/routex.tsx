@@ -65,12 +65,14 @@ import Error401 from "./err/Error401";
 import PhatVoucher from "./features/admin/ManagerVoucher/PhatVoucher";
 
 
-// chặn link
+// chặn link admin
 const dataPermission = localStorage.getItem('userAdmin')
 const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
 const hasAddUserPermission = (permissions:any) => {
   return currentUserPermissions.includes(permissions);
 };
+// chặn link user
+const dataLogin = localStorage.getItem("token");
 
 export const router = createBrowserRouter([
     {
@@ -154,9 +156,11 @@ export const router = createBrowserRouter([
 
     {
         path: "/profileUser",
-        element: (
-            <LayoutProfile />
-        ),
+        element: dataLogin ? (      
+          <LayoutProfile />
+          ) : (
+            <Error401/>
+          ),
         children: [
             {
                 index: true,
@@ -185,10 +189,10 @@ export const router = createBrowserRouter([
             index: true,
             element: hasAddUserPermission("add statictical chain") ? (
                 <HotelChainStatistic />
-            ) : (
-                < HotelChainStatistics/>
-            ),
-        },
+              ) : (
+                  < HotelChainStatistics/>
+              ),
+          },
             {
                 path: "commentmanagement",
                 element: hasAddUserPermission("get rate") ? (      
