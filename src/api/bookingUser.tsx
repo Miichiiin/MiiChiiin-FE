@@ -5,7 +5,6 @@ const bookingUserApi = createApi({
     reducerPath: 'bookingUser',
     tagTypes: ['BookingUser'],
     baseQuery: fetchBaseQuery({
-        // baseUrl: "http://localhost:3000",
         baseUrl: "http://127.0.0.1:8000/api",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
@@ -60,13 +59,21 @@ const bookingUserApi = createApi({
             }),
             invalidatesTags: ['BookingUser']
         }),
+        getStatusBookings: builder.mutation({
+            query: (product) => ({
+                url: `/booking/status`,
+                method: "POST",
+                body: product
+            }),
+            invalidatesTags: ['BookingUser']
+        }),
        
         
     })
 
 })
 export const { 
- useGetBokingUserQuery, useGetBookingDetailUserQuery, useAddBookingUserMutation, useFindBookingMutation, useGetSearchOrderQuery, useLikeDetailRoomMutation, useViewDetailRoomMutation
+ useGetBokingUserQuery, useGetBookingDetailUserQuery, useAddBookingUserMutation, useFindBookingMutation, useGetSearchOrderQuery, useLikeDetailRoomMutation, useViewDetailRoomMutation,useGetStatusBookingsMutation
  } = bookingUserApi;
 export const bookingUserReducer = bookingUserApi.reducer;
 export default bookingUserApi;

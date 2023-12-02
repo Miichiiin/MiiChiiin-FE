@@ -7,9 +7,8 @@ import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import dayjs from "dayjs";
-import { message } from "antd";
-import { useGetStatusBookingsMutation } from "@/api/admin/booking_admin";
-useGetStatusBookingsMutation;
+import { useGetStatusBookingsMutation } from "@/api/bookingUser";
+
 
 const MyOrder = () => {
   const [user, setUser] = useState({
@@ -46,6 +45,8 @@ const MyOrder = () => {
     setModalIsOpen(true);
   };
 
+
+  
   const handleCloseModal = () => {
     setModalIsOpen(false);
   };
