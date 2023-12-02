@@ -19,7 +19,7 @@ import { useUseGetRating_hotel_homeQueryQuery } from "@/api/webapp/rate_hotel_ho
 import { SearchQuickHotel } from "@/components/SearchQuickHotel";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import { useViewDetailRoomMutation } from "@/api/bookingUser";
-import {  useGetVoucher_hotelQuery } from "@/api/webapp/voucher_home";
+// import {  useGetVoucher_hotelQuery } from "@/api/webapp/voucher_home";
 import FadeLoader from "react-spinners/HashLoader";
 import { CSSProperties } from 'react';
 
@@ -30,21 +30,23 @@ const HotelIntroduction = () => {
   const { data } = useGetCategory_homeQuery(idHotel);
   const {data: hotelData} = useGetHotel_homeByIdQuery(idHotel);
   const { data: dataRate } = useUseGetRating_hotel_homeQueryQuery(idHotel);
-
+  // loading trang
   const [loading,setLoading] = useState(false);
   useEffect(() =>{
     setLoading(true)
     setTimeout(() =>{
-      setLoading(false)
-    },3000)
-  },[]);
+      if (dataRate && dataRate.length > 0) {
+        setLoading(false);
+      }
+    })
+  },[dataRate]);
 
   const override: CSSProperties = {
     display: "flex",
-    margin: "20% 50%",
-    top:""
-    // justifyContent:"center",
-    
+    position:"fixed",
+    top: "45%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",  
   };
   let settings = {
     dots: false,
@@ -98,7 +100,10 @@ const HotelIntroduction = () => {
   const view = (id:any) => {
     addView(id)
   }
-
+  //srollto
+  useEffect(() =>{
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  })
   return (
     <div>
     {
@@ -115,7 +120,7 @@ const HotelIntroduction = () => {
         />
       </div>
       :
-      <div className="mx-auto overflow-y-auto">
+      <div className="mx-auto overflow-y-auto ">
         <HeaderHotel />
         <SearchQuickHotel />
         <div className="bg-[#fbf8f2] w-full mt-3 px-5 py-10">
@@ -403,7 +408,7 @@ const HotelIntroduction = () => {
           </Slider>
         </div>
       </div> */}
-      {/* <Footer/> */}
+      <Footer/>
     </div>
     
     }

@@ -10,7 +10,7 @@ const LayoutWebsite = () => {
         {/* <Header/> */}
         {/* <Search/> */}
         <Outlet/>
-        <Footer/>
+        {/* <Footer/> */}
     </div>;
 };
 

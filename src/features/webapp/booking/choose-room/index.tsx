@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { GrLocation } from "react-icons/gr";
 import { HiOutlineUser } from "react-icons/hi";
 import {
@@ -27,6 +27,8 @@ import { differenceInDays, parseISO } from "date-fns";
 import moment from "moment";
 import "./swper.css";
 import Slider from "react-slick";
+import FadeLoader from "react-spinners/ScaleLoader";
+import Footer from "@/components/Footer";
 
 const ChooseRoom = () => {
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
@@ -66,9 +68,7 @@ const ChooseRoom = () => {
   }
 
   const { data: hotel_detail } = useGetHotel_homeByIdQuery(hotel[0]);
-
-  console.log(hotel_detail);
-
+ 
   // Lấy dữ liệu từ localStorage
 
   const handleRoomSelect = (selectedHotel: any) => {
@@ -177,8 +177,23 @@ const ChooseRoom = () => {
     number_people: totalAdults + totalChildren,
     total_room: searchSlide.numberRoom,
   });
-  console.log("hotels", hotels);
-
+  //loading phòng
+  const [loading,setLoading] = useState(false);
+  useEffect(() =>{
+    setLoading(true)
+    setTimeout(() =>{
+      if (hotels && hotels.length > 0) {
+        setLoading(false);
+      }
+    })
+  },[hotels]);
+  const override: CSSProperties = {
+    display: "flex",
+    position:"fixed",
+    top: "45%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  };
   // Lấy dữ liệu từ local storage
   const savedRoomInfoJSON = localStorage.getItem("roomInfo");
   const savedRoomInfo = savedRoomInfoJSON ? JSON.parse(savedRoomInfoJSON) : [];
@@ -269,325 +284,348 @@ const ChooseRoom = () => {
     }
   };
 
-  console.log("eeelect", selectedRooms);
-
+  //srollto
+  const [userInteracted, setUserInteracted] = useState(false);
+  useEffect(() => {
+    if (!userInteracted) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [userInteracted]); 
+  
   return (
     <div>
-      <div className="mb-[100px]">
-        <HeaderHotelType />
+      {loading ? 
+      <div className="relative">
+        <FadeLoader 
+          color="#d7ba37"
+          loading={loading}
+          cssOverride={override}
+          // size={40}
+          // aria-label="Loading Spinner"
+          // data-testid="loader"
+          className="animate-pulse absolute z-10"
+        />
       </div>
-      <div className="mb-20">
-        <SearchHotel />
-      </div>
-      <div className="max-w-7xl mx-auto">
-        <div className="max-w-5xl mx-auto my-5">
-          <section className="group rounded-md border grid grid-cols-3 gap-4 px-2 py-3 hover:border-[#e8952f] hover:rounded-md hover:shadow-xl ">
-            <div className="relative">
-              <button
-                onClick={handlePrev}
-                className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-2 py-2 absolute z-10 top-[45%] start-[-12px] transition-transform transform scale-100 hover:scale-125"
-              >
-                <AiOutlineLeft class="text-[13px]" />
-              </button>
-              <button
-                onClick={handleNext}
-                className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-2 py-2 ml-[800px] z-10 absolute top-[42%]  end-[-13px]  transition-transform transform scale-100 hover:scale-125"
-              >
-                <AiOutlineRight class="text-[13px]" />
-              </button>
-              <Slider {...settings} ref={sliderRef}>
-                <img
-                  className="rounded-xl"
-                  src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg"
-                  alt=""
-                />
-                <img
-                  className="rounded-xl"
-                  src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg"
-                  alt=""
-                />
-                <img
-                  className="rounded-xl"
-                  src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg"
-                  alt=""
-                />
-              </Slider>
-            </div>
-            <div className="col-span-2 ml-2">
-              <a className="text-xl hover:underline font-semibold ">
-                {hotel_detail?.[0]?.name}
-              </a>
-              <div className="flex py-3 flex-col space-y-2">
-                <div className="flex items-center">
-                  <GrLocation />
-                  <p className="text-sm pl-2">
-                    Địa chỉ: {hotel_detail?.[0]?.address}/{" "}
-                    {hotel_detail?.[0]?.city_name}
+      : 
+      <div>
+        <div className="max-w-7xl mx-auto duration-300">
+          <div className="mb-[100px]">
+            <HeaderHotelType />
+          </div>
+          <div className="mb-20">
+            <SearchHotel />
+          </div>
+          <div className="max-w-5xl mx-auto my-5">
+            <section className="group rounded-md border grid grid-cols-3 gap-4 px-2 py-3 hover:border-[#e8952f] hover:rounded-md hover:shadow-xl ">
+              <div className="relative">
+                <button
+                  onClick={handlePrev}
+                  className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-2 py-2 absolute z-10 top-[45%] start-[-12px] transition-transform transform scale-100 hover:scale-125"
+                >
+                  <AiOutlineLeft class="text-[13px]" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-2 py-2 ml-[800px] z-10 absolute top-[42%]  end-[-13px]  transition-transform transform scale-100 hover:scale-125"
+                >
+                  <AiOutlineRight class="text-[13px]" />
+                </button>
+                <Slider {...settings} ref={sliderRef}>
+                  <img
+                    className="rounded-xl"
+                    src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg"
+                    alt=""
+                  />
+                  <img
+                    className="rounded-xl"
+                    src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg"
+                    alt=""
+                  />
+                  <img
+                    className="rounded-xl"
+                    src="https://booking-static.vinpearl.com/hotels/3144cb44bcad401c92d99f97466e682e_s%E1%BA%A3nh%20dis-1-002.jpg"
+                    alt=""
+                  />
+                </Slider>
+              </div>
+              <div className="col-span-2 ml-2">
+                <a className="text-xl hover:underline font-semibold ">
+                  {hotel_detail?.[0]?.name}
+                </a>
+                <div className="flex py-3 flex-col space-y-2">
+                  <div className="flex items-center">
+                    <GrLocation />
+                    <p className="text-sm pl-2">
+                      Địa chỉ: {hotel_detail?.[0]?.address}/{" "}
+                      {hotel_detail?.[0]?.city_name}
+                    </p>
+                  </div>
+                  <p className="flex items-center font-medium space-x-2">
+                    <AiOutlineFrown />
+                    {Array.from(
+                      { length: hotel_detail?.[0]?.star },
+                      (_, index) => (
+                        <span
+                          key={index}
+                          className="flex items-center text-[#e8952f]"
+                        >
+                          <AiFillStar />
+                        </span>
+                      )
+                    )}
                   </p>
                 </div>
-                <p className="flex items-center font-medium space-x-2">
-                  <AiOutlineFrown />
-                  {Array.from(
-                    { length: hotel_detail?.[0]?.star },
-                    (_, index) => (
-                      <span
-                        key={index}
-                        className="flex items-center text-[#e8952f]"
-                      >
-                        <AiFillStar />
+                <p className="pb-4">{hotel_detail?.[0]?.description}</p>
+                <Link
+                  to={`/hotel/${hotel_detail?.[0]?.id}`}
+                  className="font-semibold text-blue-700 hover:text-blue-500 hover:underline flex items-center "
+                >
+                  {" "}
+                  Xem chi tiết <AiOutlineRight class="mt-1 ml-1" />{" "}
+                </Link>
+              </div>
+            </section>
+            <section className="grid grid-cols-3 gap-4 py-3">
+              <div className="col-span-2">
+                <div className="border px-2 py-3 bg-gray-100 rounded my-3">
+                  <div className="flex justify-between items-center">
+                    <h1 className="text-lg font-bold">
+                      Chọn phòng:{" "}
+                      <span>
+                        {selectedRooms?.length}/{searchSlide?.numberRoom}
                       </span>
-                    )
-                  )}
-                </p>
-              </div>
-              <p className="pb-4">{hotel_detail?.[0]?.description}</p>
-              <Link
-                to={`/hotel/${hotel_detail?.[0]?.id}`}
-                className="font-semibold text-blue-700 hover:text-blue-500 hover:underline flex items-center "
-              >
-                {" "}
-                Xem chi tiết <AiOutlineRight class="mt-1 ml-1" />{" "}
-              </Link>
-            </div>
-          </section>
-          <section className="grid grid-cols-3 gap-4 py-3">
-            <div className="col-span-2">
-              <div className="border px-2 py-3 bg-gray-100 rounded my-3">
-                <div className="flex justify-between items-center">
-                  <h1 className="text-lg font-bold">
-                    Chọn phòng:{" "}
-                    <span>
-                      {selectedRooms?.length}/{searchSlide?.numberRoom}
-                    </span>
-                  </h1>
+                    </h1>
+                  </div>
                 </div>
-              </div>
-              <div className="choice-column">
-                {hotels?.map((hotel: any, index: any) => (
-                  <section
-                    key={index}
-                    className="border rounded-lg grid grid-cols-3 gap-4 px-2 py-3 my-2"
-                  >
-                    <div className="image">
-                      <img
-                        src={hotel?.image}
-                        alt=""
-                        className="w-full h-full rounded-md"
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <a className="text-xl hover:underline font-medium flex items-center">
-                        {hotel?.name}
-                        <p className="text-[18px] mt-1 ml-2">
-                          (
-                          {hotel?.Total_rooms < 4 ? (
-                            <span style={{ color: "red" }}>
-                              Còn {hotel?.Total_rooms}
-                            </span>
-                          ) : (
-                            <span>Còn {hotel?.Total_rooms}</span>
-                          )}
-                          )
-                        </p>
-                      </a>
-                      <div className="flex items-center mt-2 font-normal justify-between">
-                        <div className="flex items-center">
-                          <HiOutlineUser class="text-[18px]" />
-                          <p className="text-sm px-1 mr-4">
-                            {hotel?.quantity_of_people} người
-                          </p>
-                          <AiOutlineExpandAlt class="text-[18px]" />
-                          <p className="text-sm px-1">
-                            {hotel?.acreage}m
-                            <span className="text-[10px]">2</span>
-                          </p>
-                        </div>
-                        <div className="flex items-center space-x-5">
-                          <span className="flex items-center ">
-                            <AiOutlineEye class="pr-1 text-[23px] font-medium" />
-                            {hotel?.views}
-                          </span>
-                          <span className="flex items-center">
-                            <AiOutlineLike class="pr-1 text-[23px] font-medium" />
-                            {hotel?.likes}
-                          </span>
-                        </div>
+                <div className="choice-column">
+                  {hotels?.map((hotel: any, index: any) => (
+                    <section
+                      key={index}
+                      className="border rounded-lg grid grid-cols-3 gap-4 px-2 py-3 my-2"
+                    >
+                      <div className="image">
+                        <img
+                          src={hotel?.image}
+                          alt=""
+                          className="w-full h-full rounded-md"
+                        />
                       </div>
-
-                      <div className="justify-between flex items-center mt-10 space-x-2">
-                        <div>
-                          <p className=" text-left">
-                            {" "}
-                            Giá công bố:{" "}
-                            <span className="font-semibold text-md text-gray-500">
-                              {hotel?.price.toLocaleString("vi-VN")} đ
-                            </span>{" "}
-                          </p>
-                          <p className=" flex justify-end items-center text-left space-x-2">
-                            {" "}
-                            <span className=""> Giá thành viên:</span>{" "}
-                            <span className="font-semibold text-md ">
-                              {hotel?.price.toLocaleString("vi-VN")} đ
-                            </span>
-                            <AiOutlineInfoCircle class="text-red-500" />{" "}
-                          </p>
-                          {/* ... */}
-                        </div>
-                        <div>
-                          {/* <p>
-                            {hotel.Total_rooms < 4 ? (
+                      <div className="col-span-2">
+                        <a className="text-xl hover:underline font-medium flex items-center">
+                          {hotel?.name}
+                          <p className="text-[18px] mt-1 ml-2">
+                            (
+                            {hotel?.Total_rooms < 4 ? (
                               <span style={{ color: "red" }}>
-                                Còn {hotel.Total_rooms} phòng
+                                Còn {hotel?.Total_rooms}
                               </span>
                             ) : (
-                              <span>Còn {hotel.Total_rooms} phòng</span>
+                              <span>Còn {hotel?.Total_rooms}</span>
                             )}
-                          </p> */}
-                        </div>
-                        <button
-                          className="flex border px-5 py-2 mt-4 bg-[#2a398c] hover:bg-blue-800 text-white rounded-full font-medium"
-                          onClick={() => handleRoomSelect(hotel)}
-                        >
-                          Chọn
-                        </button>
-                      </div>
-                    </div>
-                  </section>
-                ))}
-              </div>
-            </div>
-            <div className="booking-column ">
-              <div className="border px-2 py-3 bg-gray-100 rounded my-3">
-                <h1 className="text-lg font-bold ">Chuyến đi</h1>
-              </div>
-              <div className="border rounded px-2 py-4">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <h1 className="font-semibold text-lg">
-                      {hotel_detail?.[0]?.name}
-                    </h1>
-                    <button className="text-sm text-blue-500 font-medium hover:underline">
-                      Chỉnh sửa
-                    </button>
-                  </div>
-                  <div className="border-b-2 pb-3">
-                    <p className="text-sm pt-3 items-center flex  mb-1 text-gray-500 font-medium">
-                      <AiOutlineCalendar class="text-lg mr-2" />
-                      {date[0].toISOString().slice(0, 10)}
-                      <AiOutlineArrowRight className="inline-block mx-2" />
-                      {date[1].toISOString().slice(0, 10)}
-                    </p>
-                    <p className="text-sm pb-3 flex items-center text-gray-500 font-medium">
-                      <AiOutlineSchedule class="text-lg mr-2" />
-                      {differenceInDays(
-                        parseISO(date[1].toISOString().slice(0, 10)),
-                        parseISO(date[0].toISOString().slice(0, 10))
-                      )}{" "}
-                      Đêm
-                    </p>
-                  </div>
-                </div>
-                <div className="pb-6">
-                  <h1 className="font-semibold text-lg pt-4">
-                    Danh sách phòng đã chọn:
-                  </h1>
-                  {roomsToDisplay?.length > 0 ? (
-                    <ul>
-                      {roomsToDisplay?.map((room: any, index: any) => (
-                        <li key={index} className="flex flex-col">
-                          <div className="flex items-center justify-between">
-                            <span className="text-base  mt-2 flex items-center text-gray-500 font-medium">
-                              <AiOutlineForm class="text-lg mr-2" />
-                              {room?.name} -{" "}
-                              {room.price.toLocaleString("vi-VN")} đ{" "}
-                              {room?.count > 1 ? `x${room?.count}` : ""}
-                            </span>
-                            <button
-                              onClick={() => handleRemoveRoom(room)}
-                              className="text-red-500 hover:text-red-500 focus:outline-none text-xl transition-transform transform scale-100 hover:scale-125"
-                            >
-                              <AiOutlineCloseCircle />
-                            </button>
-                          </div>
-                          <span className="basis-1/3 mb-4 text-gray-500 font-medium border-b-2 pb-7">
-                            <p className="text-sm pt-1 flex items-center">
-                              <AiOutlineTeam class="text-lg mr-2" />
-                              <p className="text-sm pb-3 text-gray-500 font-medium">
-                                {numberPeople &&
-                                  numberPeople?.filter(
-                                    (item: any, index1: any) => index1 == index
-                                  ).map(
-                                    (
-                                      { adults, children, infants }: any,
-                                      index: any
-                                    ) => (
-                                      <div key={index}>
-                                        Người lớn:{adults}, Trẻ em:{children},
-                                        Em bé: {infants}
-                                      </div>
-                                    )
-                                  )}
-                              </p>
+                            )
+                          </p>
+                        </a>
+                        <div className="flex items-center mt-2 font-normal justify-between">
+                          <div className="flex items-center">
+                            <HiOutlineUser class="text-[18px]" />
+                            <p className="text-sm px-1 mr-4">
+                              {hotel?.quantity_of_people} người
                             </p>
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    // Hiển thị dữ liệu từ local storage nếu không có phòng nào được chọn
-                    <div>
-                      {savedRoomInfo ? (
-                        <p>
-                          {savedRoomInfo.name} - {savedRoomInfo.price}vnđ
-                        </p>
+                            <AiOutlineExpandAlt class="text-[18px]" />
+                            <p className="text-sm px-1">
+                              {hotel?.acreage}m
+                              <span className="text-[10px]">2</span>
+                            </p>
+                          </div>
+                          <div className="flex items-center space-x-5">
+                            <span className="flex items-center ">
+                              <AiOutlineEye class="pr-1 text-[23px] font-medium" />
+                              {hotel?.views}
+                            </span>
+                            <span className="flex items-center">
+                              <AiOutlineLike class="pr-1 text-[23px] font-medium" />
+                              {hotel?.likes}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="justify-between flex items-center mt-10 space-x-2">
+                          <div>
+                            <p className=" text-left">
+                              {" "}
+                              Giá công bố:{" "}
+                              <span className="font-semibold text-md text-gray-500">
+                                {hotel?.price.toLocaleString("vi-VN")} đ
+                              </span>{" "}
+                            </p>
+                            <p className=" flex justify-end items-center text-left space-x-2">
+                              {" "}
+                              <span className=""> Giá thành viên:</span>{" "}
+                              <span className="font-semibold text-md ">
+                                {hotel?.price.toLocaleString("vi-VN")} đ
+                              </span>
+                              <AiOutlineInfoCircle class="text-red-500" />{" "}
+                            </p>
+                            {/* ... */}
+                          </div>
+                          <div>
+                            {/* <p>
+                              {hotel.Total_rooms < 4 ? (
+                                <span style={{ color: "red" }}>
+                                  Còn {hotel.Total_rooms} phòng
+                                </span>
+                              ) : (
+                                <span>Còn {hotel.Total_rooms} phòng</span>
+                              )}
+                            </p> */}
+                          </div>
+                          <button
+                            className="flex border px-5 py-2 mt-4 bg-[#2a398c] hover:bg-blue-800 text-white rounded-full font-medium"
+                            onClick={() => handleRoomSelect(hotel)}
+                          >
+                            Chọn
+                          </button>
+                        </div>
+                      </div>
+                    </section>
+                  ))}
+                </div>
+              </div>
+              <div className="booking-column ">
+                <div className="border px-2 py-3 bg-gray-100 rounded my-3">
+                  <h1 className="text-lg font-bold ">Chuyến đi</h1>
+                </div>
+                <div className="border rounded px-2 py-4">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <h1 className="font-semibold text-lg">
+                        {hotel_detail?.[0]?.name}
+                      </h1>
+                      <button className="text-sm text-blue-500 font-medium hover:underline">
+                        Chỉnh sửa
+                      </button>
+                    </div>
+                    <div className="border-b-2 pb-3">
+                      <p className="text-sm pt-3 items-center flex  mb-1 text-gray-500 font-medium">
+                        <AiOutlineCalendar class="text-lg mr-2" />
+                        {date[0].toISOString().slice(0, 10)}
+                        <AiOutlineArrowRight className="inline-block mx-2" />
+                        {date[1].toISOString().slice(0, 10)}
+                      </p>
+                      <p className="text-sm pb-3 flex items-center text-gray-500 font-medium">
+                        <AiOutlineSchedule class="text-lg mr-2" />
+                        {differenceInDays(
+                          parseISO(date[1].toISOString().slice(0, 10)),
+                          parseISO(date[0].toISOString().slice(0, 10))
+                        )}{" "}
+                        Đêm
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pb-6">
+                    <h1 className="font-semibold text-lg pt-4">
+                      Danh sách phòng đã chọn:
+                    </h1>
+                    {roomsToDisplay?.length > 0 ? (
+                      <ul>
+                        {roomsToDisplay?.map((room: any, index: any) => (
+                          <li key={index} className="flex flex-col">
+                            <div className="flex items-center justify-between">
+                              <span className="text-base  mt-2 flex items-center text-gray-500 font-medium">
+                                <AiOutlineForm class="text-lg mr-2" />
+                                {room?.name} -{" "}
+                                {room.price.toLocaleString("vi-VN")} đ{" "}
+                                {room?.count > 1 ? `x${room?.count}` : ""}
+                              </span>
+                              <button
+                                onClick={() => handleRemoveRoom(room)}
+                                className="text-red-500 hover:text-red-500 focus:outline-none text-xl transition-transform transform scale-100 hover:scale-125"
+                              >
+                                <AiOutlineCloseCircle />
+                              </button>
+                            </div>
+                            <span className="basis-1/3 mb-4 text-gray-500 font-medium border-b-2 pb-7">
+                              <p className="text-sm pt-1 flex items-center">
+                                <AiOutlineTeam class="text-lg mr-2" />
+                                <p className="text-sm pb-3 text-gray-500 font-medium">
+                                  {numberPeople &&
+                                    numberPeople?.filter(
+                                      (item: any, index1: any) => index1 == index
+                                    ).map(
+                                      (
+                                        { adults, children, infants }: any,
+                                        index: any
+                                      ) => (
+                                        <div key={index}>
+                                          Người lớn:{adults}, Trẻ em:{children},
+                                          Em bé: {infants}
+                                        </div>
+                                      )
+                                    )}
+                                </p>
+                              </p>
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      // Hiển thị dữ liệu từ local storage nếu không có phòng nào được chọn
+                      <div>
+                        {savedRoomInfo ? (
+                          <p>
+                            {savedRoomInfo.name} - {savedRoomInfo.price}vnđ
+                          </p>
+                        ) : (
+                          <p>Không có phòng nào được chọn.</p>
+                        )}
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between mt-3">
+                      <h1 className="font-medium text-lg">Tổng cộng:</h1>
+                      {totalPrice ? (
+                        <h1 className="text-xl font-semibold text-yellow-500 ">
+                          {(
+                            totalPrice *
+                            differenceInDays(
+                              parseISO(date[1].toISOString().slice(0, 10)),
+                              parseISO(date[0].toISOString().slice(0, 10))
+                            )
+                          ).toLocaleString("vi-VN")}
+                          <span className="pl-1">đ</span>
+                        </h1>
                       ) : (
-                        <p>Không có phòng nào được chọn.</p>
+                        <h1 className="text-xl font-semibold text-yellow-500 ">
+                          {(
+                            savedRoomInfo.price *
+                            differenceInDays(
+                              parseISO(date[1].toISOString().slice(0, 10)),
+                              parseISO(date[0].toISOString().slice(0, 10))
+                            )
+                          ).toLocaleString("vi-VN")}
+                          <span className="pl-1">đ</span>
+                        </h1>
                       )}
                     </div>
-                  )}
-                  <div className="flex items-center justify-between mt-3">
-                    <h1 className="font-medium text-lg">Tổng cộng:</h1>
-                    {totalPrice ? (
-                      <h1 className="text-xl font-semibold text-yellow-500 ">
-                        {(
-                          totalPrice *
-                          differenceInDays(
-                            parseISO(date[1].toISOString().slice(0, 10)),
-                            parseISO(date[0].toISOString().slice(0, 10))
-                          )
-                        ).toLocaleString("vi-VN")}
-                        <span className="pl-1">đ</span>
-                      </h1>
-                    ) : (
-                      <h1 className="text-xl font-semibold text-yellow-500 ">
-                        {(
-                          savedRoomInfo.price *
-                          differenceInDays(
-                            parseISO(date[1].toISOString().slice(0, 10)),
-                            parseISO(date[0].toISOString().slice(0, 10))
-                          )
-                        ).toLocaleString("vi-VN")}
-                        <span className="pl-1">đ</span>
-                      </h1>
-                    )}
                   </div>
-                </div>
 
-                <button
-                  onClick={onHandSubmit}
-                  className={`bg-[#e8952f] h-12 hover:bg-yellow-600 text-white text-lg font-medium rounded-full w-full ${
-                    selectedRoomCount === parseInt(searchSlide?.numberRoom, 10)
-                      ? ""
-                      : "opacity-50 pointer-events-none" // Ẩn và vô hiệu hóa nút nếu chưa đủ số phòng
-                  }`}
-                >
-                  Tiếp tục
-                </button>
+                  <button
+                    onClick={onHandSubmit}
+                    className={`bg-[#e8952f] h-12 hover:bg-yellow-600 text-white text-lg font-medium rounded-full w-full ${
+                      selectedRoomCount === parseInt(searchSlide?.numberRoom, 10)
+                        ? ""
+                        : "opacity-50 pointer-events-none" // Ẩn và vô hiệu hóa nút nếu chưa đủ số phòng
+                    }`}
+                  >
+                    Tiếp tục
+                  </button>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
+        <Footer/>
       </div>
+      }
     </div>
   );
 };

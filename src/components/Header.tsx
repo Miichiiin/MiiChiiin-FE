@@ -7,10 +7,11 @@ import {
 import video from "../video/vdeo.mp4";
 import "../components/Css/index.css";
 import Cart from "./cart";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link ,useLocation,useNavigate} from "react-router-dom";
 import { useGetHotel_homesQuery } from "@/api/webapp/hotel_home";
 import SearchOrder from "./SearchOrder";
 import { TextTruncate } from "../components/TextTruncate"
+import { message } from "antd";
 
 const Header = () => {
   /*Hàm Dropdow*/
@@ -18,6 +19,15 @@ const Header = () => {
   const { data: hotels } = useGetHotel_homesQuery();
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const label = searchParams.get('status');
+
+  if (label === 'success') {
+    message.success("Thanh toán thành công")
+  }else if(label === 'fail'){
+      message.error("Thanh toán thất bại")
+  }
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
