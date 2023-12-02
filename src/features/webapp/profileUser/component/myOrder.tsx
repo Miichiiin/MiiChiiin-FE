@@ -1,7 +1,6 @@
 import {
   useGetBokingUserQuery,
   useGetBookingDetailUserQuery,
-  
 } from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
@@ -10,7 +9,7 @@ import Modal from "react-modal";
 import dayjs from "dayjs";
 import { message } from "antd";
 import { useGetStatusBookingsMutation } from "@/api/admin/booking_admin";
-useGetStatusBookingsMutation
+useGetStatusBookingsMutation;
 
 const MyOrder = () => {
   const [user, setUser] = useState({
@@ -73,17 +72,19 @@ const MyOrder = () => {
 
   const [changeStatus] = useGetStatusBookingsMutation();
 
-  const handleStatusChange = (id: any) => {
+  const handleStatusChange = async (id: any) => {
     const status = booking.find((item: any) => item.id === id);
     console.log(status);
-
+  
     if (status) {
-      changeStatus({
+     
+      await changeStatus({
         status: status?.status,
         id: status?.id,
       });
     }
   };
+  
 
   return (
     <div className="container mx-auto py-8">
@@ -108,11 +109,11 @@ const MyOrder = () => {
               <option>1 tuần trước</option>
               <option>1 tháng trước</option>
             </select>
-            {/* <select className="border py-1 px-3 rounded-md outline-none text-[#a5a3af]">
+            <select className="border py-1 px-3 rounded-md outline-none text-[#a5a3af]">
               <option selected>Trạng thái đơn</option>
               <option>1 tuần trước</option>
               <option>1 tháng trước</option>
-            </select> */}
+            </select>
           </div>
           <div>
             {booking ? (
@@ -286,7 +287,8 @@ const MyOrder = () => {
                                     <p className="font-semibold">
                                       Tổng tiền:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {bookingDetail?.total_amount}
+                                        {bookingDetail?.total_amount?.toLocaleString("vi-VN")} đ
+                                        
                                       </span>
                                     </p>
                                   </div>
