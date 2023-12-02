@@ -45,11 +45,19 @@ const booking_AdminApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ['Booking_admin']
-        })
+        }),
+        getStatusBookings: builder.mutation({
+            query: (product) => ({
+                url: `/booking/status`,
+                method: "POST",
+                body: product
+            }),
+            invalidatesTags: ['Booking_admin']
+        }),
     })
 })
 export const { 
-   useAddBooking_adminMutation, useGetBooking_adminByIdQuery, useGetBooking_adminQuery, useRemoveBooking_adminMutation, useUpdateBooking_adminMutation
+   useAddBooking_adminMutation, useGetBooking_adminByIdQuery, useGetBooking_adminQuery, useRemoveBooking_adminMutation, useUpdateBooking_adminMutation,useGetStatusBookingsMutation
  } = booking_AdminApi;
 export const booking_AdminReducer = booking_AdminApi.reducer;
 export default booking_AdminApi;

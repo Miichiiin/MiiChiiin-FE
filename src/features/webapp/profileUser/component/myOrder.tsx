@@ -1,12 +1,17 @@
 import {
   useGetBokingUserQuery,
   useGetBookingDetailUserQuery,
+  
 } from "@/api/bookingUser";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import dayjs from "dayjs";
+import { message } from "antd";
+import { useGetStatusBookingsMutation } from "@/api/admin/booking_admin";
+useGetStatusBookingsMutation
+
 const MyOrder = () => {
   const [user, setUser] = useState({
     id: "",
@@ -20,6 +25,11 @@ const MyOrder = () => {
   });
   const [idBoking, setIdBooking] = useState<any>("");
   const { data: booking } = useGetBokingUserQuery(user?.id);
+
+  const { data: bookingDetail } = useGetBookingDetailUserQuery({
+    id_user: user?.id,
+    id_booking: idBoking,
+  });
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -31,10 +41,6 @@ const MyOrder = () => {
     setIdBooking(id_booking);
   };
 
-  const { data: bookingDetail } = useGetBookingDetailUserQuery({
-    id_user: user?.id,
-    id_booking: idBoking,
-  });
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -64,6 +70,21 @@ const MyOrder = () => {
         };
     }
   };
+
+  const [changeStatus] = useGetStatusBookingsMutation();
+
+  const handleStatusChange = (id: any) => {
+    const status = booking.find((item: any) => item.id === id);
+    console.log(status);
+
+    if (status) {
+      changeStatus({
+        status: status?.status,
+        id: status?.id,
+      });
+    }
+  };
+
   return (
     <div className="container mx-auto py-8">
       <div className="bg-white rounded-lg shadow-lg p-8">
@@ -87,11 +108,11 @@ const MyOrder = () => {
               <option>1 tuần trước</option>
               <option>1 tháng trước</option>
             </select>
-            <select className="border py-1 px-3 rounded-md outline-none text-[#a5a3af]">
+            {/* <select className="border py-1 px-3 rounded-md outline-none text-[#a5a3af]">
               <option selected>Trạng thái đơn</option>
               <option>1 tuần trước</option>
               <option>1 tháng trước</option>
-            </select>
+            </select> */}
           </div>
           <div>
             {booking ? (
@@ -124,20 +145,35 @@ const MyOrder = () => {
                           </span>
                         </span>
                       </div>
-                      <div className="grid grid-cols-1 font-medium">
-                        <span>
-                          Trạng thái:{" "}
-                          <span className={statusInfo.colorClass}>
-                            {statusInfo.text}
+                      <div className="grid grid-cols-1 font-medium items-center">
+                        <span className="flex items-center">
+                          <span>
+                            Trạng thái:{" "}
+                            <span className={statusInfo.colorClass}>
+                              {statusInfo.text}
+                            </span>
                           </span>
+
+                          <button
+                            className="text-red-300 ml-2"
+                            onClick={() => handleStatusChange(item?.id)}
+                          >
+                            Hủy Phòng
+                          </button>
                         </span>
                       </div>
+
                       <div className=" space-x-8 font-medium">
                         <span>
                           Đặt ngày:{" "}
                           <span>
-                            {new Date(item?.check_in).toLocaleDateString()} -{" "}
-                            {new Date(item?.check_out).toLocaleDateString()}
+                            {new Date(item?.check_in).toLocaleDateString(
+                              "vi-VN"
+                            )}{" "}
+                            -{" "}
+                            {new Date(item?.check_out).toLocaleDateString(
+                              "vi-VN"
+                            )}
                           </span>
                         </span>
                         <button

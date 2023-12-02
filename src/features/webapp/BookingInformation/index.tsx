@@ -644,7 +644,8 @@ const BookingInformation = () => {
                                 />
                                 <div>
                                   <p className="font-bold">{voucher?.name}</p>
-                                  <p>Hạn sử dụng: {voucher?.expiryDate}</p>
+                                  <p>Hạn sử dụng: {voucher?.expire_at ? new Date(voucher.expire_at).toLocaleDateString('vi-VN') : 'N/A'}</p>
+
                                   <p>Giảm giá: {voucher?.discount}%</p>
                                 </div>
                               </div>
