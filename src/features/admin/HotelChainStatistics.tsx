@@ -98,7 +98,7 @@ const HotelChainStatistic = () => {
   // Biểu đồ của RoomType
   const [selectedMonthRt, setSelectedMonthRt] = useState(11);
   const [selectedYearRt, setSelectedYearRt] = useState(2023);
-  const [selectedRoomType, setSelectedRoomType] = useState<number>();
+  const [selectedRoomType, setSelectedRoomType] = useState<any>();
   const [selectedRoomId, setSelectedRoomId] = useState("");
   const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery({
     month: selectedMonthRt,
