@@ -45,7 +45,8 @@ const booking_AdminApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ['Booking_admin']
-        })
+        }),
+
     })
 })
 export const { 

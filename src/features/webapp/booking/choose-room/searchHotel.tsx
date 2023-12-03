@@ -1,19 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
-import { Button, Form, DatePicker } from 'antd';
-import dayjs from 'dayjs';
+import { useState, useEffect, useRef } from "react";
+import { Button, Form, DatePicker } from "antd";
+import dayjs from "dayjs";
 import {
   AiOutlineEnvironment,
   AiOutlineIdcard,
   AiOutlineMinus,
   AiOutlinePlus,
-  AiOutlineUser,AiOutlineCalendar
-} from 'react-icons/ai';
+  AiOutlineUser,
+  AiOutlineCalendar,
+} from "react-icons/ai";
 
 // import { addSearch } from '@/api/searchSlice';
-import { isYesterday } from 'date-fns';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import "../../../../components/Css/index.css"
+import { isYesterday } from "date-fns";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import "../../../../components/Css/index.css";
 
 const { RangePicker } = DatePicker;
 
@@ -23,27 +24,29 @@ export const SearchHotel = () => {
   const [divClicked, setDivClicked] = useState(false);
   const [hotelsData, setHotelsData] = useState([]);
 
-  const searchSlide = useParams()
+  const searchSlide = useParams();
 
   let numberPeople: { [key: string]: number }[] = [];
   if (searchSlide && searchSlide.numberPeople) {
-    numberPeople = searchSlide.numberPeople.split('&').map((detailsString: string) => {
-      const detailsArray = detailsString.split(',');
+    numberPeople = searchSlide.numberPeople
+      .split("&")
+      .map((detailsString: string) => {
+        const detailsArray = detailsString.split(",");
 
-      const roomDetails: { [key: string]: number } = {};
-      detailsArray.forEach((detail) => {
-        const [key, value] = detail.split(':');
-        roomDetails[key] = parseInt(value);
+        const roomDetails: { [key: string]: number } = {};
+        detailsArray.forEach((detail) => {
+          const [key, value] = detail.split(":");
+          roomDetails[key] = parseInt(value);
+        });
+
+        return roomDetails;
       });
-
-      return roomDetails;
-    });
   }
 
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
     const timeArray = searchSlide.date.split(",");
-    date = timeArray.map(time => new Date(time));
+    date = timeArray.map((time) => new Date(time));
   }
 
   let hotel: string[] = [];
@@ -55,10 +58,10 @@ export const SearchHotel = () => {
 
   const [selectedHotel, setSelectedHotel] = useState(hotel[1]);
 
-
   const navigate = useNavigate();
 
-  const dateFormat = 'YYYY/MM/DD';
+  const dateFormat = "YYYY/MM/DD";
+ 
   type FieldType = {
     nameHotel?: string;
     password?: string;
@@ -66,12 +69,14 @@ export const SearchHotel = () => {
   };
 
   const onHandSubmit = () => {
-    const roomDetailsString = roomDetails1.map((details) => {
-      return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
-    }).join('&');
-    const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`
+    const roomDetailsString = roomDetails1
+      .map((details) => {
+        return `adults:${details.adults},children:${details.children},infants:${details.infants}`;
+      })
+      .join("&");
+    const url = `/choose-room/${selectedHotel}/${selectedRange}/${numberOfRooms1}/${roomDetailsString}`;
     navigate(url);
-  }
+  };
 
   //chọn ten khách sạn
   const refCalen = useRef<HTMLDivElement>(null);
@@ -111,7 +116,8 @@ export const SearchHotel = () => {
 
   // Sử dụng useEffect để gọi API khi component được mount
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/hotel") // Thay đổi đường dẫn dựa vào cấu hình của bạn
+    axios
+      .get("http://127.0.0.1:8000/api/hotel") // Thay đổi đường dẫn dựa vào cấu hình của bạn
       .then((response) => {
         setHotelsData(response.data); // Lưu dữ liệu từ API vào state
       })
@@ -173,9 +179,10 @@ export const SearchHotel = () => {
   //   children: number;
   //   infants: number;
   // }
-  const [numberOfRooms1, setNumberOfRooms1] = useState(Number(searchSlide.numberRoom));
+  const [numberOfRooms1, setNumberOfRooms1] = useState(
+    Number(searchSlide.numberRoom)
+  );
   const [roomDetails1, setRoomDetails1] = useState(numberPeople);
-
 
   const handleRoomChange1 = (value: number) => {
     if (value >= 1) {
@@ -234,13 +241,12 @@ export const SearchHotel = () => {
         autoComplete="off"
       >
         <div className="flex items-center w-[1024px] mx-auto pt-4 ">
-          <Form.Item<FieldType>
-            name="nameHotel"
-            className="flex-grow"
-
-          >
-            <div ref={refCalen} onClick={handleDivClick} className=''>
-              <div onClick={toggleDropdown} className="relative cursor-pointer group">
+          <Form.Item<FieldType> name="nameHotel" className="flex-grow">
+            <div ref={refCalen} onClick={handleDivClick} className="">
+              <div
+                onClick={toggleDropdown}
+                className="relative cursor-pointer group"
+              >
                 <div
                   className=" border rounded border-[#e0e0e0] xl:w-[280px] xl:h-[57px] xl:pl-[55px] 
                   lg:w-[200px] lg:h-[55px] xl:text-[16px] lg:text-[11px] lg:pl-[40px] 
@@ -249,7 +255,9 @@ export const SearchHotel = () => {
                   <span className="text-gray-700 absolute pt-[23px] font-medium text-[14px] mt-1">
                     {selectedHotel || "Bạn nhập nơi muốn đến..."}
                   </span>
-                  <span className='absolute pt-1 text-sm font-medium text-gray-500 group-hover:text-[#e8952f]'>Khách sạn - điểm đến</span>
+                  <span className="absolute pt-1 text-sm font-medium text-gray-500 group-hover:text-[#e8952f]">
+                    Khách sạn - điểm đến
+                  </span>
                 </div>
                 <span className="absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4 group-hover:text-[#e8952f]">
                   <AiOutlineEnvironment />
@@ -281,45 +289,73 @@ export const SearchHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 group relative">
-            <AiOutlineCalendar class="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]"/>
+            <AiOutlineCalendar class="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
             <RangePicker
               className=" w-[260px] text-[16px] pt-5 h-[57px] px-10 border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
-              defaultValue={[dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat), dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat)]}
-              // format={dateFormat}
+              defaultValue={[
+                dayjs(selectedRange[0].toISOString().slice(0, 10), dateFormat),
+                dayjs(selectedRange[1].toISOString().slice(0, 10), dateFormat),
+              ]}
+              
               onChange={(datas) => handleRangeChange(datas)}
               disabledDate={(current) => {
                 // Vô hiệu hóa các ngày hôm trước
-                return current && current.isBefore(new Date(), 'day');
-                
+                return current && current.isBefore(new Date(), "day");
               }}
-              popupStyle={{ overflow: 'hidden' }}
-              style={{ color: 'black', fontWeight: 'medium' ,position:"relative"}}
+              popupStyle={{ overflow: "hidden" }}
+              style={{
+                color: "black",
+                fontWeight: "medium",
+                position: "relative",
+              }}
             />
-            <span className='absolute flex top-1 start-11 font-medium text-sm text-gray-500 group-hover:text-[#e8952f] '>Ngày nhận - Ngày trả</span>
+            <span className="absolute flex top-1 start-11 font-medium text-sm text-gray-500 group-hover:text-[#e8952f] ">
+              Ngày nhận - Ngày trả
+            </span>
           </Form.Item>
 
           <Form.Item<FieldType> className="flex-grow ml-2">
-            <button className='w-[310px]' >
-              <div className="group flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all duration-300 ease-in-out 
+            <button className="w-[310px]">
+              <div
+                className="group flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all duration-300 ease-in-out 
                   hover:border-[#e8952f] hover:shadow-md "
-                >
+              >
                 <span className="xl:text-[22px] lg:text-[19px] mr-4 group-hover:text-[#e8952f]">
                   <AiOutlineUser />
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
                   <div className="text-left text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-semibold text-gray-700 group-hover:text-[#e8952f]">
-                    <label htmlFor="" className='cursor-pointer text-gray-500 text-sm group-hover:text-[#e8952f]'>Số phòng - Số người</label>
+                    <label
+                      htmlFor=""
+                      className="cursor-pointer text-gray-500 text-sm group-hover:text-[#e8952f]"
+                    >
+                      Số phòng - Số người
+                    </label>
                     {/* <label htmlFor="" className='cursor-pointer pl-[20px] text-gray-500 text-sm'>Số người</label> */}
                   </div>
                   <div
                     onClick={toggleDropdown1}
                     className="text-left text-[10px] space-x-5 font-semibold text-[#353c46] h-[23px] w-[320px] cursor-pointer"
                   >
-                    <label htmlFor="" className='cursor-pointer pl-0.5 text-gray-700 font-semibold '>{numberOfRooms1} Phòng</label>
-                    <label htmlFor="" className='cursor-pointer text-gray-700 font-semibold '>
-                      {roomDetails1.reduce((total, room) => total + room.adults, 0)}{" "}
-                      Người lớn - {" "}
-                      {roomDetails1.reduce((total, room) => total + room.children, 0)}{" "}
+                    <label
+                      htmlFor=""
+                      className="cursor-pointer pl-0.5 text-gray-700 font-semibold "
+                    >
+                      {numberOfRooms1} Phòng
+                    </label>
+                    <label
+                      htmlFor=""
+                      className="cursor-pointer text-gray-700 font-semibold "
+                    >
+                      {roomDetails1.reduce(
+                        (total, room) => total + room.adults,
+                        0
+                      )}{" "}
+                      Người lớn -{" "}
+                      {roomDetails1.reduce(
+                        (total, room) => total + room.children,
+                        0
+                      )}{" "}
                       Trẻ em
                     </label>
                   </div>
@@ -328,7 +364,9 @@ export const SearchHotel = () => {
                   {isDropdownOpen1 && (
                     <div className="absolute mt-1 lg:w-[385px] sm:w-[340px] ml-[-20px] bg-white border border-gray-00 shadow-lg px-5 py-4 start-5 top-14 rounded-md ">
                       <div className="flex items-center justify-between cursor-pointer text-[15px] ">
-                        <span className="font-medium text-gray-600">Số phòng</span>
+                        <span className="font-medium text-gray-600">
+                          Số phòng
+                        </span>
                         <div className="flex items-center space-x-4">
                           {numberOfRooms1 > 1 && (
                             <button
@@ -340,7 +378,9 @@ export const SearchHotel = () => {
                               <AiOutlineMinus />
                             </button>
                           )}
-                          <a href="" className='text-gray-600 font-medium'>{numberOfRooms1}</a>
+                          <a href="" className="text-gray-600 font-medium">
+                            {numberOfRooms1}
+                          </a>
                           <button
                             onClick={() =>
                               handleRoomChange1(numberOfRooms1 + 1)
@@ -353,10 +393,11 @@ export const SearchHotel = () => {
                       </div>
                       <hr className="text-gray-600 mt-3" />
                       <div
-                        className={`max-h-[230px] w-auto  ${shouldShowScroll
-                          ? "overflow-y-scroll overflow-hidden"
-                          : ""
-                          }`}
+                        className={`max-h-[230px] w-auto  ${
+                          shouldShowScroll
+                            ? "overflow-y-scroll overflow-hidden"
+                            : ""
+                        }`}
                       >
                         {roomDetails1.map((room, index) => (
                           <div key={index} className="mt-3 ">
@@ -393,7 +434,6 @@ export const SearchHotel = () => {
                                   Trẻ em
                                 </h2>
                                 <div className="flex items-center space-x-3 text-gray-600 font-medium">
-
                                   <button
                                     onClick={() =>
                                       handleChildrenChange1(
@@ -447,7 +487,6 @@ export const SearchHotel = () => {
                                   >
                                     <AiOutlinePlus />
                                   </button>
-
                                 </div>
                               </span>
                             </div>
