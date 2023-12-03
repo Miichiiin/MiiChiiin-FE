@@ -1,4 +1,3 @@
-import React from 'react'
 import { BsPeople } from 'react-icons/bs'
 import { MdOutlineBed } from 'react-icons/md'
 const RoomTypes = () => {

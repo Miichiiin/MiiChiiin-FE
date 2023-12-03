@@ -46,9 +46,12 @@ const HotelType = () => {
     const filteredHotels = booking?.filter((item:any) => item.city_name === selectedLocation);
     console.log("filteredHotels",filteredHotels);
      //srollto
-    useEffect(() =>{
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    })
+     const [userInteracted] = useState(false);
+     useEffect(() => {
+       if (!userInteracted) {
+         window.scrollTo({ top: 0, behavior: 'smooth' });
+       }
+     }, [userInteracted]); 
 
     return (
         <div>

@@ -20,7 +20,7 @@ import { useGetCategory_detailQuery } from "@/api/webapp/category_home";
 import { useGetHotel_homeByIdQuery } from "@/api/webapp/hotel_home";
 import { useAddRate_homeMutation } from "@/api/webapp/comment_home";
 import { useGetRating_homeQuery } from "@/api/webapp/rates_home";
-import { useLikeDetailRoomMutation } from "@/api/bookingUser";
+import { useGetBokingUserQuery, useLikeDetailRoomMutation } from "@/api/bookingUser";
 import Slider, { Settings } from 'react-slick';
 import HeaderHotelType from "@/features/webapp/HotelType/HeaderHotelType";
 import Footer from "@/components/Footer";
@@ -35,12 +35,11 @@ const images = [
 ];
 
 const DetailTypeofRoom = () => {
-  const { idHotel, idRoom } = useParams();
+  const { idHotel, idRoom } = useParams();  
   const { data } = useGetCategory_detailQuery({
     id: idRoom,
     id_hotel: idHotel,
   });
-  
   const likeStart = data?.[0]?.likes;
   const [like, setLike] = useState();
   useEffect(() => {
@@ -55,8 +54,11 @@ const DetailTypeofRoom = () => {
   const navigate = useNavigate();
   const [addRate] = useAddRate_homeMutation();
   const dataLogin = localStorage.getItem("user");
+  const idLogin = dataLogin ? JSON.parse(dataLogin) : null;
   const isLoggedIn = !!dataLogin; // kiểm tra login
   const dataToken = localStorage.getItem("token");
+  const { data: booking } = useGetBokingUserQuery(idLogin?.id);
+  const idBooking = booking?.[0]?.id;
   const { data: dataRate } = useGetRating_homeQuery(idRoom);
   //loading trang
   const [loading,setLoading] = useState(false);
@@ -115,25 +117,29 @@ const DetailTypeofRoom = () => {
           // Kiểm tra xem dataLogin không phải null
           const userData = JSON.parse(dataLogin);
 
-          try {
-            const response: any = await addRate({
-              id_user: userData.id, // Sử dụng id từ userData
-              id_category: idRoom,
-              rating: roomRating,
-              content: commentText,
-              status: 1, // Tùy thuộc vào cách bạn quản lý trạng thái
-            });
+          if(idBooking == idRoom) {
+            try {
+              const response: any = await addRate({
+                id_user: userData.id, // Sử dụng id từ userData
+                id_category: idRoom,
+                rating: roomRating,
+                content: commentText,
+                status: 1, // Tùy thuộc vào cách bạn quản lý trạng thái
+              });
 
-            if (response.data) {
-              message.success("Bình luận đã được thêm thành công.");
-              setCommentText("");
-              setRoomRating(0);
-            } else {
+              if (response.data) {
+                message.success("Bình luận đã được thêm thành công.");
+                setCommentText("");
+                setRoomRating(0);
+              } else {
+                message.error("Đã xảy ra lỗi khi thêm bình luận.");
+              }
+            } catch (error) {
+              console.error("Error adding comment:", error);
               message.error("Đã xảy ra lỗi khi thêm bình luận.");
             }
-          } catch (error) {
-            console.error("Error adding comment:", error);
-            message.error("Đã xảy ra lỗi khi thêm bình luận.");
+          }else {
+            message.error("Bạn chỉ được bình luận ở những phòng đã đặt!")
           }
         } else {
           message.error(
@@ -416,9 +422,12 @@ useEffect(() => {
     sliderNav.current?.slickNext();
   };
   //srollto
-  useEffect(() =>{
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  })
+  const [userInteracted] = useState(false);
+  useEffect(() => {
+    if (!userInteracted) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [userInteracted]); 
   return (
     <div>
       {
@@ -439,12 +448,12 @@ useEffect(() => {
           <div className="max-w-7xl mx-auto my-5">
             <HeaderHotelType/> <br /><br /> <br /> <br />
             <div className="flex space-x-10 pb-5">
-              <h1 className=" uppercase">
+              <h2 className=" uppercase">
                 <span className="text-2xl font-bold text-blue-900 ">
                   Khách sạn {hotelData?.[0]?.name}
                 </span>{" "}
                 {/* - <span className="text-lg font-semibold">{data?.[0]?.name}</span> */}
-              </h1>
+              </h2>
               <button className="flex items-center text-red-500 font-semibold transform transtion-transfrom hover:scale-105 duration-300">
                 {/* <AiOutlineHeart className="mx-2 " /> Yêu thích  */}
               </button>
@@ -535,16 +544,16 @@ useEffect(() => {
                 </div>
                 <div className="w-[35%]">
                   <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-semibold ">{data?.[0]?.name}</h1>
+                    <h2 className="text-2xl font-semibold ">{data?.[0]?.name}</h2>
                     <div className="flex space-x-3 items-center">
-                      <h1 className="text-[#e8952f] text-xl font-semibold">
+                      <h2 className="text-[#e8952f] text-xl font-semibold">
                         {data?.[0]?.price.toLocaleString('vi-VN')} đ
-                      </h1>
+                      </h2>
                     </div>
                   </div>
                   <div className="flex items-center space-x-5 text-sm justify-end pt-3">
                       <span className="flex items-center gap-1 cursor-pointer">
-                        <AiOutlineEye class="text-lg "/>
+                        <AiOutlineEye className="text-lg "/>
                         {data?.[0]?.views}
                       </span>
                       
@@ -566,32 +575,32 @@ useEffect(() => {
                     </h2>
                   </div>
                   <p className="text-md pb-2">{data?.[0]?.description}</p>
-                  <h1 className="text-lg font-semibold pb-2">Tiện nghi</h1>
+                  <h2 className="text-lg font-semibold pb-2">Tiện nghi</h2>
                   <div className="grid grid-cols-3 gap-2 pb-8 border-b-2 ">
-                    <h1 className="flex items-center text-md">
+                    <h2 className="flex items-center text-md">
                       <BsPeople />
                       <span className="px-2">8 người</span>
-                    </h1>
-                    <h1 className="flex items-center text-md">
+                    </h2>
+                    <h2 className="flex items-center text-md">
                       <BsArrowsFullscreen />
                       <span className="px-2 relative">28 m<span className="absolute bottom-1">2</span></span>
-                    </h1>
-                    <h1 className="flex items-center text-md">
+                    </h2>
+                    <h2 className="flex items-center text-md">
                       <AiOutlineWifi />
                       <span className="px-2">Wifi miễn phí</span>
-                    </h1>
-                    <h1 className="flex items-center text-md">
+                    </h2>
+                    <h2 className="flex items-center text-md">
                       <MdOutlineBed />
                       <span className="px-2">Giường lớn</span>
-                    </h1>
-                    <h1 className="flex items-center text-md">
+                    </h2>
+                    <h2 className="flex items-center text-md">
                       <BsPeople />
                       <span className="px-2">8 người</span>
-                    </h1>
-                    <h1 className="flex items-center text-md">
+                    </h2>
+                    <h2 className="flex items-center text-md">
                       <MdOutlineBed />
                       <span className="px-2">Giường lớn</span>
-                    </h1>
+                    </h2>
                   </div>
                   <div className="pb-5">
                   <div className=" flex space-x-2 mt-5">
@@ -858,7 +867,7 @@ useEffect(() => {
             </div>
             <div className="py-5 mt-[-120px]">
               <div className="pb-2">
-                <h1 className="text-2xl font-semibold pb-6">Thông tin đánh giá</h1>
+                <h2 className="text-2xl font-semibold pb-6">Thông tin đánh giá</h2>
                 {/* Show ra đánh giá */}
                 <div className="comment-list grid grid-cols-2 gap-4 pb-5">
                   {dataComment?.map((item: any) => {
@@ -874,21 +883,21 @@ useEffect(() => {
                                 {firstLetterOfName}
                               </span>
                             </div>
-                            <h1 className="text-[17px] px-3">
+                            <h2 className="text-[17px] px-3">
                               {formattedDate}
                               <br />
                               <span className="font-bold ">{item.user_name}</span>
-                            </h1>
-                            <h1 className="text-[17px] ml-5 mb-[-5px]">
+                            </h2>
+                            <h2 className="text-[17px] ml-5 mb-[-5px]">
                               <span className="font-semibold italic">
                                 {data?.name}
                               </span>
-                              <h1 className="text-[#e8952f] text-[20px]  mt-[-5px]">
+                              <h3 className="text-[#e8952f] text-[20px]  mt-[-5px]">
                                 {"★".repeat(item.rating)}
-                              </h1>
-                            </h1>
+                              </h3>
+                            </h2>
                           </div>
-                          <h1 className="ml-[75px] mt-[-7px]">{item.content}</h1>
+                          <h2 className="ml-[75px] mt-[-7px]">{item.content}</h2>
                         </div>
                       </div>
                     );
@@ -967,7 +976,8 @@ useEffect(() => {
                         <div className="flex justify-end">
                           {isLoggedIn ? (
                             <button
-                              onClick={onHandSubmit}
+                              // onClick={onHandSubmit}
+                              type="submit"
                               className="text-white font-semibold py-2 px-4 border bg-[#e8952f] rounded-lg tracking-wide hover:scale-105 duration-300 hover:text-white text-lg"
                             >
                               Đăng bình luận

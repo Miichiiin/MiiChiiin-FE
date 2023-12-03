@@ -19,23 +19,6 @@ const MyOrder = () => {
   });
   const [idBoking, setIdBooking] = useState<any>("");
   const { data: booking } = useGetBokingUserQuery(user?.id);    
-  //loading trang
-  const [loading,setLoading] = useState(false);
-  useEffect(() =>{
-      setLoading(true)
-      setTimeout(() =>{
-        if (booking && booking.length > 0) {
-            setLoading(false);
-        }
-      })
-  },[booking]);  
-  const override: CSSProperties = {
-      display: "flex",
-      position:"fixed",
-      top: "60%",
-      left: "59%",
-      transform: "translate(-50%, -50%)",
-  };
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -92,20 +75,6 @@ const MyOrder = () => {
             </div>
            
             <div className="h-[350px] overflow-y-auto">
-              {
-                loading ?
-                <div className="relative">
-                  <FadeLoader 
-                  color="#d7ba37"
-                  loading={loading}
-                  cssOverride={override}
-                  // size={40}
-                  // aria-label="Loading Spinner"
-                  // data-testid="loader"
-                  className="animate-pulse absolute z-10"
-                  />
-              </div>
-              :
              <div>
                {booking ? (
                 booking?.map((item: any, index: number) => {
@@ -355,7 +324,7 @@ const MyOrder = () => {
                   </div>
                 )}
              </div>
-            }
+            
             </div>
            
           </div>
