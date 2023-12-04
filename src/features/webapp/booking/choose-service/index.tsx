@@ -19,6 +19,7 @@ import { Button } from "antd";
 import HeaderHotelType from "../../HotelType/HeaderHotelType";
 import FadeLoader from "react-spinners/HashLoader";
 import Footer from "@/components/Footer";
+import { TextTruncate } from "@/components/TextTruncate";
 
 interface ServiceOpenState {
   [index: number]: boolean;
@@ -167,9 +168,12 @@ const ChooseService = () => {
 
   const sumprice = totalPrice1 + serviceTotalPrice;
   //srollto
-  useEffect(() =>{
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  })
+  const [userInteracted] = useState(false);
+  useEffect(() => {
+    if (!userInteracted) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [userInteracted]); 
   return (
     <div>
       {/* {
@@ -199,18 +203,18 @@ const ChooseService = () => {
                 <AiOutlineLeft />
                 Chọn Phòng{" "}
               </Button>
-              <h1 className="flex items-center">
+              <h1 className="flex items-center ">
                 {" "}
                 <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full mr-2">
                   1
                 </span>
-                <span className="text-[#6a6971] text-[14px] font-medium">
+                <span className="text-[#6a6971] text-[14px] font-medium ">
                   Chọn phòng
                 </span>
               </h1>
-              <h1 className="flex items-center">
+              <h1 className="flex items-center ">
                 {" "}
-                <a className="flex items-center space-x-3 text-[#e8952f]" href="">
+                <a className="flex items-center space-x-3 text-[#e8952f]" >
                   <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
                     <AiOutlineCheck />
                   </span>
@@ -222,9 +226,9 @@ const ChooseService = () => {
               <h1 className="flex items-center">
                 {" "}
                 <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full mr-2">
-                  2
+                  3
                 </span>
-                <span className="text-[#6a6971] text-[14px] font-medium">
+                <span className="text-[#6a6971] text-[14px] font-medium ">
                   Thanh toán
                 </span>
               </h1>
@@ -277,7 +281,7 @@ const ChooseService = () => {
                             >
                               <img
                                 src={item?.image}
-                                className="w-full rounded-t-lg"
+                                className="w-full rounded-t-lg h-[55%] object-cover"
                               />
                               <h1 className="pl-2 pt-2 pb-2 text-base font-medium">
                                 {item?.name}
@@ -419,7 +423,7 @@ const ChooseService = () => {
                                           Phòng {selectedRoom}:{" "}
                                           {selectedServiceData.name}
                                         </p>
-                                        <p>{selectedServiceData.price} đ</p>
+                                        <p>{selectedServiceData.price.toLocaleString("vi-VN")} đ</p>
                                       </div>
                                     </li>
                                   );

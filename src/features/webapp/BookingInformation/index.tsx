@@ -17,21 +17,19 @@ import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";
 import localStorage from "redux-persist/es/storage";
 import { useAddBookingUserMutation } from "@/api/bookingUser";
-import { CSSProperties, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
 import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
 import Footer from "@/components/Footer";
-import FadeLoader from "react-spinners/HashLoader";
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [addBookingUser] = useAddBookingUserMutation();
   const [userData, setUserData] = useState<any | null>(null);
   const [idVoucher, setIdvoucher] =useState<any>()
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  console.log("idVoucher",idVoucher);
    
    
   useEffect(() => {
@@ -49,23 +47,6 @@ const BookingInformation = () => {
   }
 
   const { data: serviceData } = useGetService_hotelIdQuery(hotel[0]);
-  // loading trang
-  const [loading,setLoading] = useState(false);
-  useEffect(() =>{
-    setLoading(true)
-    setTimeout(() =>{
-      if (serviceData && serviceData.length > 0) {
-        setLoading(false);
-      }
-    })
-  },[serviceData]);  
-  const override: CSSProperties = {
-    display: "flex",
-    position:"fixed",
-    top: "45%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-  };
 
   let date: Date[] = [];
   if (dataParam && dataParam.date) {
@@ -358,12 +339,12 @@ const BookingInformation = () => {
     return `${priceAfterVoucher.toLocaleString("vi-VN")}` + "đ";
   };
   //srollto
-  const [userInteracted, setUserInteracted] = useState(false);
-  useEffect(() => {
-    if (!userInteracted) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [userInteracted]); 
+  // const [userInteracted, setUserInteracted] = useState(false);
+  // useEffect(() => {
+  //   if (!userInteracted) {
+  //     window.scrollTo({ top: 0, behavior: 'smooth' });
+  //   }
+  // }, [userInteracted]); 
   return (
     <div>
       {/* {
@@ -395,7 +376,7 @@ const BookingInformation = () => {
                   </button>
                 </span>
                 <div className="flex items-center space-x-8">
-                  <a className="flex items-center space-x-3 " href="">
+                  <a className="flex items-center space-x-3 " >
                     <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">
                       1
                     </span>
@@ -403,7 +384,7 @@ const BookingInformation = () => {
                       Chọn phòng
                     </span>
                   </a>
-                  <a className="flex items-center space-x-3 text-[#e8952f]" href="">
+                  <a className="flex items-center space-x-3 text-[#e8952f]" >
                     <span className="bg-[#f5f6fa] px-4  font-medium py-2 text-[#6a6971] rounded-full">
                       2
                     </span>
@@ -411,7 +392,7 @@ const BookingInformation = () => {
                       Dịch vụ mua thêm
                     </span>
                   </a>
-                  <a className="flex items-center space-x-3 text-[#e8952f]" href="">
+                  <a className="flex items-center space-x-3 text-[#e8952f]" >
                     <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
                       <AiOutlineCheck />
                     </span>
@@ -620,7 +601,7 @@ const BookingInformation = () => {
                     >
                       <div className="border border-b-[#f9f9f9] bg-[#f5f6fa] px-5 py-5 flex items-center justify-between">
                         <span className="font-medium text-[18px]">
-                          MiiChii Ưu Đãi
+                          MiiChii Ưu Đãi 
                         </span>
                         <span className="font-medium text-[18px]">
                           Số coin: {myvoucher?.coin?.toLocaleString("vi-VN")}
@@ -630,7 +611,7 @@ const BookingInformation = () => {
                       {/* Modal overlay */}
                       {showVoucherModal && (
                         <div
-                          className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+                          className="fixed inset-0 bg-gray-800 z-20 bg-opacity-50 flex items-center justify-center"
                           onClick={closeVoucherModal}
                         >
                           {/* Nội dung modal lớn hơn */}
@@ -970,7 +951,7 @@ const BookingInformation = () => {
                             ).toLocaleString("vi-VN")}
                           {(typeVoucher === "coin" &&
                             caculatePoint(sumprice, myvoucher?.coin)) ||
-                            0}
+                            0} đ
                         </a>
                       </div>
                       <div className="flex items-center justify-between mt-4">

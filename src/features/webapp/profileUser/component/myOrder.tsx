@@ -10,7 +10,6 @@ import dayjs from "dayjs";
 import { useGetStatusBookingsMutation } from "@/api/bookingUser";
 import { FaTimesCircle } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
-
 const MyOrder = () => {
   const [user, setUser] = useState({
     id: "",
@@ -128,21 +127,13 @@ const MyOrder = () => {
   const [changeStatus] = useGetStatusBookingsMutation();
 
   const handleStatusChange = async (id: any) => {
-    // Hiển thị hộp thoại xác nhận
-    const confirmed = window.confirm("Bạn có chắc chắn muốn hủy phòng không?");
-  
-    if (confirmed) {
-      const status = booking.find((item: any) => item.id === id);
-  
-      if (status) {
-        await changeStatus({
-          status: status?.status,
-          id: status?.id,
-        });
-      }
-    } else {
-      // Người dùng đã nhấn "Hủy bỏ", không thực hiện thay đổi trạng thái
-      console.log("Hủy bỏ hành động hủy phòng");
+    const status = booking.find((item: any) => item.id === id);
+
+    if (status) {
+      await changeStatus({
+        status: status?.status,
+        id: status?.id,
+      });
     }
   };
 

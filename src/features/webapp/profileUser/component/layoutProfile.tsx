@@ -27,9 +27,12 @@ export const LayoutProfile = () => {
     console.log("storedUser", storedUser);
   }, []);
    //srollto
-   useEffect(() =>{
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  })
+   const [userInteracted] = useState(false);
+   useEffect(() => {
+     if (!userInteracted) {
+       window.scrollTo({ top: 0, behavior: 'smooth' });
+     }
+   }, [userInteracted]); 
 
   
   return (

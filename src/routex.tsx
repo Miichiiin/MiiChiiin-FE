@@ -67,448 +67,448 @@ import PhatVoucher from "./features/admin/ManagerVoucher/PhatVoucher";
 
 // chặn link admin
 const dataPermission = localStorage.getItem('userAdmin')
-const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];  
-const hasAddUserPermission = (permissions:any) => {
+const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+const hasAddUserPermission = (permissions: any) => {
   return currentUserPermissions.includes(permissions);
 };
 // chặn link user
 const dataLogin = localStorage.getItem("token");
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: (
-            <div>
-                <LayoutWebsite />
-            </div>
+  {
+    path: "/",
+    element: (
+      <div>
+        <LayoutWebsite />
+      </div>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/homepage" />,
+      },
+      {
+        path: "/homepage",
+        element: <Index />
+      },
+      {
+        path: "/hotel/:id",
+        element: <HotelIntroduction />
+      },
+      {
+        path: "/hoteltype",
+        element: <HotelType />
+      },
+      {
+        path: "/new",
+        element: <New />
+      },
+      {
+        path: "/booking/:hotel/:date/:roomNumber/:selectedServices/:people",
+        element: <BookingInformation />
+      },
+      {
+        path: "order/:id/:status",
+        element: <Order />
+      },
+      {
+        path: '/hotel/:id/rooms/roomtypes',
+        element: <RoomTypes />
+      },
+      {
+        path: '/hotel/:idHotel/rooms/detail/:idRoom',
+        element: <DetailTypeofRoom />
+      },
+      {
+        path: "/choose-service/:nameHotel/:date/:numberRoom/:numberPeople",
+        element: <ChooseService />
+      },
+      {
+        path: "/choose-room/:nameHotel/:date/:numberRoom/:numberPeople",
+        element: <ChooseRoom />
+      },
+      {
+        path: '/register',
+        element: <Register />
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '/search',
+        element: <SearchQuickHotel />
+      },
+      {
+        path: '/searchHotel',
+        element: <SearchHotel />
+      },
+      {
+        path: '/promotion',
+        element: <Promotion />
+      },
+      {
+        path: "/loginadmin",
+        element: <LoginAdmin />
+      }
+    ],
+  },
+
+  {
+    path: "/profileUser",
+    element: dataLogin ? (
+      <LayoutProfile />
+    ) : (
+      <Error401 />
+    ),
+    children: [
+      {
+        index: true,
+        element: <ProfileUsre />,
+      },
+      {
+        path: "myorder",
+        element: <MyOrder />,
+      },
+      {
+        path: "mywallet",
+        element: <MyWallet />,
+      }
+
+    ],
+  },
+  {
+    path: "/order",
+    element: <BookingSuccess />
+  },
+  {
+    path: "/admin/*",
+    element: <LayoutAdmin />,
+    children: [
+      {
+        index: true,
+        element: hasAddUserPermission("add statictical chain") ? (
+          <HotelChainStatistic />
+        ) : (
+          < HotelChainStatistics />
         ),
-        children: [
-            {
-                index: true,
-                element: <Navigate to="/homepage" />,
-            },
-            {
-                path: "/homepage",
-                element: <Index />
-            },
-            {
-                path: "/hotel/:id",
-                element: <HotelIntroduction />
-            },
-            {
-                path: "/hoteltype",
-                element: <HotelType />
-            },
-            {
-                path: "/new",
-                element: <New />
-            },
-            {
-                path: "/booking/:hotel/:date/:roomNumber/:selectedServices/:people",
-                element: <BookingInformation />
-            },
-            {
-                path:"order",
-                element:<Order/>
-            },
-            {
-                path: '/hotel/:id/rooms/roomtypes',
-                element: <RoomTypes />
-            },
-            {
-                path: '/hotel/:idHotel/rooms/detail/:idRoom',
-                element: <DetailTypeofRoom />
-            },
-            {
-                path: "/choose-service/:nameHotel/:date/:numberRoom/:numberPeople",
-                element: <ChooseService />
-            },
-            {
-                path: "/choose-room/:nameHotel/:date/:numberRoom/:numberPeople",
-                element: <ChooseRoom />
-              },
-            {
-                path: '/register',
-                element: <Register />
-            },
-            {
-                path: '/login',
-                element: <Login />
-            },
-            {
-                path: '/search',
-                element: <SearchQuickHotel/>
-            },
-            {
-                path: '/searchHotel',
-                element: <SearchHotel/>
-            },
-            {
-                path: '/promotion',
-                element: <Promotion/>
-            },
-            {
-                path: "/loginadmin",
-                element:<LoginAdmin/>
-            }
-        ],
-    },
+      },
+      {
+        path: "commentmanagement",
+        element: hasAddUserPermission("get rate") ? (
+          <CommentManagement />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "editcomment/:id",
+        element: hasAddUserPermission("update rate") ? (
+          <EditComment />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "service",
+        element: hasAddUserPermission("get service") ? (
+          <ServiceManagement />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "addservice",
+        element: hasAddUserPermission("add service") ? (
+          <AddService />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "updateservice/:id",
+        element: hasAddUserPermission("update service") ? (
+          <UpdateService />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "bookingmanagement",
+        element: hasAddUserPermission("get booking") ? (
+          <BookingManagement />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "bookingmanagement/:id/update",
+        element: hasAddUserPermission("get booking") ? (
+          <BookingManagement />
+        ) : (
+          <Error403 />
+        ),
 
-    {
-        path: "/profileUser",
-        element: dataLogin ? (      
-          <LayoutProfile />
+      },
+      {
+        path: "addbooking",
+        element: hasAddUserPermission("add booking") ? (
+          <AddBooking />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "updatebooking/:id",
+        element: hasAddUserPermission("update booking") ? (
+          <UpdateBooking />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "detailbooking/:id",
+        element: hasAddUserPermission("get booking") ? (
+          <DetailBooking />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "usermanagement",
+        element: hasAddUserPermission("get user") ? (
+          <UserManagement />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "adduser",
+        element: hasAddUserPermission("add user") ? (
+          <AddUser />
+        ) : (
+          <Error403 />
+        ),
+      },
+
+      {
+        path: "updateuser/:id",
+        element: hasAddUserPermission("update user") ? (
+          <UpdateUserPage />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "hotelmanagement",
+        element: hasAddUserPermission("get hotel") ? (
+          <HotelManagement />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "addhotel",
+        element: hasAddUserPermission("add hotel") ? (
+          <AddHotel />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "updatehotel/:id",
+        element: hasAddUserPermission("update hotel") ? (
+          <UpdateHotel />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "manageroomtype",
+        element: hasAddUserPermission("get category") ? (
+          <ManagerRoomType />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "addroomtype",
+        element: hasAddUserPermission("add category") ? (
+          <AddRoomType />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "updateroomtype/:id",
+        element: hasAddUserPermission("update category") ? (
+          <UpdateRoomType />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "managervouchers",
+        element: hasAddUserPermission("get voucher") ? (
+          <ManagerVouchers />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "addvoucher",
+        element: hasAddUserPermission("add voucher") ? (
+          <AddVoucherPage />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "phatvoucher",
+        element: hasAddUserPermission("get voucher") ? (
+          <PhatVoucher />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "updatevoucher/:id",
+        element: hasAddUserPermission("update voucher") ? (
+          <UpdateVoucherPage />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "manageremployee",
+        element: hasAddUserPermission("get admin") ? (
+          <ManagerEmployee />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "addemployee",
+        element:
+          hasAddUserPermission("add admin") ? (
+            <AddEmployeePage />
           ) : (
-            <Error401/>
+            <Error403 />
           ),
-        children: [
-            {
-                index: true,
-                element: <ProfileUsre/>  ,
-            },
-            {
-                path: "myorder",
-                element: <MyOrder /> ,
-            },
-            {
-              path: "mywallet",
-              element: <MyWallet/> ,
-          }
+      },
+      {
+        path: "updateemployee/:id",
+        element: hasAddUserPermission("update admin") ? (
+          <UpdateEmployeePage />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "statisticshotels",
+        element: hasAddUserPermission("get statictical hotel") ? (
+          <HotelChainStatistics />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "managerroom",
+        element: hasAddUserPermission("get room") ? (
+          <ManagerRoom />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "addroom",
+        element: hasAddUserPermission("add room") ? (
+          <AddRoomPage />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "updateroom/:id",
+        element: hasAddUserPermission("update room") ? (
+          <UpdateRoomPage />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "managerutilities",
+        element: hasAddUserPermission("get comfort") ? (
+          <ManagerUtilities />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "updateUtilities/:id",
+        element: hasAddUserPermission("update comfort") ? (
+          <UpdateFeedBackPage />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "addUtilities",
+        element: hasAddUserPermission("add comfort") ? (
+          <AddUtilities />
+        ) : (
+          <Error403 />
+        ),
 
-        ],
-    },
-    {
-        path: "/order",
-        element: <BookingSuccess/>
-    },
-    {
-        path: "/admin/*",
-        element:<LayoutAdmin />,
-        children: [
-          {
-            index: true,
-            element: hasAddUserPermission("add statictical chain") ? (
-                <HotelChainStatistic />
-              ) : (
-                  < HotelChainStatistics/>
-              ),
-          },
-            {
-                path: "commentmanagement",
-                element: hasAddUserPermission("get rate") ? (      
-                    <CommentManagement />
-                  ) : (
-                    <Error403/>
-                  ),  
-            },
-            {
-                path: "editcomment/:id",
-                element: hasAddUserPermission("update rate") ? (      
-                    <EditComment />
-                  ) : (
-                    <Error403/>
-                  ),  
-            },
-            {
-                path: "service",
-                element: hasAddUserPermission("get service") ? (      
-                    <ServiceManagement />
-                  ) : (
-                    <Error403/>
-                  ),  
-            },
-            {
-                path: "addservice",
-                element: hasAddUserPermission("add service") ? (      
-                    <AddService />
-                  ) : (
-                    <Error403/>
-                  ),  
-            },
-            {
-                path: "updateservice/:id",
-                element: hasAddUserPermission("update service") ? (      
-                    <UpdateService/>
-                  ) : (
-                    <Error403/>
-                  ),  
-            },
-            {
-                path: "bookingmanagement",
-                element: hasAddUserPermission("get booking") ? (      
-                    <BookingManagement />
-                  ) : (
-                    <Error403/>
-                  ),  
-            },
-            {
-                path: "bookingmanagement/:id/update",
-                element: hasAddUserPermission("get booking") ? (      
-                    <BookingManagement />
-                  ) : (
-                    <Error403/>
-                  ), 
-                
-            },
-            {
-                path: "addbooking",
-                element: hasAddUserPermission("add booking") ? (      
-                    <AddBooking />
-                  ) : (
-                    <Error403/>
-                  ), 
-            },
-            {
-                path: "updatebooking/:id",
-                element:  hasAddUserPermission("update booking") ? (      
-                    <UpdateBooking/>
-                  ) : (
-                    <Error403/>
-                  ), 
-            },
-            {
-                path: "detailbooking/:id",
-                element: hasAddUserPermission("get booking") ? (      
-                    <DetailBooking />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "usermanagement",
-                element: hasAddUserPermission("get user") ? (      
-                    <UserManagement />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "adduser",
-                element: hasAddUserPermission("add user") ? (      
-                    <AddUser />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            
-            {
-                path: "updateuser/:id",
-                element: hasAddUserPermission("update user") ? (      
-                    <UpdateUserPage />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "hotelmanagement",
-                element: hasAddUserPermission("get hotel") ? (      
-                    <HotelManagement />
-                  ) : (
-                    <Error403/>
-                  ), 
-            },
-            {
-                path: "addhotel",
-                element: hasAddUserPermission("add hotel") ? (      
-                    <AddHotel />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "updatehotel/:id",
-                element: hasAddUserPermission("update hotel") ? (
-                    <UpdateHotel/>
-                  ) : (
-                    <Error403/>
-                  ),       
-            },
-            {
-                path: "manageroomtype",
-                element: hasAddUserPermission("get category") ? (
-                    <ManagerRoomType />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "addroomtype",
-                element: hasAddUserPermission("add category") ? (
-                    <AddRoomType />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "updateroomtype/:id",
-                element: hasAddUserPermission("update category") ? (
-                    <UpdateRoomType />
-                  ) : (
-                    <Error403/>
-                  ),       
-            },
-            {
-                path: "managervouchers",
-                element: hasAddUserPermission("get voucher") ? (
-                    <ManagerVouchers />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "addvoucher",
-                element: hasAddUserPermission("add voucher") ? (
-                    <AddVoucherPage />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-              path: "phatvoucher",
-              element: hasAddUserPermission("get voucher") ? (
-                  <PhatVoucher />
-                ) : (
-                  <Error403/>
-                ),
-            },
-            {
-                path: "updatevoucher/:id",
-                element: hasAddUserPermission("update voucher") ? (
-                    <UpdateVoucherPage />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "manageremployee",
-                element: hasAddUserPermission("get admin") ? (
-                    <ManagerEmployee />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "addemployee",
-                element: 
-                hasAddUserPermission("add admin") ? (
-                    <AddEmployeePage />
-                  ) : (
-                    <Error403/>
-                  ),
-            },
-            {
-                path: "updateemployee/:id",
-                element: hasAddUserPermission("update admin") ? (
-                    <UpdateEmployeePage />
-                  ) : (
-                    <Error403/>
-                  ), 
-            },
-            {
-                path: "statisticshotels", 
-                element: hasAddUserPermission("get statictical hotel") ? (
-                    <HotelChainStatistics />
-                  ) : (
-                    <Error403/>
-                  ), 
-            },
-            {
-                path: "managerroom",
-                element:  hasAddUserPermission("get room") ? (
-                    <ManagerRoom />
-                  ) : (
-                    <Error403/>
-                  ),  
-            },
-            {
-                path: "addroom",
-                element:  hasAddUserPermission("add room") ? (
-                    <AddRoomPage />
-                  ) : (
-                    <Error403/>
-                  ),  
-            },
-            {
-                path: "updateroom/:id",
-                element: hasAddUserPermission("update room") ? (
-                    <UpdateRoomPage />
-                  ) : (
-                    <Error403/>
-                  ),   
-            },
-            {
-                path: "managerutilities",
-                element:  hasAddUserPermission("get comfort") ? (
-                    <ManagerUtilities />
-                  ) : (
-                    <Error403/>
-                  ),   
-            },
-            {
-                path: "updateUtilities/:id",
-                element: hasAddUserPermission("update comfort") ? (
-                    <UpdateFeedBackPage />
-                  ) : (
-                    <Error403/>
-                  ),   
-            },
-            {
-                path: "addUtilities",
-                element: hasAddUserPermission("add comfort") ? (
-                    <AddUtilities/>
-                  ) : (
-                    <Error403/>
-                  ),   
-                 
-            },
-            {
-                path: "admininfo/:id", // chưa có quyền get
-                element:<AdminInfoPage/>
-            },
+      },
+      {
+        path: "admininfo/:id", // chưa có quyền get
+        element: <AdminInfoPage />
+      },
 
-            {
-                path: "permission/:id",
-                element:  hasAddUserPermission("update permission") ? (
-                    <Permission/>
-                  ) : (
-                    <Error403/>
-                  ),   
-            },
-            {
-                path:"indexpermission",
-                element: hasAddUserPermission("get permission") ? (
-                    <IndexPremission/>
-                  ) : (
-                    <Error403/>
-                  ),     
-            },
-            {
-                path: "addpermission",
-                element:  hasAddUserPermission("add permission") ? (
-                    <AddPermission/>
-                  ) : (
-                    <Error403/>
-                  ),     
-            },
-            {
-              path: "HotelChainStatistics",
-              element: hasAddUserPermission("add statictical chain") ? (      
-                  <HotelChainStatistic />
-                ) : (
-                  <Error403/>
-                ),  
-            },
-            
+      {
+        path: "permission/:id",
+        element: hasAddUserPermission("update permission") ? (
+          <Permission />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "indexpermission",
+        element: hasAddUserPermission("get permission") ? (
+          <IndexPremission />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "addpermission",
+        element: hasAddUserPermission("add permission") ? (
+          <AddPermission />
+        ) : (
+          <Error403 />
+        ),
+      },
+      {
+        path: "HotelChainStatistics",
+        element: hasAddUserPermission("add statictical chain") ? (
+          <HotelChainStatistic />
+        ) : (
+          <Error403 />
+        ),
+      },
 
-        ],
-    },
-    {
-      path: "/error",
-      children: [
-        {
-          path: "401",
-          element:<Error401/>
-        }
-      ]
-    }
+
+    ],
+  },
+  {
+    path: "/error",
+    children: [
+      {
+        path: "401",
+        element: <Error401 />
+      }
+    ]
+  }
 ]);
