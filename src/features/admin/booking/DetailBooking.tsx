@@ -37,7 +37,12 @@ const DetailBooking = () => {
   if (isError) {
     return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
   }
-
+   // phân quyền
+   const dataPermission = localStorage.getItem('userAdmin')
+   const currentUserPermissions = (dataPermission && JSON.parse(dataPermission).permissions) || [];
+   const hasAddUserPermission = (permissions: any) => {
+       return currentUserPermissions.includes(permissions);
+   };
   return (
     <div className="w-[100%] mx-auto">
 
@@ -115,7 +120,9 @@ const DetailBooking = () => {
         <button className='mx-2 px-3 py-2 border hover:bg-orange-400 bg-orange-500 text-white rounded-md flex items-center' onClick={() => navigate("/admin/bookingmanagement")}>
           <ArrowLeftOutlined className="pr-2" />Quay lại
         </button>
+        {hasAddUserPermission("add booking") && (
         <button className='px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md text-xl items-center' ><a href={`/admin/updatebooking/${booking?.id}`}><AiOutlineTool /></a></button>
+        )}
       </div>
     </div>
   );
