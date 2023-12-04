@@ -94,7 +94,7 @@ const Register = () => {
                     <div className="w-[33%] flex">
                         <div className="px-10 w-[93%]">
                             <div className="flex mt-[70px] justify-center mb-[-50px]">
-                                <a href="/" className="h-[150px] flex justify-center"><img className="w-[100%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" /></a>
+                                <a href="/" className="h-[150px] flex justify-center"><img className="w-[100%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1701702390/llrnrzljtdhaendxphbz.png" alt="" /></a>
                             </div>
                             <div className="flex">
                                 <h1 className=" font-bold mb-3 text-[17px] w-[50%] ">
