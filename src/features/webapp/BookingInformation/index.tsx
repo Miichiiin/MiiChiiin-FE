@@ -958,7 +958,8 @@ const BookingInformation = () => {
                           {typeVoucher === "coin" && (
                             <div className="border-gray-100 px-2 rounded mt-3">
                               <p>
-                                Coin áp dụng - Giảm giá: {myvoucher?.coin?.toLocaleString('vi-VN') || 0}{" "}
+                                Coin áp dụng - Giảm giá:{" "}
+                                {myvoucher?.coin?.toLocaleString("vi-VN") || 0}{" "}
                                 coin
                               </p>
                             </div>

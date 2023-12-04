@@ -26,7 +26,7 @@ const MyOrder = () => {
   const { data: booking } = useGetBokingUserQuery(user?.id);
   const [isSearch, setIsSearch] = useState({
     time: "",
-    status: "",
+    status: "0",
   });
 
   let { data: bookingDetail } = useGetBookingDetailUserQuery({
@@ -34,29 +34,12 @@ const MyOrder = () => {
     id_booking: idBoking, // Assuming this is the correct variable name
   });
 
-  // useEffect(() => {
-  //   if (isSearch.time || isSearch.status) {
-  //     console.log(isSearch);
-
-  //     let filteredBookingDetail = [...booking]; // Create a copy of the original array
-
-  //     if (isSearch.status) {
-  //       filteredBookingDetail = filteredBookingDetail.filter(
-  //         (item: any) => item.status == isSearch.status
-  //       );
-  //     }
-
-  //     bookingDetail = booking;
-  //   }
-  // }, [booking, isSearch.status, isSearch.time]);
-
-  // console.log(bookingDetail);
 
   const searchFunction: any = (listBooking: any) => {
     if (listBooking && Array.isArray(listBooking) && (isSearch.time || isSearch.status)) {
       console.log(isSearch);
   
-      let filteredBookingDetail = [...listBooking]; // Create a copy of the original array
+      let filteredBookingDetail = [...listBooking]; 
   
       if (isSearch.status) {
         filteredBookingDetail = filteredBookingDetail.filter(
@@ -161,7 +144,7 @@ const MyOrder = () => {
               <option value="1">Đã Hủy</option>
               <option value="2">Đã check in</option>
               <option value="3">Đang thanh toán</option>
-              <option value="4" selected>Đã hoàn thành</option>
+              <option value="4">Đã hoàn thành</option>
             </select>
           </div>
           <div className="overflow-y-auto h-[360px]">
