@@ -285,7 +285,7 @@ const ChooseRoom = () => {
   };
 
   //srollto
-  const [userInteracted, setUserInteracted] = useState(false);
+  const [userInteracted] = useState(false);
   useEffect(() => {
     if (!userInteracted) {
       window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -20,24 +20,6 @@ const myWallet = () => {
   const { data: myvoucher } = useGetVoucher_hotelIdQuery({
     id: user_id,
   });  
-  const dataCheck = myvoucher?.vouchers;
-   //loading trang
-   const [loading,setLoading] = useState(false);
-   useEffect(() =>{
-       setLoading(true)
-       setTimeout(() =>{
-       if (dataCheck && dataCheck.length > 0) {
-           setLoading(false);
-       }
-       })
-   },[dataCheck]);  
-   const override: CSSProperties = {
-       display: "flex",
-       position:"fixed",
-       top: "60%",
-       left: "59%",
-       transform: "translate(-50%, -50%)",
-   };
 
 
 
@@ -57,20 +39,6 @@ const myWallet = () => {
             </div>
         </div>
         <div className="mt-8  gap-4 overflow-auto h-[380px]">
-          {
-            loading ?
-            <div className="relative">
-              <FadeLoader 
-              color="#d7ba37"
-              loading={loading}
-              cssOverride={override}
-              // size={40}
-              // aria-label="Loading Spinner"
-              // data-testid="loader"
-              className="animate-pulse absolute z-10"
-              />
-            </div>
-            :
             <div>
               {myvoucher?.vouchers?.map((voucher:any) => (
                   <div key={voucher?.id} className="mb-4">
@@ -103,7 +71,6 @@ const myWallet = () => {
                   </div>
                 ))}
             </div>
-            }
         </div>
       </div>
     </section>
