@@ -365,7 +365,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "phatvoucher",
-        element: hasAddUserPermission("get voucher") ? (
+        element: hasAddUserPermission("add voucher") ? (
           <PhatVoucher />
         ) : (
           <Error403 />
@@ -483,7 +483,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "addpermission",
+        path: "addrole",
         element: hasAddUserPermission("add permission") ? (
           <AddPermission />
         ) : (
