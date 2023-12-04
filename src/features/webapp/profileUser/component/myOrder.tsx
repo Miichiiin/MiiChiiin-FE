@@ -53,20 +53,24 @@ const MyOrder = () => {
   // console.log(bookingDetail);
 
   const searchFunction: any = (listBooking: any) => {
-    if (isSearch.time || isSearch.status) {
+    if (listBooking && Array.isArray(listBooking) && (isSearch.time || isSearch.status)) {
       console.log(isSearch);
-
+  
       let filteredBookingDetail = [...listBooking]; // Create a copy of the original array
-
+  
       if (isSearch.status) {
         filteredBookingDetail = filteredBookingDetail.filter(
           (item: any) => item.status == isSearch.status
         );
       }
-
+  
       return filteredBookingDetail;
     }
+  
+    // Trả về một giá trị mặc định hoặc xử lý khác nếu listBooking không hợp lệ.
+    return [];
   };
+  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

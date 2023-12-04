@@ -601,7 +601,7 @@ const ChooseRoom = () => {
                         ) : (
                           <h1 className="text-xl font-semibold text-yellow-500 ">
                             {(
-                              savedRoomInfo.price *
+                              (savedRoomInfo?.price || 0) *
                               differenceInDays(
                                 parseISO(date[1].toISOString().slice(0, 10)),
                                 parseISO(date[0].toISOString().slice(0, 10))
