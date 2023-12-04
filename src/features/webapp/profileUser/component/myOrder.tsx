@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import dayjs from "dayjs";
 import { useGetStatusBookingsMutation } from "@/api/bookingUser";
-
+import { FaTimesCircle } from "react-icons/fa";
+import "react-toastify/dist/ReactToastify.css";
 
 const MyOrder = () => {
   const [user, setUser] = useState({
@@ -23,11 +24,50 @@ const MyOrder = () => {
   });
   const [idBoking, setIdBooking] = useState<any>("");
   const { data: booking } = useGetBokingUserQuery(user?.id);
-
-  const { data: bookingDetail } = useGetBookingDetailUserQuery({
-    id_user: user?.id,
-    id_booking: idBoking,
+  const [isSearch, setIsSearch] = useState({
+    time: "",
+    status: "",
   });
+
+  let { data: bookingDetail } = useGetBookingDetailUserQuery({
+    id_user: user?.id,
+    id_booking: idBoking, // Assuming this is the correct variable name
+  });
+
+  // useEffect(() => {
+  //   if (isSearch.time || isSearch.status) {
+  //     console.log(isSearch);
+
+  //     let filteredBookingDetail = [...booking]; // Create a copy of the original array
+
+  //     if (isSearch.status) {
+  //       filteredBookingDetail = filteredBookingDetail.filter(
+  //         (item: any) => item.status == isSearch.status
+  //       );
+  //     }
+
+  //     bookingDetail = booking;
+  //   }
+  // }, [booking, isSearch.status, isSearch.time]);
+
+  // console.log(bookingDetail);
+
+  const searchFunction: any = (listBooking: any) => {
+    if (isSearch.time || isSearch.status) {
+      console.log(isSearch);
+
+      let filteredBookingDetail = [...listBooking]; // Create a copy of the original array
+
+      if (isSearch.status) {
+        filteredBookingDetail = filteredBookingDetail.filter(
+          (item: any) => item.status == isSearch.status
+        );
+      }
+
+      return filteredBookingDetail;
+    }
+  };
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -45,11 +85,25 @@ const MyOrder = () => {
     setModalIsOpen(true);
   };
 
-
-  
   const handleCloseModal = () => {
     setModalIsOpen(false);
   };
+
+  const filterByItem = async (time: string, status: string) => {
+    if (time) {
+      setIsSearch({
+        ...isSearch,
+        time: time,
+      });
+    }
+    if (status) {
+      setIsSearch({
+        ...isSearch,
+        status: status,
+      });
+    }
+  };
+
   // Trạng thái
   const getStatusText = (status: any) => {
     switch (status) {
@@ -74,18 +128,23 @@ const MyOrder = () => {
   const [changeStatus] = useGetStatusBookingsMutation();
 
   const handleStatusChange = async (id: any) => {
-    const status = booking.find((item: any) => item.id === id);
-    console.log(status);
+    // Hiển thị hộp thoại xác nhận
+    const confirmed = window.confirm("Bạn có chắc chắn muốn hủy phòng không?");
   
-    if (status) {
-     
-      await changeStatus({
-        status: status?.status,
-        id: status?.id,
-      });
+    if (confirmed) {
+      const status = booking.find((item: any) => item.id === id);
+  
+      if (status) {
+        await changeStatus({
+          status: status?.status,
+          id: status?.id,
+        });
+      }
+    } else {
+      // Người dùng đã nhấn "Hủy bỏ", không thực hiện thay đổi trạng thái
+      console.log("Hủy bỏ hành động hủy phòng");
     }
   };
-  
 
   return (
     <div className="container mx-auto py-8">
@@ -95,30 +154,23 @@ const MyOrder = () => {
 
         <div>
           <div className="flex items-center mt-3 space-x-5 mb-10">
-            <div className="relative">
-              <span className="absolute top-3 start-1 text-[#a5a3af]">
-                <AiOutlineSearch />
-              </span>
-              <input
-                className="border rounded-md py-2 text-[13px] pl-6"
-                type="text"
-                placeholder="Nhập đơn hàng..."
-              />
-            </div>
-            <select className="border py-1 px-3 rounded-md outline-none text-[#a5a3af]">
-              <option selected>Thời gian đặt</option>
-              <option>1 tuần trước</option>
-              <option>1 tháng trước</option>
-            </select>
-            <select className="border py-1 px-3 rounded-md outline-none text-[#a5a3af]">
-              <option selected>Trạng thái đơn</option>
-              <option>1 tuần trước</option>
-              <option>1 tháng trước</option>
+            <select
+              onChange={(e) => filterByItem("", e.target?.value)}
+              className="border py-1 px-3 rounded-md outline-none text-[#a5a3af]"
+            >
+              <option>
+                Trạng thái đơn
+              </option>
+              <option value="0">Đang Chờ</option>
+              <option value="1">Đã Hủy</option>
+              <option value="2">Đã check in</option>
+              <option value="3">Đang thanh toán</option>
+              <option value="4" selected>Đã hoàn thành</option>
             </select>
           </div>
           <div>
-            {booking ? (
-              booking?.map((item: any, index: number) => {
+            {searchFunction(booking) ? (
+              searchFunction(booking)?.map((item: any, index: number) => {
                 const statusInfo = getStatusText(item?.status);
                 return (
                   <div
@@ -157,10 +209,10 @@ const MyOrder = () => {
                           </span>
 
                           <button
-                            className="text-red-300 ml-2"
+                            className="text-red-300 ml-2 flex items-center hover:text-red-500 hover:no-underline"
                             onClick={() => handleStatusChange(item?.id)}
                           >
-                            Hủy Phòng
+                            <FaTimesCircle className="mr-1" /> Hủy Phòng{" "}
                           </button>
                         </span>
                       </div>
@@ -179,7 +231,7 @@ const MyOrder = () => {
                           </span>
                         </span>
                         <button
-                          className="text-red-300"
+                          className="text-gray-500"
                           onClick={() => {
                             handleBookingDetail(item.id);
                             handleOpenModal();
@@ -288,8 +340,10 @@ const MyOrder = () => {
                                     <p className="font-semibold">
                                       Tổng tiền:{" "}
                                       <span className="text-lg font-medium text-blue-900">
-                                        {bookingDetail?.total_amount?.toLocaleString("vi-VN")} đ
-                                        
+                                        {bookingDetail?.total_amount?.toLocaleString(
+                                          "vi-VN"
+                                        )}{" "}
+                                        đ
                                       </span>
                                     </p>
                                   </div>

@@ -211,7 +211,7 @@ const BookingInformation = () => {
       email: data.email,
       name: data.firstName + data.lastName,
       message: "...",
-      id_voucher: '',
+      id_voucher: selectedVoucher?.id_voucher || null,
       people_quantity: totalChildren + totalAdults,
       total_amount: total1,
       cccd: data.id,
@@ -623,7 +623,7 @@ const BookingInformation = () => {
                           MiiChii Ưu Đãi
                         </span>
                         <span className="font-medium text-[18px]">
-                          Số coin: {myvoucher?.coin}
+                          Số coin: {myvoucher?.coin?.toLocaleString("vi-VN")}
                         </span>
                       </div>
 

@@ -280,10 +280,10 @@ const ChooseService = () => {
                                 className="w-full rounded-t-lg"
                               />
                               <h1 className="pl-2 pt-2 pb-2 text-base font-medium">
-                                {item.name}
+                                {item?.name}
                               </h1>
                               <p className="pl-2 pb-2 font-semibold text-black text-lg">
-                                {item.price}
+                                {item?.price?.toLocaleString("vi-VN")}
                                 <span className="text-sm"> đ</span>
                               </p>
                               <div className="flex justify-between items-center px-2 py-3 ">
