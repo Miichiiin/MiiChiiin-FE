@@ -70,21 +70,21 @@ const ChooseService = () => {
     hotel = dataParam.nameHotel.split(",");
   }
   const { data: serviceData } = useGetService_hotelIdQuery(hotel[0]);
-  const [loading,setLoading] = useState(false);
-  useEffect(() =>{
-    setLoading(true)
-    setTimeout(() =>{
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
       if (serviceData && serviceData.length > 0) {
         setLoading(false);
       }
-    })
-  },[serviceData]);  
+    });
+  }, [serviceData]);
   const override: CSSProperties = {
     display: "flex",
-    position:"fixed",
+    position: "fixed",
     top: "45%",
     left: "50%",
-    transform: "translate(-50%, -50%)", 
+    transform: "translate(-50%, -50%)",
   };
 
   let date: Date[] = [];
@@ -171,9 +171,9 @@ const ChooseService = () => {
   const [userInteracted] = useState(false);
   useEffect(() => {
     if (!userInteracted) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [userInteracted]); 
+  }, [userInteracted]);
   return (
     <div>
       {/* {
@@ -190,8 +190,8 @@ const ChooseService = () => {
             />
         </div>
           :  */}
-        <div>
-          <div className="max-w-7xl mx-auto ">
+      <div>
+        <div className="max-w-7xl mx-auto ">
           <HeaderHotelType />
           {/*Content*/}
           <div className="max-w-5xl mx-auto my-5 mt-36">
@@ -214,7 +214,7 @@ const ChooseService = () => {
               </h1>
               <h1 className="flex items-center ">
                 {" "}
-                <a className="flex items-center space-x-3 text-[#e8952f]" >
+                <a className="flex items-center space-x-3 text-[#e8952f]">
                   <span className="bg-[#e8952f] px-2 py-2 text-white rounded-full">
                     <AiOutlineCheck />
                   </span>
@@ -252,7 +252,9 @@ const ChooseService = () => {
                       className="border rounded-lg px-2 py-3 my-2"
                     >
                       <div className="px-2">
-                        <h1 className="font-bold text-lg">Phòng {roomIndex + 1}</h1>
+                        <h1 className="font-bold text-lg">
+                          Phòng {roomIndex + 1}
+                        </h1>
                         <div className="flex justify-between font-medium">
                           <h1 className="">Biệt thự 1 phòng ngủ</h1>
                           <button
@@ -331,7 +333,9 @@ const ChooseService = () => {
               <div className="booking-column ">
                 {/*Thông tin chuyến đi*/}
                 <div className="border px-2 py-4 bg-gray-100 rounded my-3">
-                  <h1 className="text-lg font-bold text-yellow-900">Chuyến đi</h1>
+                  <h1 className="text-lg font-bold text-yellow-900">
+                    Chuyến đi
+                  </h1>
                 </div>
                 {/*Thông tin khách sạn*/}
                 <div className="border rounded px-4 py-4">
@@ -346,12 +350,15 @@ const ChooseService = () => {
                       </button>
                     </div>
                     <div className="border-b-2 pb-3">
-                      <p className="text-sm pt-3 items-center flex font-medium text-gray-500">
-                        <AiOutlineCalendar class="text-lg mr-2" />
-                        {date[0].toISOString().slice(0, 10)}
+                      <p className="text-sm pt-3 items-center flex text-gray-500 font-medium">
+                        <AiOutlineCalendar className="text-lg mr-2" />
+                        {new Date(date[0]).toLocaleDateString("vi-VN")}{" "}
+                        {/* Ngày bắt đầu */}
                         <AiOutlineArrowRight className="inline-block mx-1" />
-                        {date[1].toISOString().slice(0, 10)}
+                        {new Date(date[1]).toLocaleDateString("vi-VN")}{" "}
+                        {/* Ngày kết thúc */}
                       </p>
+
                       <p className="text-sm pb-3 font-medium text-gray-500 flex items-center mt-1">
                         <AiOutlineSchedule class="text-lg mr-2" />
                         {differenceInDays(
@@ -394,8 +401,8 @@ const ChooseService = () => {
                                   index: any
                                 ) => (
                                   <div key={index}>
-                                    Người lớn:{adults}, Trẻ em:{children}, Em bé:{" "}
-                                    {infants}
+                                    Người lớn:{adults}, Trẻ em:{children}, Em
+                                    bé: {infants}
                                   </div>
                                 )
                               )}
@@ -409,7 +416,8 @@ const ChooseService = () => {
                             </p>
                             <ul className="list-disc px-3">
                               {selectedServicesInRoom.map((selectedService) => {
-                                const { id, price, roomIndex } = selectedService;
+                                const { id, price, roomIndex } =
+                                  selectedService;
                                 const selectedRoom = roomIndex + 1;
                                 const selectedServiceData = serviceData.find(
                                   (item: any) => item.id === id
@@ -423,7 +431,12 @@ const ChooseService = () => {
                                           Phòng {selectedRoom}:{" "}
                                           {selectedServiceData.name}
                                         </p>
-                                        <p>{selectedServiceData.price.toLocaleString("vi-VN")} đ</p>
+                                        <p>
+                                          {selectedServiceData.price.toLocaleString(
+                                            "vi-VN"
+                                          )}{" "}
+                                          đ
+                                        </p>
                                       </div>
                                     </li>
                                   );
@@ -458,9 +471,9 @@ const ChooseService = () => {
               </div>
             </section>
           </div>
-          </div>
-          <Footer/>
         </div>
+        <Footer />
+      </div>
       {/* } */}
     </div>
   );
