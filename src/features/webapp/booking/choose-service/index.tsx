@@ -284,10 +284,10 @@ const ChooseService = () => {
                                 className="w-full rounded-t-lg h-[55%] object-cover"
                               />
                               <h1 className="pl-2 pt-2 pb-2 text-base font-medium">
-                                <TextTruncate text={item.name} maxLength={23} />
+                                {item?.name}
                               </h1>
                               <p className="pl-2 pb-2 font-semibold text-black text-lg">
-                                {item.price.toLocaleString("vi-VN")}
+                                {item?.price?.toLocaleString("vi-VN")}
                                 <span className="text-sm"> đ</span>
                               </p>
                               <div className="flex justify-between items-center px-2 py-3 ">
