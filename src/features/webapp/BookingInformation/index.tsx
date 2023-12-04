@@ -338,7 +338,7 @@ const BookingInformation = () => {
     if (!typeVoucher) {
       priceAfterVoucher = sumprice;
     }
-    return `${priceAfterVoucher.toLocaleString("vi-VN")}` + "đ";
+    return `${priceAfterVoucher.toLocaleString("vi-VN")}` + " đ";
   };
   //srollto
   // const [userInteracted, setUserInteracted] = useState(false);
@@ -766,7 +766,7 @@ const BookingInformation = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        Số coin không được vượt quá 50% giá trị đơn hàng
+                        Lưu ý: Số coin không được vượt quá 50% giá trị đơn hàng
                       </div>
                     )}
                   </div>
@@ -958,7 +958,7 @@ const BookingInformation = () => {
                           {typeVoucher === "coin" && (
                             <div className="border-gray-100 px-2 rounded mt-3">
                               <p>
-                                Coin áp dụng - Giảm giá: {myvoucher?.coin || 0}{" "}
+                                Coin áp dụng - Giảm giá: {myvoucher?.coin?.toLocaleString('vi-VN') || 0}{" "}
                                 coin
                               </p>
                             </div>
