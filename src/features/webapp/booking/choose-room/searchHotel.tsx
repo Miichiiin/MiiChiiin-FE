@@ -117,7 +117,7 @@ export const SearchHotel = () => {
   // Sử dụng useEffect để gọi API khi component được mount
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/hotel") // Thay đổi đường dẫn dựa vào cấu hình của bạn
+      .get("https://miichi-76a7860e9869.herokuapp.com/api/hotel") // Thay đổi đường dẫn dựa vào cấu hình của bạn
       .then((response) => {
         setHotelsData(response.data); // Lưu dữ liệu từ API vào state
       })

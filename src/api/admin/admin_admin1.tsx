@@ -5,7 +5,7 @@ const admin_AdminApi1 = createApi({
     reducerPath: 'admin_admin1',
     tagTypes: ['Admin_admin1'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/admin",
+        baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("tokenAdmin");
             if (token) {

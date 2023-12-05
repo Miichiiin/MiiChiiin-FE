@@ -5,7 +5,7 @@ const booking_AdminApi = createApi({
     reducerPath: 'booking_admin',
     tagTypes: ['Booking_admin'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/admin",
+        baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("tokenAdmin");
             if (token) {

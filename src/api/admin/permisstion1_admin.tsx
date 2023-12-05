@@ -5,7 +5,7 @@ const permission1Api = createApi({
     reducerPath: 'permission1_admin',
     tagTypes: ['Permission'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/admin",
+        baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api",
         prepareHeaders(headers) {
             const token = localStorage.getItem("tokenAdmin");
             if (token) {

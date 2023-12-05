@@ -4,7 +4,7 @@ const registerApi = createApi({
   reducerPath: "register",
   tagTypes: ["Users"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8000/api",
+    baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api",
     prepareHeaders: async (headers) => {
       try {
         await Promise.resolve(); // Đảm bảo promise đã được giải quyết

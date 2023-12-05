@@ -5,7 +5,7 @@ const rating_HomeApi = createApi({
     reducerPath: 'rating_home',
     tagTypes: ['Rating_home'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/comment",
+        baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api/comment",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");            
             if (token) {

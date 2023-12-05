@@ -3,7 +3,7 @@ const voucher_HotelApi = createApi({
     reducerPath: 'voucher_hotel',
     tagTypes: ['Voucher_hotel'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api",
+        baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {

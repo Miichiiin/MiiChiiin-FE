@@ -5,7 +5,7 @@ const hotel_HomeApi = createApi({
     reducerPath: 'hotel_home',
     tagTypes: ['Hotel_home'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api",
+        baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");
             if (token) {
