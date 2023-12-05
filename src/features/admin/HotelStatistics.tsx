@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Row, Col, Statistic, Progress } from "antd";
-import { UserOutlined, RiseOutlined, DollarOutlined } from "@ant-design/icons";
+import { Card, Row, Col} from "antd";
 import {
   XAxis,
   YAxis,
@@ -12,7 +11,6 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  Area,
 } from "recharts";
 import { useGetStatisticalQuery } from "../../api/admin/statistical";
 import { useGetStatisticalServiceQuery } from "@/api/admin/statistical_Service";
@@ -104,7 +102,7 @@ const HotelChainStatistics = () => {
   };
   // Biểu đồ 2
 
-  const [selectedMonthSv, setSelectedMonthSv] = useState(11);
+  const [selectedMonthSv, setSelectedMonthSv] = useState(12);
   const [selectedYearSv, setSelectedYearSv] = useState(2023);
   const [filteredData2, setFilteredData2] = useState<any>([]); // State để lưu trữ dữ liệu từ API
   const { data: statisticalServiceData } = useGetStatisticalServiceQuery({
@@ -140,7 +138,7 @@ const HotelChainStatistics = () => {
 
   // Biểu đồ 3
   const [selectedYearRt, setSelectedYearRt] = useState(2023);
-  const [selectedMonthRt, setSelectedMonthRt] = useState(11);
+  const [selectedMonthRt, setSelectedMonthRt] = useState(12);
   const [filteredRoomTypeData, setFilteredRoomTypeData] = useState<any>([]);
   const { data: statisticalroomtype1 } = useGetStatisticalRoomtypeQuery({
     id: dataLogin?.id_hotel,

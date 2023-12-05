@@ -117,12 +117,12 @@ export const ManagerEmployee = () => {
       key: "action",
       render: (_, item) => (
         <div className="flex">
-          {hasAddUserPermission("update user") && (
+          {hasAddUserPermission("update admin") && (
             <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={() => navigate(`/admin/updateemployee/${item.key}`)}>
               <AiOutlineTool className="text-lg" />
             </button>
           )}
-          {hasAddUserPermission("delete user") && (
+          {hasAddUserPermission("delete admin") && (
             <Popconfirm
               title="Xóa Khách sạn"
               description="Bạn có muốn xóa không??"
@@ -223,8 +223,8 @@ export const ManagerEmployee = () => {
             }}
           />
         </div>
-        {hasAddUserPermission('add user') && (
-          <button className="hidden ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => navigate(`/admin/addemployee`)}>
+        {hasAddUserPermission('add admin') && (
+          <button className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => navigate(`/admin/addemployee`)}>
             <IoAddCircleOutline className="text-xl" />
           </button>
         )}

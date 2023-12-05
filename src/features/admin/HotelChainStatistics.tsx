@@ -19,7 +19,7 @@ import { useGetCategory_hotelQuery } from "@/api/webapp/category_hotel";
 
 const HotelChainStatistic = () => {
   // Thêm dữ liệu cho các khách sạn và tháng/năm khác theo nhu cầu của bạn
-  const [selectedMonth, setSelectedMonth] = useState(11);
+  const [selectedMonth, setSelectedMonth] = useState(12);
   const [selectedYear, setSelectedYear] = useState(2023);
 
   const { data: HotelChainStatistics } = useGetHotelChainStatisticsQuery({
@@ -62,7 +62,7 @@ const HotelChainStatistic = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
   // Bieu do cua service
-  const [selectedMonthsv, setSelectedMonthsv] = useState(11);
+  const [selectedMonthsv, setSelectedMonthsv] = useState(12);
   const [selectedYearsv, setSelectedYearsv] = useState(2023);
 
   const { data: HotelChainStatisticsv } = useGetHotelChainStatisticsvQuery({
@@ -96,7 +96,7 @@ const HotelChainStatistic = () => {
   };
 
   // Biểu đồ của RoomType
-  const [selectedMonthRt, setSelectedMonthRt] = useState(11);
+  const [selectedMonthRt, setSelectedMonthRt] = useState(12);
   const [selectedYearRt, setSelectedYearRt] = useState(2023);
   const [selectedRoomType, setSelectedRoomType] = useState<any>();
   const [selectedRoomId, setSelectedRoomId] = useState("");

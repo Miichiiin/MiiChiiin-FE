@@ -56,15 +56,15 @@ const LoginAdmin = () => {
         <div className="flex w-[33%]">
             <div className="px-10 w-[100%]">
               <div className="flex mt-[70px] justify-center mb-[-50px]">
-                <a href="/" className="h-[150px] flex justify-center"><img className="w-[100%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" /></a>
+                <a href="/" className="h-[150px] flex justify-center"><img className="w-[100%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1701702390/llrnrzljtdhaendxphbz.png" alt="" /></a>
               </div>
-            <div className="flex">
+            <div className="flex justify-center">
                 <h1 className=" font-bold mb-3 text-[17px] w-[50%] border-b-[3px] border-[#e8952f] pb-2 text-center">
                   Đăng nhập/Login
                 </h1>
-                <h1 className=" font-bold mb-3 text-[17px] text-center w-[50%]">
+                {/* <h1 className=" font-bold mb-3 text-[17px] text-center w-[50%]">
                   Forgot password 
-                </h1>
+                </h1> */}
             </div>
               <form onSubmit={handleSubmit(handleLoginAdmin)} className="">
                 <div className="">
@@ -91,7 +91,7 @@ const LoginAdmin = () => {
                 <div className="text-red-500">
                   {errors.password && errors.password.message}
                 </div>
-                <div className="py-2 flex justify-between items-center">
+                {/* <div className="py-2 flex justify-between items-center">
                   <div>
                     <input
                       className="mr-2 leading-tight"
@@ -106,7 +106,7 @@ const LoginAdmin = () => {
                       Forgot your password ?
                     </a>
                   </div>
-                </div>
+                </div> */}
                 <button
                   type="submit"
                   className="bg-[#e8952f] hover:text-black  text-white font-medium text-[15px] py-[10px] mt-3 px-4 rounded w-full"
