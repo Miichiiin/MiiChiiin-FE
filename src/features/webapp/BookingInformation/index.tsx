@@ -8,10 +8,11 @@ import {
   AiOutlineTeam,
   AiOutlineForm,
   AiOutlineGift,
+  AiOutlineInfoCircle
 } from "react-icons/ai";
 import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";
@@ -21,6 +22,7 @@ import { useEffect, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
 import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
 import Footer from "@/components/Footer";
+import { Tooltip } from "antd";
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
@@ -28,17 +30,11 @@ const BookingInformation = () => {
   // const navigate = useNavigate()
   const [addBookingUser] = useAddBookingUserMutation();
   const [userData, setUserData] = useState<any | null>(null);
-  const [idVoucher, setIdvoucher] = useState<any>();
+  // const [idVoucher, setIdvoucher] = useState<any>();
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  // VietNam Time && Day
-  const vietnamOptions = {
-    timeZone: "Asia/Ho_Chi_Minh",
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  };
-
+  // console.log(idVoucher);
+  console.log(setModalIsOpen);
+  
   useEffect(() => {
     const userPromise = localStorage.getItem("user");
     userPromise.then((user: any) => {
@@ -276,26 +272,26 @@ const BookingInformation = () => {
     setSelectedVoucher(voucher);
   };
 
-  const handleUseVoucher = (id: any) => {
-    setIdvoucher(id);
-    // Kiểm tra nếu có voucher được chọn
-    if (selectedVoucher !== null && selectedVoucher !== undefined) {
-      // Lưu trạng thái đã sử dụng voucher vào local storage hoặc thực hiện các hành động khác
-      localStorage.setItem("isVoucherUsed", "true");
+  // const handleUseVoucher = (id: any) => {
+  //   setIdvoucher(id);
+  //   // Kiểm tra nếu có voucher được chọn
+  //   if (selectedVoucher !== null && selectedVoucher !== undefined) {
+  //     // Lưu trạng thái đã sử dụng voucher vào local storage hoặc thực hiện các hành động khác
+  //     localStorage.setItem("isVoucherUsed", "true");
 
-      // Lưu thông tin voucher được chọn vào local storage
-      const { id, name, expire_at, discount } = selectedVoucher;
-      const selectedVoucherDetails = { id, name, expire_at, discount };
+  //     // Lưu thông tin voucher được chọn vào local storage
+  //     const { id, name, expire_at, discount } = selectedVoucher;
+  //     const selectedVoucherDetails = { id, name, expire_at, discount };
 
-      localStorage.setItem(
-        "selectedVoucherDetails",
-        JSON.stringify(selectedVoucherDetails)
-      );
+  //     localStorage.setItem(
+  //       "selectedVoucherDetails",
+  //       JSON.stringify(selectedVoucherDetails)
+  //     );
 
-      // Đóng modal hoặc thực hiện các hành động khác cần thiết
-      closeVoucherModal();
-    }
-  };
+  //     // Đóng modal hoặc thực hiện các hành động khác cần thiết
+  //     closeVoucherModal();
+  //   }
+  // };
 
   const [appliedVoucher, setAppliedVoucher] = useState<any | null>(null);
   const [typeVoucher, setTypeVoucher] = useState<string | null>(null);
@@ -606,7 +602,7 @@ const BookingInformation = () => {
                       <span className="font-medium text-[18px]">
                         MiiChii Ưu Đãi
                       </span>
-                      <span className="font-medium text-[18px]">
+                      <span className="font-normal text-base">
                         Số coin: {myvoucher?.coin?.toLocaleString("vi-VN")}
                       </span>
                     </div>
@@ -731,9 +727,17 @@ const BookingInformation = () => {
                         />
                         <label
                           htmlFor="useCoin"
-                          className="text-sm text-gray-600 cursor-pointer"
+                          className="text-sm text-gray-600 cursor-pointer flex items-center"
                         >
-                          Sử dụng số coin đang có
+                          <span className="flex items-center">
+                           
+                            <Tooltip title="Lưu ý: Số coin không được vượt quá 50% giá trị đơn hàng">
+                             <span className="flex items-center">
+                                <span> Sử dụng số coin đang có</span>
+                                <AiOutlineInfoCircle className="ml-2 text-red-600" />
+                             </span>
+                            </Tooltip>
+                          </span>
                         </label>
                       </div>
 
@@ -763,10 +767,11 @@ const BookingInformation = () => {
                         style={{
                           color: "red",
                           marginLeft: "30px",
-                          fontWeight: "bold",
+                          fontWeight: "medium",
                         }}
+                        className="text-sm"
                       >
-                        Lưu ý: Số coin không được vượt quá 50% giá trị đơn hàng
+                        {/* Lưu ý: Số coin không được vượt quá 50% giá trị đơn hàng */}
                       </div>
                     )}
                   </div>
