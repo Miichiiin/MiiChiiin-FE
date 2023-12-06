@@ -52,21 +52,23 @@ const HotelChainStatistics = () => {
 
   const [filteredData1, setFilteredData1] = useState<any>([]);
 
+  console.log(filteredData1);
+  
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const handleTitleClick = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-  const dataofYear = Array.isArray(statisticalData)
-    ? statisticalData.filter((item: any) => item.Year == selectedYear)
-    : [];
+  // const dataofYear = Array.isArray(statisticalData)
+  //   ? statisticalData.filter((item: any) => item.Year == selectedYear)
+  //   : [];
 
-  // Nếu trùng năm thì không hiện
-  const uniqueYears = [
-    ...new Set(
-      statisticalData && statisticalData.map((item: any) => item.Year)
-    ),
-  ];
+  // // Nếu trùng năm thì không hiện
+  // const uniqueYears = [
+  //   ...new Set(
+  //     statisticalData && statisticalData.map((item: any) => item.Year)
+  //   ),
+  // ];
 
   useEffect(() => {
     // Gọi lại API khi selectedYear thay đổi
@@ -111,6 +113,8 @@ const HotelChainStatistics = () => {
     year: selectedYearSv,
   });
 
+  console.log(filteredData2);
+  
   useEffect(() => {
     if (statisticalServiceData && Array.isArray(statisticalServiceData)) {
       // Lọc dữ liệu dựa trên tháng và năm đã chọn
@@ -146,6 +150,8 @@ const HotelChainStatistics = () => {
     year: selectedYearRt,
   });
 
+  console.log(filteredRoomTypeData);
+  
   const handleYearChangeRt = (event: any) => {
     setSelectedYearRt(parseInt(event.target.value));
   };

@@ -30,7 +30,6 @@ const HotelChainStatistic = () => {
   const dataLogin = localStorage.getItem("userAdmin");
   console.log("dataLogin", dataLogin);
 
-  const [filteredData1, setFilteredData1] = useState<any>([]);
 
   const [chartMode, setChartMode] = useState("revenue");
 
@@ -99,21 +98,18 @@ const HotelChainStatistic = () => {
   const [selectedMonthRt, setSelectedMonthRt] = useState(12);
   const [selectedYearRt, setSelectedYearRt] = useState(2023);
   const [selectedRoomType, setSelectedRoomType] = useState<any>();
-  const [selectedRoomId, setSelectedRoomId] = useState("");
+  const [selectedRoomId, setSelectedRoomId] = useState<any>("");
   const { data: HotelChainStatisticRt } = useGetHotelChainStatisticRtQuery({
     month: selectedMonthRt,
     year: selectedYearRt,
     roomType: selectedRoomId,
   });
 
+  console.log(setSelectedRoomType);
+  
   const { data: cateRooms } = useGetCategory_hotelQuery({});
 
-  let statisticalChainRoomtype: any;
 
-  if (HotelChainStatistics) {
-    statisticalChainRoomtype = HotelChainStatistics.rating_comment_booking;
-  } else {
-  }
 
   let statisticalRoom: any[] = [];
 

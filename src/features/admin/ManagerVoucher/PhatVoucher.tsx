@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useGetVoucherQuery } from "@/api/admin/voucher";
-import { Table, Checkbox, Button, Row, Col, DatePicker, message } from "antd";
+import { Table, Button, Row, Col, DatePicker, message } from "antd";
 // import { useAddVoucherMutation } from "@/api/admin/voucher";
 import { usePhatVoucherMutation } from "@/api/admin/voucher";
 import moment from "moment";
@@ -9,12 +9,12 @@ const { RangePicker } = DatePicker;
 
 const PhatVoucher = () => {
   const { data: voucherData } = useGetVoucherQuery();
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [bookingCount, setBookingCount] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  console.log("showErrorMessage", showErrorMessage);
 
-  const [selectedVoucher, setSelectedVoucher] = useState(null);
+  const [selectedVoucher, setSelectedVoucher] = useState<any>(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [phatVoucher] = usePhatVoucherMutation();
   const [showInput, setShowInput] = useState(false);
@@ -30,8 +30,11 @@ const PhatVoucher = () => {
 
   const [valueByTotalAmount, setValueByTotalAmount] = useState("");
   const [isTotalAmount, setIsTotalAmount] = useState(false);
+  console.log("isTotalAmount", isTotalAmount);
+
   const [valueArea, setValueArea] = useState("");
   const [isQuantityBooking, setIsQuantityBooking] = useState(false);
+  console.log("isQuantityBooking", isQuantityBooking);
 
   const [dateChoose, setDateChoose] = useState("");
 
@@ -105,11 +108,7 @@ const PhatVoucher = () => {
     }
   };
   // Theo khách sạn
-  const [showSelect, setShowSelect] = useState(false);
 
-  const handleLabelClick1 = () => {
-    setShowSelect(!showSelect);
-  };
   // Phát voucher
   const onSelectVoucher = (voucher: any) => {
     setSelectedVoucher(voucher);
@@ -297,6 +296,7 @@ const PhatVoucher = () => {
                 // value={dateChoose as any}
                 onChange={(date: any, dateString: any) =>
                   setDateChoose(dateString)
+                  
                 }
                 disabledDate={disableDate}
                 className="ml-5"
