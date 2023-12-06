@@ -47,6 +47,29 @@ const authApi = createApi({
         }
       },
     }),
+    SigninGoogle: builder.mutation({
+      query: (user) => ({
+        url: `/loginGoogle`,
+        method: "POST",
+        body: user,
+      }),
+      async transformResponse(response: any) {
+        try {
+          const token = response?.token; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
+          const user = response?.user; // Giả sử token được trả về trong phản hồi là một thuộc tính 'token'
+          if (token) {
+            localStorage.setItem("token", token); // Lưu token vào localStorage
+          }
+          localStorage.setItem("user", JSON.stringify(user));
+          await Promise.resolve(); // Đảm bảo promise đã được giải quyết
+
+          return response;
+        } catch (error) {
+          console.error("Error in transformResponse:", error);
+          throw error;
+        }
+      },
+    }),
     Signup: builder.mutation({
       query: (user) => ({
         url: `/signup`,
@@ -65,6 +88,7 @@ const authApi = createApi({
 export const {
   useGetUsersQuery,
   useSigninMutation,
+  useSigninGoogleMutation
   // useSignupMutation,
 } = authApi;
 export const authReducer = authApi.reducer;
