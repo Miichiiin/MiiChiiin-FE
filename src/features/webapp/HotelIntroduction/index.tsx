@@ -236,7 +236,7 @@ const HotelIntroduction = () => {
                         <h1 className="text-[24px] font-normal pb-2 w-[50%]">
                           {item.name}
                         </h1>
-                        <h2 className=" w-[50%] text-[20px] font-medium pb-2 flex justify-center text-center">
+                        <h2 className=" w-[50%] text-[20px] font-normal pb-2 flex justify-center text-center">
                           {item.price.toLocaleString('vi-VN')} đ
                         </h2>
                       </div>

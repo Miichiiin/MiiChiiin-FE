@@ -92,7 +92,7 @@ const Permission = () => {
   const handleSearch = (dir: TransferDirection, value: string) => {
     console.log('search:', dir, value);
   };
-  if (isLoading) return <Skeleton active/>;
+  if (isLoading) return <Skeleton active />;
   if (isError) return <div>Đã xảy ra lỗi khi tải dữ liệu</div>;
 
   return (
@@ -132,7 +132,6 @@ const Permission = () => {
         />
         <br />
         <div className='flex space-x-[850px] items-center'>
-          <Button type='primary' className=' bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</Button>
           <Button
             type="primary"
             htmlType="submit"
@@ -140,6 +139,8 @@ const Permission = () => {
           >
             Update
           </Button>
+          <Button type='primary' className=' bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</Button>
+
 
 
         </div>

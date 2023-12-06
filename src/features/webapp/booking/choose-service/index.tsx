@@ -198,7 +198,7 @@ const ChooseService = () => {
             <section className="flex space-x-16 items-center px-2 py-3">
               <Button
                 onClick={onhanldeGoBack}
-                className="hover:underline text-blue-500 text-md font-bold  flex justify-start items-center space-x-2 pr-32 border-none"
+                className="hover:underline text-blue-500 text-md font-medium  flex justify-start items-center space-x-2 pr-32 border-none"
               >
                 <AiOutlineLeft />
                 Chọn Phòng{" "}
@@ -252,10 +252,10 @@ const ChooseService = () => {
                       className="border rounded-lg px-2 py-3 my-2"
                     >
                       <div className="px-2">
-                        <h1 className="font-bold text-lg">
+                        <h1 className="font-medium text-lg">
                           Phòng {roomIndex + 1}
                         </h1>
-                        <div className="flex justify-between font-medium">
+                        <div className="flex justify-between font-normal text-sm">
                           <h1 className="">Biệt thự 1 phòng ngủ</h1>
                           <button
                             onClick={() => toggleShowService(roomIndex)}

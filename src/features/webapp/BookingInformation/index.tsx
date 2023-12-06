@@ -11,7 +11,7 @@ import {
 } from "react-icons/ai";
 import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";
@@ -30,14 +30,6 @@ const BookingInformation = () => {
   const [userData, setUserData] = useState<any | null>(null);
   const [idVoucher, setIdvoucher] = useState<any>();
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  // VietNam Time && Day
-  const vietnamOptions = {
-    timeZone: "Asia/Ho_Chi_Minh",
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  };
 
   useEffect(() => {
     const userPromise = localStorage.getItem("user");
@@ -205,6 +197,7 @@ const BookingInformation = () => {
       phone: data.phone,
       cart: cart,
       id_hotel: Number(hotel[0]),
+      coin: myvoucher?.coin || null,
       // promotion: 1,
     };
     addBookingUser(dataBooking)
@@ -322,8 +315,6 @@ const BookingInformation = () => {
     }
     return t;
   };
-
-  // typeVoucher === "coin" "cash"
 
   const caculatePrice = () => {
     let priceAfterVoucher = 0;
@@ -598,178 +589,180 @@ const BookingInformation = () => {
                   </div>
 
                   {/* ADD mã voucher */}
+                  {  userData?.id  ? (
+                    <div
+                      className={`border border-black rounded-md w-[800px] pb-10 mt-4 voucher-list overflow-auto max-h-90`}
+                    >
+                      <div className="border border-b-[#f9f9f9] bg-[#f5f6fa] px-5 py-5 flex items-center justify-between">
+                        <span className="font-medium text-[18px]">
+                          MiiChii Ưu Đãi
+                        </span>
+                        <span className="font-medium text-[18px]">
+                          Số coin: {myvoucher?.coin?.toLocaleString("vi-VN")}
+                        </span>
+                      </div>
 
-                  <div
-                    className={`border border-black rounded-md w-[800px] pb-10 mt-4 voucher-list overflow-auto max-h-90`}
-                  >
-                    <div className="border border-b-[#f9f9f9] bg-[#f5f6fa] px-5 py-5 flex items-center justify-between">
-                      <span className="font-medium text-[18px]">
-                        MiiChii Ưu Đãi
-                      </span>
-                      <span className="font-medium text-[18px]">
-                        Số coin: {myvoucher?.coin?.toLocaleString("vi-VN")}
-                      </span>
-                    </div>
-
-                    {/* Modal overlay */}
-                    {showVoucherModal && (
-                      <div
-                        className="fixed inset-0 bg-gray-800 z-20 bg-opacity-50 flex items-center justify-center"
-                        onClick={closeVoucherModal}
-                      >
-                        {/* Nội dung modal lớn hơn */}
+                      {/* Modal overlay */}
+                      {showVoucherModal && (
                         <div
-                          className="bg-white p-8 rounded-md shadow-lg w-[800px] overflow-y-auto"
-                          onClick={handleModalClick}
+                          className="fixed inset-0 bg-gray-800 z-20 bg-opacity-50 flex items-center justify-center"
+                          onClick={closeVoucherModal}
                         >
-                          {/* Tiêu đề của modal */}
-                          <div className="mb-4">
-                            <h2 className="text-xl font-semibold">
-                              Danh sách Voucher
-                            </h2>
-                            {/* Ô tìm kiếm */}
-                            <div className="mt-2 relative rounded-md border border-gray-300 shadow-sm flex">
-                              <input
-                                type="text"
-                                name="search"
-                                id="search"
-                                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-5 py-3 sm:text-sm rounded-md"
-                                placeholder="Nhập voucher cần tìm kiếm..."
-                              />
-                              <button
-                                type="button"
-                                className="absolute inset-y-0 right-0 px-3 flex pl-6 items-center bg-gray-200 rounded-md font-medium"
-                                value={"Tìm"}
-                                onClick={handleModalClick}
-                              >
-                                Tìm kiếm
-                                <svg
-                                  className="h-5 w-2 text-gray-500"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  {/* Biểu tượng tìm kiếm của bạn */}
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Thông tin voucher */}
-                          <ul className="voucher-list overflow-auto max-h-90">
-                            {myvoucher?.vouchers?.map(
-                              (voucher: any, index: any) => (
-                                <li
-                                  key={index}
-                                  className="flex items-center space-x-4 mb-4"
-                                >
-                                  <input
-                                    type="radio"
-                                    id={`voucher${index}`}
-                                    name="voucher"
-                                    value={`voucher${index}`}
-                                    checked={selectedVoucher === voucher}
-                                    onChange={() =>
-                                      handleVoucherSelect(voucher)
-                                    }
-                                  />
-
-                                  {/* Thêm thông tin cho mỗi voucher */}
-                                  <div className="flex items-center">
-                                    <img
-                                      className="w-10 h-10 rounded-full mr-2"
-                                      src={voucher?.image}
-                                      alt={`Hình ảnh Voucher ${index + 1}`}
-                                    />
-                                    <div>
-                                      <p className="font-bold">
-                                        {voucher?.name}
-                                      </p>
-
-                                      <p>
-                                        Hạn sử dụng:{" "}
-                                        {voucher?.expire_at
-                                          ? new Date(
-                                              voucher.expire_at
-                                            ).toLocaleString("vi-VN", {
-                                              day: "numeric",
-                                              month: "numeric",
-                                              year: "numeric",
-                                            })
-                                          : "Không có hạn sử dụng"}
-                                      </p>
-                                      <p>Giảm giá: {voucher?.discount}%</p>
-                                    </div>
-                                  </div>
-                                </li>
-                              )
-                            )}
-                          </ul>
-
-                          {/* Nút sử dụng voucher */}
-                          <button
-                            className="font-medium bg-blue-500 px-6 py-2 text-white rounded-md ml-auto flex"
-                            onClick={() => {
-                              closeVoucherModal();
-                            }}
+                          {/* Nội dung modal lớn hơn */}
+                          <div
+                            className="bg-white p-8 rounded-md shadow-lg w-[800px] overflow-y-auto"
+                            onClick={handleModalClick}
                           >
-                            Sử Dụng
-                          </button>
+                            {/* Tiêu đề của modal */}
+                            <div className="mb-4">
+                              <h2 className="text-xl font-semibold">
+                                Danh sách Voucher
+                              </h2>
+                              {/* Ô tìm kiếm */}
+                              <div className="mt-2 relative rounded-md border border-gray-300 shadow-sm flex">
+                                <input
+                                  type="text"
+                                  name="search"
+                                  id="search"
+                                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-5 py-3 sm:text-sm rounded-md"
+                                  placeholder="Nhập voucher cần tìm kiếm..."
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute inset-y-0 right-0 px-3 flex pl-6 items-center bg-gray-200 rounded-md font-medium"
+                                  value={"Tìm"}
+                                  onClick={handleModalClick}
+                                >
+                                  Tìm kiếm
+                                  <svg
+                                    className="h-5 w-2 text-gray-500"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    {/* Biểu tượng tìm kiếm của bạn */}
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Thông tin voucher */}
+                            <ul className="voucher-list overflow-auto max-h-90">
+                              {myvoucher?.vouchers?.map(
+                                (voucher: any, index: any) => (
+                                  <li
+                                    key={index}
+                                    className="flex items-center space-x-4 mb-4"
+                                  >
+                                    <input
+                                      type="radio"
+                                      id={`voucher${index}`}
+                                      name="voucher"
+                                      value={`voucher${index}`}
+                                      checked={selectedVoucher === voucher}
+                                      onChange={() =>
+                                        handleVoucherSelect(voucher)
+                                      }
+                                    />
+
+                                    {/* Thêm thông tin cho mỗi voucher */}
+                                    <div className="flex items-center">
+                                      <img
+                                        className="w-10 h-10 rounded-full mr-2"
+                                        src={voucher?.image}
+                                        alt={`Hình ảnh Voucher ${index + 1}`}
+                                      />
+                                      <div>
+                                        <p className="font-bold">
+                                          {voucher?.name}
+                                        </p>
+
+                                        <p>
+                                          Hạn sử dụng:{" "}
+                                          {voucher?.expire_at
+                                            ? new Date(
+                                                voucher.expire_at
+                                              ).toLocaleString("vi-VN", {
+                                                day: "numeric",
+                                                month: "numeric",
+                                                year: "numeric",
+                                              })
+                                            : "Không có hạn sử dụng"}
+                                        </p>
+                                        <p>Giảm giá: {voucher?.discount}%</p>
+                                      </div>
+                                    </div>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+
+                            {/* Nút sử dụng voucher */}
+                            <button
+                              className="font-medium bg-blue-500 px-6 py-2 text-white rounded-md ml-auto flex"
+                              onClick={() => {
+                                closeVoucherModal();
+                              }}
+                            >
+                              Sử Dụng
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* COIN && VOUCHER*/}
+                      <div className="flex">
+                        <div className="flex items-center ml-5 mt-2">
+                          <input
+                            type="checkbox"
+                            id="useCoin"
+                            name="useCoin"
+                            checked={typeVoucher === "coin" ? true : false}
+                            onChange={() => setTypeVoucher("coin")}
+                            className="mr-2"
+                          />
+                          <label
+                            htmlFor="useCoin"
+                            className="text-sm text-gray-600 cursor-pointer"
+                          >
+                            Sử dụng số coin đang có
+                          </label>
+                        </div>
+
+                        <div className="flex items-center ml-5 mt-2">
+                          <input
+                            type="checkbox"
+                            id="useCoin"
+                            name="useCoin"
+                            onChange={() => setTypeVoucher("cash")}
+                            checked={typeVoucher === "cash" ? true : false}
+                            className="mr-2"
+                          />
+                          <div
+                            className={`text-sm text-gray-600 cursor-pointer ${
+                              showVoucherModal
+                                ? "opacity-50 pointer-events-none"
+                                : ""
+                            }`}
+                            onClick={openVoucherModal}
+                          >
+                            Chọn voucher
+                          </div>
                         </div>
                       </div>
-                    )}
-
-                    {/* COIN && VOUCHER*/}
-                    <div className="flex">
-                      <div className="flex items-center ml-5 mt-2">
-                        <input
-                          type="checkbox"
-                          id="useCoin"
-                          name="useCoin"
-                          checked={typeVoucher === "coin" ? true : false}
-                          onChange={() => setTypeVoucher("coin")}
-                          className="mr-2"
-                        />
-                        <label
-                          htmlFor="useCoin"
-                          className="text-sm text-gray-600 cursor-pointer"
-                        >
-                          Sử dụng số coin đang có
-                        </label>
-                      </div>
-
-                      <div className="flex items-center ml-5 mt-2">
-                        <input
-                          type="checkbox"
-                          id="useCoin"
-                          name="useCoin"
-                          onChange={() => setTypeVoucher("cash")}
-                          checked={typeVoucher === "cash" ? true : false}
-                          className="mr-2"
-                        />
+                      {typeVoucher == "coin" && (
                         <div
-                          className={`text-sm text-gray-600 cursor-pointer ${
-                            showVoucherModal
-                              ? "opacity-50 pointer-events-none"
-                              : ""
-                          }`}
-                          onClick={openVoucherModal}
+                          style={{
+                            color: "red",
+                            marginLeft: "30px",
+                            fontWeight: "bold",
+                          }}
                         >
-                          Chọn voucher
+                          Lưu ý: Số coin không được vượt quá 50% giá trị đơn
+                          hàng
                         </div>
-                      </div>
+                      )}
                     </div>
-                    {typeVoucher == "coin" && (
-                      <div
-                        style={{
-                          color: "red",
-                          marginLeft: "30px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Lưu ý: Số coin không được vượt quá 50% giá trị đơn hàng
-                      </div>
-                    )}
-                  </div>
+                  ) : null}
                   {/* end */}
 
                   <div className="border boder-black  rounded-md w-[800px] pb-10 mt-4">
