@@ -25,11 +25,11 @@ const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
 
-  // const navigate = useNavigate()
   const [addBookingUser] = useAddBookingUserMutation();
   const [userData, setUserData] = useState<any | null>(null);
-  const [idVoucher, setIdvoucher] = useState<any>();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const [idVoucher, setIdvoucher] = useState();
+  const [modalIsOpen] = useState(false);
+  
 
   useEffect(() => {
     const userPromise = localStorage.getItem("user");
@@ -189,7 +189,7 @@ const BookingInformation = () => {
       email: data.email,
       name: data.firstName + data.lastName,
       message: "...",
-      id_voucher: selectedVoucher?.id_voucher || null,
+      id_voucher: appliedVoucher?.id_voucher || null,
       people_quantity: totalChildren + totalAdults,
       total_amount: total1,
       cccd: data.id,
@@ -269,26 +269,26 @@ const BookingInformation = () => {
     setSelectedVoucher(voucher);
   };
 
-  const handleUseVoucher = (id: any) => {
-    setIdvoucher(id);
-    // Kiểm tra nếu có voucher được chọn
-    if (selectedVoucher !== null && selectedVoucher !== undefined) {
-      // Lưu trạng thái đã sử dụng voucher vào local storage hoặc thực hiện các hành động khác
-      localStorage.setItem("isVoucherUsed", "true");
+  // const handleUseVoucher = (id: any) => {
+  //   setIdvoucher(id);
+  //   // Kiểm tra nếu có voucher được chọn
+  //   if (selectedVoucher !== null && selectedVoucher !== undefined) {
+  //     // Lưu trạng thái đã sử dụng voucher vào local storage hoặc thực hiện các hành động khác
+  //     localStorage.setItem("isVoucherUsed", "true");
 
-      // Lưu thông tin voucher được chọn vào local storage
-      const { id, name, expire_at, discount } = selectedVoucher;
-      const selectedVoucherDetails = { id, name, expire_at, discount };
+  //     // Lưu thông tin voucher được chọn vào local storage
+  //     const { id, name, expire_at, discount } = selectedVoucher;
+  //     const selectedVoucherDetails = { id, name, expire_at, discount };
 
-      localStorage.setItem(
-        "selectedVoucherDetails",
-        JSON.stringify(selectedVoucherDetails)
-      );
+  //     localStorage.setItem(
+  //       "selectedVoucherDetails",
+  //       JSON.stringify(selectedVoucherDetails)
+  //     );
 
-      // Đóng modal hoặc thực hiện các hành động khác cần thiết
-      closeVoucherModal();
-    }
-  };
+  //     // Đóng modal hoặc thực hiện các hành động khác cần thiết
+  //     closeVoucherModal();
+  //   }
+  // };
 
   const [appliedVoucher, setAppliedVoucher] = useState<any | null>(null);
   const [typeVoucher, setTypeVoucher] = useState<string | null>(null);
@@ -865,7 +865,7 @@ const BookingInformation = () => {
                             <p className="text-sm pb-3 font-medium ">
                               {NumberPeople &&
                                 NumberPeople?.filter(
-                                  (item: any, index1: any) => index1 == index
+                                  (_, index1: any) => index1 == index
                                 ).map(
                                   (
                                     { adults, children, infants }: any,
@@ -889,7 +889,7 @@ const BookingInformation = () => {
                             <ul className="list-disc px-3">
                               {selectedServicesInRoom?.map(
                                 (selectedService) => {
-                                  const { id, roomIndex, name } =
+                                  const { id, roomIndex} =
                                     selectedService;
                                   const selectedRoom = roomIndex + 1;
                                   const selectedServiceData =

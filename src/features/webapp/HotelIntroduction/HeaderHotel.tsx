@@ -145,7 +145,7 @@ const HeaderHotel = () => {
                   <ul
                     className="flex mt-8 justify-between items-center space-x-[30px] text-[12px] text-white 
                                     xl:space-x-[80px] xl:text-[17px]
-                                    lg:space-x-[60px] lg:text-[15px] lg:block lg:flex
+                                    lg:space-x-[60px] lg:text-[15px] 
                                     sm:hidden ml-[-110px]
                                 "
                   >

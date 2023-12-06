@@ -16,7 +16,6 @@ import {
   BsChevronCompactLeft,
   BsArrowsFullscreen,
 } from "react-icons/bs";
-import { MdOutlineBed } from "react-icons/md";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import { useNavigate, useParams } from "react-router-dom";
