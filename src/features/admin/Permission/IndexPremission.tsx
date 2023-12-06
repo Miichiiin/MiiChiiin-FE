@@ -27,7 +27,7 @@ const IndexPremission = () => {
     if (isConfirmed) {
       removeRole(id).unwrap().then(() => {
       })
-        .catch((error) => {
+        .catch((error:any) => {
           console.log(error);
 
         });
