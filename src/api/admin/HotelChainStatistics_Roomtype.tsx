@@ -5,7 +5,7 @@ const hotelchainstatisticRtApi = createApi({
     reducerPath: 'hotelchainstatisticrt',
     tagTypes: ['HotelChainStatisticRt'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api/admin",
+        baseUrl: "https://michii-81cc88ec4f95.herokuapp.com/api/admin",
         prepareHeaders(headers) {
             const token = localStorage.getItem("tokenAdmin");
             if (token) {

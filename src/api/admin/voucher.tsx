@@ -4,7 +4,7 @@ const voucherApi = createApi({
   reducerPath: "voucher",
   tagTypes: ["Voucher"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api",
+    baseUrl: "https://michii-81cc88ec4f95.herokuapp.com/api",
     prepareHeaders(headers) {
       const token = localStorage.getItem("tokenAdmin");
       if (token) {

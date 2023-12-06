@@ -4,7 +4,7 @@ const authAdminApi = createApi({
   reducerPath: "userAdmin",
   tagTypes: ["UserAdmin"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api/auth/admin",
+    baseUrl: "https://michii-81cc88ec4f95.herokuapp.com/api/auth/admin",
     prepareHeaders: async (headers) => {
       try {
         await Promise.resolve(); // Đảm bảo promise đã được giải quyết

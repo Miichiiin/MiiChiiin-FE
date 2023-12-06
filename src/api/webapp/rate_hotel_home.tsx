@@ -5,7 +5,7 @@ const rating_Hotel_HomeApi = createApi({
     reducerPath: 'rating_hotel_home',
     tagTypes: ['Rating_hotel_home'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://miichi-76a7860e9869.herokuapp.com/api/comment",
+        baseUrl: "https://michii-81cc88ec4f95.herokuapp.com/api/comment",
         prepareHeaders(headers) {
             const token = localStorage.getItem("token");            
             if (token) {
