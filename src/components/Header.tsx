@@ -116,10 +116,10 @@ const Header = () => {
   const handleLogout = () => {
     const confirm = window.confirm("Bạn có muốn đăng xuất");
     if (confirm) {
+      localStorage.removeItem("cart");
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("selectedRooms");
-      localStorage.removeItem("cart");
       navigate("/")
       setLoggedIn(null);
     }
