@@ -114,11 +114,14 @@ const HeaderHotel = () => {
     <div>
       <header className=" ">
         <div>
-          <img
-            className="w-full relative mb-5 h-[670px]"
-            src="https://statics.vinpearl.com/styles/1920x1004/public/2023_03/vinholidays-fiesta-phu-quoc-banner_1679989823.jpg.webp?itok=ODH70Jom"
-            alt=""
-          />
+          <div className="relative">
+            <img
+              className="w-full relative mb-5 h-[670px]"
+              src="https://statics.vinpearl.com/styles/1920x1004/public/2023_03/vinholidays-fiesta-phu-quoc-banner_1679989823.jpg.webp?itok=ODH70Jom"
+              alt=""
+            />
+             <div className="absolute inset-0 bg-gray-400 mix-blend-multiply"></div>
+          </div>
           <div
             className={`w-full h-[105px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
@@ -167,7 +170,7 @@ const HeaderHotel = () => {
                     </li>
                     <li>
                      <Link to={'/'}>
-                     <img className="w-[80px] pb-10" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" />
+                      <img className="w-[220px] pb-10" src="https://res.cloudinary.com/dzqywzres/image/upload/v1701702390/llrnrzljtdhaendxphbz.png" alt="" />
                      </Link>
                     </li>
                   </ul>
@@ -184,7 +187,7 @@ const HeaderHotel = () => {
                                     <span> <TextTruncate text={loggedIn?.name} maxLength={3} /> </span>
                                   </div>
                                   {isDropdownOpen && (
-                                  <div className="flex-col flex absolute bg-white text-black absolute mt-3 end-[-30px] bg-white border border-gray-300 shadow-lg">
+                                  <div className="flex-col flex absolute bg-white text-black mt-3 end-[-30px] border border-gray-300 shadow-lg">
                                     <ul className="leading-9 text-black">
                                       <li className="hover:bg-[#f2ba50] hover:text-white px-7 flex items-center justify-center ">
                                         <AiOutlineUser class="mr-2 "/>

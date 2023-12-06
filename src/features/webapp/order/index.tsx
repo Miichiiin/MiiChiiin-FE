@@ -100,6 +100,12 @@ const BookingSuccess = () => {
                 {order && order?.total_amount?.toLocaleString("vi-VN")}đ
               </span>
             </p>
+            <p className="mb-2">
+              <span className="">Trạng thái:</span>{" "}
+              <span className="text-blue-800 font-semibold text-lg">
+              {order && order?.status === 2 ? 'Đã check in' : order?.status === 3 ? 'Đã thanh toán' : order?.status === 4 ? 'Đã check out' : order?.status === 1 ? 'Đã huỷ' : order?.status === 0 ? 'Đang chờ' : ''}
+              </span>
+            </p>
             {/* Thêm thông tin khác của đơn hàng nếu cần */}
           </div>
           <div>

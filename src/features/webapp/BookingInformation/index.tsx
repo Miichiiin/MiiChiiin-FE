@@ -11,7 +11,7 @@ import {
 } from "react-icons/ai";
 import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { useForm } from "react-hook-form";

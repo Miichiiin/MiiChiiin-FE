@@ -111,16 +111,16 @@ const AddPermission = () => {
             checked={oneWay}
             onChange={setOneWay}
             className='mt-1 bg-gray-500'
-          /> */}
-          {/* Nút để thêm quyền từ trái sang phải */}
-          <Button type='primary' className=' bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</Button>
-          <Button
+          /> */}<Button
             type="primary"
             htmlType="submit"
             className=' bg-blue-600 text-white rounded-md mt-3'
           >
             Add
           </Button>
+          
+          <Button type='primary' className=' bg-cyan-500 text-white rounded-md hover:bg-cyan-600' onClick={handleAddPermissions}>Thêm quyền</Button>
+          
 
 
 

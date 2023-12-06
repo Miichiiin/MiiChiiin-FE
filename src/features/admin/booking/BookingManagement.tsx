@@ -16,7 +16,7 @@ import { BiDetail, BiTrash } from "react-icons/bi";
 
 export const BookingManagement = () => {
     const { data: dataBooking, isLoading, isError } = useGetBooking_adminQuery({})
-    const [removeBooking, {isLoading:isRemoving, isSuccess:Success}] = useRemoveBooking_adminMutation()
+    const [removeBooking, { isLoading: isRemoving, isSuccess: Success }] = useRemoveBooking_adminMutation()
     const [searchText, setSearchText] = useState("");
     const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
     const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
@@ -84,28 +84,7 @@ export const BookingManagement = () => {
             dataIndex: 'phone',
             key: 'phone',
         },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'status',
-            key: 'status',
-            render: (_, record) => {
-                let statusText = '';
 
-                if (record.status === 2) {
-                    statusText = 'Đã check in';
-                } else if (record.status === 3) {
-                    statusText = 'Đã thanh toán';
-                } else if (record.status === 4) {
-                    statusText = 'Hoàn thành';
-                } else if (record.status === 1) {
-                    statusText = 'Đã Huỷ';
-                } else if (record.status === 0) {
-                    statusText = 'Đang chờ';
-                }
-
-                return <span>{statusText}</span>;
-            },
-        },
         // Modify the render functions for 'check_in' and 'check_out' columns
 
         {
@@ -126,6 +105,28 @@ export const BookingManagement = () => {
                 const formattedDate = dayjs(record.check_out)
                     .format('DD/MM/YYYY'); // Remove .utc() and .local()
                 return <span>{formattedDate}</span>;
+            },
+        },
+        {
+            title: 'Trạng thái',
+            dataIndex: 'status',
+            key: 'status',
+            render: (_, record) => {
+                let statusText = '';
+
+                if (record.status === 2) {
+                    statusText = 'Đã check in';
+                } else if (record.status === 3) {
+                    statusText = 'Đã thanh toán';
+                } else if (record.status === 4) {
+                    statusText = 'Hoàn thành';
+                } else if (record.status === 1) {
+                    statusText = 'Đã Huỷ';
+                } else if (record.status === 0) {
+                    statusText = 'Đang chờ';
+                }
+
+                return <span>{statusText}</span>;
             },
         },
         {
@@ -166,11 +167,11 @@ export const BookingManagement = () => {
     if (isError) {
         return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
     }
-    if(isRemoving){
-        message.loading({content:'Đang xóa', key:'removeBooking'})
+    if (isRemoving) {
+        message.loading({ content: 'Đang xóa', key: 'removeBooking' })
     }
-    if(Success){
-        message.success({content:'Xóa thành công', key:'removeBooking'})
+    if (Success) {
+        message.success({ content: 'Xóa thành công', key: 'removeBooking' })
     }
     return (
         <div>
