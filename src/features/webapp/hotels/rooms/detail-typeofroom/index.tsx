@@ -69,9 +69,10 @@ const DetailTypeofRoom = () => {
       setImages(hotelData?.[0]?.image);
     }
   }, [hotelData]);
+  console.log("data", hotelData);
 
   useEffect(() => {
-    setLoading(true);
+    setLoading(false);
     setTimeout(() => {
       if (dataRate && dataRate.length > 0) {
         setLoading(false);
@@ -423,9 +424,9 @@ const DetailTypeofRoom = () => {
     sliderNav.current?.slickNext();
   };
   //srollto
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // });
   return (
     <div>
       {loading ? (
