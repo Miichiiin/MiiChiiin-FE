@@ -152,20 +152,24 @@ const Index = () => {
                         </Slider>
                     </div>
                 </div>
-                <div className="mt-20 mb-20 relative bg-[#585c5b]" style={{ textShadow: '1px 2px 3px #000' }}>
-                    <div className="w-[740px] mx-auto absolute inset-0 top-[300px] items-center">
-                        <p className="text-[#f2ba50] font-bold text-[35px] text-center pb-1" style={{ textShadow: '1px 3px 4px #000' }}>
+                <div className="mt-20 mb-20 relative bg-[#585c5b]" >
+                    <div className="w-[740px] mx-auto absolute inset-0 top-[250px] items-center z-10">
+                        <p className="text-[#f2ba50] font-bold text-[35px] text-center pb-1" >
                             Miichi Club
                         </p>
                         <p className="text-[25px] text-center pb-2 text-white font-medium" >
                             Đặc quyền nghỉ dưỡng thượng lưu
                         </p>
-                        <p className="text-white text-center font-semibold text-[18px]" style={{ textShadow: '2px 2px 4px #000' }}>
+                        <p className="text-white text-center  text-[18px]" >
                             Miichi Club là chương trình khách hàng thân thiết của Vinpearl. Khách hàng có thể đăng ký là thành viên miễn phí và tích
                             lũy giao dịch để nâng hạng, trải nghiệm ngay các đặc quyền ưu đãi trong toàn bộ hệ sinh thái Miichi.
                         </p>
                     </div>
-                    <img className="w-full bg-[#585c5b]" src="https://statics.vinpearl.com/styles/1920x860/public/2023_01/About%20Pearl%20Club_1673079019.jpg.webp?itok=f-G5FUpc" alt="" />
+                    <div className="relative">
+                        <img className="w-full" src="https://statics.vinpearl.com/styles/1920x860/public/2023_01/About%20Pearl%20Club_1673079019.jpg.webp?itok=f-G5FUpc" alt="" />
+                        <div className="absolute inset-0 bg-[#94a3b8] mix-blend-multiply"></div>
+                    </div>
+
                 </div>
                 <div className="bg-[#fbf8f2] w-full py-10 ">
                     <div className="xl:w-[1280px] xl:mx-auto mt-10 lg:">
