@@ -76,7 +76,7 @@ const SearchOrder = () => {
                 <h3 className="text-[17px] h-10 font-medium px-2 py-2 bg-gray-300 mb-2">
                   Thông tin khách hàng
                 </h3>
-                <div className="text-[14px] font-medium px-2 leading-7">
+                <div className="text-[14px] font-normal px-2 leading-7">
                   <span>
                     Họ và tên:{" "}
                     <span className="text-blue-500 px-1 mr-5">
@@ -128,7 +128,7 @@ const SearchOrder = () => {
                 <h2 className="px-2 font-bold mb-2 text-[18px] mt-4">
                   VinHolidays Fiesta Phú Quốc
                 </h2>
-                <div className="flex text-[14px] font-medium px-2 space-x-4">
+                <div className="flex text-[14px] font-normal px-2 space-x-4">
                   <span className="">
                     Tổng số phòng:{" "}
                     <span className="text-blue-500 px-1 ">
@@ -149,18 +149,18 @@ const SearchOrder = () => {
                   </span>
                 </div>
                 <span className="w-[100%] items-center flex text-[14px] font-medium px-2 mt-1 mb-3">
-                  (Chủ nhật){" "}
+                  {" "}
                   <span className="text-blue-500 px-1 ">
                     {" "}
                     {new Date(bookingData?.check_in).toLocaleDateString()}
                   </span>{" "}
-                  - (Thứ ba)
+                  - 
                   <span className="text-blue-500 px-1">
                     {new Date(bookingData?.check_out).toLocaleDateString()}
                   </span>
                 </span>
                 <div className="border-t-2">
-                  <h2 className="my-3 mx-2 font-bold">Thông tin các phòng</h2>
+                  <h2 className="my-3 mx-2 font-medium">Thông tin các phòng</h2>
 
                   {bookingData?.room?.map((item: any) => {
                     return (
