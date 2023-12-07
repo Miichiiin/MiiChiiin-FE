@@ -28,7 +28,7 @@ export const ManagerEmployee = () => {
       })
     }
   };
-  const dataSource = emploData?.map(({ id, name, id_role, email, password, image, description, gender, date, address, status, phone }: DataType) => ({
+  const dataSource = emploData?.map(({ roles,id, name, id_role, email, password, image, description, gender, date, address, status, phone }: DataType) => ({
     key: id,
     id_role,
     name,
@@ -40,7 +40,8 @@ export const ManagerEmployee = () => {
     date,
     address,
     status,
-    phone
+    phone,
+    roles
   }))
 
   interface DataType {
@@ -57,6 +58,7 @@ export const ManagerEmployee = () => {
     address: string;
     phone: number;
     status: number | string;
+    roles: []
   }
 
   const columns: ColumnsType<DataType> = [
@@ -110,6 +112,12 @@ export const ManagerEmployee = () => {
       title: "Sđt",
       dataIndex: "phone",
       key: "phone",
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "roles",
+      key: "roles",
+      render: (roles) => roles.map((item: any) => <span className="font-semibold">{item.name}</span>)
     },
     {
       title: "Action",
