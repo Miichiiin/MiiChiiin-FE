@@ -27,7 +27,7 @@ import { differenceInDays, parseISO } from "date-fns";
 import moment from "moment";
 import "./swper.css";
 import Slider from "react-slick";
-import FadeLoader from "react-spinners/ScaleLoader";
+import FadeLoader from "react-spinners/HashLoader";
 import Footer from "@/components/Footer";
 
 const ChooseRoom = () => {
@@ -450,20 +450,13 @@ const ChooseRoom = () => {
 
                           <div className="justify-between flex items-center mt-10 space-x-2">
                             <div>
-                              <p className=" text-left text-sm">
-                                {" "}
-                                Giá công bố:{" "}
-                                <span className="font-semibold text-base text-md text-gray-500">
-                                  {hotel?.price.toLocaleString("vi-VN")} đ
-                                </span>{" "}
-                              </p>
                               <p className=" flex justify-end items-center text-left space-x-2 ">
                                 {" "}
-                                <span className="text-sm"> Giá thành viên:</span>{" "}
+                                <span className="text-sm"> Giá phòng:</span>{" "}
                                 <span className="font-semibold text-base ">
-                                  {hotel?.price.toLocaleString("vi-VN")} đ
+                                  {hotel?.price.toLocaleString("vi-VN")}đ /đêm
                                 </span>
-                                <AiOutlineInfoCircle class="text-red-500" />{" "}
+                                {/* <AiOutlineInfoCircle class="text-red-500" />{" "} */}
                               </p>
                               {/* ... */}
                             </div>

@@ -16,7 +16,6 @@ import {
   BsChevronCompactLeft,
   BsArrowsFullscreen,
 } from "react-icons/bs";
-import { MdOutlineBed } from "react-icons/md";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import { useNavigate, useParams } from "react-router-dom";
@@ -40,7 +39,8 @@ const DetailTypeofRoom = () => {
     id: idRoom,
     id_hotel: idHotel,
   });
-
+  const dataImage = data?.[0]?.imageUrl;
+  
   const likeStart = data?.[0]?.likes;
   const [like, setLike] = useState();
   useEffect(() => {
@@ -69,16 +69,15 @@ const DetailTypeofRoom = () => {
       setImages(hotelData?.[0]?.image);
     }
   }, [hotelData]);
-  console.log("data", hotelData);
 
   useEffect(() => {
-    setLoading(false);
+    setLoading(true);
     setTimeout(() => {
-      if (dataRate && dataRate.length > 0) {
+      if (data && data.length > 0) {
         setLoading(false);
       }
     });
-  }, [dataRate]);
+  }, [data]);
   const override: CSSProperties = {
     display: "flex",
     position: "fixed",
@@ -163,35 +162,6 @@ const DetailTypeofRoom = () => {
     setSelectedRange([dates[0]?.toDate() || null, dates[1]?.toDate() || null]);
   };
 
-  // const handleButtonClick = () => {
-  //   if (selectedRange[0] && selectedRange[1]) {
-  //     console.log("Ngày bắt đầu:", selectedRange[0].toISOString().slice(0, 10));
-  //     console.log(
-  //       "Ngày kết thúc:",
-  //       selectedRange[1].toISOString().slice(0, 10)
-  //     );ưef
-  //     message.success("Chọn ngày thành công");
-  //   } else {
-  //     message.error("Vui lòng chọn một khoảng ngày.");
-  //   }
-  // };
-
-  // const saveRoomInfoToLocalStorage = (
-  //   name: any,
-  //   price: any,
-  //   hotel_id: any,
-  //   id: any
-  // ) => {
-  //   const roomInfo = { hotel_id, id, name, price };
-  //   localStorage.setItem("roomInfo", JSON.stringify(roomInfo));
-  // };
-
-  // interface Room {
-  //   count: number;
-  //   name: string;
-  //   price: number;
-  // }
-
   const onHandSubmit = () => {
     if (selectedRange[0] && selectedRange[1]) {
       const roomDetailsString = roomDetails1
@@ -263,11 +233,6 @@ const DetailTypeofRoom = () => {
       setLike(res.data.likes);
     });
   };
-  // chặn ngày quá khứ
-  // function disableDate(current: any) {
-  //   // Can not select days before today
-  //   return current && current < moment().startOf("day");
-  // }
   // form đặt ngày
   /*Hàm Dropdow*/
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
@@ -424,9 +389,12 @@ const DetailTypeofRoom = () => {
     sliderNav.current?.slickNext();
   };
   //srollto
-  // useEffect(() => {
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  // });
+  const [userInteracted] = useState(false);
+  useEffect(() => {
+    if (!userInteracted) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [userInteracted]); 
   return (
     <div>
       {loading ? (
@@ -461,7 +429,7 @@ const DetailTypeofRoom = () => {
               <div className="flex mb-20">
                 <div className="w-[65%] mx-auto mr-10 mb-20 relative">
                   <Slider {...sliderForSettings} ref={sliderFor} className="">
-                    {images?.map((item: any, index: number) => (
+                    {dataImage?.map((item: any, index: number) => (
                       <div key={index}>
                         <img
                           src={item?.image}
@@ -471,10 +439,10 @@ const DetailTypeofRoom = () => {
                       </div>
                     ))}
                   </Slider>
-                  <Slider {...sliderNavSettings} ref={sliderNav} className="">
-                    <div className="flex">
-                      {images?.map((item: any, index: number) => (
-                        <div key={index}>
+                  <Slider {...sliderNavSettings} ref={sliderNav} className="flex-nav ">
+                    {/* <div className="flex">
+                      {imageDate && imageDate?.map((item: any, index: number) => (
+                        <div key={index} className="">
                           <img
                             src={item?.image}
                             alt=""
@@ -482,17 +450,17 @@ const DetailTypeofRoom = () => {
                           />
                         </div>
                       ))}
-                    </div>
+                    </div> */}
                   </Slider>
                   <button
                     onClick={goToNext}
-                    className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 bottom-12 start-[-20px] transform transition-tranform hover:scale-125 duration-300 "
+                    className="bg-white  border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 absolute z-10 bottom-[47%] start-[-20px]  transform transition-tranform hover:scale-125 duration-300 "
                   >
                     <AiOutlineLeft />
                   </button>
                   <button
                     onClick={goToPrev}
-                    className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute transform transition-tranform hover:scale-125 duration-300  bottom-12 end-[-20px]  "
+                    className="bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute transform transition-tranform hover:scale-125 duration-300  bottom-[47%] end-[-20px]  "
                   >
                     <AiOutlineRight />
                   </button>
@@ -529,10 +497,13 @@ const DetailTypeofRoom = () => {
                   <div className="mt-2">
                     <h2 className="text-lg font-medium">Mô tả</h2>
                   </div>
-                  <p className="text-md pb-2">{data?.[0]?.description}</p>
+                  <p className="text-base pb-2">{data?.[0]?.description}</p>
                   <h1 className="text-lg font-semibold pb-2">
                     {data?.[0]?.people_quantity}
                   </h1>
+                  <h2 className="font-medium mb-2 text-lg mt-1">
+                    Tiện ích
+                  </h2>
                   <div className="grid grid-cols-3 gap-2 pb-8 border-b-2 ">
                     <h1 className="flex items-center text-md">
                       <BsPeople />

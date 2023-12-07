@@ -416,7 +416,7 @@ const ChooseService = () => {
                             </p>
                             <ul className="list-disc px-3">
                               {selectedServicesInRoom.map((selectedService) => {
-                                const { id, price, roomIndex } =
+                                const { id, roomIndex } =
                                   selectedService;
                                 const selectedRoom = roomIndex + 1;
                                 const selectedServiceData = serviceData.find(
@@ -424,19 +424,23 @@ const ChooseService = () => {
                                 );
                                 if (selectedServiceData) {
                                   return (
-                                    <li className="text-sm pb-2" key={id}>
-                                      <div className="flex justify-between items-center">
+                                    <li className="text-sm pb-2 list-none" key={id}>
+                                      <div className="text-gray-500 font-medium">
                                         <p>
                                           {" "}
-                                          Phòng {selectedRoom}:{" "}
-                                          {selectedServiceData.name}
+                                          Phòng {selectedRoom}{" "}
                                         </p>
-                                        <p>
-                                          {selectedServiceData.price.toLocaleString(
-                                            "vi-VN"
-                                          )}{" "}
-                                          đ
-                                        </p>
+                                        <div className="flex justify-between items-center text-gray-500 font-medium ">
+                                          <p>
+                                            {selectedServiceData.name}
+                                          </p>
+                                          <p className="text-black ">
+                                            {selectedServiceData.price.toLocaleString(
+                                              "vi-VN"
+                                            )}{" "}
+                                            đ
+                                          </p>
+                                        </div>
                                       </div>
                                     </li>
                                   );

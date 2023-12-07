@@ -163,14 +163,11 @@ const HeaderHotel = () => {
                       </div>
                     </li>
                     <li className="h-[40px] after-4 font-medium">
-                      <a href="">Ẩm thực</a>
-                    </li>
-                    <li className="h-[40px] after-4 font-medium">
                       <a href="/promotion">Ưu đãi</a>
                     </li>
                     <li>
                      <Link to={'/'}>
-                      <img className="w-[220px] pb-10" src="https://res.cloudinary.com/dzqywzres/image/upload/v1701702390/llrnrzljtdhaendxphbz.png" alt="" />
+                      <img className="w-[220px] pb-10 ml-20" src="https://res.cloudinary.com/dzqywzres/image/upload/v1701702390/llrnrzljtdhaendxphbz.png" alt="" />
                      </Link>
                     </li>
                   </ul>

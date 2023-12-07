@@ -87,7 +87,7 @@ const HotelType = () => {
                                     </a>
                                 ))}
                             </div>
-                            <p className="font-medium text-lg mt-10">Có <span className="font-bold text-xl">{filteredHotels?.length}</span> khách sạn tại <span className="font-bold text-xl">{selectedLocation}</span></p>
+                            <p className=" text-lg mt-10">Có <span className="font-medium text-xl">{filteredHotels?.length}</span> khách sạn tại <span className="font-medium text-xl">{selectedLocation}</span></p>
                         </div>
                         <div className="fixed bottom-4 z-10 right-4 w-20 h-20 bg-[#f2ba50] border border-gray-300 rounded-full shadow-md p-4 ">
                             <span className="text-[50px] text-white"><AiFillWechat /></span>
@@ -97,7 +97,7 @@ const HotelType = () => {
                                 <Link to={`/hotel/${item.id}`} className="w-[1024px] mx-auto box-shadow rounded-md flex space-x-8 my-5" key={index}>
                                     <div className="w-[50%]"><img className="rounded-l-sm" src={item?.image?.[0]?.image} alt="" /></div>
                                     <div className="py-3 ">
-                                        <h1 className="text-[26px] font-bold">{item?.name}</h1>
+                                        <h1 className="text-[26px] font-medium">{item?.name}</h1>
                                         <span className="font-medium ">
                                             <Rate tooltips={desc} value={item.star} />
                                             ({item?.star}/5)
