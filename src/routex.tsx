@@ -108,7 +108,7 @@ export const router = createBrowserRouter([
         element: <BookingInformation />
       },
       {
-        path: "order/:id/:status",
+        path: "order/:slug/:status",
         element: <Order />
       },
       {

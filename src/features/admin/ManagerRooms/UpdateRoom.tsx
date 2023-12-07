@@ -23,7 +23,7 @@ const UpdateRoomPage = () => {
   const roomData = data?.[0]
 
   const [updateRoom] = useUpdateRoom_AdminMutation();
-  const [removeRoom, {isLoading: isRemoving}] = useRemoveRoom_AdminMutation();
+  const [removeRoom, { isLoading: isRemoving }] = useRemoveRoom_AdminMutation();
 
   const onFinish = (values: any) => {
     console.log("Form values:", values);
@@ -65,7 +65,7 @@ const UpdateRoomPage = () => {
           >
             <button
               className=' px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md flex items-center '>
-              <FaRegTrashAlt className="mr-2"/> Xoá phòng
+              <FaRegTrashAlt className="mr-2" /> Xoá phòng
             </button>
           </Popconfirm>
         </div>
@@ -98,9 +98,8 @@ const UpdateRoomPage = () => {
           <div className="w-1/2 bg-white pr-2">
             <Form.Item label="Trạng Thái" name="status" rules={[{ required: true, message: 'Hãy chọn trạng thái ' }]}>
               <Select placeholder="Chọn trạng thái">
-                <Select.Option value={0}>Ngừng hoạt động</Select.Option>
-                <Select.Option value={1}>Đang sử dụng</Select.Option>
-                <Select.Option value={2}>Trống</Select.Option>
+                <Select.Option value={1}>Ngừng hoạt động</Select.Option>
+                <Select.Option value={2}>Đang hoạt động</Select.Option>
               </Select>
             </Form.Item>
           </div>
