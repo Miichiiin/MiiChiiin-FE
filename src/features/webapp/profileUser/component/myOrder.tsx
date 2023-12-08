@@ -170,7 +170,7 @@ const MyOrder = () => {
                     <div className="leading-10">
                       <div className="grid grid-cols-2 font-medium space-x-10">
                         <h3 className="font-medium">
-                          Tên khách sạn: {item?.hotel?.name}
+                          Tên khách sạn : {item?.hotel?.name}
                         </h3>
                         <h3>Tổng số phòng: {item?.total_room}</h3>
                       </div>
@@ -249,35 +249,35 @@ const MyOrder = () => {
                                   <h1 className="font-semibold text-lg mb-2 bg-gray-400 py-2 px-3">
                                     Thông tin khách hàng
                                   </h1>
-                                  <div className="flex flex-col rounded-lg px-2 mb-4 py-3 leading-[25px] ">
-                                    <div className="grid grid-cols- gap-4">
-                                      <p className="font-semibold">
-                                        Tên khách hàng:{" "}
-                                        <span className="text-base font-medium text-blue-800">
+                                  <div className="flex flex-col rounded-lg px-2 mb-4 py-3 leading-[35px] ">
+                                    <div className="grid grid-cols- gap-6">
+                                      <p className="text-base ">
+                                        <span className="text-gray-500 font-medium">Tên khách hàng:{" "}</span>
+                                        <span className="text-[15px] ">
                                           {bookingDetail?.name}
                                         </span>
                                       </p>
-                                      <p className="font-semibold">
-                                        Căn cước công dân:{" "}
-                                        <span className="text-base font-medium text-blue-800">
+                                      <p className="text-base">
+                                        <span className="text-gray-500 font-medium">Căn cước công dân:{" "}</span>
+                                        <span className="text-[15px]">
                                           {bookingDetail?.cccd}
                                         </span>
                                       </p>
-                                      <p className="font-semibold">
-                                        Số điện thoại:{" "}
-                                        <span className="text-base font-medium text-blue-800">
+                                      <p className="text-base">
+                                        <span className="text-gray-500 font-medium"> Số điện thoại:{" "}</span>
+                                        <span className="text-[15px]">
                                           {bookingDetail?.phone}
                                         </span>
                                       </p>
-                                      <p className="font-semibold">
-                                        Email:{" "}
-                                        <span className="text-base font-medium text-blue-800">
+                                      <p className="text-base">
+                                        <span className="text-gray-500 font-medium">Email:{" "}</span>
+                                        <span className="text-[15px]">
                                           {bookingDetail?.email}
                                         </span>
                                       </p>
-                                      <p className="font-semibold">
-                                        Quốc tịch:{" "}
-                                        <span className="text-base font-medium text-blue-800">
+                                      <p className="text-base">
+                                        <span className="text-gray-500 font-medium">Quốc tịch:{" "}</span>
+                                        <span className="text-[15px]">
                                           {bookingDetail?.nationality}
                                         </span>
                                       </p>
@@ -291,18 +291,18 @@ const MyOrder = () => {
                                         <div className="flex items-center">
                                           <AiOutlineCalendar className="text-xl text-gray-500"/>
                                           <span className="flex items-center ml-2">
-                                            <p className="font-semibold">
+                                            <p className="">
                                             {" "}
-                                              <span className="text-base font-medium text-blue-800">
+                                              <span className="text-base ">
                                                 {dayjs(bookingDetail?.check_in).format(
                                                   "YYYY-MM-DD "
                                                 )}
                                               </span>
                                             </p>
                                             <span className="px-2">-</span>
-                                            <p className="font-semibold">
+                                            <p className="">
                                               {" "}
-                                              <span className="text-base font-medium text-blue-800">
+                                              <span className="text-base ">
                                                 {dayjs(bookingDetail?.check_out).format(
                                                   "YYYY-MM-DD"
                                                 )}
@@ -313,28 +313,28 @@ const MyOrder = () => {
                                         </div>
                                       </div>
                                      <div className="flex items-center gap-10 mb-4">
-                                      <p className="font-semibold mr-4 flex items-center">
+                                      <p className=" mr-4 flex items-center">
                                           <BsCalculatorFill className="text-gray-500 mr-2"/>{" "}
-                                          <span className="text-base font-medium text-blue-800">
+                                          <span className="text-base ">
                                             {bookingDetail?.total_amount?.toLocaleString("vi-VN")}đ
                                           </span>
                                         </p>
-                                      <p className="font-semibold flex items-center">
+                                      <p className=" flex items-center">
                                           <BsPeople className="mr-2 text-lg text-gray-500"/>{" "}
-                                              <span className="text-base font-medium text-blue-800">
+                                              <span className="text-base ">
                                                 {bookingDetail?.people_quantity} người
                                               </span>
                                             </p>
-                                        <p className="font-semibold mr-4 text-left flex items-center">
+                                        <p className=" mr-4 text-left flex items-center">
                                          <AiOutlineInsertRowLeft className="mr-2 text-lg text-gray-500"/>{" "}
-                                          <span className="text-base font-medium text-blue-800">
+                                          <span className="text-base ">
                                             {bookingDetail?.total_room} phòng
                                           </span>
                                         </p>
                                      </div>
                                   </div>
                                
-                                    <h2 className="text-lg font-medium mb-2 ml-4">
+                                    <h2 className="text-base font-medium mb-2 ml-4">
                                       Danh sách phòng và dịch vụ đã đặt
                                     </h2>
                                   <div className="overflow-y-auto h-[190px]">
@@ -350,20 +350,18 @@ const MyOrder = () => {
                                                       <img
                                                         src={item?.category_image}
                                                         alt=""
-                                                        width={"80px"}
-                                                        height={"80px"}
-                                                        className="col-span-1"
+                                                        className="col-span-1 w-[90%] h-[80px] object-cover"
                                                       />
-                                                      <span className="font-bold text-md col-span-3">
-                                                        Phòng:{" "}
-                                                        <span className="text-blue-800 font-semibold">
+                                                      <span className=" text-md col-span-3">
+                                                       <span className="text-gray-500 font-medium"> Phòng:{" "}</span>
+                                                        <span className="text-sm">
                                                           {item?.name} -{" "}
                                                           {item?.category_name}
                                                         </span>
                                                         <span>
                                                       <div className="flex space-x-2">
-                                                      <h4> Dịch vụ:{" "}</h4>
-                                                          <ul className="">
+                                                      <h4 className="text-gray-500 font-medium text-sm"> Dịch vụ:{" "}</h4>
+                                                          <ul className="text-sm">
                                                             {item?.services.map(
                                                               (
                                                                 service: any,
