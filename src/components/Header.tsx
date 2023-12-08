@@ -309,7 +309,8 @@ const Header = () => {
                     </div>
                 </div>
               </div>
-              
+            
+            
               <div
                 className={` transition-opacity z-0 lg:ml-10 absolute top-[300px] sm:ml-5 ${
                   isFixed ? "absolute top-[-400px] opacity-0 " : ""
