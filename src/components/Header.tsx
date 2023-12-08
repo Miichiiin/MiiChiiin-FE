@@ -116,26 +116,29 @@ const Header = () => {
   const handleLogout = () => {
     const confirm = window.confirm("Bạn có muốn đăng xuất");
     if (confirm) {
+      localStorage.removeItem("cart");
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("selectedRooms");
-      localStorage.removeItem("cart");
       navigate("/")
       setLoggedIn(null);
     }
   };
-
+  
   return (
     <div>
       <header className="mb-[-120px] ">
         <div>
-          <video
-            className="w-full relative mb-5 "
-            src={video}
-            // autoPlay
-            muted
-            loop
-          />
+          <div className="relative">
+            <video
+              className="w-full relative mb-5 "
+              src={video}
+              // autoPlay
+              muted
+              loop
+            />
+            <div className="absolute inset-0 bg-gray-200 mix-blend-multiply"></div>
+          </div>
           <div
             className={`w-full h-[115px] z-20 text-white p-4 transition duration-300 ease-in-out ${
               isFixed
@@ -186,60 +189,7 @@ const Header = () => {
                           ))}
                         </div>
                       </li>
-                    </ul>
-
-                    <li className="h-[40px] group after-3 ">
-                      <div className="">
-                        <a
-                          href="/promotion"
-                          style={{ textShadow: "2px 2px 4px #000" }}
-                        >
-                          Trải nghiệm
-                        </a>
-                        <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[750px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000 border rounded shadow-md">
-                          <div className="leading-[45px]">
-                            <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
-                              <AiOutlineEnvironment /> <span>Phú Quốc</span>
-                            </span>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">VinHolidays Fiesta Phú Quốc</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Wonderworld Phú Quốc</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Phú Quốc</a>
-                            </p>
-                          </div>
-                          <div className="leading-[45px]">
-                            <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
-                              <AiOutlineEnvironment /> <span>Nha Trang</span>
-                            </span>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Nha Trang Bay</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort Nha Trang</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Sealink Nha Trang</a>
-                            </p>
-                          </div>
-                          <div className="leading-[45px]">
-                            <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">
-                              <AiOutlineEnvironment /> <span>Hội An</span>
-                            </span>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Spa Hội An</a>
-                            </p>
-                            <p className="text-[12px] hover:text-[#f2ba50]">
-                              <a href="">Vinpearl Resort & Golf Nam Hội An</a>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    
+                    </ul>    
                     <li className="h-[40px] after-3">
                       <a
                         href="/promotion"
@@ -248,15 +198,15 @@ const Header = () => {
                         Ưu đãi khuyến mãi
                       </a>
                     </li>
-                    <li>
-                      <img className="w-[80px] pb-11" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700659679/epf3o52bzg1jelbpvffj.png" alt="" />
-                    </li>
                     <li className="h-[40px] after-3">
                       <a href="/new" style={{ textShadow: "2px 2px 4px #000" }}>
                         New
                       </a>
                     </li>          
                   </ul>
+                  <li className="list-none mr-[200px]">
+                      <img className="w-[220px] pb-11" src="https://res.cloudinary.com/dzqywzres/image/upload/v1701702390/llrnrzljtdhaendxphbz.png" alt="" />
+                    </li>
                   <div className="flex items-center justify-end space-x-2  text-white lg:text-[15px] ">
                         <span className="text-[28px] ">
                           {""}
@@ -333,7 +283,7 @@ const Header = () => {
                   Chào mừng đến với Miichi
                 </h1>
                 <p
-                  className="text-white sm:text-[11px] lg:text-[16px] font-semibold"
+                  className="text-white sm:text-[11px] lg:text-[16px] "
                   style={{ textShadow: "1px 2px 3px #000" }}
                 >
                   Đánh thức mọi giác quan với hệ sinh thái nghỉ dưỡng ven biển

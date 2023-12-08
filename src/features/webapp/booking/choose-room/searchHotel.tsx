@@ -255,12 +255,12 @@ export const SearchHotel = () => {
                   <span className="text-gray-700 absolute pt-[23px] font-medium text-[14px] mt-1">
                     {selectedHotel || "Bạn nhập nơi muốn đến..."}
                   </span>
-                  <span className="absolute pt-1 text-sm font-medium text-gray-500 group-hover:text-[#e8952f]">
+                  <span className="absolute pt-1 text-sm  text-gray-500 group-hover:text-[#e8952f]">
                     Khách sạn - điểm đến
                   </span>
                 </div>
                 <span className="absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4 group-hover:text-[#e8952f]">
-                  <AiOutlineEnvironment />
+                  <AiOutlineEnvironment className="text-gray-600"/>
                 </span>
               </div>
               {isDropdownOpen && (
@@ -289,7 +289,7 @@ export const SearchHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 group relative">
-            <AiOutlineCalendar class="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
+            <AiOutlineCalendar class="text-gray-600 absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
             <RangePicker
               className=" w-[260px] text-[16px] pt-5 h-[57px] px-10 border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               defaultValue={[
@@ -309,7 +309,7 @@ export const SearchHotel = () => {
                 position: "relative",
               }}
             />
-            <span className="absolute flex top-1 start-11 font-medium text-sm text-gray-500 group-hover:text-[#e8952f] ">
+            <span className="absolute flex top-1 start-11  text-sm text-gray-500 group-hover:text-[#e8952f] ">
               Ngày nhận - Ngày trả
             </span>
           </Form.Item>
@@ -320,11 +320,11 @@ export const SearchHotel = () => {
                 className="group flex items-center border border-[#e0e0e0] px-5 py-1.5 relative text-[#b0b4b8] rounded transition-all duration-300 ease-in-out 
                   hover:border-[#e8952f] hover:shadow-md "
               >
-                <span className="xl:text-[22px] lg:text-[19px] mr-4 group-hover:text-[#e8952f]">
-                  <AiOutlineUser />
+                <span className="xl:text-[22px] lg:text-[19px] mr-2 group-hover:text-[#e8952f]">
+                  <AiOutlineUser class="text-gray-600 "/>
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
-                  <div className="text-left text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2 font-semibold text-gray-700 group-hover:text-[#e8952f]">
+                  <div className="text-left text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] sm:space-x-2  text-gray-700 group-hover:text-[#e8952f]">
                     <label
                       htmlFor=""
                       className="cursor-pointer text-gray-500 text-sm group-hover:text-[#e8952f]"

@@ -450,17 +450,17 @@ const ChooseRoom = () => {
 
                           <div className="justify-between flex items-center mt-10 space-x-2">
                             <div>
-                              <p className=" text-left">
+                              <p className=" text-left text-sm">
                                 {" "}
                                 Giá công bố:{" "}
-                                <span className="font-semibold text-md text-gray-500">
+                                <span className="font-semibold text-base text-md text-gray-500">
                                   {hotel?.price.toLocaleString("vi-VN")} đ
                                 </span>{" "}
                               </p>
-                              <p className=" flex justify-end items-center text-left space-x-2">
+                              <p className=" flex justify-end items-center text-left space-x-2 ">
                                 {" "}
-                                <span className=""> Giá thành viên:</span>{" "}
-                                <span className="font-semibold text-md ">
+                                <span className="text-sm"> Giá thành viên:</span>{" "}
+                                <span className="font-semibold text-base ">
                                   {hotel?.price.toLocaleString("vi-VN")} đ
                                 </span>
                                 <AiOutlineInfoCircle class="text-red-500" />{" "}
@@ -479,7 +479,7 @@ const ChooseRoom = () => {
                             </p> */}
                             </div>
                             <button
-                              className="flex border px-5 py-2 mt-4 bg-[#2a398c] hover:bg-blue-800 text-white rounded-full font-medium"
+                              className="flex border px-5 py-2 mt-4 text-sm bg-[#2a398c] hover:bg-blue-800 text-white rounded-full font-medium"
                               onClick={() => handleRoomSelect(hotel)}
                             >
                               Chọn
@@ -548,7 +548,7 @@ const ChooseRoom = () => {
                               </div>
                               <span className="basis-1/3 mb-4 text-gray-500 font-medium border-b-2 pb-7">
                                 <p className="text-sm pt-1 flex items-center">
-                                  <AiOutlineTeam class="text-lg mr-2" />
+                                  <AiOutlineTeam class="text-lg mr-2 mb-3" />
                                   <p className="text-sm pb-3 text-gray-500 font-medium">
                                     {numberPeople &&
                                       numberPeople

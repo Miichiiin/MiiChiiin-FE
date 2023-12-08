@@ -15,7 +15,7 @@ const hotelchainstatisticRtApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getHotelChainStatisticRt: builder.query<any, { month: number, year: number, roomType: number }>({
+        getHotelChainStatisticRt: builder.query<any, { month: number, year: number, roomType: string }>({
             query: ({ month, year, roomType }) => `/statistical_rates/${month}/${year}/${roomType}`,
             providesTags: ['HotelChainStatisticRt']
           }),

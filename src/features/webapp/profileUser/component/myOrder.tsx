@@ -114,14 +114,18 @@ const MyOrder = () => {
 
   const [changeStatus] = useGetStatusBookingsMutation();
 
-  const handleStatusChange = async (id: any) => {
-    const status = booking.find((item: any) => item.id === id);
-
-    if (status) {
-      await changeStatus({
-        status: status?.status,
-        id: status?.id,
-      });
+  const handleStatusChange = async (id:any) => {
+    const confirmed = window.confirm("Bạn có muốn xóa không?");
+  
+    if (confirmed) {
+      const status = booking.find((item:any) => item.id === id);
+  
+      if (status) {
+        await changeStatus({
+          status: status.status,
+          id: status.id,
+        });
+      }
     }
   };
 

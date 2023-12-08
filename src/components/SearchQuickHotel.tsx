@@ -271,7 +271,7 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 group">
-            <AiOutlineCalendar className="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
+            <AiOutlineCalendar className="  absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
             <RangePicker
               className="w-[280px] text-[16px] h-[57px] border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               format="DD/MM/YYYY"
@@ -283,13 +283,13 @@ export const SearchQuickHotel = () => {
               }}
               popupStyle={{ overflow: "hidden" }}
               style={{
-                color: "red",
+                color: "black",
                 fontWeight: "bold",
                 paddingTop: "20px",
                 paddingLeft: "45px",
               }}
             />
-            <span className="absolute flex top-1 start-11 font-medium text-sm text-gray-500 group-hover:text-[#e8952f] ">
+            <span className="absolute flex top-1 start-11  text-sm text-gray-500 group-hover:text-[#e8952f] ">
               Ngày nhận - Ngày trả
             </span>
           </Form.Item>
@@ -301,7 +301,7 @@ export const SearchQuickHotel = () => {
                 duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               >
                 <span className="xl:text-[22px] lg:text-[19px] mr-4 group-hover:text-[#e8952f] text-gray-700">
-                  <AiOutlineUser />
+                  <AiOutlineUser className="mr-[-5px]"/>
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
                   <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 sm:space-x-2 font-semibold ">
@@ -315,7 +315,7 @@ export const SearchQuickHotel = () => {
                   </div>
                   <div
                     onClick={toggleDropdown1}
-                    className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-[#353c46] w-[320px] cursor-pointer "
+                    className="xl:text-[14px] xl:space-x-7 lg:flex lg:text-[13px] lg:space-x-5 sm:text-[8px] font-medium text-black w-[320px] cursor-pointer "
                   >
                     <label htmlFor="" className="cursor-pointer ">
                       {numberOfRooms1} phòng{" "}
@@ -481,9 +481,9 @@ export const SearchQuickHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2">
-            <div className="group flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-40 h-[57px] border border-[#e0e0e0] hover:border-[#e8952f] rounded">
-              <span className="xl:text-[23px] lg:text-[16px] sm:text-[12px] mr-4 group-hover:text-[#e8952f]">
-                <AiOutlineIdcard />
+            <div className="group flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-36 h-[57px] border border-[#e0e0e0] hover:border-[#e8952f] rounded">
+              <span className="xl:text-[23px] lg:text-[16px] sm:text-[12px] mr-1 group-hover:text-[#e8952f]">
+                <AiOutlineIdcard className="text-gray-500"/>
               </span>
               <span className="xl:text-[14px] lg:text-[13px] sm:text-[8px] font-medium text-[#353c46]">
                 Ưu đãi
