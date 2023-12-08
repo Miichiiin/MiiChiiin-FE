@@ -67,10 +67,6 @@
     position: relative;
   }
   
-  .toggle-button {
-    /* CSS cho nút toggle */
-  }
-  
   .dropdown-content {
     position: absolute;
     top: 0;
@@ -89,6 +85,9 @@
   }
   html, body {
     scroll-behavior: smooth;
+  }
+  .flex-nav {
+    /* display: flex !important; */
   }
 
 

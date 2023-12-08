@@ -283,15 +283,15 @@ const HotelIntroduction = () => {
                             <h1 className="text-[17px] px-3">
                               {formattedDate}
                               <br />
-                              <span className="font-bold ">
+                              <span className="font-medium ">
                                 {item.user_name}
                               </span>
                             </h1>
-                            <h1 className="text-[17px] ml-5 mb-[-5px]">
-                              <span className="font-semibold italic">
+                            <h1 className="text-base ml-5 mb-[-5px]">
+                              <span className="">
                                 Loại phòng: {item?.category_name}
                               </span>
-                              <h1 className="text-[14px] pr-2 font-medium">
+                              <h1 className="text-base pr-2 ">
                                 Đánh giá:{" "}
                                 <span className="text-yellow-400 text-[20px]  mt-[-5px]">
                                   {"★".repeat(item.rating)}
@@ -353,12 +353,12 @@ const HotelIntroduction = () => {
                 ))}
               </Slider>
             </div>
-            <button
+            {/* <button
               onClick={handleNext1}
               className="top-[50%] end-[12%] bg-white border border-[#e8952f] rounded-full text-[#e8952f] px-3 py-3 ml-[800px] z-10 absolute transform transition-tranform hover:scale-125 duration-300 "
             >
               <AiOutlineRight />
-            </button>
+            </button> */}
           </div>
         </div>
       

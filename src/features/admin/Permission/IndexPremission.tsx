@@ -5,7 +5,11 @@ import { useState } from 'react';
 import { BiTrash } from 'react-icons/bi';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
-
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
+import 'dayjs/plugin/utc';
+import 'dayjs/plugin/timezone';
+dayjs.locale('vi');
 
 
 
@@ -54,7 +58,12 @@ console.log("dataLogin",dataLogin);
   }
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Name',
+      title: 'ID',
+      dataIndex: 'key',
+      key: 'key',
+    },
+    {
+      title: 'Tên quyền',
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>,
@@ -65,14 +74,14 @@ console.log("dataLogin",dataLogin);
       key: 'level',
     },
     {
-      title: 'created_at',
+      title: 'Ngày tạo',
       dataIndex: 'created_at',
       key: 'created_at',
+      render: (_, record) => {
+        const formattedDate = dayjs(record.created_at)
+            .format('DD/MM/YYYY'); // Remove .utc() and .local()
+        return <span>{formattedDate}</span>;
     },
-    {
-      title: 'updated_at',
-      dataIndex: 'updated_at',
-      key: 'updated_at',
     },
 
     {

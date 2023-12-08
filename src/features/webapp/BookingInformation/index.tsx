@@ -8,6 +8,7 @@ import {
   AiOutlineTeam,
   AiOutlineForm,
   AiOutlineGift,
+  AiOutlineInfoCircle,
 } from "react-icons/ai";
 import Modal from "react-modal";
 import HeaderHotelType from "../HotelType/HeaderHotelType";
@@ -21,6 +22,7 @@ import { useEffect, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
 import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
 import Footer from "@/components/Footer";
+import { Tooltip } from "antd";
 const BookingInformation = () => {
   const dataParam = useParams();
   const [order, setOrder] = useState<any>([]);
@@ -365,7 +367,7 @@ const BookingInformation = () => {
               <span className="flex items-center mr-[300px] space-x-3 text-blue-500 font-medium">
                 <AiOutlineLeft />
                 <button onClick={() => handGoBack()} className="">
-                  Chọn phòng
+                  Chọn dịch vụ
                 </button>
               </span>
               <div className="flex items-center space-x-8">
@@ -597,8 +599,10 @@ const BookingInformation = () => {
                         <span className="font-medium text-[18px]">
                           MiiChii Ưu Đãi
                         </span>
-                        <span className="font-medium text-[18px]">
-                          Số coin: {myvoucher?.coin?.toLocaleString("vi-VN")}
+                        <span className="font-medium text-[18px] cursor-pointer">
+                          <Tooltip title="Số coin: Là điểm thưởng khi bạn thực hiện đánh giá phòng sau khi booking">
+                            Số coin: {myvoucher?.coin?.toLocaleString("vi-VN")}
+                          </Tooltip>
                         </span>
                       </div>
 
@@ -720,12 +724,14 @@ const BookingInformation = () => {
                             onChange={() => setTypeVoucher("coin")}
                             className="mr-2"
                           />
-                          <label
-                            htmlFor="useCoin"
-                            className="text-sm text-gray-600 cursor-pointer"
-                          >
-                            Sử dụng số coin đang có
-                          </label>
+                           <span className="flex items-center cursor-pointer">
+                            <Tooltip title="Lưu ý: Số coin không được vượt quá 50% giá trị đơn hàng">
+                              <span className="flex items-center">
+                                <span> Sử dụng số coin đang có</span>
+                                <AiOutlineInfoCircle className="ml-1 mt-0.5 text-red-600 text-sm" />
+                              </span>
+                            </Tooltip>
+                         </span>
                         </div>
 
                         <div className="flex items-center ml-5 mt-2">
@@ -757,8 +763,8 @@ const BookingInformation = () => {
                             fontWeight: "bold",
                           }}
                         >
-                          Lưu ý: Số coin không được vượt quá 50% giá trị đơn
-                          hàng
+                          {/* Lưu ý: Số coin không được vượt quá 50% giá trị đơn
+                          hàng */}
                         </div>
                       )}
                     </div>
@@ -900,19 +906,23 @@ const BookingInformation = () => {
 
                                   if (selectedServiceData) {
                                     return (
-                                      <li className="text-sm pb-2" key={id}>
-                                        <div className="flex justify-between items-center">
+                                      <li className="text-sm pb-2 list-none" key={id}>
+                                        <div className="">
                                           <p className="text-gray-500 font-medium">
                                             {" "}
-                                            Phòng {selectedRoom}:{" "}
-                                            {selectedServiceData?.name}
+                                            Phòng {selectedRoom}{" "}
                                           </p>
-                                          <p className="font-medium text-base">
-                                            {selectedServiceData?.price.toLocaleString(
-                                              "vi-VN"
-                                            )}{" "}
-                                            đ
-                                          </p>
+                                          <div className="flex justify-between items-center ">
+                                            <p className="text-gray-500 font-medium">
+                                              {selectedServiceData?.name}
+                                            </p>
+                                            <p className="font-medium text-base">
+                                              {selectedServiceData?.price.toLocaleString(
+                                                "vi-VN"
+                                              )}{" "}
+                                              đ
+                                            </p>
+                                          </div>
                                         </div>
                                       </li>
                                     );
@@ -926,7 +936,7 @@ const BookingInformation = () => {
                         {/* Ap voucher */}
                         <div>
                           <div className="border-gray-100  px-2 rounded mt-5">
-                            <p className="text-[17px] pb-3 font-semibold">
+                            <p className="text-sm pb-3 font-semibold">
                               Voucher được áp dụng:
                             </p>
                           </div>
@@ -949,11 +959,11 @@ const BookingInformation = () => {
                           )}
 
                           {typeVoucher === "coin" && (
-                            <div className="border-gray-100 px-2 rounded mt-3">
+                            <div className="border-gray-100 px-2 rounded mt-3 text-gray-500 text-sm font-medium">
                               <p>
                                 Coin áp dụng - Giảm giá:{" "}
-                                {myvoucher?.coin?.toLocaleString("vi-VN") || 0}{" "}
-                                coin
+                                <span className="text-black"> {myvoucher?.coin?.toLocaleString("vi-VN") || 0}{" "}  coin</span>
+                               
                               </p>
                             </div>
                           )}
@@ -963,9 +973,9 @@ const BookingInformation = () => {
                   })}
                   <div className=" mt-4 border-t-2 pt-4">
                     <div className="flex items-center justify-between ">
-                      <h2 className="text-[17px] font-medium">
+                      <a className="text-base font-medium">
                         Số tiền tạm tính:
-                      </h2>
+                      </a>
                       <a
                         className="text-[18px] font-semibold text-[#e8952f]"
                         href=""
@@ -974,7 +984,7 @@ const BookingInformation = () => {
                       </a>
                     </div>
                     <div className="flex items-center justify-between mt-4">
-                      <h2 className="text-[17px] font-medium">
+                      <h2 className="text-base  font-medium">
                         {" "}
                         Số tiền được giảm :
                       </h2>

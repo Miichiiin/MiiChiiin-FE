@@ -4,7 +4,8 @@ import {
 import { message } from "antd";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineCalendar, AiOutlineInsertRowRight, AiOutlineSearch, AiOutlineTeam } from "react-icons/ai";
+import { BsCalculator } from "react-icons/bs";
 
 const SearchOrder = () => {
   const [bookingData, setBookingData] = useState<any>(null);
@@ -76,123 +77,123 @@ const SearchOrder = () => {
                 <h3 className="text-[17px] h-10 font-medium px-2 py-2 bg-gray-300 mb-2">
                   Thông tin khách hàng
                 </h3>
-                <div className="text-[14px] font-medium px-2 leading-7">
+                <div className="text-[14px] font-normal px-2 leading-9">
                   <span>
-                    Họ và tên:{" "}
-                    <span className="text-blue-500 px-1 mr-5">
+                    <span className="text-base font-medium text-gray-500">Họ và tên:{" "}</span>
+                    <span className=" px-1 mr-5 ">
                       {bookingData?.name}
                     </span>
                   </span>{" "}
                   <br />
                   <span>
-                    Email:{" "}
-                    <span className="text-blue-500 px-1 mr-5">
+                    <span className="text-base font-medium text-gray-500">Email:{" "}</span>
+                    <span className=" px-1 mr-5">
                       {bookingData?.email}
                     </span>
                   </span>{" "}
                   <br />
                   <span>
-                    Địa chỉ:{" "}
-                    <span className="text-blue-500 px-1 mr-5">
+                    <span className="text-base font-medium text-gray-500">Địa chỉ:{" "}</span>
+                    <span className=" px-1 mr-5">
                       Phường Tân Bình, Thành phố Hải Dương
                     </span>
                   </span>{" "}
                   <br />
                   <span>
-                    Số điện thoại:{" "}
-                    <span className="text-blue-500 px-1 mr-5">
+                    <span className="text-base font-medium text-gray-500">Số điện thoại:{" "}</span>
+                    <span className=" px-1 mr-5">
                       {bookingData?.phone}
                     </span>
                   </span>{" "}
                   <br />
                   <span>
-                    Căn cước công dân:{" "}
-                    <span className="text-blue-500 px-1 mr-5">
+                    <span className="text-base font-medium text-gray-500"> Căn cước công dân:{" "}</span>
+                    <span className=" px-1 mr-5">
                       {bookingData?.cccd}
                     </span>
                   </span>{" "}
                   <br />
                   <span>
-                    Quốc tịch:{" "}
-                    <span className="text-blue-500 px-1 mr-5">
+                    <span className="text-base font-medium text-gray-500 ">Quốc tịch:{" "}</span>
+                    <span className=" px-1 mr-5">
                       {bookingData?.nationality}
                     </span>
                   </span>{" "}
                   <br />
                 </div>
               </div>
-              <div className="w-[50%] border rounded-md">
+              <div className="w-[50%] border rounded-md ">
                 <h3 className="text-[17px] h-10 font-medium px-2 py-2 bg-gray-300 mb-2">
                   Thông tin đặt phòng
                 </h3>
-                <h2 className="px-2 font-bold mb-2 text-[18px] mt-4">
+                <h2 className="px-2 font-medium mb-2 text-[18px] mt-4">
                   VinHolidays Fiesta Phú Quốc
                 </h2>
-                <div className="flex text-[14px] font-medium px-2 space-x-4">
-                  <span className="">
-                    Tổng số phòng:{" "}
-                    <span className="text-blue-500 px-1 ">
-                      {bookingData?.total_room}
+                <div className="flex text-sm  px-2 space-x-12 text-base ">
+                  <span className="flex items-center">
+                    <AiOutlineInsertRowRight className="text-base text-gray-500"/>{" "}
+                    <span className="ml-1  px-1">
+                      {bookingData?.total_room} phòng
                     </span>
                   </span>
-                  <span>
-                    Tổng số người:{" "}
-                    <span className="text-blue-500 px-1 ">
-                      {bookingData?.people_quantity}
+                  <span className="flex items-center">
+                    <AiOutlineTeam className="text-lg text-gray-500 "/> {" "}
+                    <span className="ml-1  px-1 ">
+                      {bookingData?.people_quantity} người
                     </span>{" "}
                   </span>
-                  <span>
-                    Tổng tiền:{" "}
-                    <span className="text-blue-500 px-1 ">
-                      {bookingData?.total_amount} đ
+                  <span className="flex items-center">
+                    <BsCalculator className="text-base text-gray-500"/> {" "}
+                    <span className="ml-1  px-1 ">
+                      {bookingData?.total_amount.toLocaleString("vi-VN")} đ
                     </span>{" "}
                   </span>
                 </div>
-                <span className="w-[100%] items-center flex text-[14px] font-medium px-2 mt-1 mb-3">
-                  (Chủ nhật){" "}
-                  <span className="text-blue-500 px-1 ">
+                <span className="w-[100%] items-center flex text-sm px-2 mt-1 mb-3">
+                <AiOutlineCalendar className="text-lg mr-1 text-gray-500"/>
+                  <div>
                     {" "}
-                    {new Date(bookingData?.check_in).toLocaleDateString()}
-                  </span>{" "}
-                  - (Thứ ba)
-                  <span className="text-blue-500 px-1">
-                    {new Date(bookingData?.check_out).toLocaleDateString()}
-                  </span>
+                    <span className=" px-1 ">
+                      {" "}
+                      {new Date(bookingData?.check_in).toLocaleDateString()}
+                    </span>{" "}
+                    - 
+                    <span className=" px-1 ">
+                      {new Date(bookingData?.check_out).toLocaleDateString()}
+                    </span>
+                  </div>
                 </span>
                 <div className="border-t-2">
-                  <h2 className="my-3 mx-2 font-bold">Thông tin các phòng</h2>
+                  <h2 className="my-3 mx-2 font-medium">Thông tin các phòng</h2>
 
                   {bookingData?.room?.map((item: any) => {
                     return (
                       <>
-                        <div className="border-b-1 mb-2 flex">
+                        <div className="border-b-1 mb-2 flex overflow-y-scroll h-[105px]">
                           <img
-                            className="w-[25%] h-[60px]  px-2 "
+                            className="w-[30%] h-[90px]  px-2 "
                             src={item?.category_image}
                             alt=""
                           />
                           <div>
-                            <span className="text-[14px] font-medium">
-                              Phòng:
-                              <span className="text-blue-500 px-1 mr-5">
-                                {item?.name}
-                              </span>{" "}
-                              Loại phòng:
-                              <span className="text-blue-500 px-1">
-                                {item?.category_name}
+                            <span className="">
+                             <span className=" text-sm font-medium text-gray-500"> Loại phòng:</span>
+                              <span className="text-sm px-1">
+                                {item?.category_name} -  {item?.name}
                               </span>
                             </span>
                             <br />
-                            <span className="text-[14px] font-medium flex mt-2">
-                              Dịch vụ:
+                            <span className=" flex mt-1">
+                              <span className=" text-sm text-gray-500 font-medium">  Dịch vụ:</span>
                               {item?.services?.map((service: any) => {
                                 return (
-                                  <span className="text-blue-500 px-1 mr-5 text-[12px] flex items-center">
+                                  <span className=" px-1 mr-5 text-sm flex items-center">
                                     {service?.name}
                                   </span>
                                 );
                               })}
                             </span>
+ 
                           </div>
                         </div>
                       </>
