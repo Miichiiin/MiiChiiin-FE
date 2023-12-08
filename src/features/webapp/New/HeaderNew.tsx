@@ -1,4 +1,4 @@
-import React,{ useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch ,AiOutlineRight,AiOutlineMenu,AiOutlineEnvironment,AiOutlineDown} from "react-icons/ai";
 import "../../../components/Css/index.css"
 const HeaderNew = () => {
@@ -104,14 +104,14 @@ const HeaderNew = () => {
                             ">
                                 <ul className="flex items-center space-x-[30px] text-[12px] text-black 
                                     xl:space-x-[80px] xl:text-[17px]
-                                    lg:space-x-[60px] lg:text-[15px] lg:block lg:flex
+                                    lg:space-x-[60px] lg:text-[15px] lg:flex
                                     sm:hidden
                                 ">
                                     <button onClick={toggleMenu} className="h-[40px] pb-3 "><AiOutlineMenu/></button>
                                     <li className="group  h-[40px]  after-4 ">
                                         <div className="">
                                             <a href="" >Khách sạn</a>
-                                            <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000">
+                                            <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute  group-hover:flex transition duration-2000">
                                                 <div className="leading-[45px]">
                                                     <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]"><AiOutlineEnvironment/> <span>Phú Quốc</span></span>
                                                     <p className="text-[12px] hover:text-[#f2ba50]"><a href="">VinHolidays Fiesta Phú Quốc</a></p>
@@ -146,7 +146,7 @@ const HeaderNew = () => {
                                     <li className="h-[40px] group after-4 ">
                                     <div className="">
                                             <a href="" >Trải nghiệm</a>
-                                            <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[750px] gap-[60px] absolute  hidden group-hover:block group-hover:flex transition duration-2000">
+                                            <div className="top-10 bg-white px-6 py 6 text-black flex grid-cols-4 w-[750px] gap-[60px] absolute   group-hover:flex transition duration-2000">
                                                 <div className="leading-[45px]">
                                                     <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]"><AiOutlineEnvironment/> <span>Phú Quốc</span></span>
                                                     <p className="text-[12px] hover:text-[#f2ba50]"><a href="">VinHolidays Fiesta Phú Quốc</a></p>

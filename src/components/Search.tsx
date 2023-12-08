@@ -6,13 +6,13 @@ import "../components/Css/index.css"
 import SearchInput from "./SearchInput";
 import SearchDay from "./SearchDay";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "@/app/hook";
+// import { useAppSelector } from "@/app/hook";
 const Search = () => {
   /*Hàm Dropdow*/
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [divClicked, setDivClicked] = useState(false); 
   const refCalen = useRef<HTMLDivElement>(null);
-  const searchHotel = useAppSelector((state: any) => state.searchSlice?.items);
+  // const searchHotel = useAppSelector((state: any) => state.searchSlice?.items);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);

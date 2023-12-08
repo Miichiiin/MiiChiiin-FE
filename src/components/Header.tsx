@@ -151,7 +151,7 @@ const Header = () => {
                   <ul
                     className="flex items-center space-x-[30px] text-[12px] text-white 
                                     xl:space-x-[80px] xl:text-[17px]
-                                    lg:space-x-[60px] lg:text-[15px] lg:block lg:flex
+                                    lg:space-x-[60px] lg:text-[15px] lg:flex
                                     sm:hidden ml-[-80px]
                                 "
                   >
@@ -166,7 +166,7 @@ const Header = () => {
                         >
                           Khách sạn 
                         </a>
-                        <div className="top-9 bg-white px-6 py-3 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute hidden group-hover:block group-hover:flex transition duration-2000 border rounded shadow-md">
+                        <div className="top-9 bg-white px-6 py-3 text-black flex grid-cols-4 w-[1050px] gap-[60px] absolute  group-hover:block  transition duration-2000 border rounded shadow-md">
                           {hotels?.map((hotel: any) => (
                             <div key={hotel.id} className="leading-[45px]">
                               <span className="flex items-center space-x-2 text-[17px] hover:text-[#f2ba50]">

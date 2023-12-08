@@ -32,6 +32,8 @@ export const SearchQuickHotel = () => {
 
   const [isInputEmpty, setIsInputEmpty] = useState(false);
 
+  console.log(isInputEmpty);
+  
   const onHandSubmit = () => {
     // Kiểm tra xem selectedHotel đã được chọn hay không
     if (!selectedHotel) {
@@ -233,13 +235,13 @@ export const SearchQuickHotel = () => {
                   <span className="text-gray-700 absolute top-6 font-medium">
                     {selectedHotel || "Bạn nhập nơi muốn đến..."}
                   </span>
-                  <span className="pt-2 pt-1 text-sm font-medium text-gray-500 group-hover:text-[#e8952f]">
+                  <span className="pt-2 text-sm font-medium text-gray-500 group-hover:text-[#e8952f]">
                     Khách sạn - Điểm đến
                   </span>
                 </div>
                 <ToastContainer />
 
-                <span className="text-gray-700 absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4 group-hover:text-[#e8952f]">
+                <span className=" absolute mt-1 xl:start-[23px] lg:start-3 top-3 lg:text-[22px] text-[#b0b4b8] sm:start-4 group-hover:text-[#e8952f]">
                   <AiOutlineEnvironment />
                 </span>
               </div>
@@ -302,10 +304,10 @@ export const SearchQuickHotel = () => {
                   <AiOutlineUser />
                 </span>
                 <div onClick={handleDivClick1} className="lg:w-[170px]">
-                  <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 font-bold sm:space-x-2 font-semibold ">
+                  <div className="xl:text-[12px] xl:space-x-6 lg:space-x-3 lg:text-[13px] sm:text-[9px] text-gray-700 sm:space-x-2 font-semibold ">
                     <label
                       htmlFor=""
-                      className="cursor-pointer group-hover:text-[#e8952f] ml-[-35px] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]"
+                      className="cursor-pointer ml-[-35px] text-sm font-medium text-gray-500 group-hover:text-[#e8952f]"
                     >
                       Số phòng - Số người
                     </label>
@@ -339,7 +341,7 @@ export const SearchQuickHotel = () => {
                   {isDropdownOpen1 && (
                     <div className="absolute mt-1 lg:w-[385px] sm:w-[340px] ml-[-20px]  bg-white border border-gray-300 shadow-lg px-5 py-4 start-5 top-14 hover:block rounded-md">
                       <div className="flex items-center justify-between cursor-pointer text-[15px]">
-                        <span className="font-medium text-gray-700 font-bold">
+                        <span className="font-medium text-gray-700">
                           Số phòng
                         </span>
                         <div className="flex items-center space-x-4">
