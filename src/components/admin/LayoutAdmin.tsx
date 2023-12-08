@@ -40,6 +40,8 @@ export const LayoutAdmin = () => {
   const userAdminLocal = localStorage.getItem("userAdmin");
 
   let imageLC = "";
+  console.log(imageLC);
+  
 
   if (userAdminLocal) {
     const data = JSON.parse(userAdminLocal);

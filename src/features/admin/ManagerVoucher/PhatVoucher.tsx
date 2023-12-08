@@ -172,7 +172,7 @@ const PhatVoucher = () => {
     let params: any = {
       voucher: selectedUsers[0],
       types: Object.entries(isChecked)
-        .filter(([key, value]) => value === true)
+        .filter(([, value]) => value === true)
         .map(([key]) => key),
       start_date: dateChoose[0],
       end_date: dateChoose[1],
@@ -294,7 +294,7 @@ const PhatVoucher = () => {
               <h3 className="font-semibold mb-3 ml-5">Chọn thời gian phát:</h3>
               <RangePicker
                 // value={dateChoose as any}
-                onChange={(date: any, dateString: any) =>
+                onChange={(_, dateString: any) =>
                   setDateChoose(dateString)
                   
                 }
