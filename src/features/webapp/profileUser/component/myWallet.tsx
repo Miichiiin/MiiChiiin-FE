@@ -1,7 +1,6 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+
 import { useGetVoucher_hotelIdQuery } from "@/api/webapp/voucher_home";
 import { AiOutlineDollar } from "react-icons/ai";
-import FadeLoader from "react-spinners/HashLoader";
 const myWallet = () => {
   const userLocal = localStorage.getItem("user");
   let dataUserLogin;

@@ -16,6 +16,8 @@ const HeaderHotelType = () => {
   };
   /*cố định menu*/
   const [isFixed, setIsFixed] = useState(false);
+  console.log(isFixed);
+  
   const handleScroll = () => {
     setIsFixed(window.scrollY > 800);
   };

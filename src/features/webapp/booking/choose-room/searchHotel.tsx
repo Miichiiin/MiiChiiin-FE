@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, Form, DatePicker } from "antd";
+import { Form, DatePicker } from "antd";
 import dayjs from "dayjs";
 import {
   AiOutlineEnvironment,
-  AiOutlineIdcard,
   AiOutlineMinus,
   AiOutlinePlus,
   AiOutlineUser,
@@ -289,7 +288,7 @@ export const SearchHotel = () => {
           </Form.Item>
 
           <Form.Item className="flex-grow ml-2 group relative">
-            <AiOutlineCalendar class="text-gray-600 absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
+            <AiOutlineCalendar class="absolute top-4 start-0 z-10 w-10 h-5 text-gray-500 group-hover:text-[#e8952f]" />
             <RangePicker
               className=" w-[260px] text-[16px] pt-5 h-[57px] px-10 border-[#e0e0e0] transition-all duration-300 ease-in-out hover:border-[#e8952f] hover:shadow-md "
               defaultValue={[

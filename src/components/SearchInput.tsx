@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AiOutlineEnvironment } from "react-icons/ai";
 import axios from "axios"; // Import thư viện axios
 import { useAppDispatch } from "@/app/hook";

@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { FaMapMarkerAlt } from "react-icons/fa";
 import { AiFillWechat, AiOutlineCalendar } from "react-icons/ai";
 import { useGetVoucherQuery } from "@/api/admin/voucher";
 import Header from "@/components/Header";
 
 const Promotion = () => {
-  const [showMore, setShowMore] = useState(false); // State để kiểm soát hiển thị voucher
   const [visibleVoucherCount, setVisibleVoucherCount] = useState(3);
   const { data } = useGetVoucherQuery();
 

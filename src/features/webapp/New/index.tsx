@@ -1,5 +1,4 @@
 import { AiOutlineRight ,AiOutlineLeft,AiFillWechat,AiOutlineCalendar,AiOutlineEye,AiOutlineSearch} from "react-icons/ai";
-import HeaderNew from "./HeaderNew";
 import Slider from "react-slick";
 import React, { CSSProperties, useEffect, useState } from "react";
 import HeaderHotelType from "../HotelType/HeaderHotelType";

@@ -1,5 +1,5 @@
 // import { useAppSelector } from "@/app/hook";
-import { CSSProperties, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import {
   AiOutlineInfoCircle,
   AiOutlineCheck,
@@ -17,9 +17,7 @@ import { differenceInDays, parseISO } from "date-fns";
 import { useGetService_hotelIdQuery } from "@/api/webapp/service_hotel";
 import { Button } from "antd";
 import HeaderHotelType from "../../HotelType/HeaderHotelType";
-import FadeLoader from "react-spinners/HashLoader";
 import Footer from "@/components/Footer";
-import { TextTruncate } from "@/components/TextTruncate";
 
 interface ServiceOpenState {
   [index: number]: boolean;
@@ -71,6 +69,8 @@ const ChooseService = () => {
   }
   const { data: serviceData } = useGetService_hotelIdQuery(hotel[0]);
   const [loading, setLoading] = useState(false);
+  console.log(loading);
+  
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
@@ -79,13 +79,13 @@ const ChooseService = () => {
       }
     });
   }, [serviceData]);
-  const override: CSSProperties = {
-    display: "flex",
-    position: "fixed",
-    top: "45%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-  };
+  // const override: CSSProperties = {
+  //   display: "flex",
+  //   position: "fixed",
+  //   top: "45%",
+  //   left: "50%",
+  //   transform: "translate(-50%, -50%)",
+  // };
 
   let date: Date[] = [];
   if (dataParam && dataParam.date) {
@@ -394,7 +394,7 @@ const ChooseService = () => {
                           <p className="text-sm pb-3 text-gray-500 font-medium">
                             {NumberPeople &&
                               NumberPeople?.filter(
-                                (item: any, index1: any) => index1 == index
+                                (_, index1: any) => index1 == index
                               ).map(
                                 (
                                   { adults, children, infants }: any,

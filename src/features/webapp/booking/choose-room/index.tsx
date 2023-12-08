@@ -34,7 +34,7 @@ const ChooseRoom = () => {
   const [selectedRooms, setSelectedRooms] = useState<any>([]);
 
   const [totalPrice, setTotalPrice] = useState<any>(0);
-  const searchSlide = useParams();
+  const searchSlide:any = useParams();
   // const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [selectedRoomCount, setSelectedRoomCount] = useState(0);
 
@@ -58,7 +58,7 @@ const ChooseRoom = () => {
   let date: Date[] = [];
   if (searchSlide && searchSlide.date) {
     const timeArray = searchSlide.date.split(",");
-    date = timeArray.map((time) => new Date(time));
+    date = timeArray.map((time:any) => new Date(time));
   }
 
   let hotel: string[] = [];
@@ -546,7 +546,7 @@ const ChooseRoom = () => {
                                     {numberPeople &&
                                       numberPeople
                                         ?.filter(
-                                          (item: any, index1: any) =>
+                                          (_, index1: any) =>
                                             index1 == index
                                         )
                                         .map(
