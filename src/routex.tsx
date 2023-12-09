@@ -63,6 +63,7 @@ import MyWallet from "./features/webapp/profileUser/component/myWallet";
 import Error403 from "./err/Error403";
 import Error401 from "./err/Error401";
 import PhatVoucher from "./features/admin/ManagerVoucher/PhatVoucher";
+import ChangePassword from "./features/webapp/profileUser/component/changePassword";
 
 
 // chặn link admin
@@ -173,6 +174,10 @@ export const router = createBrowserRouter([
       {
         path: "mywallet",
         element: <MyWallet />,
+      },
+      {
+        path: "changePassword",
+        element: <ChangePassword/>
       }
 
     ],

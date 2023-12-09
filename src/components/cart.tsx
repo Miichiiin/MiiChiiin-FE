@@ -110,7 +110,7 @@ const Cart = () => {
         className="relative"
       >
         <Dropdown overlay={roomListDropdown} visible={isCartHovered} >
-          <AiOutlineShoppingCart size={30}  />
+          <AiOutlineShoppingCart size={28}  />
         </Dropdown>
         {selectedRoomCount > 0 && (
           <div
