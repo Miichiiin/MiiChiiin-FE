@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { SigninForm, schemaSignIn } from "@/schema/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
-// import GoogleLoginButton from "./loginGoogle";
+import GoogleLoginButton from "./loginGoogle";
 import axios from 'axios';
 
 const Login = () => {
@@ -16,8 +16,6 @@ const Login = () => {
   const {register,handleSubmit,formState: { errors }} = useForm<SigninForm>({
     resolver: yupResolver(schemaSignIn),
   });
-
-  
 
 const handleLogin = async (user: any) => {
   try {
@@ -111,9 +109,11 @@ const handleLogin = async (user: any) => {
                       <span className="text-[14px] font-medium">Remember me</span>
                     </div>
                     <div>
-                      <a href="" className="hover:text-blue-700 text-blue-500 text-[14px] font-medium underline">
-                        Forgot your password ?
-                      </a>
+                      <Link to={"/forgotpass"}>
+                        <a href="/forgotpass" className="hover:text-blue-700 text-blue-500 text-[14px] font-medium underline">
+                          Forgot your password ?
+                        </a>
+                      </Link>
                     </div>
                   </div>
                   <button
@@ -139,7 +139,7 @@ const handleLogin = async (user: any) => {
                         <BsGoogle className="text-xl" />
                         <span className="px-2">Login with Google</span>
                       </button>
-                      {/* <GoogleLoginButton/> */}
+                      <GoogleLoginButton/>
                     </div>
                   </div>
                 </form>
