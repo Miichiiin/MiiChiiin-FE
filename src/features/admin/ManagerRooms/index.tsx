@@ -1,18 +1,41 @@
-import { useGetRoom_AdminsQuery } from "@/api/admin/room_admin";
+import { useGetRooms_AdminsQuery } from "@/api/admin/room_admin";
 import {
   Divider,
-  Radio,
   Input,
   Select,
   Pagination,
   Skeleton,
+  DatePicker,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoAddCircleOutline } from "react-icons/io5";
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
+import 'dayjs/plugin/utc';
+import 'dayjs/plugin/timezone';
+dayjs.locale('vi');
+import './style.css';
 
 export const ManagerRoom = () => {
-  const { data: roomData, isLoading, isError } = useGetRoom_AdminsQuery({})
+  const today = dayjs();
+  const [checkIn, setCheckIn] = useState(today);
+  const [checkOut, setCheckOut] = useState(today.add(3, 'day'));
+
+  const handleCheckInDateChange = (value:any) => {
+    setCheckIn(value);
+    // Automatically update checkOut to be 3 days from checkIn
+  };
+
+  const handleCheckOutDateChange = (value:any) => {
+    setCheckOut(value);
+  };
+  const disabledDate = (current:any) => {
+    // Disable dates before the check-in date
+    return current && current < checkIn.startOf('day');
+  };
+
+  const { data: roomData, isLoading, isError } = useGetRooms_AdminsQuery({ check_in: checkIn?.format("YYYY-MM-DD"), check_out: checkOut?.format("YYYY-MM-DD") })
   const navigate = useNavigate();
 
   // phân quyền
@@ -24,14 +47,13 @@ export const ManagerRoom = () => {
 
 
   const [searchText, setSearchText] = useState("");
-  const [selectionType, setSelectionType] = useState<'checkbox'>('checkbox');
-  const [selectedState, setSelectedState] = useState<boolean| undefined | string>();
+  const [selectedState, setSelectedState] = useState<boolean | undefined | string>();
   const filteredData = roomData ? roomData
-    .filter((item:any) =>
+    .filter((item: any) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
     )
-    .filter((item:any) =>
-    selectedState === undefined ? true : item?.state === selectedState
+    .filter((item: any) =>
+      selectedState === undefined ? true : item?.state === selectedState
     ) : [];
 
   const [pagination, setPagination] = useState({
@@ -50,12 +72,7 @@ export const ManagerRoom = () => {
   useEffect(() => {
     setPagination({ ...pagination, current: 1 });
   }, [searchText, selectedState]);
-  if (isLoading) {
-    return <Skeleton active />;
-  }
-  if (isError) {
-    return <div>Có lỗi xảy ra khi tải thông tin dịch vụ.</div>;
-  }
+
   return (
     <div>
       <div
@@ -71,6 +88,8 @@ export const ManagerRoom = () => {
           <Input.Search placeholder="Tìm kiếm" className="mr-4" allowClear onSearch={(value) => {
             setSearchText(value)
           }} />
+
+
           <Select
             showSearch
             style={{ width: 200 }}
@@ -110,72 +129,57 @@ export const ManagerRoom = () => {
           </button>
         )}
       </div>
-      <Radio.Group
-        onChange={({ target: { value } }) => {
-          setSelectionType(value);
-        }}
-        value={selectionType}
-      ></Radio.Group>
-      <Divider />
-      {/* <Table
-        columns={columns}
-        dataSource={filteredData}
-        pagination={false}
-      /> */}
-      <div className="grid grid-cols-5 gap-3">
-        {paginatedData?.map((item: any, index: any) => (
-          <React.Fragment key={index}>
-            <div
-              style={item.state === true ? { textShadow: "1px 1px 3px #000"  } : item.state === false ? { } : {}}
-              className={`px-3 pt-3 pb-5 rounded-md border shadow-lg cursor-pointer hover:shadow-xl transition duration-300 ease-in-out h-[150px] 
-                ${item.state === true
-                  ? 'bg-red-500 text-white border border-gray-700 ' 
-                  : item.state === false
-                    ? 'bg-green-600 border border-gray-700'
-                    : ''
-                }
-              `}
-              onClick={() => navigate(`/admin/updateroom/${item.id}`)}
-            >
-              <h2 className="font-bold text-2xl text-center text-white" style={{ textShadow: "2px 2px 4px #000" }}>{item?.name}</h2>
-              <p className='text-md py-2 font-semibold'>Loại phòng: <span className='font-bold'>{item?.name_category}</span></p>
-              <p className='text-md font-semibold'>Tình trạng: <span className='font-bold'>{item?.state === false ? 'Còn trống ' : item?.state === true ? 'Đang sử dụng'  : ''}</span></p>
-
-              {/* {selectedRoom && selectedRoom.id === item.id && (
-                <div className="flex justify-center items-center mt-3">
-                  {hasAddUserPermission("delete room") && (
-                    <Popconfirm
-                      title="Xóa sản phẩm"
-                      description="Bạn có muốn xóa không??"
-                      onConfirm={() => {
-                        removeRoom(selectedRoom.id).unwrap().then(() => {
-                          message.success("Xóa thành công");
-                          setSelectedRoom(null); // Clear the selected room after deletion
-                        })
-                      }}
-                      okText="Có"
-                      cancelText="Không"
-                    >
-                      <button
-                        className='mr-2 px-3 py-2 hover:bg-red-600 bg-red-500 text-white rounded-md'
-                      >
-                        Xóa
-                      </button>
-                    </Popconfirm>
-                  )}
-                  {hasAddUserPermission("update room") && (
-                    <button className='mr-2 px-3 py-2 hover:bg-cyan-600 bg-cyan-500 text-white rounded-md' onClick={() => navigate(`/admin/updateroom/${selectedRoom.id}`)}>
-                      Sửa
-                    </button>
-                  )}
-                </div>
-              )} */}
-            </div>
-          </React.Fragment>
-        ))}
+      <div className="flex justify-center items-center space-x-4">
+        <div>
+          <span className="font-semibold">Check in: </span>
+          <DatePicker
+            onChange={handleCheckInDateChange}
+            format="DD-MM-YYYY"
+            value={checkIn}
+            allowClear={false}
+          />
+        </div>
+        <div>
+          <span className="font-semibold">Check out: </span>
+          <DatePicker
+            onChange={handleCheckOutDateChange}
+            format="DD-MM-YYYY"
+            value={checkOut}
+            allowClear={false}
+            disabledDate={disabledDate}
+          />
+        </div>
       </div>
+      <Divider />
 
-
+      <div className="grid grid-cols-5 gap-3">
+        {isLoading ? (
+          <Skeleton active />
+        ) : isError ? (
+          <div>Chọn ngày checkin và checkout</div>
+        ) : (
+          paginatedData?.map((item: any, index: any) => (
+            <React.Fragment key={index}>
+              <div
+                style={item.state === true ? { textShadow: "1px 1px 3px #000" } : item.state === false ? {} : {}}
+                className={`px-3 pt-3 pb-5 rounded-md border shadow-lg cursor-pointer hover:shadow-xl transition duration-300 ease-in-out h-[150px] 
+            ${item.state === true
+                    ? 'bg-red-500 text-white border border-gray-700 '
+                    : item.state === false
+                      ? 'bg-green-600 border border-gray-700'
+                      : ''
+                  }
+          `}
+                onClick={() => navigate(`/admin/updateroom/${item.id}`)}
+              >
+                <h2 className="font-bold text-2xl text-center text-white" style={{ textShadow: "2px 2px 4px #000" }}>{item?.name}</h2>
+                <p className='text-md py-2 font-semibold'>Loại phòng: <span className='font-bold'>{item?.name_category}</span></p>
+                <p className='text-md font-semibold'>Tình trạng: <span className='font-bold'>{item?.state === false ? 'Còn trống ' : item?.state === true ? 'Đang sử dụng' : ''}</span></p>
+              </div>
+            </React.Fragment>
+          ))
+        )}
+      </div>
       <Pagination
         current={pagination.current}
         pageSize={pagination.pageSize}
