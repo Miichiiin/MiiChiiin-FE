@@ -1,18 +1,13 @@
-import { useSignupMutation } from '@/api/auth/register';
+
 import { useState } from 'react';
 import { Link ,useNavigate} from 'react-router-dom';
-import { message } from "antd";
-const Register = () => {
+// import { message } from "antd";
+const ForgotPass = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
     const [usernameError, setUsernameError] = useState('');
-    const [confirmPasswordError, setConfirmPasswordError] = useState('');
-    const [Signup] = useSignupMutation() ;
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleEmailChange = (e: any) => {
         const newEmail = e.target.value;
@@ -25,26 +20,6 @@ const Register = () => {
         }
     };
 
-    const handlePasswordChange = (e: any) => {
-        const newPassword = e.target.value;
-        setPassword(newPassword);
-        // Kiểm tra password có ít nhất 6 ký tự
-        if (newPassword.length < 6) {
-            setPasswordError('Password cần chứa ít nhất 6 ký tự!');
-        } else {
-            setPasswordError('');
-        }
-    };
-    const handleConfirmPasswordChange = (e:any) => {
-        const newConfirmPassword = e.target.value;
-        setConfirmPassword(newConfirmPassword);
-        // Kiểm tra trùng khớp với password
-        if (newConfirmPassword !== password) {
-            setConfirmPasswordError('Comfirm password phải trùng với password!');
-        } else {
-            setConfirmPasswordError('');
-        }
-    };
 
     const handleUsernameChange = (e:any) => {
         const newUsername = e.target.value;
@@ -57,24 +32,7 @@ const Register = () => {
         }
     };
     
-    const isFormValid = emailError === '' && passwordError === '' && confirmPasswordError === '' && usernameError === '';
-    const handleRegister = async(event:any) =>{
-        event.preventDefault();
-        if(!isFormValid) {
-            message.error('Vui lòng nhập đủ thông tin đăng ký!');
-            return
-        }
-        try {
-            await Signup({
-                email,
-                name: username,
-                password,
-            })
-            message.success('Đăng ký thành công');
-            navigate("/login");
-        } catch (error) {
-        }
-    }
+    const isFormValid = emailError === ''  && usernameError === '';
 
     return (
         <div className="mx-auto items-center h-screen bg-no-repeat bg-fixed bg-cover brightness-[100%] overflow-hidden overflow-x-hidden">
@@ -101,10 +59,10 @@ const Register = () => {
                                     <Link to={"/login"}> Đăng nhập/Login</Link>
                                 </h1>
                                 <h1 className=" font-bold mb-3 text-[17px] text-center w-[50%] border-b-[3px] border-[#e8952f] pb-2 text-center">
-                                <Link to={"/register"}>Đăng kí/Register</Link>
+                                <Link to={"/forgotpass"}>Lấy mật khẩu/Forgot</Link>
                                 </h1>
                             </div>
-                            <form onSubmit={handleRegister}>
+                            <form >
                                 <div className="">
                                     <input type="text" id="email" name="email" placeholder="Email address" value={email}
                                         onChange={handleEmailChange}
@@ -116,19 +74,6 @@ const Register = () => {
                                         onChange={handleUsernameChange}
                                         className="border-1 border pl-3 rounded w-full py-[10px] my-2 transition ease-in-out m-0 focus:outline-none outline-none text-gray-500 text-[13px]" />
                                 </div>
-                                {usernameError && <p className="error text-red-500 pb-2 text-sm">{usernameError}</p>}
-                                <div className="">
-                                    <input type="password" id="password" name="password" placeholder="Password" value={password}
-                                        onChange={handlePasswordChange}
-                                        className="border-1 border pl-3 rounded w-full py-[10px] my-2 transition ease-in-out m-0 focus:outline-none outline-none text-gray-500 text-[13px]" />
-                                </div>
-                                {passwordError && <p className="error text-red-500 text-sm">{passwordError}</p>}
-                                <div className="">
-                                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" value={confirmPassword}
-                                        onChange={handleConfirmPasswordChange}
-                                        className="border-1 border pl-3 rounded w-full py-[10px] my-2 transition ease-in-out m-0 focus:outline-none outline-none text-gray-500 text-[13px]" />
-                                </div>
-                                {confirmPasswordError && <p className="error text-red-500 pb-2 text-sm">{confirmPasswordError}</p>}
                                 <div className="py-2 flex justify-between items-center">
                                     <div>
                                         <input className="mr-2 leading-tight" type="checkbox" id="remember" name="remember" />
@@ -137,16 +82,11 @@ const Register = () => {
                                         </span>
                                     </div>
                                     <div>
-                                        <Link to={"/forgotpass"}>
-                                            <a href="" className="hover:text-blue-700 text-blue-500 text-[14px] font-medium underline">Forgot your password ?</a>
-                                        </Link>
+                                        <a href="/register" className="hover:text-blue-700 text-blue-500 text-[14px] font-medium underline">Đăng ký/register ?</a>
                                     </div>
                                 </div>
-                                <button type="submit" className="bg-[#e8952f] hover:text-black hover:shadow-xl text-white font-medium py-[10px] mt-3 px-4 rounded w-full" disabled={!isFormValid}>Đăng ký / Sign up</button>
+                                <button type="submit" className="bg-[#e8952f] hover:text-black hover:shadow-xl text-white font-medium py-[10px] mt-3 px-4 rounded w-full" disabled={!isFormValid}>Gửi thông tin</button>
                                 <hr className="mt-5 " />
-                                <div>
-                                    <p className="py-4 text-center text-sm">You have an account ? <Link className="hover:text-blue-700 text-blue-500 font-bold" to={"/login"}>Login here</Link> </p>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -157,4 +97,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default ForgotPass

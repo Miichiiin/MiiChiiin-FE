@@ -29,7 +29,7 @@ const myWallet = () => {
             <header className="">
               <h2 className="font-bold text-[20px]">Voucher Của Tôi </h2>
               <p className="text-red-500 font-medium text-sm">
-                Lưu ý: Một Coin tương ứng với 1.000 đ
+                Lưu ý: 1000 Coin tương ứng với 1.000 đ
               </p>
             </header>
             <div className="mr-5 flex items-center ">

@@ -1,4 +1,4 @@
-import { useGetBookingDetailUserQuery } from "@/api/bookingUser";
+import { useGetorderBookingsQuery } from "@/api/bookingUser";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
 import { Link, useParams } from "react-router-dom";
@@ -9,25 +9,30 @@ import 'dayjs/locale/vi';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const BookingSuccess = () => {
-  const { id, status } = useParams<{ id: string; status: string }>();
+  const { slug, status } = useParams<{ slug: string; status: string }>();
 
   const userPromise = localStorage.getItem("user");
   const user = userPromise && JSON.parse(userPromise).id;
-  const { data: order } = useGetBookingDetailUserQuery(
-    { id_user: user, id_booking: id }
-  );
+
+  const { data: order } = useGetorderBookingsQuery(slug)
 
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="max-w-3xl mx-auto py-5 bg-white p-6 shadow-md rounded-md">
         <div className=" flex justify-center text-center bg-white">
-          <img
+          {status === 'success' ? <img
             src="https://hieumobile.com/wp-content/uploads/tich-xanh.png"
             alt=""
             width={50}
             height={50}
             style={{ display: "block" }}
-          />
+          /> : <img
+            src="https://media.istockphoto.com/id/1188413565/vi/vec-to/bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-d%E1%BA%A5u-x-tr%C3%B2n-m%C3%A0u-%C4%91%E1%BB%8F-n%C3%BAt-bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-ch%C3%A9o-tr%C3%AAn-n%E1%BB%81n-tr%E1%BA%AFng.jpg?s=612x612&w=0&k=20&c=KaiB7huyv3jfZGSm67ue-niDsbslPwPTyFlrhvMH3r8="
+            alt=""
+            width={50}
+            height={50}
+            style={{ display: "block" }} />
+          }
         </div>
         <h2 className="text-center text-xl font-semibold mb-5">
           {status === 'success' ? 'Đặt phòng thành công' : 'Đặt phòng thất bại'}
@@ -103,7 +108,7 @@ const BookingSuccess = () => {
             <p className="mb-2">
               <span className="">Trạng thái:</span>{" "}
               <span className="text-blue-800 font-semibold text-lg">
-              {order && order?.status === 2 ? 'Đã check in' : order?.status === 3 ? 'Đã thanh toán' : order?.status === 4 ? 'Đã check out' : order?.status === 1 ? 'Đã huỷ' : order?.status === 0 ? 'Đang chờ' : ''}
+                {order && order?.status === 2 ? 'Đã check in' : order?.status === 3 ? 'Đã thanh toán' : order?.status === 4 ? 'Đã check out' : order?.status === 1 ? 'Đã huỷ' : order?.status === 0 ? 'Đang chờ' : ''}
               </span>
             </p>
             {/* Thêm thông tin khác của đơn hàng nếu cần */}
@@ -113,7 +118,7 @@ const BookingSuccess = () => {
               Danh sách phòng và dịch vụ
             </h1>
             <ul>
-              {order?.rooms?.map((room: any, index: any) => (
+              {order?.room?.map((room: any, index: any) => (
                 <li key={index} className="mb-2">
                   <p className="font-semibold text-blue-800">
                     Phòng: {room?.name}

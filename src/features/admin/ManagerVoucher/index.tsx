@@ -212,12 +212,14 @@ export const ManagerVouchers = () => {
             }}
           />
         </div>
-        <Button
-          type="primary"
-          style={{ background: "#FFD700", borderColor: "#FFD700", marginLeft: "350px" }}
-        >
-          <Link to={`/admin/phatvoucher`}>Phát Voucher</Link>
-        </Button>
+        {hasAddUserPermission('update voucher') && (
+          <Button
+            type="primary"
+            style={{ background: "#FFD700", borderColor: "#FFD700", marginLeft: "350px" }}
+          >
+            <Link to={`/admin/phatvoucher`}>Phát Voucher</Link>
+          </Button>
+          )}
         {hasAddUserPermission('add voucher') && (
           <button className=" px-3 py-2 hover:bg-blue-600 bg-blue-500 text-white rounded-md" onClick={() => navigate(`/admin/addvoucher`)}>
             <IoAddCircleOutline  className="text-xl" />

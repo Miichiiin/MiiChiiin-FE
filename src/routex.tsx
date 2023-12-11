@@ -63,6 +63,7 @@ import MyWallet from "./features/webapp/profileUser/component/myWallet";
 import Error403 from "./err/Error403";
 import Error401 from "./err/Error401";
 import PhatVoucher from "./features/admin/ManagerVoucher/PhatVoucher";
+import ForgotPass from "./features/webapp/auth/Login/forgotPass";
 
 
 // chặn link admin
@@ -108,7 +109,7 @@ export const router = createBrowserRouter([
         element: <BookingInformation />
       },
       {
-        path: "order/:id/:status",
+        path: "order/:slug/:status",
         element: <Order />
       },
       {
@@ -130,6 +131,10 @@ export const router = createBrowserRouter([
       {
         path: '/register',
         element: <Register />
+      },
+      {
+        path:"/forgotpass",
+        element:<ForgotPass/>
       },
       {
         path: '/login',

@@ -109,9 +109,11 @@ const handleLogin = async (user: any) => {
                       <span className="text-[14px] font-medium">Remember me</span>
                     </div>
                     <div>
-                      <a href="" className="hover:text-blue-700 text-blue-500 text-[14px] font-medium underline">
-                        Forgot your password ?
-                      </a>
+                      <Link to={"/forgotpass"}>
+                        <a href="/forgotpass" className="hover:text-blue-700 text-blue-500 text-[14px] font-medium underline">
+                          Forgot your password ?
+                        </a>
+                      </Link>
                     </div>
                   </div>
                   <button

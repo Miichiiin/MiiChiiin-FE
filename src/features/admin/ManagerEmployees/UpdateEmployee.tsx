@@ -68,7 +68,6 @@ const UpdateEmployeePage = () => {
     body.append('phone', values.phone)
     body.append('email', values.email)
     body.append('description', values.description)
-    body.append('role', values.role)
     if (isImageChanged) {
       body.append('image', selectedFile as File);
     } else {

@@ -126,7 +126,7 @@ export const BookingManagement = () => {
                     statusText = 'Đang chờ';
                 }
 
-                return <span>{statusText}</span>;
+                return <span className='font-semibold'>{statusText}</span>;
             },
         },
         {
