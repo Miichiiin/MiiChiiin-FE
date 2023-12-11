@@ -214,7 +214,7 @@ export const SearchQuickHotel = () => {
         // onFinish={onFinish}
         autoComplete="off"
       >
-        <div className="flex items-center w-full">
+        <div className="flex items-center  justify-center ml-20">
           <Form.Item<FieldType>
             name="nameHotel"
             className="flex-grow"
@@ -478,7 +478,7 @@ export const SearchQuickHotel = () => {
             </button>
           </Form.Item>
 
-          <Form.Item className="flex-grow ml-2">
+          {/* <Form.Item className="flex-grow ml-2">
             <div className="group flex items-center px-5 py-4 text-[#b0b4b8] lg:space-x-3 sm:space-x-[-10px] w-36 h-[57px] border border-[#e0e0e0] hover:border-[#e8952f] rounded">
               <span className="xl:text-[23px] lg:text-[16px] sm:text-[12px] mr-1 group-hover:text-[#e8952f]">
                 <AiOutlineIdcard className="text-gray-500"/>
@@ -487,7 +487,7 @@ export const SearchQuickHotel = () => {
                 Ưu đãi
               </span>
             </div>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item className="flex-grow ml-2">
             <button
