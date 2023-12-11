@@ -1,6 +1,6 @@
 import { useGetorderBookingsQuery } from "@/api/bookingUser";
-import { AiOutlineHome } from "react-icons/ai";
-import { BsCartCheck } from "react-icons/bs";
+import { AiFillCalendar, AiOutlineHome, AiOutlineLine, AiOutlineTeam } from "react-icons/ai";
+import { BsCalculator, BsCartCheck } from "react-icons/bs";
 import { Link, useParams } from "react-router-dom";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -46,68 +46,44 @@ const BookingSuccess = () => {
           Thông tin đơn hàng:
         </h3>
         <div className="grid grid-cols-2 pl-10">
-          <div className="">
+          <div className="leading-8">
             <h1 className=" font-semibold mb-2 text-xl">
               Danh sách phòng và dịch vụ
             </h1>
             <p className="mb-2">
-              <span className="">Tên khách hàng:</span>{" "}
-              <span className=" text-blue-800 font-semibold text-lg">
+              <span className="font-medium text-gray-600 text-[17px]">Tên khách hàng:</span>{" "}
+              <span className=" ">
                 {order && order?.name}
               </span>
             </p>
             <p className="mb-2">
-              <span className="">Email:</span>{" "}
-              <span className=" text-blue-800 font-semibold text-lg">
+              <span className="font-medium text-gray-600 text-[17px]">Email:</span>{" "}
+              <span className=" ">
                 {order && order?.email}
               </span>
             </p>
             <p className="mb-2">
-              <span className="">Số điện thoại:</span>{" "}
-              <span className=" text-blue-800 font-semibold text-lg">
+              <span className="font-medium text-gray-600 text-[17px]">Số điện thoại:</span>{" "}
+              <span className=" ">
                 {order && order?.phone}
               </span>
             </p>
+           
             <p className="mb-2">
-              <span className="">Ngày nhận phòng:</span>{" "}
-              <span className=" text-blue-800 font-semibold text-lg">
-                {order && dayjs(order?.check_in).format('DD-MM-YYYY')}
-              </span>
-            </p>
-            <p className="mb-2">
-              <span className="">Ngày trả phòng:</span>{" "}
-              <span className=" text-blue-800 font-semibold text-lg">
-                {" "}
-                {order && dayjs(order?.check_out).format('DD-MM-YYYY')}
-              </span>
-            </p>
-            <p className="mb-2">
-              <span className="">Số người:</span>{" "}
-              <span className=" text-blue-800 font-semibold text-lg">
-                {order && order?.people_quantity}
-              </span>
-            </p>
-            <p className="mb-2">
-              <span className="">CCCD: </span>{" "}
-              <span className=" text-blue-800 font-semibold text-lg">
+              <span className="font-medium text-gray-600 text-[17px]">CCCD: </span>{" "}
+              <span className=" ">
                 {order && order?.cccd}
               </span>
             </p>
             <p className="mb-2">
-              <span className="">Quốc tịch: </span>{" "}
-              <span className=" text-blue-800 font-semibold text-lg">
+              <span className="font-medium text-gray-600 text-[17px]">Quốc tịch: </span>{" "}
+              <span className=" ">
                 {order && order?.nationality}
               </span>
             </p>
             <p className="mb-2">
-              <span className="">Tổng số tiền:</span>{" "}
-              <span className="text-blue-800 font-semibold text-lg">
-                {order && order?.total_amount?.toLocaleString("vi-VN")}đ
-              </span>
-            </p>
-            <p className="mb-2">
-              <span className="">Trạng thái:</span>{" "}
-              <span className="text-blue-800 font-semibold text-lg">
+              <span className="font-medium text-gray-600 text-[17px]">Trạng thái:</span>{" "}
+              <span className="text-blue-500 font-medium">
                 {order && order?.status === 2 ? 'Đã check in' : order?.status === 3 ? 'Đã thanh toán' : order?.status === 4 ? 'Đã check out' : order?.status === 1 ? 'Đã huỷ' : order?.status === 0 ? 'Đang chờ' : ''}
               </span>
             </p>
@@ -117,10 +93,41 @@ const BookingSuccess = () => {
             <h1 className=" text-xl font-semibold mb-2">
               Danh sách phòng và dịch vụ
             </h1>
+            <div className="flex items-center">
+              <AiFillCalendar className="mb-2 text-lg text-gray-500 mr-2"/>
+              <p className="mb-2">
+                <span className=""></span>{" "}
+                <span className=" ">
+                  {order && dayjs(order?.check_in).format('DD-MM-YYYY')}
+                </span>
+              </p>
+              <span className="mb-2 mx-2"> - </span>
+              <p className="mb-2">
+                <span className=""></span>{" "}
+                <span className=" ">
+                  {" "}
+                  {order && dayjs(order?.check_out).format('DD-MM-YYYY')}
+                </span>
+              </p>
+            </div>
+            <div className="flex items-center space-x-10">
+              <p className="mb-2 flex items-center">
+                <span className="font-medium text-gray-600 text-[17px]"><BsCalculator className="text-gray-500 mr-2" /></span>{" "}
+                <span className="">
+                  {order && order?.total_amount?.toLocaleString("vi-VN")}đ
+                </span>
+              </p>
+              <p className="mb-2 flex items-center">
+                <span className=""><AiOutlineTeam className="text-lg mr-2 text-gray-500"/></span>{" "}
+                <span className=" ">
+                  {order && order?.people_quantity} người
+                </span>
+              </p>
+            </div>
             <ul>
               {order?.room?.map((room: any, index: any) => (
                 <li key={index} className="mb-2">
-                  <p className="font-semibold text-blue-800">
+                  <p className="font-medium">
                     Phòng: {room?.name}
                   </p>
                   <ul className="list-disc ml-6">

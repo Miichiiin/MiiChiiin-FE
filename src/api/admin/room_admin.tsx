@@ -45,11 +45,15 @@ const room_adminApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ['Room_admin']
-        })
+        }),
+        getRooms_Admins: builder.query({
+            query: (room) => `/rooms/${room?.check_in}/${room?.check_out}`,
+            providesTags: ['Room_admin']
+        }),
     })
 })
 export const { 
-    useAddRoom_AdminMutation, useGetRoom_AdminByIdQuery, useGetRoom_AdminsQuery, useRemoveRoom_AdminMutation, useUpdateRoom_AdminMutation
+    useAddRoom_AdminMutation, useGetRoom_AdminByIdQuery, useGetRoom_AdminsQuery, useRemoveRoom_AdminMutation, useUpdateRoom_AdminMutation, useGetRooms_AdminsQuery
  } = room_adminApi;
 export const room_AdminReducer = room_adminApi.reducer;
 export default room_adminApi;
