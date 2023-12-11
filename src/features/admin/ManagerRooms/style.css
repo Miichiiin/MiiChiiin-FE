@@ -1,0 +1,7 @@
+.ant-picker-input {
+  font-size: 16px; 
+}
+.ant-picker {
+    width: 200px;
+    text-align: center; /* Adjust the width as needed */
+  }
