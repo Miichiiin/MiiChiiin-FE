@@ -101,7 +101,7 @@ const MyOrder = () => {
       case 2:
         return { text: "Đã check in", colorClass: "text-green-500" };
       case 3:
-        return { text: "Đang thanh toán", colorClass: "text-blue-500" };
+        return { text: "Đã thanh toán", colorClass: "text-blue-500" };
       case 4:
         return { text: "Đã hoàn thành", colorClass: "text-gray-500" };
       default:
@@ -147,7 +147,7 @@ const MyOrder = () => {
               <option value="0">Đang Chờ</option>
               <option value="1">Đã Hủy</option>
               <option value="2">Đã check in</option>
-              <option value="3">Đang thanh toán</option>
+              <option value="3">Đã thanh toán</option>
               <option value="4">Đã hoàn thành</option>
             </select>
           </div>

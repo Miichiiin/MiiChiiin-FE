@@ -191,7 +191,7 @@ const BookingInformation = () => {
       email: data.email,
       name: data.firstName + data.lastName,
       message: "...",
-      id_voucher: selectedVoucher?.id_voucher || null,
+      id_voucher: appliedVoucher?.id_voucher || null,
       people_quantity: totalChildren + totalAdults,
       total_amount: total1,
       cccd: data.id,
@@ -742,6 +742,7 @@ const BookingInformation = () => {
                             onChange={() => setTypeVoucher("cash")}
                             checked={typeVoucher === "cash" ? true : false}
                             className="mr-2"
+                            onClick={openVoucherModal}
                           />
                           <div
                             className={`text-sm text-gray-600 cursor-pointer ${
@@ -749,7 +750,7 @@ const BookingInformation = () => {
                                 ? "opacity-50 pointer-events-none"
                                 : ""
                             }`}
-                            onClick={openVoucherModal}
+                           
                           >
                             Chọn voucher
                           </div>

@@ -124,6 +124,11 @@ const Header = () => {
       setLoggedIn(null);
     }
   };
+
+  const clearCartHandleLogin = () => {
+
+    localStorage.removeItem("cart");
+  };
   
   return (
     <div>
@@ -259,6 +264,7 @@ const Header = () => {
                               to="/login"
                               className="hover:underline"
                               style={{ textShadow: "1px 2px 3px #000" }}
+                              onClick={clearCartHandleLogin}
                             >
                               Đăng nhập 
                             </Link>

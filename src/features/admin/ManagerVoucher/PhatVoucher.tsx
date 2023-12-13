@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useGetVoucherQuery } from "@/api/admin/voucher";
-import { Table, Checkbox, Button, Row, Col, DatePicker, message } from "antd";
-// import { useAddVoucherMutation } from "@/api/admin/voucher";
+import { Table, Button, Row, Col, DatePicker, message } from "antd";
 import { usePhatVoucherMutation } from "@/api/admin/voucher";
 import moment from "moment";
 import "../../../components/Css/index.css";
@@ -107,9 +106,9 @@ const PhatVoucher = () => {
   // Theo khách sạn
   const [showSelect, setShowSelect] = useState(false);
 
-  const handleLabelClick1 = () => {
-    setShowSelect(!showSelect);
-  };
+  // const handleLabelClick1 = () => {
+  //   setShowSelect(!showSelect);
+  // };
   // Phát voucher
   const onSelectVoucher = (voucher: any) => {
     setSelectedVoucher(voucher);
@@ -122,17 +121,14 @@ const PhatVoucher = () => {
   function getCurrentDateFormatted() {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
+    const month = String(now.getMonth() + 1).padStart(2, "0"); 
     const day = String(now.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
   }
 
   const handleGenerateVouchers = async () => {
-    // if (!selectedVoucher) {
-    //   message.error("Vui lòng chọn voucher trước khi phát.");
-    //   return;
-    // }
+
 
     if (selectedUsers.length === 0) {
       message.error("Vui lòng chọn ít nhất một người dùng để phát voucher.");
@@ -140,10 +136,6 @@ const PhatVoucher = () => {
     }
     console.log(dateChoose[0]);
 
-    // if (dateChoose[0] === undefined || dateChoose[1] === undefined) {
-    //   message.error("Vui lòng chọn ngày phát.");
-    //   return;
-    // }
 
     if (Object.values(isChecked).every((e) => e === false)) {
       message.error("Vui lòng chọn options để phát.");
