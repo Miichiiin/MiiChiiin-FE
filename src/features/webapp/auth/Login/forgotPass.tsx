@@ -20,18 +20,14 @@ const ForgotPass = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        await forgetPassword({
+            email: email,
+        }).unwrap().then(() => {
+            message.success('Vui lòng kiểm tra email để lấy lại mật khẩu!');
+        }).catch(() => {
+            message.error('Email không tồn tại!');
+        });
 
-        if (emailError === '') {
-            try {
-                const response = await forgetPassword({
-                    email: email,
-                });
-                console.log(response); 
-            } catch (error) {
-                console.error(error);
-            }
-            message.success("Mật khẩu đã được gửi đến email của bạn. Vui lòng kiểm tra hộp thư đến.");
-        }
     };
 
     const isFormValid = emailError === '';
@@ -41,9 +37,9 @@ const ForgotPass = () => {
             <div className="flex">
                 <div className='flex'>
                     <div className="w-[67%] relative">
-                        <img 
-                            src="https://res.cloudinary.com/dzqywzres/image/upload/v1701050900/b6ihzn2wajkkgwdbbznz.jpg" 
-                            alt="" 
+                        <img
+                            src="https://res.cloudinary.com/dzqywzres/image/upload/v1701050900/b6ihzn2wajkkgwdbbznz.jpg"
+                            alt=""
                             className="object-cover"
                         />
                         <div className="absolute top-[20%] end-[45%] text-white  w-[45%]">

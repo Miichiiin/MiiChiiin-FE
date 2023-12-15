@@ -28,7 +28,7 @@ const ChangePassword = () => {
 
   const [changePasswordMutation] = useChange_passwordMutation();
 
-  const handlePasswordChange = (e: any, setter: any) => {
+  const handlePasswordChange = (e: any, _: any) => {
     const newPasswordValue = e.target.value;
     setNewPassword(newPasswordValue);
     checkPasswordStrength(newPasswordValue);
@@ -58,13 +58,15 @@ const ChangePassword = () => {
             id_user: user?.id,
             old_password: oldPassword,
             new_password: newPassword,
+          }).unwrap().then(() => {
+            message.success('Đổi mật khẩu thành công!');
+          }).catch(() => {
+            message.error('Đổi mật khẩu thất bại!');
           });
 
           
           setErrorMessage("");
-          message.success("Đổi mật khẩu thành công");
         } else {
-          
           setSuccessMessage("");
           message.error("Mật khẩu mới không đủ mạnh");
         }
