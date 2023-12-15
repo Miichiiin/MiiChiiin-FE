@@ -7,7 +7,7 @@ const Footer = () => {
                 <div className="text-white">
                     <img className="mb-4 w-[80%]" src="https://res.cloudinary.com/dzqywzres/image/upload/v1700062478/u7kzl2ufmmbe66o9kivw.png" alt="" />
                     <p className="flex  space-x-2"><span className="mt-2 text-[#f2ba50] "><AiFillEnvironment/></span> <span className="text-[14px]">Đảo Hòn Tre, Phường Vĩnh Nguyên, Thành phố Nha Trang, Tỉnh Khánh Hòa, Việt Nam</span></p>
-                    <p className="text-[#f2ba50] flex items-center space-x-2 mt-4"><AiTwotoneMail/><span>callcenter@vinpearl.com</span></p>
+                    <p className="text-[#f2ba50] flex items-center space-x-2 mt-4"><AiTwotoneMail/><span>callcenter@MiiChi.com</span></p>
                     <p className="text-[#f2ba50] flex items-center space-x-2 mt-4 mb-4"><AiTwotonePhone/><span> 1900 23 23 89 (Nhánh số 3)</span></p>
                     <p className="text-[12px] mb-8">
                       <span>Chủ tài khoản: <br />
@@ -68,7 +68,7 @@ const Footer = () => {
         </div>
         <div className="bg-[#0a0f2b] w-full h-[40px] pt-2">
             <div className="flex items-center w-[1280px] mx-auto justify-between  ">
-              <span className="text-white">Copyright © 2022 Vinpearl.com. All rights reserved</span>
+            
               <div className="flex space-x-3">
                 <img src="https://vinpearl.com/themes/porto/images/logos/facebook.svg" alt="" />
                 <img src="https://vinpearl.com/themes/porto/images/logos/youtube.svg" alt="" />

@@ -128,14 +128,14 @@ const HotelIntroduction = () => {
             <h1 className="text-[30px] font-medium mb-3">{hotelData?.[0]?.name}</h1>
             <p>
               Được thiết kế theo lối kiến trúc mạnh mẽ, vững chãi nhưng không
-              kém phần tinh tế, thu hút cùng hệ thống 687 phòng nghỉ có nội thất
-              hiện đại và bể bơi ngoài trời 800m2, VinHolidays Fiesta Phú Quốc
+              kém phần tinh tế, thu hút cùng hệ thống thể MiiChi 687 phòng nghỉ có nội thất
+              hiện đại và bể bơi ngoài trời 800m2, 
               là lựa chọn hàng đầu để nghỉ dưỡng và gắn kết cho khách hàng từ
               các gia đình, nhóm bạn trẻ đến những đoàn khách số lượng lớn.
             </p>
             <p>
               Nằm tại vị trí trung tâm của khu phức hợp Grand World và liền kề
-              quần thể Vinpearl, VinHolidays Fiesta Phú Quốc cùng các trải
+              quần thể MiiChi  cùng các trải
               nghiệm vui chơi giải trí và mua sắm đa dạng, hứa hẹn mang tới kì
               nghỉ trong mơ với chi phí hợp lý cho tất cả mọi người trong hành
               trình{" "}
