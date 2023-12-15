@@ -8,7 +8,7 @@ const { RangePicker } = DatePicker;
 
 const PhatVoucher = () => {
   const { data: voucherData } = useGetVoucherQuery();
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [bookingCount, setBookingCount] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -63,10 +63,7 @@ const PhatVoucher = () => {
       key: "tenVoucher",
       render: (text: any, record: Voucher) => (
         <span
-          style={{
-            fontWeight: "bold",
-            color: selectedVoucher?.id === record.id ? "#0066cc" : "inherit",
-          }}
+          
           onClick={() => onSelectVoucher(record)}
         >
           {text}
@@ -192,10 +189,10 @@ const PhatVoucher = () => {
       phatVoucher(params)
         .unwrap()
         .then(() => {
-          message.success("Thêm thành công voucher!");
+          message.success("Đã phát voucher thành công!");
         });
 
-      message.success("Đã phát voucher thành công!");
+
     } catch (error) {
       console.error("Mutation error:", error);
       message.error("Có lỗi xảy ra khi phát voucher.");

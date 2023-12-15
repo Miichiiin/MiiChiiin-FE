@@ -1,5 +1,5 @@
 
-import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
+import { AiFillTool, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import { Link, Outlet } from 'react-router-dom';
@@ -54,6 +54,7 @@ export const LayoutProfile = () => {
 
           <div className="text-[18px] leading-7 mt-6">
             <label className="space-x-3 flex items-center text-white "><AiOutlineUser class=""/> <Link className='' to="">Thông tin tài khoản</Link></label><br />
+            <label className="space-x-3 flex items-center text-white "><AiFillTool  class=""/> <Link  to="/profileUser/changePassword">Đổi mật khẩu</Link></label><br />
             <label className="space-x-3 flex items-center text-white "><AiOutlineShoppingCart/> <Link to="/profileUser/mywallet">Ví của tôi</Link></label><br />
             <label className="space-x-3 flex items-center text-white "><BsFillCartCheckFill/> <Link to="/profileUser/myorder">Đơn hàng của tôi</Link></label><br />
             <label className="space-x-3 flex items-center text-white  pb-10"><BiLogOut/> <Link to="">Đăng xuất</Link></label>
