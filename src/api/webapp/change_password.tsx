@@ -24,11 +24,19 @@ const change_PasswordApi = createApi({
             }),
             invalidatesTags: ['Change_password']
         }),
+        forget_password: builder.mutation({
+            query: (product) => ({
+                url: `/forget_password`,
+                method: "POST",
+                body: product
+            }),
+            invalidatesTags: ['Change_password']
+        }),
         
     })
 })
 export const { 
- useChange_passwordMutation
+ useChange_passwordMutation,useForget_passwordMutation
  } =  change_PasswordApi;
 export const change_PasswordReducer =  change_PasswordApi.reducer;
 export default change_PasswordApi;
