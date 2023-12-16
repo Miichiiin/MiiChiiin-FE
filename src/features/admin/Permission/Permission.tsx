@@ -109,6 +109,12 @@ const Permission = () => {
           label="Tên Role "
           name="name"
           className='w-[500px] font-medium '
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng nhập tên Role!',
+            },
+          ]}
         >
           <Input />
         </Form.Item>
