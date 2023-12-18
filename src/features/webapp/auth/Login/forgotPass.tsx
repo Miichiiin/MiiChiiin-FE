@@ -48,17 +48,17 @@ const ForgotPass = () => {
                         </div>
                     </div>
                     <div className="w-[33%] flex">
-                        <div className="px-10 w-[93%]">
+                        <div className="px-10 w-[100%]">
                             <div className="flex mt-[70px] justify-center mb-[-50px]">
                                 <a href="/" className="h-[150px] flex justify-center">
                                     <img className="w-[100%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1701702390/llrnrzljtdhaendxphbz.png" alt="" />
                                 </a>
                             </div>
                             <div className="flex">
-                                <h1 className="font-bold mb-3 text-[17px] w-[50%]">
+                                <h1 className="font-bold mb-3 text-[17px] text-center w-[50%]">
                                     <Link to={"/login"}>Đăng nhập/Login</Link>
                                 </h1>
-                                <h1 className="font-bold mb-3 text-[17px] text-center w-[50%] border-b-[3px] border-[#e8952f] pb-2 ">
+                                <h1 className="font-bold mb-3 text-[17px] w-[50%] border-b-[3px] border-[#e8952f] pb-2 text-center ">
                                     <Link to={"/forgotpass"}>Lấy mật khẩu/Forgot</Link>
                                 </h1>
                             </div>
