@@ -1,4 +1,3 @@
-import { BsGoogle } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 import { message } from "antd";
@@ -7,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { SigninForm, schemaSignIn } from "@/schema/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
-import GoogleLoginButton from "./loginGoogle";
 import axios from 'axios';
 
 const Login = () => {
@@ -61,7 +59,7 @@ const handleLogin = async (user: any) => {
             </div>
           </div>
             <div className="flex w-[33%]">
-              <div className="px-10">
+              <div className="px-10 w-full">
                 <div className="flex mt-[70px] justify-center mb-[-50px]">
                   <a href="/" className="h-[150px] flex justify-center"><img className="w-[100%] h-[50%] object-cover" src="https://res.cloudinary.com/dzqywzres/image/upload/v1701702390/llrnrzljtdhaendxphbz.png" alt="" /></a>
                 </div>
@@ -73,7 +71,7 @@ const handleLogin = async (user: any) => {
                      <Link to={"/register"}>Đăng kí/Register</Link>
                     </h1>
                 </div>
-                <form onSubmit={handleSubmit(handleLogin)} className="">
+                <form onSubmit={handleSubmit(handleLogin)} className="w-full">
                   <div className="">
                     <input
                       type="text"
@@ -134,13 +132,13 @@ const handleLogin = async (user: any) => {
                       </Link>
                     </p>
 
-                    <div className="flex justify-center gap-6">
+                    {/* <div className="flex justify-center gap-6">
                       <button className="text-white  bg-red-500 hover:bg-red-400 focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-3 text-center inline-flex items-center justify-between">
                         <BsGoogle className="text-xl" />
                         <span className="px-2">Login with Google</span>
                       </button>
                       <GoogleLoginButton/>
-                    </div>
+                    </div> */}
                   </div>
                 </form>
               </div>
