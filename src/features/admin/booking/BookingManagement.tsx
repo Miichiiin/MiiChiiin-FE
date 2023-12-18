@@ -258,6 +258,7 @@ export const BookingManagement = () => {
                     columns={columns}
                     dataSource={filteredData}
                     className="custom-table"
+                    pagination={{ pageSize: 5 }}
                 />
             </div>
         </div>

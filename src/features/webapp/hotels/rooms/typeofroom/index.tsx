@@ -126,7 +126,7 @@ useEffect(() => {
   };
 
   const handleAdultChange1 = (roomIndex: number, value: number) => {
-    if (value >= 1 && value <= 8) {
+    if (value >= 1 && value <= 6) {
       const updatedRoomDetails = [...roomDetails1];
       updatedRoomDetails[roomIndex].adults = value;
       setRoomDetails1(updatedRoomDetails);

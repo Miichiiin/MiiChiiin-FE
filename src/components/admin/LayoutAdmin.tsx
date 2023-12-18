@@ -123,17 +123,17 @@ export const LayoutAdmin = () => {
       );
     }
 
-    if (currentUserPermissions.includes("get comfort")) {
-      menuItems.push(
-        getItem(
-          <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
-          "6",
-          <UserOutlined />,
-          "Quản lý tiện ích",
-          "managerUtilities"
-        )
-      );
-    }
+    // if (currentUserPermissions.includes("get comfort")) {
+    //   menuItems.push(
+    //     getItem(
+    //       <Link to={"managerUtilities"}>Quản lý tiện ích</Link>,
+    //       "6",
+    //       <UserOutlined />,
+    //       "Quản lý tiện ích",
+    //       "managerUtilities"
+    //     )
+    //   );
+    // }
 
     if (currentUserPermissions.includes("get rate")) {
       menuItems.push(
@@ -277,7 +277,7 @@ export const LayoutAdmin = () => {
               className="w-[50px]"
             />
             <h1 className="text-center text-lg text-orange-100 italic font-semibold ">
-              The Michii
+              The Miichi
             </h1>
           </div>
           <div>
