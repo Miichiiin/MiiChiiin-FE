@@ -34,9 +34,9 @@ const AddRoomType = () => {
     body.append('floor', values.floor)
     body.append('acreage', values.acreage)
     body.append('short_description', values.short_description)
-    comfort.forEach((item: any, index: any) => {
-      body.append(`comfort[${index}]`, item);
-    })
+    // comfort.forEach((item: any, index: any) => {
+    //   body.append(`comfort[${index}]`, item);
+    // })
     setIsUploading(true);
     message.loading({ content: 'Đang tải ảnh lên...', key: 'uploading', duration: 3 });
     addCategory_admin(body)
@@ -105,10 +105,9 @@ const AddRoomType = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               label="Tiện ích"
               name="comfort"
-              rules={[{ required: true, message: 'Vui lòng nhập trạng thái phòng!' }]}
 
             >
 
@@ -120,7 +119,7 @@ const AddRoomType = () => {
                 ))}
               </Select>
 
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               label="Mô tả"
               name="description"
