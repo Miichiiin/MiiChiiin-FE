@@ -5,9 +5,9 @@ const ratingApi = createApi({
     reducerPath: 'rating',
     tagTypes: ['Rating'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000/api/admin",
         prepareHeaders(headers) {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("tokenAdmin");
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`)
             }
@@ -16,16 +16,16 @@ const ratingApi = createApi({
     }),
     endpoints: (builder) => ({
         getRating: builder.query({
-            query: () => `/rates_admin`,
+            query: () => `/rates`,
             providesTags: ['Rating']
         }),
         getRatingById: builder.query({
-            query: (id) => `/rates_admin/${id}`,
+            query: (id) => `/rate/${id}`,
             providesTags: ['Rating']
         }),
         addRating: builder.mutation({
             query: (product) => ({
-                url: `/rates_admin`,
+                url: `/rate`,
                 method: "POST",
                 body: product
             }),
@@ -33,8 +33,8 @@ const ratingApi = createApi({
         }),
         updateRating: builder.mutation({
             query: (product) => ({
-                url: `/rates_admin/${product.id}`,
-                method: "PATCH",
+                url: `/rate/${product.id}`,
+                method: "PUT",
                 body: product
             }),
             invalidatesTags: ['Rating']

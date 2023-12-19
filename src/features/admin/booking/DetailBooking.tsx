@@ -50,8 +50,8 @@ const DetailBooking = () => {
               <p className='font-semibold'>Căn cước công dân: <span className='text-lg font-medium text-blue-900'>{booking?.cccd}</span></p>
               <p className='font-semibold'>Số điện thoại: <span className='text-lg font-medium text-blue-900'>{booking?.phone}</span></p>
               <p className='font-semibold'>Email: <span className='text-lg font-medium text-blue-900'>{booking?.email}</span></p>
-              <p className='font-semibold'>Check in: <span className='text-lg font-medium text-blue-900'>{dayjs(booking?.check_in).format('YYYY-MM-DD HH:mm:ss')}</span></p>
-              <p className='font-semibold'>Check out: <span className='text-lg font-medium text-blue-900'>{dayjs(booking?.check_out).format('YYYY-MM-DD HH:mm:ss')}</span></p>
+              <p className='font-semibold'>Check in: <span className='text-lg font-medium text-blue-900'>{dayjs(booking?.check_in).format('YYYY-MM-DD')}</span></p>
+              <p className='font-semibold'>Check out: <span className='text-lg font-medium text-blue-900'>{dayjs(booking?.check_out).format('YYYY-MM-DD')}</span></p>
               <p className='font-semibold'>Quốc tịch: <span className='text-lg font-medium text-blue-900'>{booking?.nationality}</span></p>
               <p className='font-semibold'>Tổng số người: <span className='text-lg font-medium text-blue-900'>{booking?.people_quantity}</span></p>
               <p className='font-semibold'>Số phòng: <span className='text-lg font-medium text-blue-900'>{booking?.total_room}</span></p>
@@ -61,7 +61,7 @@ const DetailBooking = () => {
                             currency: 'VND',
                           }).format(booking?.total_amount)}</span></p>
               <p className='font-semibold'>Trạng thái: <span className='text-lg font-medium text-blue-900'>
-                {booking?.status === 2 ? 'Đã check in' : booking?.status === 3 ? 'Đã thanh toán' : booking?.status === 4 ? 'Đã check out' : booking?.status === 1 ? 'Đã huỷ' : booking?.status === 0 ? 'Đang chờ' : ''}
+                {booking?.status === 2 ? 'Đã check in' : booking?.status === 3 ? 'Đã thanh toán' : booking?.status === 4 ? 'Đã hoàn thành' : booking?.status === 1 ? 'Đã huỷ' : booking?.status === 0 ? 'Đang chờ' : ''}
               </span></p>
 
             </div>
