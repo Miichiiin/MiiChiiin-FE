@@ -204,7 +204,7 @@ export const SearchHotel = () => {
   };
 
   const handleAdultChange1 = (roomIndex: number, value: number) => {
-    if (value >= 1 && value <= 8) {
+    if (value >= 1 && value <= 4) {
       const updatedRoomDetails = [...roomDetails1];
       updatedRoomDetails[roomIndex].adults = value;
       setRoomDetails1(updatedRoomDetails);
@@ -212,7 +212,7 @@ export const SearchHotel = () => {
   };
 
   const handleChildrenChange1 = (roomIndex: number, value: number) => {
-    if (value >= 0 && value <= 4) {
+    if (value >= 0 && value <= 3) {
       const updatedRoomDetails = [...roomDetails1];
       updatedRoomDetails[roomIndex].children = value;
       setRoomDetails1(updatedRoomDetails);
@@ -220,7 +220,7 @@ export const SearchHotel = () => {
   };
 
   const handleInfantChange1 = (roomIndex: number, value: number) => {
-    if (value >= 0 && value <= 3) {
+    if (value >= 0 && value <= 2) {
       const updatedRoomDetails = [...roomDetails1];
       updatedRoomDetails[roomIndex].infants = value;
       setRoomDetails1(updatedRoomDetails);

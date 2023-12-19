@@ -178,7 +178,7 @@ export const SearchQuickHotel = () => {
   };
 
   const handleAdultChange1 = (roomIndex: number, value: number) => {
-    if (value >= 1 && value <= 6) {
+    if (value >= 1 && value <= 4) {
       const updatedRoomDetails = [...roomDetails1];
       updatedRoomDetails[roomIndex].adults = value;
       setRoomDetails1(updatedRoomDetails);
@@ -186,7 +186,7 @@ export const SearchQuickHotel = () => {
   };
 
   const handleChildrenChange1 = (roomIndex: number, value: number) => {
-    if (value >= 0 && value <= 4) {
+    if (value >= 0 && value <= 3) {
       const updatedRoomDetails = [...roomDetails1];
       updatedRoomDetails[roomIndex].children = value;
       setRoomDetails1(updatedRoomDetails);
@@ -194,7 +194,7 @@ export const SearchQuickHotel = () => {
   };
 
   const handleInfantChange1 = (roomIndex: number, value: number) => {
-    if (value >= 0 && value <= 3) {
+    if (value >= 0 && value <= 2) {
       const updatedRoomDetails = [...roomDetails1];
       updatedRoomDetails[roomIndex].infants = value;
       setRoomDetails1(updatedRoomDetails);
