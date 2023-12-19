@@ -146,11 +146,43 @@ const ChooseRoom = () => {
 
       return acc;
     }, []);
+
+    interface Person {
+      adults: number;
+      children: number;
+      infants: number;
+    }
+    
+    const convertArrayToObject = (array: string[]): Person[] => {
+      const result: Person[] = array.map((item) => {
+        const parts = item.split(',');
+        const person: Person = {
+          adults: parseInt(parts[0].split(':')[1]),
+          children: parseInt(parts[1].split(':')[1]),
+          infants: parseInt(parts[2].split(':')[1]),
+        };
+        return person;
+      });
+      return result;
+    };
+
   const individuals: any =
     searchSlide.numberPeople && searchSlide.numberPeople.split("&");
 
   let totalAdults = 0;
   let totalChildren = 0;
+  const arrayOfObjects = convertArrayToObject(individuals);
+
+  let maxTotal = 0;
+  arrayOfObjects.forEach((element: any) => {
+    const { adults, children, infants } = element;
+
+    const total = adults + children + infants;
+    if (total > maxTotal) {
+      maxTotal = total;
+    }
+  });
+
 
   // Lặp qua từng phần tử và tính tổng số người lớn và trẻ em
   individuals?.forEach((individual: any) => {
@@ -173,7 +205,7 @@ const ChooseRoom = () => {
     id: hotel?.[0],
     check_in: moment(date[0]).format("YYYY-MM-DD"),
     check_out: moment(date[1]).format("YYYY-MM-DD"),
-    number_people: totalAdults + totalChildren,
+    number_people: maxTotal,
     total_room: searchSlide.numberRoom,
   });
   //loading phòng
@@ -452,7 +484,10 @@ const ChooseRoom = () => {
                             <div>
                               <p className=" flex justify-end items-center text-left space-x-2 ">
                                 {" "}
-                                <span className="text-sm"> Giá phòng:</span>{" "}
+                                <span className="text-sm">
+                                  {" "}
+                                  Giá phòng:
+                                </span>{" "}
                                 <span className="font-semibold text-base ">
                                   {hotel?.price.toLocaleString("vi-VN")}đ /đêm
                                 </span>
