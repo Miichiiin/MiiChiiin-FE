@@ -17,17 +17,24 @@ const category_BookingApi = createApi({
         getCategory_Booking: builder.query<any, void>({
             query: () => {
                 const id = JSON.parse(localStorage.getItem("userAdmin") || '{}');
-                console.log(id.id_hotel);
                 // Lấy ID khách sạn từ Local Storage
-                return `/listRoom/hotels=${id.id_hotel}`;
+                return `/find/hotels=${id.id_hotel}/2023-12-20/2023-12-23`;
             },
             providesTags: ['Category_booking']
         }),
-        
+        getService_Booking: builder.query<any, void>({
+            query: () => {
+                const id = JSON.parse(localStorage.getItem("userAdmin") || '{}');
+                // Lấy ID khách sạn từ Local Storage
+                return `/services/id_hotel=${id.id_hotel}`;
+            },
+            providesTags: ['Category_booking']
+        }),
+
     })
 })
-export const { 
- useGetCategory_BookingQuery
- } = category_BookingApi;
+export const {
+    useGetCategory_BookingQuery, useGetService_BookingQuery
+} = category_BookingApi;
 export const category_BookingReducer = category_BookingApi.reducer;
 export default category_BookingApi;

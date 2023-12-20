@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Input, InputNumber, DatePicker, Checkbox, Popconfirm, message, Select, Radio, Skeleton } from 'antd';
-import { useGetService_adminQuery } from '@/api/admin/service_admin';
 import { useGetBooking_adminByIdQuery, useUpdateBooking_adminMutation } from '@/api/admin/booking_admin';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -9,7 +8,7 @@ import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
 import { BsTrash3 } from 'react-icons/bs';
 import { useGetRoom_AdminsQuery } from '@/api/admin/room_admin';
-import { useGetCategory_BookingQuery } from '@/api/admin/category_booking';
+import { useGetCategory_BookingQuery, useGetService_BookingQuery } from '@/api/admin/category_booking';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 
@@ -21,7 +20,7 @@ interface Category {
   id: number;
   name: string;
   price: number;
-  total_rooms_available: number;
+  Total_rooms: number;
   quantity_of_people: number;
 }
 
@@ -68,7 +67,7 @@ interface RoomData {
 
 const UpdateBooking = () => {
   const { data: categories } = useGetCategory_BookingQuery() // Lấy danh sách loại phòng
-  const { data: services } = useGetService_adminQuery() // Lấy danh sách dịch vụ
+  const { data: services } = useGetService_BookingQuery() // Lấy danh sách dịch vụ
   const { data: roomsData } = useGetRoom_AdminsQuery({}) // Lấy danh sách phòng
 
   const navigate = useNavigate();
@@ -97,7 +96,7 @@ const UpdateBooking = () => {
     if (categories) {
       const initialAvailableRoomCounts: { [key: number]: number } = {};
       categories.forEach((category: Category) => {
-        initialAvailableRoomCounts[category.id] = category.total_rooms_available;
+        initialAvailableRoomCounts[category.id] = category.Total_rooms;
       });
       setAvailableRoomCounts(initialAvailableRoomCounts);
     }
@@ -601,7 +600,7 @@ const UpdateBooking = () => {
                         className={`px-3 py-2 rounded-md cursor-pointer border h-full
                           ${selectedRoomIndex === category?.id
                             ? 'bg-blue-500 text-white border border-black'
-                            : category.total_rooms_available < 1
+                            : category.Total_rooms < 1
                               ? 'hidden'
                               : availableRoomCounts[category?.id] === 0
                                 ? 'bg-red-500 text-white cursor-not-allowed'
@@ -609,7 +608,7 @@ const UpdateBooking = () => {
 
                           }`}
                         onClick={() => {
-                          if (category.total_rooms_available >= 1) {
+                          if (category.Total_rooms >= 1) {
                             handleRoomClick(category?.id);
                           }
                         }}

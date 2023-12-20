@@ -8,8 +8,8 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/vi';
-import { useGetService_adminQuery } from '@/api/admin/service_admin';
-import { useGetCategory_BookingQuery } from '@/api/admin/category_booking';
+
+import { useGetCategory_BookingQuery, useGetService_BookingQuery } from '@/api/admin/category_booking';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 dayjs.extend(utc);
@@ -20,7 +20,7 @@ interface Category {
   id: number;
   name: string;
   price: number;
-  total_rooms_available: number;
+  Total_rooms: number;
   quantity_of_people: number;
 }
 
@@ -65,7 +65,7 @@ interface RoomData {
 
 const AddBooking = () => {
   const { data: categories, isLoading, isError } = useGetCategory_BookingQuery() // Lấy danh sách loại phòng
-  const { data: services } = useGetService_adminQuery() // Lấy danh sách dịch vụ
+  const { data: services } = useGetService_BookingQuery() // Lấy danh sách dịch vụ
   const [addBooking, {isSuccess}] = useAddBooking_adminMutation(); // Thêm booking
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
@@ -100,7 +100,7 @@ const AddBooking = () => {
     if (categories) {
       const initialAvailableRoomCounts: { [key: number]: number } = {};
       categories.forEach((category: Category) => {
-        initialAvailableRoomCounts[category.id] = category.total_rooms_available;
+        initialAvailableRoomCounts[category.id] = category.Total_rooms;
       });
       setAvailableRoomCounts(initialAvailableRoomCounts);
     }
@@ -487,14 +487,14 @@ const AddBooking = () => {
                           className={`px-3 py-2 rounded-md  border h-[130px]
                            ${selectedRoomIndex === category?.id
                               ? 'bg-blue-500 text-white border border-black cursor-pointer'
-                              : category.total_rooms_available < 1
+                              : category.Total_rooms < 1
                                 ? 'hidden'
                                 : availableRoomCounts[category?.id] === 0
                                   ? 'bg-red-500 text-white cursor-not-allowed'
                                   : 'bg-[#15803d] cursor-pointer '
                             }`}
                           onClick={() => {
-                            if (category.total_rooms_available >= 1) {
+                            if (category.Total_rooms >= 1) {
                               handleRoomClick(category?.id);
                             }
                           }}

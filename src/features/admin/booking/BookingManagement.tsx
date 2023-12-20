@@ -230,8 +230,8 @@ export const BookingManagement = () => {
 
                 </div>
                 {hasAddUserPermission("add booking") && (
-                    <button className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center" onClick={() => navigate('/admin/addbooking')}>
-                        <IoAddCircleOutline className="text-xl" /></button>
+                    <a href='/admin/addbooking' className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center">
+                        <IoAddCircleOutline className="text-xl" /></a>
                 )}
             </div>
             {/* Phần CSS tùy chỉnh cho bảng */}
